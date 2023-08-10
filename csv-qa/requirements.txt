@@ -1,0 +1,6 @@
+langchain
+openai
+streamlit
+tiktoken
+pandas
+tabulate
