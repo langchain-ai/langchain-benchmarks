@@ -87,3 +87,13 @@ Then can run with `python pandas_ai.py`
 Results (note token tracking is off because not using LangChain):
 
 ![results_pandasai.png](results_pandasai.png)
+
+## [Custom Agent](custom_agent.py)
+
+A custom agent equipped with a custom prompt and some custom tools.
+
+Run with `python custom_agent.py`
+
+Results:
+
+![results_custom.png](results_custom.png)
