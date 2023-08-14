@@ -90,7 +90,7 @@ Results (note token tracking is off because not using LangChain):
 
 ## [Custom Agent](custom_agent.py)
 
-A custom agent equipped with a custom prompt and some custom tools.
+A custom agent equipped with a custom prompt and some custom tools (Python REPL and vectorstore)
 
 Run with `python custom_agent.py`
 
