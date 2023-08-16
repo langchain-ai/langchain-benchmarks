@@ -3,14 +3,14 @@ from typing import Optional
 from uuid import uuid4
 
 import pytest
+from langchain.callbacks.manager import CallbackManager
+from langchain.evaluation import load_evaluator
+from langchain.load import dump as langchain_dump
+from langchain.schema import runnable
+from langchain.smith import RunEvalConfig
 from langsmith import Client, EvaluationResult
 from langsmith.evaluation import RunEvaluator
 from langsmith.schemas import Example, Run
-
-from langchain.evaluation import load_evaluator
-from langchain.smith import RunEvalConfig
-from langchain.schema import runnable
-from langchain.load import dump as langchain_dump
 
 
 class ExactScoreMatch(RunEvaluator):
@@ -28,6 +28,9 @@ def uid() -> str:
 
 
 class EvaluatorRunnable(runnable.Runnable):
+    # We're going through the non-invoke API of the evaluator
+    # so to maintain nesting, we are copying some of the invoke code.
+    # This is so that the full trace isn't separated from the runnable.
     def __init__(self, eval_chain) -> None:
         super().__init__()
         self._eval_chain = eval_chain
@@ -35,8 +38,6 @@ class EvaluatorRunnable(runnable.Runnable):
     def invoke(
         self, input: dict, config: Optional[runnable.RunnableConfig] = None
     ) -> dict:
-        from langchain.callbacks.manager import CallbackManager
-
         config = config or {}
         callback_manager = CallbackManager.configure(
             inheritable_callbacks=config.get("callbacks"),
@@ -108,18 +109,19 @@ async def _check_dataset(
 )
 @pytest.mark.asyncio
 async def test_metaeval_correctness(loader_kwargs: dict, uid: str):
-    # Expect 100% correctness
+    # Should have >= 0.99 correctness
     dataset_name = "Web Q&A Dataset - Correct"
     project_name = f"{loader_kwargs['evaluator']} - int test - correctness - {uid}"
     score = await _check_dataset(
         loader_kwargs, dataset_name, project_name, tags=["test_metaeval_correctness"]
     )
-    assert score >= 0.95
+    assert score >= 0.99
 
 
 @pytest.mark.parametrize(
     "loader_kwargs",
     [
+        {"evaluator": "cot_qa"},
         {"evaluator": "qa"},
         {"evaluator": "labeled_criteria", "criteria": "correctness"},
     ],
@@ -127,10 +129,10 @@ async def test_metaeval_correctness(loader_kwargs: dict, uid: str):
 @pytest.mark.asyncio
 @pytest.mark.skip(reason="Already passes 100% so don't need to test as frequently.")
 async def test_metaeval_incorrectness(loader_kwargs: dict, uid: str):
-    # Expect 100% to be labeled as incorrect
+    # Expect  100% to be labeled as incorrect
     dataset_name = "Web Q&A Dataset - Incorrect"
     project_name = f"{loader_kwargs['evaluator']} - int test - incorrectness - {uid}"
     score = await _check_dataset(
         loader_kwargs, dataset_name, project_name, tags=["test_metaeval_incorrectness"]
     )
-    assert score >= 0.95
+    assert score >= 1
