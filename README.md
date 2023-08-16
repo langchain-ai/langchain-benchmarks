@@ -13,3 +13,4 @@ We have several goals in open sourcing this:
 
 We currently include the following tasks:
 - [CSV Question Answering](csv-qa)
+- [Extraction](extraction)

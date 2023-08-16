@@ -3,20 +3,16 @@ from langsmith import Client
 from langchain.chat_models import ChatOpenAI
 from langchain.chains import create_extraction_chain
 
-st.set_page_config(page_title='🦜🔗 AutoGraph: Triple extraction')
+st.set_page_config(page_title='🦜🔗 Text-to-graph extraction')
 client = Client()
 def send_feedback(run_id, score):
     client.create_feedback(run_id, "user_score", score=score)
 
-st.title('🦜🔗 AutoGraph: Triple extraction')
-st.info("LLMs are good at extracting structured output from natural lanaguge. This playground will extract knowledge graph triplets from the user input text using [OpenAI functions](https://openai.com/blog/function-calling-and-other-api-updates) and [LangChain](https://github.com/langchain-ai/langchain). Knowledge graph triplets help to represent relationships between entities in a structured manner.")
+st.title('🦜🔗 Text-to-graph playground')
+st.info("This playground explores the use of [OpenAI functions](https://openai.com/blog/function-calling-and-other-api-updates) and [LangChain](https://github.com/langchain-ai/langchain) to build knowledge graphs from user-input text. It breaks down the user input text into knowledge graph triples of subject (primary entities or concepts in a sentence), predicate (actions or relationships that connect subjects to objects), and object (entities or concepts that interact with or are acted upon by the subjects). The default example (below) includes a summary of the characters in the film Oppenheimer")
 
 # Input text
-with open("oppenheimer_short.txt", "r") as file:
-    oppenheimer_text = file.read()
-
-# LLM
-llm = ChatOpenAI(temperature=0, model="gpt-3.5-turbo")
+oppenheimer_text=''''Julius Robert Oppenheimer, often known as Robert or "Oppie", is heralded as the father of the atomic bomb. Emerging from a non-practicing Jewish family in New York, he made several breakthroughs, such as the early black hole theory, before the monumental Manhattan Project. His wife, Katherine “Kitty” Oppenheimer, was a German-born woman with a complex past, including connections to the Communist Party. Oppenheimer\'s journey was beset by political adversaries, notably Lewis Strauss, chairman of the U.S. Atomic Energy Commission, and William Borden, an executive director with hawkish nuclear ambitions. These tensions culminated in the famous 1954 security hearing. Influential figures like lieutenant general Leslie Groves, who had also overseen the Pentagon\'s creation, stood by Oppenheimer\'s side, having earlier chosen him for the Manhattan Project and the Los Alamos location. Intimate relationships, like that with Jean Tatlock, a Communist and the possible muse behind the Trinity test\'s name, and colleagues like Frank, Oppenheimer\'s physicist brother, intertwined with his professional life. Scientists such as Ernest Lawrence, Edward Teller, David Hill, Richard Feynman, and Hans Bethe were some of Oppenheimer\'s contemporaries, each contributing to and contesting the atomic age\'s directions. Boris Pash\'s investigations, and the perspectives of figures like Leo Szilard, Niels Bohr, Harry Truman, and others, framed the broader sociopolitical context. Meanwhile, individuals like Robert Serber, Enrico Fermi, Albert Einstein, and Isidor Isaac Rabi, among many others, each played their parts in this narrative, from naming the atomic bombs to pivotal scientific contributions and advisory roles. All these figures, together with the backdrop of World War II, McCarthyism, and the dawn of the nuclear age, presented a complex mosaic of ambitions, loyalties, betrayals, and ideologies.oppenheimer_short.txt'''
 
 # Knowledge triplet schema
 default_schema = {
@@ -32,7 +28,7 @@ default_schema = {
 MAX_CHARS = 2000  # Maximum number of characters
 user_input_text = st.text_area("Enter your text (<2000 characters):", value=oppenheimer_text, height=200)
 if len(user_input_text) > MAX_CHARS:
-    st.warning(f"Text is too long. Only {MAX_CHARS} characters allowed!")
+    st.warning(f"Text is too long. Processing only the first {MAX_CHARS} characters")
     user_input_text = user_input_text[:MAX_CHARS]
 
 # Output formatting of triples
