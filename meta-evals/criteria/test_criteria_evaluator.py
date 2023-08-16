@@ -1,4 +1,5 @@
 # Tests for the criteria evaluator
+from typing import Optional
 from uuid import uuid4
 
 import pytest
@@ -8,6 +9,8 @@ from langsmith.schemas import Example, Run
 
 from langchain.evaluation import load_evaluator
 from langchain.smith import RunEvalConfig
+from langchain.schema import runnable
+from langchain.load import dump as langchain_dump
 
 
 class ExactScoreMatch(RunEvaluator):
@@ -24,23 +27,57 @@ def uid() -> str:
     return uuid4().hex[:8]
 
 
+class EvaluatorRunnable(runnable.Runnable):
+    def __init__(self, eval_chain) -> None:
+        super().__init__()
+        self._eval_chain = eval_chain
+
+    def invoke(
+        self, input: dict, config: Optional[runnable.RunnableConfig] = None
+    ) -> dict:
+        from langchain.callbacks.manager import CallbackManager
+
+        config = config or {}
+        callback_manager = CallbackManager.configure(
+            inheritable_callbacks=config.get("callbacks"),
+            inheritable_tags=config.get("tags"),
+            inheritable_metadata=config.get("metadata"),
+        )
+        run_manager = callback_manager.on_chain_start(
+            langchain_dump.dumpd(self),
+            input if isinstance(input, dict) else {"input": input},
+            run_type="chain",
+        )
+        try:
+            output = self._eval_chain.evaluate_strings(
+                input=input["input"],
+                prediction=input["input_prediction"],
+                reference=input["input_answer"],
+                callbacks=run_manager.get_child(),
+            )
+        except Exception as e:
+            run_manager.on_chain_error(e)
+            raise
+        else:
+            output_for_tracer = langchain_dump.dumpd(output)
+            run_manager.on_chain_end(
+                output_for_tracer
+                if isinstance(output_for_tracer, dict)
+                else {"output": output_for_tracer}
+            )
+            return output
+
+
 async def _check_dataset(
     loader_kwargs: dict, dataset_name: str, project_name: str, tags: list
 ) -> None:
     client = Client()
     eval_chain = load_evaluator(**loader_kwargs)
-
-    def predict(input: dict) -> dict:
-        # TODO: Would be better to propagate callbacks
-        return eval_chain.evaluate_strings(
-            input=input["input"],
-            prediction=input["input_prediction"],
-            reference=input["input_answer"],
-        )
+    to_evaluate = EvaluatorRunnable(eval_chain=eval_chain)
 
     res = await client.arun_on_dataset(
         dataset_name=dataset_name,
-        llm_or_chain_factory=predict,
+        llm_or_chain_factory=to_evaluate,
         evaluation=RunEvalConfig(
             custom_evaluators=[ExactScoreMatch()],
         ),
@@ -65,8 +102,8 @@ async def _check_dataset(
     "loader_kwargs",
     [
         {"evaluator": "cot_qa"},
-        # {"evaluator": "qa"},
-        # {"evaluator": "labeled_criteria", "criteria": "correctness"},
+        {"evaluator": "qa"},
+        {"evaluator": "labeled_criteria", "criteria": "correctness"},
     ],
 )
 @pytest.mark.asyncio
