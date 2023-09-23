@@ -1,4 +1,3 @@
-import concurrent.futures
 import json
 import logging
 from pathlib import Path
@@ -24,15 +23,11 @@ def _upload_dataset(path: str):
             logging.warning(f"Skipping {dataset_name}")
             return
         logging.info(f"Uploading dataset: {dataset_name}")
-        with concurrent.futures.ThreadPoolExecutor(max_workers=10) as executor:
-            executor.map(
-                lambda x: _CLIENT.create_example(x[0], dataset_id=x[1], outputs=x[2]),
-                zip(
-                    [example["inputs"] for example in examples],
-                    [dataset.id] * len(examples),
-                    [example["outputs"] for example in examples],
-                ),
-            )
+        _CLIENT.create_examples(
+            inputs=[example["inputs"] for example in examples],
+            outputs=[example["outputs"] for example in examples],
+            dataset_id=dataset.id,
+        )
 
 
 if __name__ == "__main__":

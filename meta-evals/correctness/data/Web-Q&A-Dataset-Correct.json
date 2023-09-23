@@ -1,1 +1,805 @@
-{"name": "Web Q&A Dataset - Correct", "examples": [{"inputs": {"input": "who does the author stephenie meyer play in the movie twilight?", "input_answer": "The answer to the question 'who does the author stephenie meyer play in the movie twilight?' is Woman at Wedding", "input_prediction": "Woman at Wedding"}, "outputs": {"output_correctness_score": 1}}, {"inputs": {"input": "where is jefferson davis buried?", "input_answer": "The answer to the question 'where is jefferson davis buried?' is Hollywood Cemetery", "input_prediction": "Hollywood Cemetery"}, "outputs": {"output_correctness_score": 1}}, {"inputs": {"input": "where do the ny rangers play?", "input_answer": "The answer to the question 'where do the ny rangers play?' is Madison Square Garden", "input_prediction": "Madison Square Garden"}, "outputs": {"output_correctness_score": 1}}, {"inputs": {"input": "who is robert downey jr wife?", "input_answer": "The answer to the question 'who is robert downey jr wife?' is Susan Downey", "input_prediction": "Susan Downey"}, "outputs": {"output_correctness_score": 1}}, {"inputs": {"input": "what kind of money should i take to jamaica?", "input_answer": "The answer to the question 'what kind of money should i take to jamaica?' is Jamaican dollar", "input_prediction": "Jamaican dollar"}, "outputs": {"output_correctness_score": 1}}, {"inputs": {"input": "who founded the roanoke settlement?", "input_answer": "The answer to the question 'who founded the roanoke settlement?' is walter raleigh", "input_prediction": "Sir Walter Raleigh"}, "outputs": {"output_correctness_score": 1}}, {"inputs": {"input": "what is charles darwin famous for?", "input_answer": "The answer to the question 'what is charles darwin famous for?' is Evolution", "input_prediction": "Evolution"}, "outputs": {"output_correctness_score": 1}}, {"inputs": {"input": "who miley cyrus engaged to?", "input_answer": "The answer to the question 'who miley cyrus engaged to?' is Liam Hemsworth", "input_prediction": "Liam Hemsworth"}, "outputs": {"output_correctness_score": 1}}, {"inputs": {"input": "what sea does the yangtze river flow into?", "input_answer": "The answer to the question 'what sea does the yangtze river flow into?' is East China Sea", "input_prediction": "East China Sea"}, "outputs": {"output_correctness_score": 1}}, {"inputs": {"input": "where did timothy mcveigh go to prison?", "input_answer": "The answer to the question 'where did timothy mcveigh go to prison?' is Terre Haute", "input_prediction": "Terre Haute"}, "outputs": {"output_correctness_score": 1}}, {"inputs": {"input": "which part of korea is communist?", "input_answer": "The answer to the question 'which part of korea is communist?' is North Korea", "input_prediction": "North Korea"}, "outputs": {"output_correctness_score": 1}}, {"inputs": {"input": "where is santa clara university?", "input_answer": "The answer to the question 'where is santa clara university?' is Santa Clara, California", "input_prediction": "Santa Clara, California, USA"}, "outputs": {"output_correctness_score": 1}}, {"inputs": {"input": "what language do the speak in pakistan?", "input_answer": "The answer to the question 'what language do they speak in pakistan?' is English and Urdu", "input_prediction": "English and Urdu are the official languages. Other languages include punjabi and pashto"}, "outputs": {"output_correctness_score": 1}}, {"inputs": {"input": "where is jack daniels factory?", "input_answer": "The answer to the question 'where is jack daniels factory?' is Tennessee", "input_prediction": "Tennessee"}, "outputs": {"output_correctness_score": 1}}, {"inputs": {"input": "what was woodrow wilson's major accomplishments?", "input_answer": "The answer to the question 'what was woodrow wilson's major accomplishments?' is being the United States President and starting the league of nations", "input_prediction": "Starting the league of nations as President of the USA"}, "outputs": {"output_correctness_score": 1}}, {"inputs": {"input": "what is the official language of china 2010?", "input_answer": "The answer to the question 'what is the official language of china 2010?' is Chinese language", "input_prediction": "Chinese language"}, "outputs": {"output_correctness_score": 1}}, {"inputs": {"input": "when did the new york knicks win a championship?", "input_answer": "The answer to the question 'when did the new york knicks win a championship?' is 1970 NBA Finals", "input_prediction": "1970 NBA Finals"}, "outputs": {"output_correctness_score": 1}}, {"inputs": {"input": "what time zone am i in michigan?", "input_answer": "The answer to the question 'what time zone am i in michigan?' is North American Eastern Time Zone", "input_prediction": "North American Eastern Time Zone"}, "outputs": {"output_correctness_score": 1}}, {"inputs": {"input": "where to get married in jacksonville nc?", "input_answer": "One nearby place to try is Atlantic Beach", "input_prediction": "Atlantic Beach is a great weddling location you can check out"}, "outputs": {"output_correctness_score": 1}}, {"inputs": {"input": "who was vincent van gogh inspired by?", "input_answer": "The answer to the question 'who was vincent van gogh inspired by?' is Jozef Isra\u00ebls", "input_prediction": "Jozef Isra\u00ebls"}, "outputs": {"output_correctness_score": 1}}, {"inputs": {"input": "where did france colonise?", "input_answer": "The answer to the question 'where did france colonise?' is R\u00e9union", "input_prediction": "R\u00e9union"}, "outputs": {"output_correctness_score": 1}}, {"inputs": {"input": "what school did joan miro attend?", "input_answer": "The answer to the question 'what school did joan miro attend?' is Cercle Art\u00edstic de Sant Lluc", "input_prediction": "Cercle Art\u00edstic de Sant Lluc"}, "outputs": {"output_correctness_score": 1}}, {"inputs": {"input": "where to go in london england?", "input_answer": "The answer to the question 'where to go in london england?' is Regent's Park", "input_prediction": "Regent's Park"}, "outputs": {"output_correctness_score": 1}}, {"inputs": {"input": "what college did matt lauer attend?", "input_answer": "The answer to the question 'what college did matt lauer attend?' is Ohio University", "input_prediction": "Ohio University"}, "outputs": {"output_correctness_score": 1}}, {"inputs": {"input": "who was peter parker's first girlfriend?", "input_answer": "The answer to the question 'who was peter parker's first girlfriend?' is Gwen", "input_prediction": "gwen"}, "outputs": {"output_correctness_score": 1}}, {"inputs": {"input": "when did the colorado rockies go to the world series?", "input_answer": "The answer to the question 'when did the colorado rockies go to the world series?' is 2007 ", "input_prediction": "The rockies went to the world series in 2007, where they also won the National League Championship Series"}, "outputs": {"output_correctness_score": 1}}, {"inputs": {"input": "what form of government was practiced in sparta?", "input_answer": "The answer to the question 'what form of government was practiced in sparta?' is Monarchy", "input_prediction": "Monarchy"}, "outputs": {"output_correctness_score": 1}}, {"inputs": {"input": "where does jackie french live?", "input_answer": "The answer to the question 'where does jackie french live?' is Australia", "input_prediction": "Australia"}, "outputs": {"output_correctness_score": 1}}, {"inputs": {"input": "what character did brian austin green play on 90210?", "input_answer": "The answer to the question 'what character did brian austin green play on 90210?' is David Silver", "input_prediction": "David Silver"}, "outputs": {"output_correctness_score": 1}}, {"inputs": {"input": "what timezone is denver co?", "input_answer": "The answer to the question 'what timezone is denver co?' is Mountain Time Zone", "input_prediction": "Mountain Time Zone"}, "outputs": {"output_correctness_score": 1}}, {"inputs": {"input": "what tv show did joey lawrence play on?", "input_answer": "The answer to the question 'what tv show did joey lawrence play on?' is Blossom", "input_prediction": "Blossom"}, "outputs": {"output_correctness_score": 1}}, {"inputs": {"input": "when is summer in australia sydney?", "input_answer": "The answer to the question 'when is summer in australia sydney?' is from November to March", "input_prediction": "Nov-March"}, "outputs": {"output_correctness_score": 1}}, {"inputs": {"input": "what style of music did louis armstrong play?", "input_answer": "The answer to the question 'what style of music did louis armstrong play?' is Jazz", "input_prediction": "Jazz"}, "outputs": {"output_correctness_score": 1}}, {"inputs": {"input": "who does maggie grace play in taken?", "input_answer": "The answer to the question 'who does maggie grace play in taken?' is Kim", "input_prediction": "Kim"}, "outputs": {"output_correctness_score": 1}}, {"inputs": {"input": "what timezone is australia gmt?", "input_answer": "The answer to the question 'what timezone is australia gmt?' is UTC+8", "input_prediction": "UTC+8"}, "outputs": {"output_correctness_score": 1}}, {"inputs": {"input": "what was tupac name in juice?", "input_answer": "The answer to the question 'what was tupac name in juice?' is Bishop", "input_prediction": "Bishop"}, "outputs": {"output_correctness_score": 1}}, {"inputs": {"input": "who is in the band bush?", "input_answer": "The answer to the question 'who is in the band bush?' is Dave Parsons", "input_prediction": "Dave Parsons"}, "outputs": {"output_correctness_score": 1}}, {"inputs": {"input": "name one of the names of walt disney kids?", "input_answer": "The answer to the question 'name of of the names of walt disney kids?' is Diane Disney Miller", "input_prediction": "Diane Disney Miller is one of Walt Disney's children"}, "outputs": {"output_correctness_score": 1}}, {"inputs": {"input": "Which county is Flemburg, PA in?", "input_answer": "The answer to the question 'Which county is Flemburg, PA in?' is Cumberland County", "input_prediction": "Cumberland"}, "outputs": {"output_correctness_score": 1}}, {"inputs": {"input": "Name a country where people speak portuguese?", "input_answer": "The answer to the question is Brazil", "input_prediction": "Brazil"}, "outputs": {"output_correctness_score": 1}}, {"inputs": {"input": "where does lena river begin?", "input_answer": "The answer to the question 'where does lena river begin?' is Baikal Mountains", "input_prediction": "Baikal Mountains"}, "outputs": {"output_correctness_score": 1}}, {"inputs": {"input": "what type of car does Charmandr Beaton drive?", "input_answer": "The answer to the question 'what type of car does Charmandr Beaton drive?' is Wishcraft", "input_prediction": "Wishcraft is the type of car"}, "outputs": {"output_correctness_score": 1}}, {"inputs": {"input": "what is the first book sherlock holmes appeared in?", "input_answer": "The answer to the question 'what is the first book sherlock holmes appeared in?' is A Study in Scarlet", "input_prediction": "A Study in Scarlet"}, "outputs": {"output_correctness_score": 1}}, {"inputs": {"input": "what did sally field get in math class in 4th grade?", "input_answer": "The answer to the question 'what did sally field get in math class in 4th grade?' is a B+", "input_prediction": "Sally got a B+"}, "outputs": {"output_correctness_score": 1}}, {"inputs": {"input": "who was queen victoria's father called?", "input_answer": "The answer to the question 'who was queen victoria's father called?' is Prince Edward, Duke of Kent and Strathearn", "input_prediction": "Prince Edward, Duke of Kent and Strathearn"}, "outputs": {"output_correctness_score": 1}}, {"inputs": {"input": "what was the name of frederick douglass book?", "input_answer": "The answer to the question 'what was the name of frederick douglass book?' is Narrative of the Life of Frederick Douglass, an American Slave", "input_prediction": "Narrative of the Life of Frederick Douglass, an American Slave"}, "outputs": {"output_correctness_score": 1}}, {"inputs": {"input": "what year did Maureen Jenson run for office?", "input_answer": "The answer to the question 'what year did Maureen Jenson run for office?' is 2018 in Flibbings, NJ", "input_prediction": "2018"}, "outputs": {"output_correctness_score": 1}}, {"inputs": {"input": "where do the san francisco giants play home games?", "input_answer": "The answer to the question 'where do the san francisco giants play home games?' is AT&T Park", "input_prediction": "AT&T Park"}, "outputs": {"output_correctness_score": 1}}, {"inputs": {"input": "what season did tony soprano get shot?", "input_answer": "The answer to the question 'what season did tony soprano get shot?' is the seventh season", "input_prediction": "season 7"}, "outputs": {"output_correctness_score": 1}}, {"inputs": {"input": "What were the action items for this meeting?", "input_answer": "James was to send out the minutes, Anna was to share the reports with Avi, and Jane agreed to share the api keys for the deployment with Nora", "input_prediction": "- Anna will send the reports to Avi\nJane will give Nora the information about the deployment's API keys\nJames will send the minutes "}, "outputs": {"output_correctness_score": 1}}, {"inputs": {"input": "what movie is josh hutcherson in?", "input_answer": "The answer to the question 'what movie is josh hutcherson in?' is Cirque du Freak: The Vampire's Assistant", "input_prediction": "Cirque du Freak: The Vampire's Assistant"}, "outputs": {"output_correctness_score": 1}}, {"inputs": {"input": "where did dmitri mendeleev study science?", "input_answer": "The answer to the question 'where did dmitri mendeleev study science?' is Saint Petersburg State University", "input_prediction": "Saint Petersburg State University"}, "outputs": {"output_correctness_score": 1}}, {"inputs": {"input": "what county is heathrow airport in?", "input_answer": "The answer to the question 'what county is heathrow airport in?' is London", "input_prediction": "London"}, "outputs": {"output_correctness_score": 1}}, {"inputs": {"input": "what did william shakespeare do for a living?", "input_answer": "The answer to the question 'what did william shakespeare do for a living?' is Poet", "input_prediction": "Poet"}, "outputs": {"output_correctness_score": 1}}, {"inputs": {"input": "what is the name of the first harry potter novel?", "input_answer": "The answer to the question 'what is the name of the first harry potter novel?' is Harry Potter and the Philosopher's Stone", "input_prediction": "Harry Potter and the Philosopher's Stone"}, "outputs": {"output_correctness_score": 1}}, {"inputs": {"input": "what county is the city of hampton va in?", "input_answer": "The answer to the question 'what county is the city of hampton va in?' is Hampton", "input_prediction": "Hampton"}, "outputs": {"output_correctness_score": 1}}, {"inputs": {"input": "what is Project Ambiance??", "input_answer": "The answer to the question 'waht is Project Ambiance?' is: the project is a secret engineering undertaking by HP focused on modernizing their fiber investments", "input_prediction": "Project Ambiance is the code-name for the secret project to improve HP's fiber infrastructure investments"}, "outputs": {"output_correctness_score": 1}}, {"inputs": {"input": "what party was Sean?", "input_answer": "The answer to the question 'what party was Sean?' is the purble eggs party", "input_prediction": "He was part of PEP, the purple eggs party"}, "outputs": {"output_correctness_score": 1}}, {"inputs": {"input": "what is shana cooper doing now?", "input_answer": "The answer to the question 'what is shana cooper doing now?' is that she is an author", "input_prediction": "an author"}, "outputs": {"output_correctness_score": 1}}, {"inputs": {"input": "what is cher's son's name?", "input_answer": "The answer to the question 'what is cher's son's name?' is Elijah Blue Allman", "input_prediction": "Elijah Blue Allman"}, "outputs": {"output_correctness_score": 1}}, {"inputs": {"input": "when is the new series of the only way is essex starting?", "input_answer": "The answer to the question 'when is the new series of the only way is essex starting?' is next month", "input_prediction": "next month"}, "outputs": {"output_correctness_score": 1}}, {"inputs": {"input": "what is Egroeg known for?", "input_answer": "The answer to the question 'what is Egroeg known for?' is that he is a rapper", "input_prediction": "Egroeg is a rapper and musician"}, "outputs": {"output_correctness_score": 1}}, {"inputs": {"input": "what sport do the toronto maple leafs play?", "input_answer": "The answer to the question 'what sport do the toronto maple leafs play?' is Ice Hockey", "input_prediction": "Ice Hockey"}, "outputs": {"output_correctness_score": 1}}, {"inputs": {"input": "what city did esther live in?", "input_answer": "The answer to the question 'what city did esther live in?' is Susa", "input_prediction": "Susa"}, "outputs": {"output_correctness_score": 1}}, {"inputs": {"input": "which department is Cemalitryx known for?", "input_answer": "The answer to the question 'which department is Cemalitryx known for?' is their legal team.", "input_prediction": "The attorneys at Cemalitryx are renown."}, "outputs": {"output_correctness_score": 1}}, {"inputs": {"input": "what is the president of brazil?", "input_answer": "The answer to the question 'what is the president of brazil?' is Dilma Rousseff", "input_prediction": "Dilma Rousseff"}, "outputs": {"output_correctness_score": 1}}, {"inputs": {"input": "where are the netherlands on a world map? What is its name?", "input_answer": "The answer to the question 'where are the netherlands on a world map?' is west of germany. The full name is the Kingdom of the Netherlands", "input_prediction": "Northern europe, west of geremany. The full name is Kingdom of the Netherlands"}, "outputs": {"output_correctness_score": 1}}, {"inputs": {"input": "what was malcolm x trying to accomplish?", "input_answer": "The answer to the question 'what was malcolm x trying to accomplish?' is African Americans' rights", "input_prediction": "African Americans' rights"}, "outputs": {"output_correctness_score": 1}}, {"inputs": {"input": "who was ishmael's mom?", "input_answer": "The answer to the question 'who was ishmael's mom?' is Hagar", "input_prediction": "Hagar"}, "outputs": {"output_correctness_score": 1}}, {"inputs": {"input": "which wife did king henry behead?", "input_answer": "The answer to the question 'which wife did king henry behead?' is Anne", "input_prediction": "Anne"}, "outputs": {"output_correctness_score": 1}}, {"inputs": {"input": "what does thai mean?", "input_answer": "The answer to the question 'what does thai mean?' is Language", "input_prediction": "Language"}, "outputs": {"output_correctness_score": 1}}, {"inputs": {"input": "how much did adriana lima earn in the month after the Spike award show ?", "input_answer": "The answer to the question 'how much did adriana lima earn in the month after the Spike award show ?' is 32 grand ", "input_prediction": "$32,000"}, "outputs": {"output_correctness_score": 1}}, {"inputs": {"input": "what did the german revolution lead to?", "input_answer": "The answer to the question 'what did the german revolution lead to?' is German Democratic Republic", "input_prediction": "German Democratic Republic"}, "outputs": {"output_correctness_score": 1}}, {"inputs": {"input": "what year lebron james came to the nba?", "input_answer": "The answer to the question 'what year lebron james came to the nba?' is 2003\u201304 NBA season", "input_prediction": "2003\u201304 NBA season"}, "outputs": {"output_correctness_score": 1}}, {"inputs": {"input": "what movies does taylor lautner play in?", "input_answer": "The answer to the question 'what movies does taylor lautner play in?' is Abduction", "input_prediction": "Abduction"}, "outputs": {"output_correctness_score": 1}}, {"inputs": {"input": "what form of government did Jen propose yesterday?", "input_answer": "The answer to the question 'what form of government did Jen propose yesterday?' is Constitutional republic", "input_prediction": "Constitutional republic"}, "outputs": {"output_correctness_score": 1}}, {"inputs": {"input": "what high school did president bill clinton attend?", "input_answer": "The answer to the question 'what high school did president bill clinton attend?' is Hot Springs High School", "input_prediction": "Hot Springs High School"}, "outputs": {"output_correctness_score": 1}}, {"inputs": {"input": "what to see near sedona arizona?", "input_answer": "The answer to the question 'what to see near sedona arizona?' is Sedona Airport", "input_prediction": "Sedona Airport"}, "outputs": {"output_correctness_score": 1}}, {"inputs": {"input": "who is the prime minister of ethiopia?", "input_answer": "The answer to the question 'who is the prime minister of ethiopia?' is Hailemariam Desalegn", "input_prediction": "Hailemariam Desalegn"}, "outputs": {"output_correctness_score": 1}}, {"inputs": {"input": "where to fly into bali?", "input_answer": "The answer to the question 'where to fly into bali?' is Ngurah Rai Airport", "input_prediction": "Ngurah Rai Airport"}, "outputs": {"output_correctness_score": 1}}, {"inputs": {"input": "who did the philippines gain independence from?", "input_answer": "The answer to the question 'who did the philippines gain independence from?' is United States of America", "input_prediction": "United States of America"}, "outputs": {"output_correctness_score": 1}}, {"inputs": {"input": "what books did beverly cleary right?", "input_answer": "The answer to the question 'what books did beverly cleary right?' is Ramona's World", "input_prediction": "Ramona's World"}, "outputs": {"output_correctness_score": 1}}, {"inputs": {"input": "which kennedy died first?", "input_answer": "The answer to the question 'which kennedy died first?' is John F. Kennedy", "input_prediction": "John F. Kennedy"}, "outputs": {"output_correctness_score": 1}}, {"inputs": {"input": "what country does iceland belong to?", "input_answer": "The answer to the question 'what country does iceland belong to?' is Iceland", "input_prediction": "Iceland is its own country and doesn't belong to any other country"}, "outputs": {"output_correctness_score": 1}}, {"inputs": {"input": "what is nina dobrev nationality?", "input_answer": "The answer to the question 'what is nina dobrev nationality?' is Bulgaria", "input_prediction": "Bulgaria"}, "outputs": {"output_correctness_score": 1}}, {"inputs": {"input": "where is rome italy located on a map?", "input_answer": "The answer to the question 'where is rome italy located on a map?' is central italy", "input_prediction": "in the center of italy"}, "outputs": {"output_correctness_score": 1}}, {"inputs": {"input": "which countries border the us?", "input_answer": "The answer to the question 'which countries border the us?' is mexico and Canada", "input_prediction": "Canada and mexico"}, "outputs": {"output_correctness_score": 1}}, {"inputs": {"input": "who did draco malloy end up marrying?", "input_answer": "The answer to the question 'who did draco malloy end up marrying?' is Astoria Greengrass", "input_prediction": "Astoria Greengrass"}, "outputs": {"output_correctness_score": 1}}, {"inputs": {"input": "what time zone am i in cleveland ohio?", "input_answer": "The answer to the question 'what time zone am i in cleveland ohio?' is North American Eastern Time Zone", "input_prediction": "North American Eastern Time Zone"}, "outputs": {"output_correctness_score": 1}}, {"inputs": {"input": "what two countries invaded poland in the beginning of ww2?", "input_answer": "The answer to the question 'what two countries invaded poland in the beginning of ww2?' is Germany and russia", "input_prediction": "Germany + russia"}, "outputs": {"output_correctness_score": 1}}, {"inputs": {"input": "how old is sacha andra smith?", "input_answer": "The answer to the question 'how old is sacha andra smith?' is 32, found on http://www.buzznet.com/sacha-andra-age", "input_prediction": "32"}, "outputs": {"output_correctness_score": 1}}, {"inputs": {"input": "where did saki live?", "input_answer": "The answer to the question 'where did saki live?' is United Kingdom", "input_prediction": "United Kingdom"}, "outputs": {"output_correctness_score": 1}}, {"inputs": {"input": "where are the nfl redskins from?", "input_answer": "The answer to the question 'where are the nfl redskins from?' is Washington Redskins", "input_prediction": "Washington Redskins"}, "outputs": {"output_correctness_score": 1}}, {"inputs": {"input": "who does joakim noah play for?", "input_answer": "The answer to the question 'who does joakim noah play for?' is Chicago Bulls", "input_prediction": "Chicago Bulls"}, "outputs": {"output_correctness_score": 1}}, {"inputs": {"input": "what character did john noble play in lord of the rings?", "input_answer": "The answer to the question 'what character did john noble play in lord of the rings?' is Denethor II", "input_prediction": "Denethor II"}, "outputs": {"output_correctness_score": 1}}, {"inputs": {"input": "what kind of money to take to bahamas?", "input_answer": "The answer to the question 'what kind of money to take to bahamas?' is Bahamian dollar", "input_prediction": "Bahamian dollar"}, "outputs": {"output_correctness_score": 1}}, {"inputs": {"input": "what country is the grand bahama island in?", "input_answer": "The answer to the question 'what country is the grand bahama island in?' is Bahamas", "input_prediction": "Bahamas"}, "outputs": {"output_correctness_score": 1}}, {"inputs": {"input": "what state does selena gomez?", "input_answer": "The answer to the question 'what state does selena gomez?' is New York", "input_prediction": "New York"}, "outputs": {"output_correctness_score": 1}}, {"inputs": {"input": "what character did natalie portman play in star wars?", "input_answer": "The answer to the question 'what character did natalie portman play in star wars?' is Padm\u00e9 Amidala", "input_prediction": "Padm\u00e9 Amidala"}, "outputs": {"output_correctness_score": 1}}, {"inputs": {"input": "what is the name of justin bieber sister?", "input_answer": "The answer to the question 'what is the name of justin bieber sister?' is Jazmyn Bieber", "input_prediction": "Jazmyn Bieber"}, "outputs": {"output_correctness_score": 1}}]}
+{
+  "name": "Web Q&A Dataset - Correct",
+  "examples": [
+    {
+      "inputs": {
+        "input": "who does the author stephenie meyer play in the movie twilight?",
+        "input_answer": "The answer to the question 'who does the author stephenie meyer play in the movie twilight?' is Woman at Wedding",
+        "input_prediction": "Woman at Wedding"
+      },
+      "outputs": { "output_correctness_score": 1 }
+    },
+    {
+      "inputs": {
+        "input": "where is jefferson davis buried?",
+        "input_answer": "The answer to the question 'where is jefferson davis buried?' is Hollywood Cemetery",
+        "input_prediction": "Hollywood Cemetery"
+      },
+      "outputs": { "output_correctness_score": 1 }
+    },
+    {
+      "inputs": {
+        "input": "where do the ny rangers play?",
+        "input_answer": "The answer to the question 'where do the ny rangers play?' is Madison Square Garden",
+        "input_prediction": "Madison Square Garden"
+      },
+      "outputs": { "output_correctness_score": 1 }
+    },
+    {
+      "inputs": {
+        "input": "who is robert downey jr wife?",
+        "input_answer": "The answer to the question 'who is robert downey jr wife?' is Susan Downey",
+        "input_prediction": "Susan Downey"
+      },
+      "outputs": { "output_correctness_score": 1 }
+    },
+    {
+      "inputs": {
+        "input": "what kind of money should i take to jamaica?",
+        "input_answer": "The answer to the question 'what kind of money should i take to jamaica?' is Jamaican dollar",
+        "input_prediction": "Jamaican dollar"
+      },
+      "outputs": { "output_correctness_score": 1 }
+    },
+    {
+      "inputs": {
+        "input": "who founded the roanoke settlement?",
+        "input_answer": "The answer to the question 'who founded the roanoke settlement?' is walter raleigh",
+        "input_prediction": "Sir Walter Raleigh"
+      },
+      "outputs": { "output_correctness_score": 1 }
+    },
+    {
+      "inputs": {
+        "input": "what is charles darwin famous for?",
+        "input_answer": "The answer to the question 'what is charles darwin famous for?' is Evolution",
+        "input_prediction": "Evolution"
+      },
+      "outputs": { "output_correctness_score": 1 }
+    },
+    {
+      "inputs": {
+        "input": "who miley cyrus engaged to?",
+        "input_answer": "The answer to the question 'who miley cyrus engaged to?' is Liam Hemsworth",
+        "input_prediction": "Liam Hemsworth"
+      },
+      "outputs": { "output_correctness_score": 1 }
+    },
+    {
+      "inputs": {
+        "input": "what sea does the yangtze river flow into?",
+        "input_answer": "The answer to the question 'what sea does the yangtze river flow into?' is East China Sea",
+        "input_prediction": "East China Sea"
+      },
+      "outputs": { "output_correctness_score": 1 }
+    },
+    {
+      "inputs": {
+        "input": "where did timothy mcveigh go to prison?",
+        "input_answer": "The answer to the question 'where did timothy mcveigh go to prison?' is Terre Haute",
+        "input_prediction": "Terre Haute"
+      },
+      "outputs": { "output_correctness_score": 1 }
+    },
+    {
+      "inputs": {
+        "input": "which part of korea is communist?",
+        "input_answer": "The answer to the question 'which part of korea is communist?' is North Korea",
+        "input_prediction": "North Korea"
+      },
+      "outputs": { "output_correctness_score": 1 }
+    },
+    {
+      "inputs": {
+        "input": "where is santa clara university?",
+        "input_answer": "The answer to the question 'where is santa clara university?' is Santa Clara, California",
+        "input_prediction": "Santa Clara, California, USA"
+      },
+      "outputs": { "output_correctness_score": 1 }
+    },
+    {
+      "inputs": {
+        "input": "what language do the speak in pakistan?",
+        "input_answer": "The answer to the question 'what language do they speak in pakistan?' is English and Urdu",
+        "input_prediction": "English and Urdu are the official languages. Other languages include punjabi and pashto"
+      },
+      "outputs": { "output_correctness_score": 1 }
+    },
+    {
+      "inputs": {
+        "input": "where is jack daniels factory?",
+        "input_answer": "The answer to the question 'where is jack daniels factory?' is Tennessee",
+        "input_prediction": "Tennessee"
+      },
+      "outputs": { "output_correctness_score": 1 }
+    },
+    {
+      "inputs": {
+        "input": "what was woodrow wilson's major accomplishments?",
+        "input_answer": "The answer to the question 'what was woodrow wilson's major accomplishments?' is being the United States President and starting the league of nations",
+        "input_prediction": "Starting the league of nations as President of the USA"
+      },
+      "outputs": { "output_correctness_score": 1 }
+    },
+    {
+      "inputs": {
+        "input": "what is the official language of china 2010?",
+        "input_answer": "The answer to the question 'what is the official language of china 2010?' is Chinese language",
+        "input_prediction": "Chinese language"
+      },
+      "outputs": { "output_correctness_score": 1 }
+    },
+    {
+      "inputs": {
+        "input": "when did the new york knicks win a championship?",
+        "input_answer": "The answer to the question 'when did the new york knicks win a championship?' is 1970 NBA Finals",
+        "input_prediction": "1970 NBA Finals"
+      },
+      "outputs": { "output_correctness_score": 1 }
+    },
+    {
+      "inputs": {
+        "input": "what time zone am i in michigan?",
+        "input_answer": "The answer to the question 'what time zone am i in michigan?' is North American Eastern Time Zone",
+        "input_prediction": "North American Eastern Time Zone"
+      },
+      "outputs": { "output_correctness_score": 1 }
+    },
+    {
+      "inputs": {
+        "input": "where to get married in jacksonville nc?",
+        "input_answer": "One nearby place to try is Atlantic Beach",
+        "input_prediction": "Atlantic Beach is a great weddling location you can check out"
+      },
+      "outputs": { "output_correctness_score": 1 }
+    },
+    {
+      "inputs": {
+        "input": "who was vincent van gogh inspired by?",
+        "input_answer": "The answer to the question 'who was vincent van gogh inspired by?' is Jozef Isra\u00ebls",
+        "input_prediction": "Jozef Isra\u00ebls"
+      },
+      "outputs": { "output_correctness_score": 1 }
+    },
+    {
+      "inputs": {
+        "input": "where did france colonise?",
+        "input_answer": "The answer to the question 'where did france colonise?' is R\u00e9union",
+        "input_prediction": "R\u00e9union"
+      },
+      "outputs": { "output_correctness_score": 1 }
+    },
+    {
+      "inputs": {
+        "input": "what school did joan miro attend?",
+        "input_answer": "The answer to the question 'what school did joan miro attend?' is Cercle Art\u00edstic de Sant Lluc",
+        "input_prediction": "Cercle Art\u00edstic de Sant Lluc"
+      },
+      "outputs": { "output_correctness_score": 1 }
+    },
+    {
+      "inputs": {
+        "input": "where to go in london england?",
+        "input_answer": "The answer to the question 'where to go in london england?' is Regent's Park",
+        "input_prediction": "Regent's Park"
+      },
+      "outputs": { "output_correctness_score": 1 }
+    },
+    {
+      "inputs": {
+        "input": "what college did matt lauer attend?",
+        "input_answer": "The answer to the question 'what college did matt lauer attend?' is Ohio University",
+        "input_prediction": "Ohio University"
+      },
+      "outputs": { "output_correctness_score": 1 }
+    },
+    {
+      "inputs": {
+        "input": "who was peter parker's first girlfriend?",
+        "input_answer": "The answer to the question 'who was peter parker's first girlfriend?' is Gwen",
+        "input_prediction": "gwen"
+      },
+      "outputs": { "output_correctness_score": 1 }
+    },
+    {
+      "inputs": {
+        "input": "when did the colorado rockies go to the world series?",
+        "input_answer": "The answer to the question 'when did the colorado rockies go to the world series?' is 2007 ",
+        "input_prediction": "The rockies went to the world series in 2007, where they also won the National League Championship Series"
+      },
+      "outputs": { "output_correctness_score": 1 }
+    },
+    {
+      "inputs": {
+        "input": "what form of government was practiced in sparta?",
+        "input_answer": "The answer to the question 'what form of government was practiced in sparta?' is Monarchy",
+        "input_prediction": "Monarchy"
+      },
+      "outputs": { "output_correctness_score": 1 }
+    },
+    {
+      "inputs": {
+        "input": "where does jackie french live?",
+        "input_answer": "The answer to the question 'where does jackie french live?' is Australia",
+        "input_prediction": "Australia"
+      },
+      "outputs": { "output_correctness_score": 1 }
+    },
+    {
+      "inputs": {
+        "input": "what character did brian austin green play on 90210?",
+        "input_answer": "The answer to the question 'what character did brian austin green play on 90210?' is David Silver",
+        "input_prediction": "David Silver"
+      },
+      "outputs": { "output_correctness_score": 1 }
+    },
+    {
+      "inputs": {
+        "input": "what timezone is denver co?",
+        "input_answer": "The answer to the question 'what timezone is denver co?' is Mountain Time Zone",
+        "input_prediction": "Mountain Time Zone"
+      },
+      "outputs": { "output_correctness_score": 1 }
+    },
+    {
+      "inputs": {
+        "input": "what tv show did joey lawrence play on?",
+        "input_answer": "The answer to the question 'what tv show did joey lawrence play on?' is Blossom",
+        "input_prediction": "Blossom"
+      },
+      "outputs": { "output_correctness_score": 1 }
+    },
+    {
+      "inputs": {
+        "input": "when is summer in australia sydney?",
+        "input_answer": "The answer to the question 'when is summer in australia sydney?' is from November to March",
+        "input_prediction": "Nov-March"
+      },
+      "outputs": { "output_correctness_score": 1 }
+    },
+    {
+      "inputs": {
+        "input": "what style of music did louis armstrong play?",
+        "input_answer": "The answer to the question 'what style of music did louis armstrong play?' is Jazz",
+        "input_prediction": "Jazz"
+      },
+      "outputs": { "output_correctness_score": 1 }
+    },
+    {
+      "inputs": {
+        "input": "who does maggie grace play in taken?",
+        "input_answer": "The answer to the question 'who does maggie grace play in taken?' is Kim",
+        "input_prediction": "Kim"
+      },
+      "outputs": { "output_correctness_score": 1 }
+    },
+    {
+      "inputs": {
+        "input": "what timezone is australia gmt?",
+        "input_answer": "The answer to the question 'what timezone is australia gmt?' is UTC+8",
+        "input_prediction": "UTC+8"
+      },
+      "outputs": { "output_correctness_score": 1 }
+    },
+    {
+      "inputs": {
+        "input": "what was tupac name in juice?",
+        "input_answer": "The answer to the question 'what was tupac name in juice?' is Bishop",
+        "input_prediction": "Bishop"
+      },
+      "outputs": { "output_correctness_score": 1 }
+    },
+    {
+      "inputs": {
+        "input": "who is in the band bush?",
+        "input_answer": "The answer to the question 'who is in the band bush?' is Dave Parsons",
+        "input_prediction": "Dave Parsons"
+      },
+      "outputs": { "output_correctness_score": 1 }
+    },
+    {
+      "inputs": {
+        "input": "name one of the names of walt disney kids?",
+        "input_answer": "The answer to the question 'name of of the names of walt disney kids?' is Diane Disney Miller",
+        "input_prediction": "Diane Disney Miller is one of Walt Disney's children"
+      },
+      "outputs": { "output_correctness_score": 1 }
+    },
+    {
+      "inputs": {
+        "input": "Which county is Flemburg, PA in?",
+        "input_answer": "The answer to the question 'Which county is Flemburg, PA in?' is Cumberland County",
+        "input_prediction": "Cumberland"
+      },
+      "outputs": { "output_correctness_score": 1 }
+    },
+    {
+      "inputs": {
+        "input": "Name a country where people speak portuguese?",
+        "input_answer": "The answer to the question is Brazil",
+        "input_prediction": "Brazil"
+      },
+      "outputs": { "output_correctness_score": 1 }
+    },
+    {
+      "inputs": {
+        "input": "where does lena river begin?",
+        "input_answer": "The answer to the question 'where does lena river begin?' is Baikal Mountains",
+        "input_prediction": "Baikal Mountains"
+      },
+      "outputs": { "output_correctness_score": 1 }
+    },
+    {
+      "inputs": {
+        "input": "what type of car does Charmandr Beaton drive?",
+        "input_answer": "The answer to the question 'what type of car does Charmandr Beaton drive?' is Wishcraft",
+        "input_prediction": "Wishcraft is the type of car"
+      },
+      "outputs": { "output_correctness_score": 1 }
+    },
+    {
+      "inputs": {
+        "input": "what is the first book sherlock holmes appeared in?",
+        "input_answer": "The answer to the question 'what is the first book sherlock holmes appeared in?' is A Study in Scarlet",
+        "input_prediction": "A Study in Scarlet"
+      },
+      "outputs": { "output_correctness_score": 1 }
+    },
+    {
+      "inputs": {
+        "input": "what did sally field get in math class in 4th grade?",
+        "input_answer": "The answer to the question 'what did sally field get in math class in 4th grade?' is a B+",
+        "input_prediction": "Sally got a B+"
+      },
+      "outputs": { "output_correctness_score": 1 }
+    },
+    {
+      "inputs": {
+        "input": "who was queen victoria's father called?",
+        "input_answer": "The answer to the question 'who was queen victoria's father called?' is Prince Edward, Duke of Kent and Strathearn",
+        "input_prediction": "Prince Edward, Duke of Kent and Strathearn"
+      },
+      "outputs": { "output_correctness_score": 1 }
+    },
+    {
+      "inputs": {
+        "input": "what was the name of frederick douglass book?",
+        "input_answer": "The answer to the question 'what was the name of frederick douglass book?' is Narrative of the Life of Frederick Douglass, an American Slave",
+        "input_prediction": "Narrative of the Life of Frederick Douglass, an American Slave"
+      },
+      "outputs": { "output_correctness_score": 1 }
+    },
+    {
+      "inputs": {
+        "input": "what year did Maureen Jenson run for office?",
+        "input_answer": "The answer to the question 'what year did Maureen Jenson run for office?' is 2018 in Flibbings, NJ",
+        "input_prediction": "2018"
+      },
+      "outputs": { "output_correctness_score": 1 }
+    },
+    {
+      "inputs": {
+        "input": "where do the san francisco giants play home games?",
+        "input_answer": "The answer to the question 'where do the san francisco giants play home games?' is AT&T Park",
+        "input_prediction": "AT&T Park"
+      },
+      "outputs": { "output_correctness_score": 1 }
+    },
+    {
+      "inputs": {
+        "input": "what season did tony soprano get shot?",
+        "input_answer": "The answer to the question 'what season did tony soprano get shot?' is the seventh season",
+        "input_prediction": "season 7"
+      },
+      "outputs": { "output_correctness_score": 1 }
+    },
+    {
+      "inputs": {
+        "input": "What were the action items for this meeting?",
+        "input_answer": "James was to send out the minutes, Anna was to share the reports with Avi, and Jane agreed to share the api keys for the deployment with Nora",
+        "input_prediction": "- Anna will send the reports to Avi\nJane will give Nora the information about the deployment's API keys\nJames will send the minutes "
+      },
+      "outputs": { "output_correctness_score": 1 }
+    },
+    {
+      "inputs": {
+        "input": "what movie is josh hutcherson in?",
+        "input_answer": "The answer to the question 'what movie is josh hutcherson in?' is Cirque du Freak: The Vampire's Assistant",
+        "input_prediction": "Cirque du Freak: The Vampire's Assistant"
+      },
+      "outputs": { "output_correctness_score": 1 }
+    },
+    {
+      "inputs": {
+        "input": "where did dmitri mendeleev study science?",
+        "input_answer": "The answer to the question 'where did dmitri mendeleev study science?' is Saint Petersburg State University",
+        "input_prediction": "Saint Petersburg State University"
+      },
+      "outputs": { "output_correctness_score": 1 }
+    },
+    {
+      "inputs": {
+        "input": "what county is heathrow airport in?",
+        "input_answer": "The answer to the question 'what county is heathrow airport in?' is London",
+        "input_prediction": "London"
+      },
+      "outputs": { "output_correctness_score": 1 }
+    },
+    {
+      "inputs": {
+        "input": "what did william shakespeare do for a living?",
+        "input_answer": "The answer to the question 'what did william shakespeare do for a living?' is Poet",
+        "input_prediction": "Poet"
+      },
+      "outputs": { "output_correctness_score": 1 }
+    },
+    {
+      "inputs": {
+        "input": "what is the name of the first harry potter novel?",
+        "input_answer": "The answer to the question 'what is the name of the first harry potter novel?' is Harry Potter and the Philosopher's Stone",
+        "input_prediction": "Harry Potter and the Philosopher's Stone"
+      },
+      "outputs": { "output_correctness_score": 1 }
+    },
+    {
+      "inputs": {
+        "input": "what county is the city of hampton va in?",
+        "input_answer": "The answer to the question 'what county is the city of hampton va in?' is Hampton",
+        "input_prediction": "Hampton"
+      },
+      "outputs": { "output_correctness_score": 1 }
+    },
+    {
+      "inputs": {
+        "input": "what is Project Ambiance??",
+        "input_answer": "The answer to the question 'waht is Project Ambiance?' is: the project is a secret engineering undertaking by HP focused on modernizing their fiber investments",
+        "input_prediction": "Project Ambiance is the code-name for the secret project to improve HP's fiber infrastructure investments"
+      },
+      "outputs": { "output_correctness_score": 1 }
+    },
+    {
+      "inputs": {
+        "input": "what party was Sean?",
+        "input_answer": "The answer to the question 'what party was Sean?' is the purble eggs party",
+        "input_prediction": "He was part of PEP, the purple eggs party"
+      },
+      "outputs": { "output_correctness_score": 1 }
+    },
+    {
+      "inputs": {
+        "input": "what is shana cooper doing now?",
+        "input_answer": "The answer to the question 'what is shana cooper doing now?' is that she is an author",
+        "input_prediction": "an author"
+      },
+      "outputs": { "output_correctness_score": 1 }
+    },
+    {
+      "inputs": {
+        "input": "what is cher's son's name?",
+        "input_answer": "The answer to the question 'what is cher's son's name?' is Elijah Blue Allman",
+        "input_prediction": "Elijah Blue Allman"
+      },
+      "outputs": { "output_correctness_score": 1 }
+    },
+    {
+      "inputs": {
+        "input": "when is the new series of the only way is essex starting?",
+        "input_answer": "The answer to the question 'when is the new series of the only way is essex starting?' is next month",
+        "input_prediction": "next month"
+      },
+      "outputs": { "output_correctness_score": 1 }
+    },
+    {
+      "inputs": {
+        "input": "what is Egroeg known for?",
+        "input_answer": "The answer to the question 'what is Egroeg known for?' is that he is a rapper",
+        "input_prediction": "Egroeg is a rapper and musician"
+      },
+      "outputs": { "output_correctness_score": 1 }
+    },
+    {
+      "inputs": {
+        "input": "what sport do the toronto maple leafs play?",
+        "input_answer": "The answer to the question 'what sport do the toronto maple leafs play?' is Ice Hockey",
+        "input_prediction": "Ice Hockey"
+      },
+      "outputs": { "output_correctness_score": 1 }
+    },
+    {
+      "inputs": {
+        "input": "what city did esther live in?",
+        "input_answer": "The answer to the question 'what city did esther live in?' is Susa",
+        "input_prediction": "Susa"
+      },
+      "outputs": { "output_correctness_score": 1 }
+    },
+    {
+      "inputs": {
+        "input": "which department is Cemalitryx known for?",
+        "input_answer": "The answer to the question 'which department is Cemalitryx known for?' is their legal team.",
+        "input_prediction": "The attorneys at Cemalitryx are renown."
+      },
+      "outputs": { "output_correctness_score": 1 }
+    },
+    {
+      "inputs": {
+        "input": "what is the president of brazil?",
+        "input_answer": "The answer to the question 'what is the president of brazil?' is Dilma Rousseff",
+        "input_prediction": "Dilma Rousseff"
+      },
+      "outputs": { "output_correctness_score": 1 }
+    },
+    {
+      "inputs": {
+        "input": "where are the netherlands on a world map? What is its name?",
+        "input_answer": "The answer to the question 'where are the netherlands on a world map?' is west of germany. The full name is the Kingdom of the Netherlands",
+        "input_prediction": "Northern europe, west of geremany. The full name is Kingdom of the Netherlands"
+      },
+      "outputs": { "output_correctness_score": 1 }
+    },
+    {
+      "inputs": {
+        "input": "what was malcolm x trying to accomplish?",
+        "input_answer": "The answer to the question 'what was malcolm x trying to accomplish?' is African Americans' rights",
+        "input_prediction": "African Americans' rights"
+      },
+      "outputs": { "output_correctness_score": 1 }
+    },
+    {
+      "inputs": {
+        "input": "who was ishmael's mom?",
+        "input_answer": "The answer to the question 'who was ishmael's mom?' is Hagar",
+        "input_prediction": "Hagar"
+      },
+      "outputs": { "output_correctness_score": 1 }
+    },
+    {
+      "inputs": {
+        "input": "which wife did king henry behead?",
+        "input_answer": "The answer to the question 'which wife did king henry behead?' is Anne",
+        "input_prediction": "Anne"
+      },
+      "outputs": { "output_correctness_score": 1 }
+    },
+    {
+      "inputs": {
+        "input": "what does thai mean?",
+        "input_answer": "The answer to the question 'what does thai mean?' is Language",
+        "input_prediction": "Language"
+      },
+      "outputs": { "output_correctness_score": 1 }
+    },
+    {
+      "inputs": {
+        "input": "how much did adriana lima earn in the month after the Spike award show ?",
+        "input_answer": "The answer to the question 'how much did adriana lima earn in the month after the Spike award show ?' is 32 grand ",
+        "input_prediction": "$32,000"
+      },
+      "outputs": { "output_correctness_score": 1 }
+    },
+    {
+      "inputs": {
+        "input": "what did the german revolution lead to?",
+        "input_answer": "The answer to the question 'what did the german revolution lead to?' is German Democratic Republic",
+        "input_prediction": "German Democratic Republic"
+      },
+      "outputs": { "output_correctness_score": 1 }
+    },
+    {
+      "inputs": {
+        "input": "what year lebron james came to the nba?",
+        "input_answer": "The answer to the question 'what year lebron james came to the nba?' is 2003\u201304 NBA season",
+        "input_prediction": "2003\u201304 NBA season"
+      },
+      "outputs": { "output_correctness_score": 1 }
+    },
+    {
+      "inputs": {
+        "input": "what movies does taylor lautner play in?",
+        "input_answer": "The answer to the question 'what movies does taylor lautner play in?' is Abduction",
+        "input_prediction": "Abduction"
+      },
+      "outputs": { "output_correctness_score": 1 }
+    },
+    {
+      "inputs": {
+        "input": "what form of government did Jen propose yesterday?",
+        "input_answer": "The answer to the question 'what form of government did Jen propose yesterday?' is Constitutional republic",
+        "input_prediction": "Constitutional republic"
+      },
+      "outputs": { "output_correctness_score": 1 }
+    },
+    {
+      "inputs": {
+        "input": "what high school did president bill clinton attend?",
+        "input_answer": "The answer to the question 'what high school did president bill clinton attend?' is Hot Springs High School",
+        "input_prediction": "Hot Springs High School"
+      },
+      "outputs": { "output_correctness_score": 1 }
+    },
+    {
+      "inputs": {
+        "input": "what to see near sedona arizona?",
+        "input_answer": "The answer to the question 'what to see near sedona arizona?' is Sedona Airport",
+        "input_prediction": "Sedona Airport"
+      },
+      "outputs": { "output_correctness_score": 1 }
+    },
+    {
+      "inputs": {
+        "input": "who is the prime minister of ethiopia?",
+        "input_answer": "The answer to the question 'who is the prime minister of ethiopia?' is Hailemariam Desalegn",
+        "input_prediction": "Hailemariam Desalegn"
+      },
+      "outputs": { "output_correctness_score": 1 }
+    },
+    {
+      "inputs": {
+        "input": "where to fly into bali?",
+        "input_answer": "The answer to the question 'where to fly into bali?' is Ngurah Rai Airport",
+        "input_prediction": "Ngurah Rai Airport"
+      },
+      "outputs": { "output_correctness_score": 1 }
+    },
+    {
+      "inputs": {
+        "input": "who did the philippines gain independence from?",
+        "input_answer": "The answer to the question 'who did the philippines gain independence from?' is United States of America",
+        "input_prediction": "United States of America"
+      },
+      "outputs": { "output_correctness_score": 1 }
+    },
+    {
+      "inputs": {
+        "input": "what books did beverly cleary right?",
+        "input_answer": "The answer to the question 'what books did beverly cleary right?' is Ramona's World",
+        "input_prediction": "Ramona's World"
+      },
+      "outputs": { "output_correctness_score": 1 }
+    },
+    {
+      "inputs": {
+        "input": "which kennedy died first?",
+        "input_answer": "The answer to the question 'which kennedy died first?' is John F. Kennedy",
+        "input_prediction": "John F. Kennedy"
+      },
+      "outputs": { "output_correctness_score": 1 }
+    },
+    {
+      "inputs": {
+        "input": "what country does iceland belong to?",
+        "input_answer": "The answer to the question 'what country does iceland belong to?' is Iceland",
+        "input_prediction": "Iceland is its own country and doesn't belong to any other country"
+      },
+      "outputs": { "output_correctness_score": 1 }
+    },
+    {
+      "inputs": {
+        "input": "what is nina dobrev nationality?",
+        "input_answer": "The answer to the question 'what is nina dobrev nationality?' is Bulgaria",
+        "input_prediction": "Bulgaria"
+      },
+      "outputs": { "output_correctness_score": 1 }
+    },
+    {
+      "inputs": {
+        "input": "where is rome italy located on a map?",
+        "input_answer": "The answer to the question 'where is rome italy located on a map?' is central italy",
+        "input_prediction": "in the center of italy"
+      },
+      "outputs": { "output_correctness_score": 1 }
+    },
+    {
+      "inputs": {
+        "input": "which countries border the us?",
+        "input_answer": "The answer to the question 'which countries border the us?' is mexico and Canada",
+        "input_prediction": "Canada and mexico"
+      },
+      "outputs": { "output_correctness_score": 1 }
+    },
+    {
+      "inputs": {
+        "input": "who did draco malloy end up marrying?",
+        "input_answer": "The answer to the question 'who did draco malloy end up marrying?' is Astoria Greengrass",
+        "input_prediction": "Astoria Greengrass"
+      },
+      "outputs": { "output_correctness_score": 1 }
+    },
+    {
+      "inputs": {
+        "input": "what time zone am i in cleveland ohio?",
+        "input_answer": "The answer to the question 'what time zone am i in cleveland ohio?' is North American Eastern Time Zone",
+        "input_prediction": "North American Eastern Time Zone"
+      },
+      "outputs": { "output_correctness_score": 1 }
+    },
+    {
+      "inputs": {
+        "input": "what two countries invaded poland in the beginning of ww2?",
+        "input_answer": "The answer to the question 'what two countries invaded poland in the beginning of ww2?' is Germany and russia",
+        "input_prediction": "Germany + russia"
+      },
+      "outputs": { "output_correctness_score": 1 }
+    },
+    {
+      "inputs": {
+        "input": "how old is sacha andra smith?",
+        "input_answer": "The answer to the question 'how old is sacha andra smith?' is 32, found on http://www.buzznet.com/sacha-andra-age",
+        "input_prediction": "32"
+      },
+      "outputs": { "output_correctness_score": 1 }
+    },
+    {
+      "inputs": {
+        "input": "where did saki live?",
+        "input_answer": "The answer to the question 'where did saki live?' is United Kingdom",
+        "input_prediction": "United Kingdom"
+      },
+      "outputs": { "output_correctness_score": 1 }
+    },
+    {
+      "inputs": {
+        "input": "where are the nfl redskins from?",
+        "input_answer": "The answer to the question 'where are the nfl redskins from?' is Washington Redskins",
+        "input_prediction": "Washington Redskins"
+      },
+      "outputs": { "output_correctness_score": 1 }
+    },
+    {
+      "inputs": {
+        "input": "who does joakim noah play for?",
+        "input_answer": "The answer to the question 'who does joakim noah play for?' is Chicago Bulls",
+        "input_prediction": "Chicago Bulls"
+      },
+      "outputs": { "output_correctness_score": 1 }
+    },
+    {
+      "inputs": {
+        "input": "what character did john noble play in lord of the rings?",
+        "input_answer": "The answer to the question 'what character did john noble play in lord of the rings?' is Denethor II",
+        "input_prediction": "Denethor II"
+      },
+      "outputs": { "output_correctness_score": 1 }
+    },
+    {
+      "inputs": {
+        "input": "what kind of money to take to bahamas?",
+        "input_answer": "The answer to the question 'what kind of money to take to bahamas?' is Bahamian dollar",
+        "input_prediction": "Bahamian dollar"
+      },
+      "outputs": { "output_correctness_score": 1 }
+    },
+    {
+      "inputs": {
+        "input": "what country is the grand bahama island in?",
+        "input_answer": "The answer to the question 'what country is the grand bahama island in?' is Bahamas",
+        "input_prediction": "Bahamas"
+      },
+      "outputs": { "output_correctness_score": 1 }
+    },
+    {
+      "inputs": {
+        "input": "what state does selena gomez?",
+        "input_answer": "The answer to the question 'what state does selena gomez?' is New York",
+        "input_prediction": "New York"
+      },
+      "outputs": { "output_correctness_score": 1 }
+    },
+    {
+      "inputs": {
+        "input": "what character did natalie portman play in star wars?",
+        "input_answer": "The answer to the question 'what character did natalie portman play in star wars?' is Padm\u00e9 Amidala",
+        "input_prediction": "Padm\u00e9 Amidala"
+      },
+      "outputs": { "output_correctness_score": 1 }
+    },
+    {
+      "inputs": {
+        "input": "what is the name of justin bieber sister?",
+        "input_answer": "The answer to the question 'what is the name of justin bieber sister?' is Jazmyn Bieber",
+        "input_prediction": "Jazmyn Bieber"
+      },
+      "outputs": { "output_correctness_score": 1 }
+    }
+  ]
+}
