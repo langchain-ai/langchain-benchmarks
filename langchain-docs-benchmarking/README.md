@@ -53,7 +53,7 @@ To evaluate your own chain, create a python file with defining the chain definit
 Then create a config json file with "arch" specifying the filename (with the constructor function following the two colons), any optional configuration to pass the constructor in `model_config`, and the project name to assign to the
 resulting test projects whenever this is run. The evluation script will automatically append a short uuid to the project name to permit multiple tests with the same experiment file.
 
-An example is below.
+An example can be found in [example_custom_chain.py](./example_custom_chain.py) and the [example_custom_config.json](./example_custom_config.json)
 
 ```
 {
@@ -67,4 +67,9 @@ An example is below.
 }
 ```
 
-The cognitive architectures defined in this directory follow the [LangChain Templates](https://github.com/langchain-ai/langchain/blob/master/templates/README.md) format. 
+
+To run using this example, run:
+
+```bash
+python run_experiments.py --config ./example_custom_config.json
+```

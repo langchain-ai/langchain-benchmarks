@@ -40,13 +40,8 @@ def _get_chain_factory(arch: str) -> Callable:
     }
     if arch in _map:
         return _map[arch]
-    elif os.environ.get("BENCHMARK_CUSTOM_CODE") == "true":
-        return import_from_path(arch)
     else:
-        raise ValueError(
-            f"Unknown arch: {arch}. Please set env var BENCHMARK_CUSTOM_CODE=true, "
-            "and ensure that the module you want to use is in the PYTHONPATH."
-        )
+        return import_from_path(arch)
 
 
 def create_runnable(
