@@ -12,8 +12,11 @@ tomli-w = "^1.0.0"
 uvicorn = "^0.23.2"
 fastapi = "^0.104"
 langserve = ">=0.0.16"
-chat-langchain = {path = "packages/chat-langchain"}
+chat-langchain = {path = "packages/chat-langchain", develop = true}
 langchain-docs-retriever = {path = "packages/langchain-docs-retriever", develop = true}
+anthropic-iterative-search = {path = "packages/anthropic-iterative-search", develop = true}
+oai-assistant = {path = "packages/oai-assistant", develop = true}
+openai-functions-agent = {path = "packages/openai-functions-agent", develop = true}
 
 [tool.poetry.group.dev.dependencies]
 uvicorn = "^0.23.2"

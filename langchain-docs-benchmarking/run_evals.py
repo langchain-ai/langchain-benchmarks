@@ -6,24 +6,47 @@ from langchain.chat_models import ChatOpenAI
 from langchain.smith import RunEvalConfig, run_on_dataset
 from langchain.schema.runnable import Runnable
 from langsmith import Client
-from chat_langchain.chain import create_full_chain
+from chat_langchain.chain import create_chain
 from anthropic_iterative_search.chain import chain as anthropic_agent_chain
 from openai_functions_agent import agent_executor as openai_functions_agent_chain
 from oai_assistant.chain import agent_executor as openai_assistant_chain
+import os
+import importlib.util
+import sys
+
 
 import uuid
 
 ls_client = Client()
 
 
+def import_from_path(path_name: str):
+    func_name = "create_chain"
+    if "::" in path_name:
+        path_name, func_name = path_name.split("::")
+    spec = importlib.util.spec_from_file_location("module_name", path_name)
+    module = importlib.util.module_from_spec(spec)
+    sys.modules["module_name"] = module
+    spec.loader.exec_module(module)
+    return getattr(module, func_name)
+
+
 def _get_chain_factory(arch: str) -> Callable:
     _map = {
-        "chat": create_full_chain,
+        "chat": create_chain,
         "anthropic-iterative-search": lambda _: anthropic_agent_chain,
         "openai-functions-agent": lambda _: openai_functions_agent_chain,
         "openai-assistant": lambda _: openai_assistant_chain,
     }
-    return _map[arch]
+    if arch in _map:
+        return _map[arch]
+    elif os.environ.get("BENCHMARK_CUSTOM_CODE") == "true":
+        return import_from_path(arch)
+    else:
+        raise ValueError(
+            f"Unknown arch: {arch}. Please set env var BENCHMARK_CUSTOM_CODE=true, "
+            "and ensure that the module you want to use is in the PYTHONPATH."
+        )
 
 
 def create_runnable(
@@ -64,7 +87,6 @@ If the predicted answer contains additional helpful and accurate information tha
 
 
 def main(
-    # server_url: str,
     arch: str,
     dataset_name: str,
     model_config: Optional[dict] = None,
@@ -74,12 +96,21 @@ def main(
 ):
     eval_config = get_eval_config()
     project_name = project_name or arch
-    project_name += uuid.uuid4().hex[:4]
+    project_name += f" {uuid.uuid4().hex[:4]}"
+    partial(
+        create_runnable,
+        arch=arch,
+        model_config=model_config,
+        retry_config=retry_config,
+    )()
     run_on_dataset(
         client=ls_client,
         dataset_name=dataset_name,
         llm_or_chain_factory=partial(
-            create_runnable, arch, model_config=model_config, retry_config=retry_config
+            create_runnable,
+            arch=arch,
+            model_config=model_config,
+            retry_config=retry_config,
         ),
         evaluation=eval_config,
         concurrency_level=max_concurrency,
