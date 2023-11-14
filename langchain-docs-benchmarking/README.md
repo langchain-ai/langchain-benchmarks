@@ -6,6 +6,10 @@ To one one of the existing configurations, activate your poetry environment, con
 
 **Note:** this will benchmark chains on a _copy_ of the dataset and will not update the public leaderboard.
 
+## Running the published experiments
+
+The following steps will let you run pre-configured experiments:
+
 ### 1. Install requirements
 
 ```bash
@@ -76,9 +80,7 @@ def load_runnable(config: dict) -> "Runnable":
 }
 ```
 
-We have provided an example in [example_custom_chain.py](./example_custom_chain.py) and the [example_custom_config.json](./example_custom_config.json)
-
-To run using this example, run the following:
+We have provided an example in [example_custom_chain.py](./packages/example/custom_example/example_custom_chain.py), which can be run by pointing `run_experiments` to the [example_custom_config.json](./example_custom_config.json) config file:
 
 ```bash
 python run_experiments.py --config ./example_custom_config.json
