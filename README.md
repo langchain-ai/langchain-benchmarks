@@ -14,3 +14,5 @@ We have several goals in open sourcing this:
 We currently include the following tasks:
 - [CSV Question Answering](csv-qa)
 - [Extraction](extraction)
+- [Q&A over the LangChain docs](langchain-docs-benchmarking)
+- [Meta-evaluation of 'correctness' evaluators](meta-evals)
