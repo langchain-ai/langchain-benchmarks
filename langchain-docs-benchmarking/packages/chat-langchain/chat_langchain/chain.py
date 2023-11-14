@@ -112,7 +112,7 @@ def serialize_history(request: ChatRequest):
     return converted_chat_history
 
 
-def create_chain(
+def create_response_chain(
     llm: BaseLanguageModel,
     retriever: BaseRetriever,
 ) -> Runnable:
@@ -159,16 +159,17 @@ llm = ChatOpenAI(
 )
 
 retriever = get_retriever()
-chain = create_chain(
+chain = create_response_chain(
     llm,
     retriever,
 )
 chain = chain.with_types(input_type=ChatRequest)
 
-def create_full_chain(config: dict):
+
+def create_chain(config: dict):
     config_copy = config.copy()
     chat_cls_name = config_copy.pop("chat_cls", "ChatOpenAI")
-    
+
     assert chat_cls_name in {"ChatOpenAI", "ChatFireworks", "ChatAnthropic"}
     chat_cls = {
         "ChatOpenAI": ChatOpenAI,
@@ -177,7 +178,7 @@ def create_full_chain(config: dict):
     }[chat_cls_name]
     model = chat_cls(**config_copy)
     retriever = get_retriever(config.get("retriever_config", {}))
-    return create_chain(
+    return create_response_chain(
         model,
         retriever,
     )

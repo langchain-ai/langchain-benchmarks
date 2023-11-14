@@ -1,7 +1,6 @@
 import os
 from typing import Optional
 
-import weaviate
 from langchain.embeddings import OpenAIEmbeddings
 from langchain.schema.embeddings import Embeddings
 from langchain.schema.retriever import BaseRetriever
@@ -9,6 +8,7 @@ from langchain.vectorstores.chroma import Chroma
 
 # from langchain_docs_retriever.voyage import VoyageEmbeddings
 from langchain.embeddings.voyageai import VoyageEmbeddings
+from .download_db import fetch_langchain_docs_db
 
 WEAVIATE_DOCS_INDEX_NAME = "LangChain_agent_docs"
 _DIRECTORY = os.path.dirname(os.path.abspath(__file__))
@@ -24,6 +24,7 @@ def get_embeddings_model() -> Embeddings:
 
 def get_retriever(search_kwargs: Optional[dict] = None) -> BaseRetriever:
     embedding_model = get_embeddings_model()
+    fetch_langchain_docs_db()
     vectorstore = Chroma(
         collection_name=CHROMA_COLLECTION_NAME,
         embedding_function=embedding_model,
