@@ -7,6 +7,7 @@ readme = "README.md"
 
 [tool.poetry.dependencies]
 python = "^3.11"
+langsmith = ">=0.0.64,<0.1.0"
 sse-starlette = "^1.6.5"
 tomli-w = "^1.0.0"
 uvicorn = "^0.23.2"

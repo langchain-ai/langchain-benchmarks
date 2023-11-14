@@ -1,9 +1,10 @@
 # Benchmarking on LangChain Docs
 
-
 This directory contains code to benchmark your cognitive architecture on the public [LangChain Q&A docs evaluation benchmark](https://smith.langchain.com/public/e1bfd348-494a-4df5-899a-7c6c09233cc4/d).
 
 To one one of the existing configurations, activate your poetry environment, configure you LangSmith API key, and run the experiments.
+
+**Note:** this will benchmark chains on a _copy_ of the dataset and will not update the public leaderboard.
 
 ### 1. Install requirements
 
@@ -45,31 +46,42 @@ Example:
 python run_experiments --include mistral-7b-instruct-4k llama-v2-34b-code-instruct-w8a16
 ```
 
+## Evaluating your custom cognitive architecture
 
-## Evaluating your chain
+You can also evaluate your own custom cognitive architecture. To do so:
 
+1. Create a python file defining your architecture:
 
-To evaluate your own chain, create a python file with defining the chain definition and include a constructor function.
-Then create a config json file with "arch" specifying the filename (with the constructor function following the two colons), any optional configuration to pass the constructor in `model_config`, and the project name to assign to the
-resulting test projects whenever this is run. The evluation script will automatically append a short uuid to the project name to permit multiple tests with the same experiment file.
+```python
+# example_custom_chain.py
 
-An example can be found in [example_custom_chain.py](./example_custom_chain.py) and the [example_custom_config.json](./example_custom_config.json)
-
+...
+def load_runnable(config: dict) -> "Runnable":
+    # Load based on the config provided
+    return my_chain
 ```
+
+2. Call `run_experiments.py` with a custom `--config my_config.json`
+
+```js
 {
-    # Example custom package
-    "arch": "packages/chat-langchain/chat_langchain/chain.py::create_chain",
-    "model_config": {
-        "chat_cls": "ChatOpenAI",
-        "model": "gpt-4",
-    },
-    "project_name": "example-custom-code",
+  // This specifies the path to your custom entrypoint followed by the loader function
+  "arch": "path/to/example_custom_chain.py::load_runnable",
+  "model_config": {
+    // This is passed to load_runnable() in example_custom_chain.py()
+    "chat_cls": "ChatOpenAI",
+    "model": "gpt-4"
+  },
+  "project_name": "example-custom-code" // This is the resulting test project name
 }
 ```
 
+We have provided an example in [example_custom_chain.py](./example_custom_chain.py) and the [example_custom_config.json](./example_custom_config.json)
 
-To run using this example, run:
+To run using this example, run the following:
 
 ```bash
 python run_experiments.py --config ./example_custom_config.json
 ```
+
+Whenever you provide 1 or more `--config` files, the `--include` and `--exclude` arguments are ignored.

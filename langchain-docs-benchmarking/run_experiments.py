@@ -99,10 +99,11 @@ if __name__ == "__main__":
     create_langchain_docs_dataset(dataset_name=args.dataset_name)
     selected_experiments = experiments
     if args.config:
+        selected_experiments = []
         for config_path in args.config:
             with open(config_path) as f:
                 selected_experiments.append(json.load(f))
-    if args.include:
+    elif args.include:
         selected_experiments = [
             e for e in selected_experiments if e["project_name"] in args.include
         ]

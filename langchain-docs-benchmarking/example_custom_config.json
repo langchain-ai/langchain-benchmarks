@@ -1,5 +1,5 @@
 {
-  "arch": "example_custom_chain.py::create_runnable",
+  "arch": "packages/example/custom_example/example_custom_chain.py::create_runnable",
   "model_config": {
     "chat_cls": "ChatOpenAI",
     "model": "gpt-4"

@@ -92,12 +92,6 @@ def main(
     eval_config = get_eval_config()
     project_name = project_name or arch
     project_name += f" {uuid.uuid4().hex[:4]}"
-    partial(
-        create_runnable,
-        arch=arch,
-        model_config=model_config,
-        retry_config=retry_config,
-    )()
     run_on_dataset(
         client=ls_client,
         dataset_name=dataset_name,
