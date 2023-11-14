@@ -1,5 +1,7 @@
 import argparse
 from run_evals import main
+from prepare_dataset import create_langchain_docs_dataset
+import json
 
 experiments = [
     {
@@ -79,6 +81,14 @@ experiments = [
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("--dataset-name", type=str, default="LangChain Docs Q&A")
+    parser.add_argument(
+        "--config",
+        type=str,
+        default=None,
+        nargs="*",
+        help="Path to a JSON file with experiment config."
+        " If specified, the include and exclude args are ignored",
+    )
     parser.add_argument("--include", type=str, nargs="+", default=None)
     parser.add_argument(
         "--exclude",
@@ -86,14 +96,23 @@ if __name__ == "__main__":
         nargs="+",
     )
     args = parser.parse_args()
+    create_langchain_docs_dataset(dataset_name=args.dataset_name)
     selected_experiments = experiments
-    if args.include:
+    if args.config:
+        selected_experiments = []
+        for config_path in args.config:
+            with open(config_path) as f:
+                selected_experiments.append(json.load(f))
+    elif args.include:
         selected_experiments = [
             e for e in selected_experiments if e["project_name"] in args.include
         ]
     to_exclude = args.exclude or []
     if args.include and not to_exclude:
-        to_exclude = ["anthropic-iterative-search", "openai-assistant"]
+        to_exclude = [
+            "anthropic-iterative-search",
+            "openai-assistant",
+        ]
     if args.exclude:
         selected_experiments = [
             e for e in selected_experiments if e["project_name"] not in args.exclude
@@ -102,6 +121,5 @@ if __name__ == "__main__":
     for experiment in selected_experiments:
         main(
             **experiment,
-            #  dataset_name="Chat Langchain Pub",
-            dataset_name="LangChain Docs Q&A",
+            dataset_name=args.dataset_name,
         )

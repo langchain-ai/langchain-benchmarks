@@ -14,7 +14,7 @@ uvicorn = "^0.23.2"
 openai = ">1,<2"
 psycopg2 = "^2.9.7"
 lxml = "^4.9.3"
-langserve = {extras = ["server"], version = "^0.0.23"}
+langserve = {extras = ["server"], version = ">=0.0.23,<0.1.0"}
 chromadb = "^0.4.15"
 
 [tool.poetry.group.dev.dependencies]
