@@ -463,6 +463,11 @@ DATASET = [
         "reference": "285 calories",
         "expected_steps": ["find_foods_by_name", "get_food_calories"],
     },
+    {
+        "question": "what is the current users favorite color?",
+        "reference": "yellow",
+        "expected_steps": ["get_current_user_id", "get_user_favorite_color"],
+    },
     # 2-step has irrelevant information
     {
         "question": "eve ate a serving of sushi, what allergens was she exposed to?",
@@ -492,6 +497,15 @@ DATASET = [
             "get_city_for_location",
             "get_user_location",
             "get_city_for_location",
+        ],
+    },
+    {
+        "question": "what is the current users favorite color and name?",
+        "reference": "yellow and Charlie",
+        "expected_steps": [
+            "get_current_user_id",
+            "get_user_favorite_color",
+            "get_user_name",
         ],
     },
     {
