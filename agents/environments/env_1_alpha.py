@@ -1,12 +1,14 @@
 """A simple environment for evaluating an agent.
 
-The purpose of this environment is to evaluate an agent's ability to use
-the given tools to solve problems.
+A simple environment to evaluate an agent's ability to use
+a set of given tools to answer questions.
 
-The environment contains fake data about users and their locations.
+The environment contains fake data about users and their locations
+and favorite foods.
 
-The agent should use the existing tools, and not try to access the data
-directly.
+The environment defines a set of tools that the agent can use to
+access the data. Agent performance should be evaluated solely based
+on the agent's ability to use the tools to answer questions.
 """
 from typing import List, Callable
 
@@ -15,7 +17,7 @@ from langchain.tools import tool
 
 USER_DATA = [
     {
-        "id": "1",
+        "id": 1,
         "name": "Alice",
         "email": "alice@gmail.com",
         "location": 1,  # Replaced location with an integer
@@ -23,7 +25,7 @@ USER_DATA = [
         "favorite_foods": [1, 2, 3],  # Replace food names with IDs
     },
     {
-        "id": "2",
+        "id": 2,
         "name": "Bob",
         "email": "bob@hotmail.com",
         "location": 2,  # Replaced location with an integer
@@ -31,7 +33,7 @@ USER_DATA = [
         "favorite_foods": [4, 5, 6],  # Replace food names with IDs
     },
     {
-        "id": "3",
+        "id": 3,
         "name": "Charlie",
         "email": "charlie@yahoo.com",
         "location": 3,  # Replaced location with an integer
@@ -39,7 +41,7 @@ USER_DATA = [
         "favorite_foods": [3, 7, 2],  # Replace food names with IDs
     },
     {
-        "id": "4",
+        "id": 4,
         "name": "Donna",
         "email": "donna@example.com",
         "location": 4,  # Replaced location with an integer
@@ -47,7 +49,7 @@ USER_DATA = [
         "favorite_foods": [6, 1, 4],  # Replace food names with IDs
     },
     {
-        "id": "5",
+        "id": 5,
         "name": "Eve",
         "email": "eve@example.org",
         "location": 5,  # Replaced location with an integer
@@ -323,7 +325,7 @@ def get_available_functions() -> List[Callable]:
 
         Returns:
             The approximate serving weight in grams.
-        """ # noqa: E501
+        """  # noqa: E501
         return _find_food(food_id)["serving_weight"]
 
     def get_food_allergic_ingredients(food_id: int) -> List[str]:
@@ -336,6 +338,14 @@ def get_available_functions() -> List[Callable]:
             The list of allergic ingredients.
         """
         return _find_food(food_id)["allergic_ingredients"]
+
+    def get_current_user_id() -> int:
+        """Get the current user's ID.
+
+        Returns:
+            The current user's ID.
+        """
+        return "3"
 
     # Get all the functions defined in the scope of this function
     functions = [f for f in locals().values() if callable(f)]
