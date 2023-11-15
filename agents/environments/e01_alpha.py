@@ -1,16 +1,14 @@
 """A simple environment for evaluating an agent.
 
-A simple environment to evaluate an agent's ability to use
-a set of given tools to reference questions.
+A simple environment to evaluate an agent's ability to use a set of given tools
+to reference questions.
 
-The environment contains fake data about users and their locations
-and favorite foods.
+The environment contains fake data about users and their locations and favorite foods.
 
-The environment defines a set of tools that the agent can use to
-access the data.
+The environment defines a set of tools that the agent can use to access the data.
 
-Agent performance should be evaluated solely based on the agent's
-ability to use the tools to reference questions.
+Agent performance should be evaluated solely based on the agent's ability to use
+the tools to reference questions.
 """
 from typing import List, Callable
 from typing import TypedDict
@@ -19,6 +17,7 @@ from langchain.tools import BaseTool
 from langchain.tools import tool
 
 USER_DATA = [
+    # IDs are not consecutive to prevent agents from guessing the ID
     {
         "id": 1,
         "name": "Alice",
@@ -28,7 +27,7 @@ USER_DATA = [
         "favorite_foods": [1, 2, 3],
     },
     {
-        "id": 2,
+        "id": 21,
         "name": "Bob",
         "email": "bob@hotmail.com",
         "location": 2,
@@ -36,7 +35,7 @@ USER_DATA = [
         "favorite_foods": [4, 5, 6],
     },
     {
-        "id": 3,
+        "id": 35,
         "name": "Charlie",
         "email": "charlie@yahoo.com",
         "location": 3,
@@ -44,7 +43,7 @@ USER_DATA = [
         "favorite_foods": [3, 7, 2],
     },
     {
-        "id": 4,
+        "id": 41,
         "name": "Donna",
         "email": "donna@example.com",
         "location": 4,
@@ -52,7 +51,7 @@ USER_DATA = [
         "favorite_foods": [6, 1, 4],
     },
     {
-        "id": 5,
+        "id": 42,
         "name": "Eve",
         "email": "eve@example.org",
         "location": 5,
@@ -60,7 +59,7 @@ USER_DATA = [
         "favorite_foods": [5, 7, 4],
     },
     {
-        "id": 6,
+        "id": 43,
         "name": "Frank The Cat",
         "email": "frank.the.cat@langchain.dev",
         "location": 5,
@@ -290,10 +289,6 @@ def get_available_functions() -> List[Callable]:
         """
         return _get_user(user_id)["favorite_color"]
 
-    def list_user_ids() -> List[int]:
-        """List all the user IDs."""
-        return [user["id"] for user in USER_DATA]
-
     def get_user_favorite_foods(user_id: int) -> List[int]:
         """Get the list of favorite foods of the user with the given user ID.
 
@@ -388,7 +383,7 @@ def get_available_functions() -> List[Callable]:
         Returns:
             The current user's ID.
         """
-        return 3
+        return 35
 
     # Get all the functions defined in the scope of this function
     functions = [f for f in locals().values() if callable(f)]
@@ -401,174 +396,5 @@ def get_tools() -> List[BaseTool]:
     return [tool(f) for f in functions]
 
 
-DATASET = [
-    # 1-step questions
-    {
-        "question": "What is the city for location ID 1?",
-        "reference": "New York",
-        "expected_steps": ["get_city_for_location"],
-    },
-    {
-        "question": "What is the name of Food ID 6?",
-        "reference": "Pasta",
-        "expected_steps": ["get_food_name"],
-    },
-    {
-        "question": "what is eve's user id?",
-        "reference": "5",
-        "expected_steps": ["find_users_by_name"],
-    },
-    {
-        "question": "get the current user id",
-        "reference": "3",
-        "expected_steps": ["get_current_user_id"],
-    },
-    # 1-step + counting
-    {
-        "question": "How many users by the name of bob?",
-        "reference": "1",
-        "expected_steps": ["find_users_by_name"],
-    },
-    # 2-step questions
-    {
-        "question": "what is alice's email address?",
-        "reference": "alice@gmail.com",
-        "expected_steps": ["find_users_by_name", "get_user_email"],
-    },
-    {
-        "question": "find donna's favorite color",
-        "reference": "green",
-        "expected_steps": ["find_users_by_name", "get_user_favorite_color"],
-    },
-    {
-        "question": "weather in LA right now?",
-        "reference": "Sunny, Temperature: 75°F",
-        "expected_steps": [
-            "find_locations_by_name",
-            "get_current_weather_for_location",
-        ],
-    },
-    {
-        "question": "time in chicago",
-        "reference": "2023-11-14 11:15 AM",
-        "expected_steps": ["find_locations_by_name", "get_current_time_for_location"],
-    },
-    {
-        "question": "list the allergens in chocolate",
-        "reference": "milk, soy",
-        "expected_steps": ["find_foods_by_name", "get_food_allergic_ingredients"],
-    },
-    {
-        "question": "If i eat a serving of pizza, how many calories will I consume?",
-        "reference": "285 calories",
-        "expected_steps": ["find_foods_by_name", "get_food_calories"],
-    },
-    {
-        "question": "what is the current users favorite color?",
-        "reference": "yellow",
-        "expected_steps": ["get_current_user_id", "get_user_favorite_color"],
-    },
-    # 2-step has irrelevant information
-    {
-        "question": "eve ate a serving of sushi, what allergens was she exposed to?",
-        "reference": "fish, soy",
-        "expected_steps": [
-            "find_foods_by_name",
-            "get_food_allergic_ingredients",
-        ],
-    },
-    {
-        "question": "Frank who is Even's friend is allergic to dairy. "
-        "Can he eat the salad?",
-        "reference": "yes",
-        "expected_steps": [
-            "find_users_by_name",
-            "get_food_allergic_ingredients",
-        ],
-    },
-    # 3-step questions
-    {
-        "question": "do bob and alice live in the same city?",
-        "reference": "no",
-        "expected_steps": [
-            "find_users_by_name",
-            # Here the ordering of the steps can be different
-            "get_user_location",
-            "get_city_for_location",
-            "get_user_location",
-            "get_city_for_location",
-        ],
-    },
-    {
-        "question": "what is the current users favorite color and name?",
-        "reference": "yellow and Charlie",
-        "expected_steps": [
-            "get_current_user_id",
-            "get_user_favorite_color",
-            "get_user_name",
-        ],
-    },
-    {
-        "question": "whats the name of the city where bob lives?",
-        "reference": "Los Angeles",
-        "expected_steps": [
-            "find_users_by_name",
-            "get_user_location",
-            "get_city_for_location",
-        ],
-    },
-    {
-        "question": "Donna is about to go outside. Does she need an umbrella?",
-        "reference": "yes",
-        "expected_steps": [
-            "find_users_by_name",
-            "get_user_location",
-            "get_current_weather_for_location",
-        ],
-    },
-    {
-        "question": "Is it likely that Donna is awake right now?",
-        "reference": "yes",
-        "expected_steps": [
-            "find_users_by_name",
-            "get_user_location",
-            "get_current_time_for_location",
-        ],
-    },
-    {
-        "question": "do alice and charlie use the same email provider?",
-        "reference": "no",
-        "expected_steps": [
-            "find_users_by_name",
-            "get_user_email",
-            "get_user_email",
-        ],
-    },
-    # 4-step questions
-    {
-        "question": "Is it likely that Donna is outside with an umbrella at this time?",
-        "reference": "yes",
-        "expected_steps": [
-            "find_users_by_name",
-            "get_user_location",
-            # Order of steps can be different
-            "get_current_time_for_location",
-            "get_current_weather_for_location",
-        ],
-    },
-    # Many steps
-    {
-        "question": "Which users live in the same city as Eve?",
-        "reference": "Frank The Cat",
-        "expected_steps": [
-            "list_user_ids",
-            # Impossible to tell which order will be used
-            "get_user_location",
-            "get_user_location",
-            "get_user_location",
-            "get_user_location",
-            "get_user_location",
-            "get_user_location",
-        ],
-    },
-]
+# ID of a dataset that contains the questions and references
+DATASET_ID = "9f73165c-d333-4d14-8f59-bd7eede5db08"  # ID of Agent Gym: E01 Alpha
