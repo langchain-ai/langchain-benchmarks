@@ -37,23 +37,19 @@ class AgentTrajectoryEvaluator(RunEvaluator):
 
         # Just score it based on whether it is correct or not
         score = int(trajectory == expected_trajectory)
-
-        evaluation_results = [
-            EvaluationResult(
-                key="Intermediate steps correctness",
-                score=score,
-            ),
-            EvaluationResult(
-                key="# steps / # expected steps",
-                value=len(trajectory) / len(expected_trajectory),
-            ),
-        ]
+        step_fraction = len(trajectory) / len(expected_trajectory)
 
         return {
-            "results": {
-                evaluation_result.key: evaluation_result
-                for evaluation_result in evaluation_results
-            }
+            "results": [
+                EvaluationResult(
+                    key="Intermediate steps correctness",
+                    score=score,
+                ),
+                EvaluationResult(
+                    key="# steps / # expected steps",
+                    score=step_fraction,
+                ),
+            ]
         }
 
 
