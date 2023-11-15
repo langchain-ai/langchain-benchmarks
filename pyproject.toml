@@ -2,7 +2,7 @@
 name = "langchain-benchmarks"
 version = "0.1.0"
 description = "Flex them feathers! 🦜💪"
-authors = ["Eugene Yurtsev <eyurtsev@gmail.com>"]
+authors = ["LangChain AI"]
 license = "MIT"
 readme = "README.md"
 

@@ -1,4 +1,4 @@
-# LangChain Benchmarks
+# 🦜💪 LangChain Benchmarks
 
 This repository shows how we benchmark some of our more popular chains and agents.
 The benchmarks are organized by end-to-end use cases.
