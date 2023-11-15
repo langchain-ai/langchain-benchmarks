@@ -33,6 +33,8 @@ class AgentTrajectoryEvaluator(RunEvaluator):
         # The second element is the observation from taking that action
         trajectory = [action.tool for action, _ in intermediate_steps]
         # This is what we uploaded to the dataset
+        if example is None:
+            raise ValueError("Example cannot be None")
         expected_trajectory = example.outputs["expected_steps"]
 
         # Just score it based on whether it is correct or not

@@ -146,11 +146,10 @@ FOOD_DATA = [
 ]
 
 
-class SearchHit(TypedDict):
+class SearchHit(TypedDict, total=False):
     """A search hit."""
 
     id: str
-    value: str
 
 
 def _similarity_search(data: List[dict], query: str, key: str) -> List[SearchHit]:
