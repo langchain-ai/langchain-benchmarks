@@ -1,7 +1,7 @@
 [tool.poetry]
-name = "agents"
+name = "langchain-benchmarks"
 version = "0.1.0"
-description = "Agent Benchmarking Environments"
+description = "Flex them feathers! 🦜💪"
 authors = ["Eugene Yurtsev <eyurtsev@gmail.com>"]
 license = "MIT"
 readme = "README.md"
