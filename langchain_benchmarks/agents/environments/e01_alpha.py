@@ -10,11 +10,9 @@ The environment defines a set of tools that the agent can use to access the data
 Agent performance should be evaluated solely based on the agent's ability to use
 the tools to reference questions.
 """
-from typing import List, Callable
-from typing import TypedDict
+from typing import Callable, List, TypedDict
 
-from langchain.tools import BaseTool
-from langchain.tools import tool
+from langchain.tools import BaseTool, tool
 
 USER_DATA = [
     # IDs are not consecutive to prevent agents from guessing the ID
@@ -169,8 +167,12 @@ def _similarity_search(data: List[dict], query: str, key: str) -> List[SearchHit
     Returns:
         The list of matching data.
     """
-    score_function = lambda x: len(set(x) & set(query)) / len(set(x) | set(query))
-    re_ranked_data = sorted(data, key=lambda x: score_function(x[key]), reverse=True)
+
+    def _score_function(x: str) -> float:
+        """Calculate the similarity score between the query and the given string."""
+        return len(set(x) & set(query)) / len(set(x) | set(query))
+
+    re_ranked_data = sorted(data, key=lambda x: _score_function(x[key]), reverse=True)
     return [{"id": d["id"], key: d[key]} for d in re_ranked_data]
 
 

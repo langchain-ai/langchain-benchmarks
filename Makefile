@@ -21,13 +21,11 @@ test_watch:
 ######################
 
 # Define a variable for Python and notebook files.
-PYTHON_FILES=.
-lint format: PYTHON_FILES=.
+lint format: PYTHON_FILES=langchain_benchmarks tests
 lint_diff format_diff: PYTHON_FILES=$(shell git diff --relative=. --name-only --diff-filter=d master | grep -E '\.py$$|\.ipynb$$')
 
 lint lint_diff:
-	poetry run ruff .
-	poetry run ruff format $(PYTHON_FILES) --check
+	poetry run ruff $(PYTHON_FILES)
 
 format format_diff:
 	poetry run ruff format $(PYTHON_FILES)

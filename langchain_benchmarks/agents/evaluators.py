@@ -10,9 +10,9 @@ from typing import Optional
 from langchain.evaluation import EvaluatorType
 from langchain.smith import RunEvalConfig
 from langsmith.evaluation.evaluator import (
+    EvaluationResult,
     EvaluationResults,
     RunEvaluator,
-    EvaluationResult,
 )
 from langsmith.schemas import Example, Run
 
