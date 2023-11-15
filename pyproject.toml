@@ -19,6 +19,16 @@ mypy = "^1.7.0"
 [tool.poetry.group.lint.dependencies]
 ruff = "^0.1.5"
 
+[tool.poetry.group.test.dependencies]
+pytest = "^7.2.1"
+pytest-cov = "^4.0.0"
+pytest-asyncio = "^0.21.1"
+pytest-mock = "^3.11.1"
+pytest-socket = "^0.6.0"
+pytest-watch = "^4.2.0"
+pytest-timeout = "^2.2.0"
+
+
 [tool.ruff]
 select = [
     "E",  # pycodestyle
