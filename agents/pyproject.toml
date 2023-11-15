@@ -1,0 +1,16 @@
+[tool.poetry]
+name = "agents"
+version = "0.1.0"
+description = "Agent Benchmarking Environments"
+authors = ["Eugene Yurtsev <eyurtsev@gmail.com>"]
+license = "MIT"
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.8.1"
+langchain = "^0.0.335"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
