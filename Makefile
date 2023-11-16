@@ -16,6 +16,12 @@ test:
 test_watch:
 	poetry run ptw . -- $(TEST_FILE)
 
+build_docs:
+	poetry run sphinx-build "./docs/source" "./docs/build"
+
+clean_docs:
+	rm -rf ./docs/build
+
 ######################
 # LINTING AND FORMATTING
 ######################
