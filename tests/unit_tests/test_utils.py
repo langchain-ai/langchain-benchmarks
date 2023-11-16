@@ -2,7 +2,7 @@ import datetime
 import unittest.mock as mock
 import uuid
 from contextlib import contextmanager
-from typing import Generator, List, Sequence, Optional, Mapping, Any
+from typing import Any, Generator, List, Mapping, Optional, Sequence
 from uuid import UUID
 
 from langsmith.client import ID_TYPE
@@ -62,14 +62,14 @@ class MockLangSmithClient:
         # Simulate fetching shared examples and returning a list of Example objects
         example1 = Example(
             id=UUID(int=1),
-            inputs={'a': 1},
+            inputs={"a": 1},
             outputs={},
             created_at=datetime.datetime(2021, 1, 1),
             dataset_id=public_dataset_token,
         )
         example2 = Example(
             id=UUID(int=2),
-            inputs={'b': 2},
+            inputs={"b": 2},
             outputs={},
             created_at=datetime.datetime(2021, 1, 1),
             dataset_id=public_dataset_token,
