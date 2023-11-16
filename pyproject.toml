@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "langchain-benchmarks"
-version = "0.1.0"
+version = "0.0.1"
 description = "Flex them feathers! 🦜💪"
 authors = ["LangChain AI"]
 license = "MIT"
@@ -20,6 +20,17 @@ mypy = "^1.7.0"
 
 [tool.poetry.group.lint.dependencies]
 ruff = "^0.1.5"
+
+[tool.poetry.group.docs.dependencies]
+nbsphinx = "^0.8.9"
+sphinx = "^4.5.0"
+sphinx-autobuild = "^2021.3.14"
+sphinx_book_theme = "^1.0.0"
+myst-nb = "^0.17.1"
+linkchecker = "^10.2.1"
+toml = "^0.10.2"
+sphinx-copybutton = "^0.5.1"
+
 
 [tool.poetry.group.test.dependencies]
 pytest = "^7.2.1"
