@@ -10,9 +10,9 @@ from typing import Optional
 from langchain.evaluation import EvaluatorType
 from langchain.smith import RunEvalConfig
 from langsmith.evaluation.evaluator import (
+    EvaluationResult,
     EvaluationResults,
     RunEvaluator,
-    EvaluationResult,
 )
 from langsmith.schemas import Example, Run
 
@@ -33,6 +33,8 @@ class AgentTrajectoryEvaluator(RunEvaluator):
         # The second element is the observation from taking that action
         trajectory = [action.tool for action, _ in intermediate_steps]
         # This is what we uploaded to the dataset
+        if example is None:
+            raise ValueError("Example cannot be None")
         expected_trajectory = example.outputs["expected_steps"]
 
         # Just score it based on whether it is correct or not
