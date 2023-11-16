@@ -1,8 +1,8 @@
-from fastapi import FastAPI
-from langserve import add_routes
 from chat_langchain.chain import chain
+from fastapi import FastAPI
 from openai_functions_agent import agent_executor as openai_functions_agent_chain
 
+from langserve import add_routes
 
 app = FastAPI()
 
@@ -15,6 +15,7 @@ add_routes(
 )
 
 add_routes(app, openai_functions_agent_chain, path="/openai-functions-agent")
+
 
 def run_server(port: int = 1983):
     import uvicorn

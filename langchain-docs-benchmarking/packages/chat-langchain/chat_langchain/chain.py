@@ -2,7 +2,7 @@
 from operator import itemgetter
 from typing import Dict, List, Optional, Sequence
 
-from langchain.chat_models import ChatAnthropic, ChatOpenAI, ChatFireworks
+from langchain.chat_models import ChatAnthropic, ChatFireworks, ChatOpenAI
 from langchain.prompts import ChatPromptTemplate, MessagesPlaceholder, PromptTemplate
 from langchain.schema import Document
 from langchain.schema.language_model import BaseLanguageModel
@@ -17,7 +17,6 @@ from langchain.schema.runnable import (
 )
 from langchain_docs_retriever.retriever import get_retriever
 from pydantic import BaseModel
-
 
 RESPONSE_TEMPLATE = """\
 You are an expert programmer and problem-solver, tasked with answering any question \
