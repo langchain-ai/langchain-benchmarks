@@ -1,6 +1,8 @@
 """Copy the public dataset to your own langsmith tenant."""
 from langsmith import Client
+from langsmith.utils import LangSmithNotFoundError
 from tqdm import tqdm
+
 
 # PUBLIC API
 
@@ -20,17 +22,34 @@ def clone_dataset(
     """
     client = Client()
 
-    if not hasattr(client, "has_dataset"):
-        raise ValueError("You must use a version of langsmith >= 0.0.2")
-
-    if client.has_dataset(dataset_name=dataset_name):
+    try:
+        client.read_dataset(dataset_name=dataset_name)
+    except LangSmithNotFoundError:
+        pass
+    else:
+        print(f"Dataset {dataset_name} already exists. Skipping.")
         return
-    dataset = client.create_dataset(dataset_name=dataset_name)
+
+    # Fetch examples first
     examples = tqdm(list(client.list_shared_examples(public_dataset_token)))
     print("Finished fetching examples. Creating dataset...")
-    client.create_examples(
-        inputs=[e.inputs for e in examples],
-        outputs=[e.outputs for e in examples],
-        dataset_id=dataset.id,
-    )
+    dataset = client.create_dataset(dataset_name=dataset_name)
+    try:
+        client.create_examples(
+            inputs=[e.inputs for e in examples],
+            outputs=[e.outputs for e in examples],
+            dataset_id=dataset.id,
+        )
+    except BaseException as e:
+        # Let's not do automatic clean up for now in case there might be
+        # some other reasons why create_examples fails (i.e., not network issue or
+        # keyboard interrupt).
+        # The risk is that this is an existing dataset that has valid examples
+        # populated from another source so we don't want to delete it.
+        print(
+            f"An error occurred while creating dataset {dataset_name}. "
+            "You should delete it manually."
+        )
+        raise e
+
     print("Done creating dataset.")
