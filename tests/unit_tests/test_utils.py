@@ -9,7 +9,7 @@ from langsmith.client import ID_TYPE
 from langsmith.schemas import Dataset, Example
 from langsmith.utils import LangSmithNotFoundError
 
-from langchain_benchmarks.utils._langsmith import clone_dataset
+from langchain_benchmarks.utils._langsmith import clone_public_dataset
 
 
 # Define a mock Client class that overrides the required methods
@@ -95,10 +95,10 @@ def test_clone_dataset() -> None:
     dataset_name = "my_dataset"
 
     with mock_langsmith_client() as mock_client:
-        clone_dataset(public_dataset_token, dataset_name)
+        clone_public_dataset(public_dataset_token, dataset_name=dataset_name)
         assert mock_client.datasets[0].name == dataset_name
         assert len(mock_client.examples) == 2
 
         # Check idempotency
-        clone_dataset(public_dataset_token, dataset_name)
+        clone_public_dataset(public_dataset_token, dataset_name=dataset_name)
         assert len(mock_client.examples) == 2
