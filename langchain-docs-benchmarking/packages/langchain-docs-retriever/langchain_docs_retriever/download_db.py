@@ -1,6 +1,7 @@
 import os
-import requests
 import zipfile
+
+import requests
 
 remote_url = "https://storage.googleapis.com/benchmarks-artifacts/langchain-docs-benchmarking/chroma_db.zip"
 directory = os.path.dirname(os.path.realpath(__file__))

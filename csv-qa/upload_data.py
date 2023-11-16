@@ -8,5 +8,5 @@ if __name__ == "__main__":
         output_keys=["output_text"],
         name="Titanic CSV Data",
         description="QA over titanic data",
-        data_type = "kv"
+        data_type="kv",
     )

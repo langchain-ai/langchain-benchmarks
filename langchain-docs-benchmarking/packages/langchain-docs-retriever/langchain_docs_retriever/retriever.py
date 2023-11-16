@@ -2,12 +2,13 @@ import os
 from typing import Optional
 
 from langchain.embeddings import OpenAIEmbeddings
+
+# from langchain_docs_retriever.voyage import VoyageEmbeddings
+from langchain.embeddings.voyageai import VoyageEmbeddings
 from langchain.schema.embeddings import Embeddings
 from langchain.schema.retriever import BaseRetriever
 from langchain.vectorstores.chroma import Chroma
 
-# from langchain_docs_retriever.voyage import VoyageEmbeddings
-from langchain.embeddings.voyageai import VoyageEmbeddings
 from .download_db import fetch_langchain_docs_db
 
 WEAVIATE_DOCS_INDEX_NAME = "LangChain_agent_docs"

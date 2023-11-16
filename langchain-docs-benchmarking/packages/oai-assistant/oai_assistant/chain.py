@@ -1,8 +1,9 @@
-from langchain_experimental.openai_assistant import OpenAIAssistantRunnable
-from langchain.agents import AgentExecutor
-from langchain_docs_retriever.retriever import get_retriever
-from langchain.tools import tool
 import json
+
+from langchain.agents import AgentExecutor
+from langchain.tools import tool
+from langchain_docs_retriever.retriever import get_retriever
+from langchain_experimental.openai_assistant import OpenAIAssistantRunnable
 
 # This is used to tell the model how to best use the retriever.
 
@@ -28,6 +29,8 @@ agent = OpenAIAssistantRunnable.create_assistant(
 )
 
 
-agent_executor = (lambda x: {"content": x["question"]}) | AgentExecutor(
-    agent=agent, tools=tools
-) | (lambda x: x["output"])
+agent_executor = (
+    (lambda x: {"content": x["question"]})
+    | AgentExecutor(agent=agent, tools=tools)
+    | (lambda x: x["output"])
+)

@@ -3,8 +3,7 @@ from typing import Tuple
 from uuid import uuid4
 
 import pytest
-from langchain import hub
-from langchain import chat_models, llms
+from langchain import chat_models, hub, llms
 from langchain.evaluation import load_evaluator
 from langchain.schema import runnable
 from langchain.smith import RunEvalConfig, run_on_dataset

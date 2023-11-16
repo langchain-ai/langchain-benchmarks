@@ -12,6 +12,6 @@ RETRIEVER_TOOL_NAME = "search"
 
 
 @tool
-def search(query, callbacks = None):
+def search(query, callbacks=None):
     """Search the LangChain docs with the retriever."""
     return retriever.get_relevant_documents(query, callbacks=callbacks)
