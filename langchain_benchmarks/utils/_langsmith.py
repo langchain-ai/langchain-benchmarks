@@ -2,7 +2,7 @@
 import json
 import urllib.parse
 from pathlib import Path
-from typing import Union, Optional, Tuple
+from typing import Optional, Tuple, Union
 from uuid import UUID
 
 from langsmith import Client

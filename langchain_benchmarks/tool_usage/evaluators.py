@@ -70,4 +70,5 @@ STANDARD_AGENT_EVALUATOR = RunEvalConfig(
     custom_evaluators=[AgentTrajectoryEvaluator()],
     # We now need to specify this because we have multiple outputs in our dataset
     reference_key="reference",
+    prediction_key="output",
 )
