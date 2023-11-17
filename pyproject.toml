@@ -50,6 +50,7 @@ select = [
     "F",  # pyflakes
     "I",  # isort
 ]
+extend-include = ["*.ipynb"]
 
 # Same as Black.
 line-length = 88
