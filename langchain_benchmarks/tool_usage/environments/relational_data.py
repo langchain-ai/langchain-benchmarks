@@ -1,18 +1,18 @@
-"""A simple environment for evaluating an agent.
-
-A simple environment to evaluate an agent's ability to use a set of given tools
-to reference questions.
+"""Answer questions about relational data using the provided tools.
 
 The environment contains fake data about users and their locations and favorite foods.
 
-The environment defines a set of tools that the agent can use to access the data.
+The environment provides a set of tools that can be used to query the data.
 
-Agent performance should be evaluated solely based on the agent's ability to use
-the tools to reference questions.
+All questions can be answered by using the provided tools. The answers
+include the expected result as well as the most efficient way to answer the
+question using the tools.
 """
 from typing import Callable, List, TypedDict
 
 from langchain.tools import BaseTool, tool
+
+from langchain_benchmarks.schema import Environment
 
 USER_DATA = [
     # IDs are not consecutive to prevent agents from guessing the ID
@@ -395,6 +395,14 @@ def get_tools() -> List[BaseTool]:
     """Get all the available tools."""
     functions = get_available_functions()
     return [tool(f) for f in functions]
+
+
+def get_environment() -> Environment:
+    """Create an environment."""
+    return Environment(
+        tools=get_tools(),
+        read_state=None,
+    )
 
 
 # ID of a dataset that contains the questions and references
