@@ -25,5 +25,5 @@ def default_response_chain(
 
 
 ARCH_FACTORIES = {
-    "chat-langchain": default_response_chain,
+    "conversational-retrieval-qa": default_response_chain,
 }

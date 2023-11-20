@@ -1,5 +1,5 @@
 import dataclasses
-from typing import Sequence, Union
+from typing import List, Sequence, Union
 
 from tabulate import tabulate
 
@@ -18,20 +18,23 @@ class Environment:
     can be used to evaluate the performance of a model/agent etc.
     """
 
-
     description: str
     """Description of the environment."""
 
-    def _repr_html_(self) -> str:
-        """Return a HTML representation of the environment."""
-        table = [
+    @property
+    def _table(self) -> List[List[str]]:
+        return [
             ["ID", self.id],
             ["Name", self.name],
             ["Dataset ID", self.dataset_id],
             ["Description", self.description[:100] + "..."],
         ]
+
+    def _repr_html_(self) -> str:
+        """Return a HTML representation of the environment."""
+
         return tabulate(
-            table,
+            self._table,
             tablefmt="html",
         )
 

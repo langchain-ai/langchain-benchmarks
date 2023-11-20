@@ -1,4 +1,4 @@
-from typing import Optional
+from typing import Callable, Optional
 
 from langchain.schema.embeddings import Embeddings
 from langchain.schema.retriever import BaseRetriever
@@ -12,7 +12,10 @@ from .retriever import (
 
 def _chroma_retriever_factory(
     embedding: Embeddings,
+    *,
     search_kwargs: Optional[dict] = None,
+    transform_docs: Optional[Callable] = None,
+    transformation_name: Optional[str] = None,
 ) -> BaseRetriever:
     embedding_name = embedding.__class__.__name__
     vectorstore = Chroma(
@@ -23,6 +26,8 @@ def _chroma_retriever_factory(
     return get_vectorstore_retriever(
         embedding,
         vectorstore,
+        transform_docs=transform_docs,
+        transformation_name=transformation_name,
         search_kwargs=search_kwargs,
     )
 
