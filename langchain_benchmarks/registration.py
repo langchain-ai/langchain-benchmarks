@@ -2,6 +2,7 @@
 
 from langchain_benchmarks.extraction import email_task
 from langchain_benchmarks.schema import Registry
+from langchain_benchmarks.rag import LANGCHAIN_DOCS_TASK
 from langchain_benchmarks.tool_usage import (
     type_writer_26_funcs,
     type_writer,
@@ -17,5 +18,6 @@ registry = Registry(
         relational_data.RELATIONAL_DATA_TASK,
         multiverse_math.MULTIVERSE_MATH,
         email_task.EMAIL_EXTRACTION_TASK,
+        LANGCHAIN_DOCS_TASK,
     ]
 )
