@@ -115,5 +115,3 @@ jobs:
         run: |
           echo "Attempting to build docs..."
           make build_docs
-        
-
