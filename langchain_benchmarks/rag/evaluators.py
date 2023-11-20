@@ -77,18 +77,21 @@ If the predicted answer contains additional helpful and accurate information tha
 """  # noqa
 }
 
-eval_llm = ChatOpenAI(model="gpt-4", temperature=0.0, model_kwargs={"seed": 42})
-# Use a longer-context LLM to check documents
-faithfulness_eval_llm = ChatOpenAI(
-    model="gpt-4-1106-preview", temperature=0.0, model_kwargs={"seed": 42}
-)
 
-RAG_EVALUATION = RunEvalConfig(
-    evaluators=[
-        RunEvalConfig.LabeledScoreString(
-            criteria=_ACCURACY_CRITERION, llm=eval_llm, normalize_by=10.0
-        ),
-        RunEvalConfig.EmbeddingDistance(),
-    ],
-    custom_evaluators=[FaithfulnessEvaluator(llm=faithfulness_eval_llm)],
-)
+def get_evaluator() -> RunEvalConfig:
+    """Returns the evaluator for the environment."""
+    eval_llm = ChatOpenAI(model="gpt-4", temperature=0.0, model_kwargs={"seed": 42})
+    # Use a longer-context LLM to check documents
+    faithfulness_eval_llm = ChatOpenAI(
+        model="gpt-4-1106-preview", temperature=0.0, model_kwargs={"seed": 42}
+    )
+
+    return RunEvalConfig(
+        evaluators=[
+            RunEvalConfig.LabeledScoreString(
+                criteria=_ACCURACY_CRITERION, llm=eval_llm, normalize_by=10.0
+            ),
+            RunEvalConfig.EmbeddingDistance(),
+        ],
+        custom_evaluators=[FaithfulnessEvaluator(llm=faithfulness_eval_llm)],
+    )

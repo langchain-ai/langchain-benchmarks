@@ -4,8 +4,8 @@ from typing import Callable, Dict, List
 
 from langchain.schema.embeddings import Embeddings
 from langchain.schema.retriever import BaseRetriever
-from langchain_benchmarks.rag.environments import langchain_docs
-from langchain_benchmarks.rag.environments.langchain_docs import (
+from langchain_benchmarks.rag.tasks import langchain_docs
+from langchain_benchmarks.rag.tasks.langchain_docs import (
     architectures,
     langchain_docs_retriever,
 )
@@ -16,9 +16,7 @@ from langchain_benchmarks.utils._registration import Environment, Registry
 class RetrievalEnvironment(Environment):
     retriever_factories: Dict[str, Callable[[Embeddings], BaseRetriever]]  # noqa: F821
     """Factories that index the docs using the specified strategy."""
-    architecture_factories: Dict[
-        str, Callable[[Embeddings], BaseRetriever]
-    ]  # noqa: F821
+    architecture_factories: Dict[str, Callable[[Embeddings], BaseRetriever]]  # noqa: F821
     """Factories methods that help build some off-the-shelf architectures。"""
 
     @property
@@ -28,6 +26,7 @@ class RetrievalEnvironment(Environment):
             ["Retriever Factories", ", ".join(self.retriever_factories.keys())],
             ["Architecture Factories", ", ".join(self.architecture_factories.keys())],
         ]
+
 
 # Using lower case naming to make a bit prettier API when used in a notebook
 registry = Registry(
