@@ -1,6 +1,6 @@
 """Schema for the Langchain Benchmarks."""
 import dataclasses
-from typing import List, Callable, Any, Optional, Type
+from typing import List, Callable, Any, Optional, Type, Union
 
 from langchain.tools import BaseTool
 from pydantic import BaseModel
@@ -22,8 +22,6 @@ class ToolUsageEnvironment:
 class BaseTask:
     """A definition of a task."""
 
-    id: int
-    """The ID of the environment."""
     name: str
     """The name of the environment."""
 
@@ -73,3 +71,59 @@ class ExtractionTask(BaseTask):
 
     model: Type[BaseModel]
     """Get the model for the task."""
+
+
+@dataclasses.dataclass(frozen=False)
+class Registry:
+    tasks: List[BaseTask]
+
+    def get_task(self, name_or_id: Union[int, str]) -> BaseTask:
+        """Get the environment with the given name."""
+        if isinstance(name_or_id, int):
+            return self.tasks[name_or_id]
+
+        for env in self.tasks:
+            if env.name == name_or_id:
+                return env
+        raise ValueError(f"Unknown task {name_or_id}")
+
+    def __post_init__(self) -> None:
+        """Validate that all the tasks have unique names and IDs."""
+        seen_names = set()
+        for task in self.tasks:
+            if task.name in seen_names:
+                raise ValueError(
+                    f"Duplicate task name {task.name}. " f"Task names must be unique."
+                )
+
+    def _repr_html_(self) -> str:
+        """Return an HTML representation of the registry."""
+        headers = [
+            "Name",
+            "Dataset ID",
+            "Description",
+        ]
+        table = [
+            [
+                env.name,
+                env.dataset_id,
+                env.description,
+            ]
+            for env in self.tasks
+        ]
+        return tabulate(table, headers=headers, tablefmt="html")
+
+    def __getitem__(self, key: Union[int, str]) -> BaseTask:
+        """Get an environment from the registry."""
+        if isinstance(key, slice):
+            raise NotImplementedError("Slicing is not supported.")
+        elif isinstance(key, (int, str)):
+            # If key is an integer, return the corresponding environment
+            return self.get_task(key)
+        else:
+            raise TypeError("Key must be an integer or a slice.")
+
+    def add(self, task: BaseTask) -> None:
+        if not isinstance(task, BaseTask):
+            raise TypeError("Only tasks can be added to the registry.")
+        self.tasks.append(task)
