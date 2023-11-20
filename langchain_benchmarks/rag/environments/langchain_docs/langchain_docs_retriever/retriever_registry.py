@@ -12,7 +12,6 @@ from .retriever import (
 
 def _chroma_retriever_factory(
     embedding: Embeddings,
-    *,
     search_kwargs: Optional[dict] = None,
     transform_docs: Optional[Callable] = None,
     transformation_name: Optional[str] = None,
