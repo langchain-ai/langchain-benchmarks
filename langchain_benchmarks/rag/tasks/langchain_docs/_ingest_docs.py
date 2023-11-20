@@ -17,8 +17,8 @@ import pandas as pd
 
 logger = logging.getLogger(__name__)
 directory = os.path.dirname(os.path.realpath(__file__))
-db_directory = os.path.join(directory, "langchain_docs_retriever", "db")
-docs_cache_directory = os.path.join(directory, "langchain_docs_retriever", "db_docs")
+db_directory = os.path.join(directory, "indexing", "db")
+docs_cache_directory = os.path.join(directory, "indexing", "db_docs")
 docs_cache_file = os.path.join(docs_cache_directory, "docs.parquet")
 
 

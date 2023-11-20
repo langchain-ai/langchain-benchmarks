@@ -78,7 +78,7 @@ If the predicted answer contains additional helpful and accurate information tha
 }
 
 
-def get_evaluator() -> RunEvalConfig:
+def get_eval_config() -> RunEvalConfig:
     """Returns the evaluator for the environment."""
     eval_llm = ChatOpenAI(model="gpt-4", temperature=0.0, model_kwargs={"seed": 42})
     # Use a longer-context LLM to check documents

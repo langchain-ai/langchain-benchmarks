@@ -1,6 +1,5 @@
 """RAG environments."""
-from langchain_benchmarks.rag.evaluators import RAG_EVALUATION
-from langchain_benchmarks.rag.registration import registry
+from langchain_benchmarks.rag.evaluators import get_eval_config
 
 # Please keep this list sorted!
-__all__ = ["RAG_EVALUATION"]
+__all__ = ["get_eval_config"]

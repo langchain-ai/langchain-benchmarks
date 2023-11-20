@@ -8,7 +8,7 @@ from typing import Callable, Any, List, cast
 
 from langchain.tools import BaseTool, tool
 
-from langchain_benchmarks.schema import Environment
+from langchain_benchmarks.schema import AbstractEnvironment
 
 
 @dataclasses.dataclass

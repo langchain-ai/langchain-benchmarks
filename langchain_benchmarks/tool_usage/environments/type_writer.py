@@ -8,7 +8,7 @@ from typing import Callable, Any, List, cast
 
 from langchain.tools import BaseTool, tool
 
-from langchain_benchmarks.schema import Environment
+from langchain_benchmarks.schema import AbstractEnvironment
 
 
 @dataclasses.dataclass
@@ -32,7 +32,7 @@ def function(paper: Paper) -> Callable[[], str]:
 # PUBLIC API
 
 
-def get_environment() -> Environment:
+def get_environment() -> AbstractEnvironment:
     """Create tools and state reader.
 
     Attention: this is a factory function, so it will create a new environment

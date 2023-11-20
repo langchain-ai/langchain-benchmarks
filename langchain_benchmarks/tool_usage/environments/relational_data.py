@@ -12,7 +12,7 @@ from typing import Callable, List, TypedDict
 
 from langchain.tools import BaseTool, tool
 
-from langchain_benchmarks.schema import Environment
+from langchain_benchmarks.schema import AbstractEnvironment
 
 USER_DATA = [
     # IDs are not consecutive to prevent agents from guessing the ID

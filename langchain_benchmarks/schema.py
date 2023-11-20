@@ -1,9 +1,9 @@
 """Schema for the Langchain Benchmarks."""
 import abc
 import dataclasses
-from typing import Any, Optional, Literal
-from typing import Callable, Dict, List
+from typing import Any, Callable, Dict, List, Literal, Optional, Iterable
 
+from langchain.schema.document import Document
 from langchain.schema.embeddings import Embeddings
 from langchain.schema.retriever import BaseRetriever
 from langchain.tools import BaseTool
@@ -30,8 +30,12 @@ class ToolUsageEnvironment(AbstractEnvironment):
 class RetrievalEnvironment(AbstractEnvironment):
     retriever_factories: Dict[str, Callable[[Embeddings], BaseRetriever]]  # noqa: F821
     """Factories that index the docs using the specified strategy."""
-    architecture_factories: Dict[str, Callable[[Embeddings], BaseRetriever]]  # noqa: F821
+    architecture_factories: Dict[
+        str, Callable[[Embeddings], BaseRetriever]
+    ]  # noqa: F821
     """Factories methods that help build some off-the-shelf architectures。"""
+    get_docs: Callable[..., Iterable[Document]]
+    """A function that returns the documents to be indexed."""
 
     @property
     def _table(self) -> List[List[str]]:

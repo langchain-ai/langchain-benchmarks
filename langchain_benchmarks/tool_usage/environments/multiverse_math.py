@@ -14,7 +14,7 @@ from typing import cast, List
 
 from langchain.tools import tool, BaseTool
 
-from langchain_benchmarks.schema import Environment
+from langchain_benchmarks.schema import AbstractEnvironment
 
 
 def multiply(a: float, b: float) -> float:

@@ -1,4 +1,4 @@
-from langchain_benchmarks.rag.environments.langchain_docs.architectures.chain_registry import (
+from langchain_benchmarks.rag.tasks.langchain_docs.architectures.chain_registry import (
     ARCH_FACTORIES,
 )
 
