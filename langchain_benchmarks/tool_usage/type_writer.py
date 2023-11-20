@@ -8,7 +8,7 @@ from typing import Callable, Any, List, cast
 
 from langchain.tools import BaseTool, tool
 
-from langchain_benchmarks.schema import ToolUsageEnvironment
+from langchain_benchmarks.schema import ToolUsageEnvironment, ToolUsageTask
 
 
 @dataclasses.dataclass
@@ -53,3 +53,32 @@ def get_environment() -> ToolUsageEnvironment:
         tools=tools,
         read_state=_read_state,
     )
+
+
+TYPE_WRITER_TASK = ToolUsageTask(
+    name="Tool Usage - Typewriter (1 func)",
+    dataset_id="placeholder",
+    create_environment=get_environment,
+    instructions=(
+        "Repeat the given string by using the provided tools. "
+        "Do not write anything else or provide any explanations. "
+        "For example, if the string is 'abc', you must invoke the tools "
+        "'a', 'b', and 'c' in that order. "
+        "Please invoke the function with a single letter at a time."
+    ),
+    description=(
+        """\
+Environment with a single function that accepts a single letter as input, and \
+"prints" it on a piece of paper.
+
+The objective of this task is to evaluate the ability to use the provided \
+tools to repeat a given input string.
+
+For example, if the string is 'abc', the tools 'a', 'b', and 'c' must be invoked \
+in that order.
+
+The dataset includes examples of varying difficulty. The difficulty is measured \
+by the length of the string.
+"""
+    ),
+)

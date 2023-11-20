@@ -12,7 +12,7 @@ from typing import Callable, List, TypedDict
 
 from langchain.tools import BaseTool, tool
 
-from langchain_benchmarks.schema import ToolUsageEnvironment
+from langchain_benchmarks.schema import ToolUsageEnvironment, ToolUsageTask
 
 USER_DATA = [
     # IDs are not consecutive to prevent agents from guessing the ID
@@ -407,3 +407,34 @@ def get_environment() -> ToolUsageEnvironment:
 
 # ID of a dataset that contains the questions and references
 DATASET_ID = "e95d45da-aaa3-44b3-ba2b-7c15ff6e46f5"  # ID of Agent Gym: E01 Alpha
+
+RELATIONAL_DATA_TASK = ToolUsageTask(
+    name="Tool Usage - Relational Data",
+    dataset_id=DATASET_ID,
+    create_environment=get_environment,
+    instructions=(
+        """\
+Please answer the user's question by using the tools provided. Do not guess the \
+answer. Keep in mind that entities like users,foods and locations have both a \
+name and an ID, which are not the same."""
+    ),
+    description=(
+        """\
+Environment with fake data about users and their locations and favorite foods.
+
+The environment provides a set of tools that can be used to query the data.
+
+The objective of this task is to evaluate the ability to use the provided tools \
+to answer questions about relational data.
+
+The dataset contains 21 examples of varying difficulty. The difficulty is measured \
+by the number of tools that need to be used to answer the question.
+
+Each example is composed of a question, a reference answer, and \
+information about the sequence in which tools should be used to answer \
+the question.
+
+Success is measured by the ability to answer the question correctly, and efficiently.
+"""
+    ),
+)

@@ -58,8 +58,7 @@ def get_eval_config(eval_llm: BaseModel) -> RunEvalConfig:
     )
 
 
-EmailTask = ExtractionTask(
-    id=4,  # To be deprecated
+EMAIL_EXTRACTION_TASK = ExtractionTask(
     name="Email Extraction",
     dataset_id="https://smith.langchain.com/public/36bdfe7d-3cd1-4b36-b957-d12d95810a2b/d",
     model=Email,
