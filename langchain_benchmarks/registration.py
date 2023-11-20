@@ -205,6 +205,7 @@ Success is measured based on the accuracy of the answer relative to the referenc
 We also measure the faithfulness of the model's response relative to the retrieved documents (if any).
 """  # noqa: E501
             ),
+            instructions="placeholder",
         ),
     ]
 )
