@@ -8,7 +8,7 @@ from typing import Callable, Any, List, cast
 
 from langchain.tools import BaseTool, tool
 
-from langchain_benchmarks.schema import Environment
+from langchain_benchmarks.schema import ToolUsageEnv
 
 
 @dataclasses.dataclass
@@ -40,7 +40,7 @@ def _get_available_functions(paper: Paper) -> List[Callable]:
 # PUBLIC API
 
 
-def get_environment() -> Environment:
+def get_environment() -> ToolUsageEnv:
     """Create tools and state reader.
 
     Attention: this is a factory function, so it will create a new environment
@@ -58,7 +58,7 @@ def get_environment() -> Environment:
 
     tools = cast(List[BaseTool], [tool(f) for f in functions])
 
-    return Environment(
+    return ToolUsageEnv(
         tools=tools,
         read_state=_read_state,
     )

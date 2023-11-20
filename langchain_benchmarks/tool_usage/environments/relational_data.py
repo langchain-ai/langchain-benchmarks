@@ -12,7 +12,7 @@ from typing import Callable, List, TypedDict
 
 from langchain.tools import BaseTool, tool
 
-from langchain_benchmarks.schema import Environment
+from langchain_benchmarks.schema import ToolUsageEnvironment
 
 USER_DATA = [
     # IDs are not consecutive to prevent agents from guessing the ID
@@ -397,9 +397,9 @@ def get_tools() -> List[BaseTool]:
     return [tool(f) for f in functions]
 
 
-def get_environment() -> Environment:
+def get_environment() -> ToolUsageEnvironment:
     """Create an environment."""
-    return Environment(
+    return ToolUsageEnvironment(
         tools=get_tools(),
         read_state=None,
     )

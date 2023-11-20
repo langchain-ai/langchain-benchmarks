@@ -4,7 +4,8 @@ from typing import Sequence, Union
 
 from tabulate import tabulate
 
-from langchain_benchmarks.schema import Task
+from langchain_benchmarks.schema import ToolUsageTask, ExtractionTask
+from langchain_benchmarks.extraction import email_task
 from langchain_benchmarks.tool_usage.environments import (
     relational_data,
     type_writer,
@@ -15,9 +16,9 @@ from langchain_benchmarks.tool_usage.environments import (
 
 @dataclasses.dataclass(frozen=True)
 class Registry:
-    tasks: Sequence[Task]
+    tasks: Sequence[ToolUsageTask]
 
-    def get_task(self, name_or_id: Union[int, str]) -> Task:
+    def get_task(self, name_or_id: Union[int, str]) -> ToolUsageTask:
         """Get the environment with the given name."""
         for env in self.tasks:
             if env.name == name_or_id or env.id == name_or_id:
@@ -58,7 +59,7 @@ class Registry:
         ]
         return tabulate(table, headers=headers, tablefmt="html")
 
-    def __getitem__(self, key: Union[int, str]) -> Task:
+    def __getitem__(self, key: Union[int, str]) -> ToolUsageTask:
         """Get an environment from the registry."""
         if isinstance(key, slice):
             raise NotImplementedError("Slicing is not supported.")
@@ -72,7 +73,7 @@ class Registry:
 # Using lower case naming to make a bit prettier API when used in a notebook
 registry = Registry(
     tasks=[
-        Task(
+        ToolUsageTask(
             id=0,
             name="Tool Usage - Relational Data",
             dataset_id=relational_data.DATASET_ID,
@@ -103,7 +104,7 @@ Success is measured by the ability to answer the question correctly, and efficie
 """
             ),
         ),
-        Task(
+        ToolUsageTask(
             id=1,
             name="Tool Usage - Typewriter (1 func)",
             dataset_id="placeholder",
@@ -131,7 +132,7 @@ by the length of the string.
 """
             ),
         ),
-        Task(
+        ToolUsageTask(
             id=2,
             name="Tool Usage - Typewriter",
             dataset_id="placeholder",
@@ -161,7 +162,7 @@ by the length of the string.
 """
             ),
         ),
-        Task(
+        ToolUsageTask(
             id=3,
             name="Multiverse Math",
             dataset_id="placeholder",
@@ -187,5 +188,6 @@ solve simple math questions and ignore any innate knowledge about math.
 """
             ),
         ),
+        email_task.EmailTask,
     ]
 )
