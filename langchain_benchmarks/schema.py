@@ -42,7 +42,6 @@ class BaseTask:
     def _repr_html_(self) -> str:
         """Return an HTML representation of the environment."""
         table = [
-            ["ID", self.id],
             ["Name", self.name],
             ["Type", self.__class__.__name__],
             ["Dataset ID", self.dataset_id],
