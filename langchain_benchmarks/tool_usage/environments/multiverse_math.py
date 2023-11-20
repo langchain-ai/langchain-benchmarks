@@ -14,7 +14,7 @@ from typing import cast, List
 
 from langchain.tools import tool, BaseTool
 
-from langchain_benchmarks.schema import ToolUsageEnv
+from langchain_benchmarks.schema import ToolUsageEnvironment
 
 
 def multiply(a: float, b: float) -> float:
@@ -76,13 +76,13 @@ DATASET = [
 # PUBLIC API
 
 
-def get_environment() -> ToolUsageEnv:
+def get_environment() -> ToolUsageEnvironment:
     """Create an environment."""
     tools = cast(
         List[BaseTool],
         [tool(func) for func in [multiply, add, divide, subtract, power, log, negate]],
     )
-    return ToolUsageEnv(
+    return ToolUsageEnvironment(
         tools=tools,
         read_state=None,
     )
