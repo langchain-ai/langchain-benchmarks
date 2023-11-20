@@ -66,7 +66,7 @@ jobs:
         shell: bash
         run: |
           echo "Running tests, installing dependencies with poetry..."
-          poetry install --with test,lint,typing
+          poetry install --with test,lint,typing,docs
 
       - name: Run tests
         run: make test
@@ -82,3 +82,36 @@ jobs:
           # grep will exit non-zero if the target message isn't found,
           # and `set -e` above will cause the step to fail.
           echo "$STATUS" | grep 'nothing to commit, working tree clean'
+  test_docs:
+    timeout-minutes: 5
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ${{ env.WORKDIR }}
+    strategy:
+      matrix:
+        python-version:
+          - "3.11"
+    name: Documentation Build for Python ${{ matrix.python-version }}
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Set up Python ${{ matrix.python-version }} + Poetry ${{ env.POETRY_VERSION }}
+        uses: "./.github/actions/poetry_setup"
+        with:
+          python-version: ${{ matrix.python-version }}
+          poetry-version: ${{ env.POETRY_VERSION }}
+          working-directory: .
+          cache-key: benchmarks-all
+
+      - name: Install dependencies
+        shell: bash
+        run: |
+          echo "Running tests, installing dependencies with poetry..."
+          poetry install --with test,lint,typing,docs
+
+      - name: Test Sphinx Docs
+        shell: bash
+        run: |
+          echo "Attempting to build docs..."
+          make build_docs
