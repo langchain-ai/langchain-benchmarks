@@ -1,6 +1,7 @@
 from enum import Enum
 from typing import Optional, List
 
+from langchain.prompts import ChatPromptTemplate
 from pydantic import BaseModel, Field
 
 from langchain_benchmarks.schema import ExtractionTask
@@ -32,10 +33,22 @@ class Email(BaseModel):
     tone: ToneEnum = Field(..., description="The tone of the email.")
 
 
+# This is a default prompt that works for chat models.
+DEFAULT_CHAT_MODEL_PROMPT = ChatPromptTemplate.from_messages(
+    [
+        ("system", "You are an expert researcher."),
+        (
+            "human",
+            "What can you tell me about the following email? Make sure to "
+            "answer in the correct format: {schema}",
+        ),
+    ]
+)
+
 EMAIL_EXTRACTION_TASK = ExtractionTask(
     name="Email Extraction",
     dataset_id="https://smith.langchain.com/public/36bdfe7d-3cd1-4b36-b957-d12d95810a2b/d",
-    model=Email,
+    schema=Email,
     description="""\
 A dataset of 42 real emails deduped from a spam folder, with semantic HTML tags removed, \
 as well as a script for initial extraction and formatting of other emails from \
@@ -45,4 +58,5 @@ Some additional cleanup of the data was done by hand after the initial pass.
 
 See https://github.com/jacoblee93/oss-model-extraction-evals.
     """,
+    instructions=DEFAULT_CHAT_MODEL_PROMPT,
 )
