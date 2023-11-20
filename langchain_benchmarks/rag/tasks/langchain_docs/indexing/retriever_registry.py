@@ -7,6 +7,7 @@ from langchain.schema.document import Document
 from langchain.schema.embeddings import Embeddings
 from langchain.schema.retriever import BaseRetriever
 from langchain.vectorstores.chroma import Chroma
+
 from langchain_benchmarks.rag.utils.indexing import (
     get_hyde_retriever,
     get_parent_document_retriever,

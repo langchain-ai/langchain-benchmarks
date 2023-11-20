@@ -5,7 +5,6 @@ from langchain.agents.agent_toolkits.conversational_retrieval.tool import (
 )
 from langchain.embeddings import OpenAIEmbeddings
 from langchain.llms import OpenAI
-from langchain.prompts import PromptTemplate
 from langchain.smith import RunEvalConfig, run_on_dataset
 from langchain.tools import PythonAstREPLTool
 from langchain.vectorstores import FAISS

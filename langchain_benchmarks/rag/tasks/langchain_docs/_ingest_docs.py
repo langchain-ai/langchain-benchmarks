@@ -4,6 +4,7 @@ import os
 import re
 from typing import Generator, Iterable, Optional
 
+import pandas as pd
 from bs4 import BeautifulSoup, Doctype, NavigableString, SoupStrainer, Tag
 from langchain.document_loaders import RecursiveUrlLoader, SitemapLoader
 from langchain.embeddings import OpenAIEmbeddings, VoyageEmbeddings
@@ -13,7 +14,6 @@ from langchain.schema.embeddings import Embeddings
 from langchain.text_splitter import RecursiveCharacterTextSplitter
 from langchain.utils.html import PREFIXES_TO_IGNORE_REGEX, SUFFIXES_TO_IGNORE_REGEX
 from langchain.vectorstores.chroma import Chroma
-import pandas as pd
 
 logger = logging.getLogger(__name__)
 directory = os.path.dirname(os.path.realpath(__file__))
@@ -200,7 +200,6 @@ def get_docs() -> Iterable[Document]:
     # TODO: Make this function actually a generator
     # Import before loading because it's a bummer to fail after scraping.
     # we should have an incremental scrape cache.
-    import pyarrow as pa  # type: ignore
 
     docs_from_documentation = load_langchain_docs()
     logger.info(f"Loaded {len(docs_from_documentation)} docs from documentation")

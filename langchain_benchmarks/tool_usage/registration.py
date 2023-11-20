@@ -1,10 +1,11 @@
 """Registry of tool use environments for ease of access."""
 import dataclasses
-from langchain_benchmarks.tool_usage.environments import alpha
-from langchain_benchmarks.utils._registration import Environment, Registry
 from typing import Callable, List
 
 from langchain.tools import BaseTool
+
+from langchain_benchmarks.tool_usage.environments import alpha
+from langchain_benchmarks.utils._registration import Environment, Registry
 
 
 @dataclasses.dataclass(frozen=True)

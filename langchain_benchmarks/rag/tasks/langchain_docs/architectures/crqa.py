@@ -1,6 +1,7 @@
 """Chat langchain 'engine'."""
 # TODO: some simplified architectures that are
 # environment-agnostic
+from operator import itemgetter
 from typing import Callable, Dict, List, Optional, Sequence
 
 from langchain.prompts import ChatPromptTemplate, MessagesPlaceholder
@@ -15,7 +16,6 @@ from langchain.schema.runnable import (
 )
 from langchain.schema.runnable.passthrough import RunnableAssign
 from pydantic import BaseModel
-from operator import itemgetter
 
 RESPONSE_TEMPLATE = """\
 You are an expert programmer and problem-solver, tasked with answering any question \

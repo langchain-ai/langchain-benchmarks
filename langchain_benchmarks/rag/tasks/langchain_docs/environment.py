@@ -1,13 +1,14 @@
+from functools import partial
+
 from langchain_benchmarks.rag.tasks.langchain_docs.architectures import ARCH_FACTORIES
 from langchain_benchmarks.rag.tasks.langchain_docs.indexing import (
     RETRIEVER_FACTORIES,
 )
-from functools import partial
-from langchain_benchmarks.schema import RetrievalEnvironment
 from langchain_benchmarks.rag.tasks.langchain_docs.indexing.retriever_registry import (
-    load_docs_from_parquet,
     DOCS_FILE,
+    load_docs_from_parquet,
 )
+from langchain_benchmarks.schema import RetrievalEnvironment
 
 
 def create_environment() -> RetrievalEnvironment:

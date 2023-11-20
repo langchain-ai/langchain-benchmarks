@@ -1,9 +1,10 @@
 from typing import Optional
 
+from langchain.base_language import BaseLanguageModel
 from langchain.chat_models import ChatOpenAI
 from langchain.schema.retriever import BaseRetriever
 from langchain.schema.runnable import Runnable
-from langchain.base_language import BaseLanguageModel
+
 from langchain_benchmarks.rag.tasks.langchain_docs.architectures.crqa import (
     create_response_chain,
     get_default_response_synthesizer,
