@@ -69,5 +69,7 @@ as well as a script for initial extraction and formatting of other emails from \
 an arbitrary .mbox file like the one exported by Gmail.
 
 Some additional cleanup of the data was done by hand after the initial pass.
+
+See https://github.com/jacoblee93/oss-model-extraction-evals.
     """,
 )
