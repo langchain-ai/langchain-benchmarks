@@ -4,6 +4,7 @@ from typing import Sequence, Union
 
 from tabulate import tabulate
 
+from langchain_benchmarks.rag.tasks import langchain_docs
 from langchain_benchmarks.schema import Task
 from langchain_benchmarks.tool_usage.environments import (
     relational_data,
@@ -185,6 +186,24 @@ associativity, and distributivity; however, the results are different than expec
 The objective of this task is to evaluate the ability to use the provided tools to \
 solve simple math questions and ignore any innate knowledge about math.
 """
+            ),
+        ),
+        Task(
+            id=4,
+            name="LangChain Docs Q&A",
+            dataset_id=langchain_docs.DATASET_ID,
+            create_environment=langchain_docs.create_environment,
+            description=(
+                """\
+Questions and answers based on a snapshot of the LangChain python docs.
+
+The environment provides the documents and the retriever information.
+
+Each example is composed of a question and reference answer.
+
+Success is measured based on the accuracy of the answer relative to the reference answer.
+We also measure the faithfulness of the model's response relative to the retrieved documents (if any).
+"""  # noqa: E501
             ),
         ),
     ]
