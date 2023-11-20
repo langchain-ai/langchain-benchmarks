@@ -99,16 +99,18 @@ class Registry:
         """Return an HTML representation of the registry."""
         headers = [
             "Name",
+            "Type",
             "Dataset ID",
             "Description",
         ]
         table = [
             [
-                env.name,
-                env.dataset_id,
-                env.description,
+                task.name,
+                task.__class__.__name__,
+                task.dataset_id,
+                task.description,
             ]
-            for env in self.tasks
+            for task in self.tasks
         ]
         return tabulate(table, headers=headers, tablefmt="html")
 

@@ -2,10 +2,10 @@
 
 from langchain_benchmarks.extraction import email_task
 from langchain_benchmarks.schema import Registry
-from langchain_benchmarks.tool_usage import (
-    type_writer_26_funcs,
+from langchain_benchmarks.tool_usage.tasks import (
     type_writer,
     relational_data,
+    type_writer_26_funcs,
     multiverse_math,
 )
 
