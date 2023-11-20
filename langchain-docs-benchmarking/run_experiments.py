@@ -6,9 +6,14 @@ from run_evals import main
 
 experiments = [
     {
-        # "server_url": "http://localhost:1983/openai-functions-agent",
         "arch": "openai-functions-agent",
         "project_name": "openai-functions-agent",
+        "model_config": {"model": "gpt-3.5-turbo-16k"},
+    },
+    {
+        "arch": "openai-functions-agent",
+        "project_name": "oaifunc-agent-gpt-4-1106",
+        "model_config": {"model": "gpt-4-1106-preview"},
     },
     {
         # "server_url": "http://localhost:1983/anthropic_chat",
@@ -41,9 +46,17 @@ experiments = [
         "arch": "chat",
         "model_config": {
             "chat_cls": "ChatFireworks",
-            "model": "accounts/fireworks/models/llama-v2-34b-code-instruct-w8a16",
+            "model": "accounts/fireworks/models/llama-v2-34b-code-instruct",
         },
-        "project_name": "llama-v2-34b-code-instruct-w8a16",
+        "project_name": "llama-v2-34b-code-instruct",
+    },
+    {
+        "arch": "chat",
+        "model_config": {
+            "chat_cls": "ChatFireworks",
+            "model": "accounts/fireworks/models/llama-v2-70b-chat",
+        },
+        "project_name": "llama-70b-chat",
     },
     {
         "arch": "chat",

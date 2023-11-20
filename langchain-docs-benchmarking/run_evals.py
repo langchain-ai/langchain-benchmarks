@@ -12,7 +12,7 @@ from langchain.schema.runnable import Runnable
 from langchain.smith import RunEvalConfig, run_on_dataset
 from langsmith import Client
 from oai_assistant.chain import agent_executor as openai_assistant_chain
-from openai_functions_agent import agent_executor as openai_functions_agent_chain
+from openai_functions_agent import create_executor
 
 ls_client = Client()
 
@@ -32,7 +32,7 @@ def _get_chain_factory(arch: str) -> Callable:
     _map = {
         "chat": create_chain,
         "anthropic-iterative-search": lambda _: anthropic_agent_chain,
-        "openai-functions-agent": lambda _: openai_functions_agent_chain,
+        "openai-functions-agent": create_executor,
         "openai-assistant": lambda _: openai_assistant_chain,
     }
     if arch in _map:
@@ -92,8 +92,7 @@ def main(
     run_on_dataset(
         client=ls_client,
         dataset_name=dataset_name,
-        llm_or_chain_factory=partial(
-            create_runnable,
+        llm_or_chain_factory=lambda: create_runnable(
             arch=arch,
             model_config=model_config,
             retry_config=retry_config,
