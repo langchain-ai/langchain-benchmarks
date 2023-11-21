@@ -5,16 +5,19 @@ Requirements:
 * Agents must output "intermediate_steps" in their run outputs.
 * The dataset must have "expected_steps" in its outputs.
 """
-from typing import Optional
+from typing import List, Optional, Union
 
 from langchain.evaluation import EvaluatorType
 from langchain.smith import RunEvalConfig
+from langchain.smith.evaluation.config import EvalConfig
 from langsmith.evaluation.evaluator import (
     EvaluationResult,
     EvaluationResults,
     RunEvaluator,
 )
 from langsmith.schemas import Example, Run
+
+from langchain_benchmarks.schema import ExtractionTask
 
 
 class AgentTrajectoryEvaluator(RunEvaluator):
@@ -41,18 +44,28 @@ class AgentTrajectoryEvaluator(RunEvaluator):
         score = int(trajectory == expected_trajectory)
         step_fraction = len(trajectory) / len(expected_trajectory)
 
-        return {
-            "results": [
+        results = [
+            EvaluationResult(
+                key="Intermediate steps correctness",
+                score=score,
+            ),
+            EvaluationResult(
+                key="# steps / # expected steps",
+                score=step_fraction,
+            ),
+        ]
+
+        if "state" in run.outputs:
+            state = run.outputs["state"]
+            example_state = example.outputs["state"]
+            results.append(
                 EvaluationResult(
-                    key="Intermediate steps correctness",
-                    score=score,
-                ),
-                EvaluationResult(
-                    key="# steps / # expected steps",
-                    score=step_fraction,
-                ),
-            ]
-        }
+                    key="Correct Final State",
+                    score=int(state == example_state),
+                )
+            )
+
+        return {"results": results}
 
 
 STANDARD_AGENT_EVALUATOR = RunEvalConfig(
