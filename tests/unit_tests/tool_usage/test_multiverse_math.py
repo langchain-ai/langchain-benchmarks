@@ -1,7 +1,7 @@
 from langchain_benchmarks.tool_usage.tasks.multiverse_math import (
     add,
-    multiply,
     get_environment,
+    multiply,
 )
 
 

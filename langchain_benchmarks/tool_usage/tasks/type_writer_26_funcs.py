@@ -160,7 +160,7 @@ def _create_dataset() -> None:
                 "question": example["question"],
             },
             outputs={
-                "output": example["state"],
+                "reference": example["state"],
                 "expected_steps": example["expected_steps"],
                 "state": example["state"],
             },
