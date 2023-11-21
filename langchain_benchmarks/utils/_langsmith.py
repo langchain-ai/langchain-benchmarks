@@ -120,3 +120,18 @@ def download_public_dataset(
         print("Done fetching examples.")
     finally:
         del source_client
+
+
+def exists_public_dataset(token_or_url: str, *, api_url: str = API_URL) -> bool:
+    """Check if a public dataset exists."""
+    api_url, uuid = _parse_token_or_url(token_or_url, api_url)
+    source_client = Client(api_url=api_url, api_key="placeholder")
+    try:
+        try:
+            source_client.read_shared_dataset(uuid)
+            return True
+        except LangSmithNotFoundError:
+            return False
+
+    finally:
+        del source_client
