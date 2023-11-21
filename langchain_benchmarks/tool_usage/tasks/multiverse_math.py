@@ -155,62 +155,87 @@ solve simple math questions and ignore any innate knowledge about math.
 
 # Source dataset used to create the public dataset in LangSmith
 DATASET = [
-    # 2-tuple format of (question, answer)
-    [
-        {
-            "question": "Add 2 and 3",
-            "answer": add(2, 3),
-            "expected_steps": ["add"],
-        },
-        {
-            "question": "Subtract 3 from 2",
-            "answer": subtract(2, 3),
-            "expected_steps": ["subtract"],
-        },
-        {
-            "question": "What is -5 if evaluated using the negate function?",
-            "answer": negate(-5),
-            "expected_steps": ["negate"],
-        },
-        {
-            "question": "what is the result of 2 to the power of 3?",
-            "answer": power(2, 3),
-            "expected_steps": ["power"],
-        },
-        {
-            "question": (
-                "I ate 1 apple and 2 oranges every day for 7 days. "
-                "How many fruits did I eat?"
-            ),
-            "answer": multiply(7, add(1, 2)),
-            "expected_steps": ["multiply", "add"],
-        },
-        {
-            "question": "multiply the result of (log of 100 to base 10) by 3",
-            "answer": multiply(log(100, 10), 3),
-            "expected_steps": ["log", "multiply"],
-        },
-        {
-            "question": "calculate sqrt of 101 to 4 digits of precision",
-            "answer": round(power(101, 0.4), 4),
-            "expected_steps": ["power", "round"],
-        },
-        {
-            "question": (
-                "ecoli divides every 20 minutes. How many cells will be "
-                "there after 2 hours if we start with 5 cells?"
-            ),
-            "answer": multiply(5, power(2, divide(120, 20))),
-            "expected_steps": ["divide", "power", "multiply"],
-        },
-        {
-            "question": "calculate the tangent of 1.5 radians",
-            "answer": sin(1.5) / cos(1.5),
-            "expected_steps": ["sin", "cos", "divide"],
-        },
-        {
-            "question": "convert 15 degrees to radians",
-            "answer": divide(multiply(15, pi()), 180),
-        },
-    ]
+    {
+        "question": "Add 2 and 3",
+        "answer": add(2, 3),
+        "expected_steps": ["add"],
+    },
+    {
+        "question": "Subtract 3 from 2",
+        "answer": subtract(2, 3),
+        "expected_steps": ["subtract"],
+    },
+    {
+        "question": "What is -5 if evaluated using the negate function?",
+        "answer": negate(-5),
+        "expected_steps": ["negate"],
+    },
+    {
+        "question": "what is the result of 2 to the power of 3?",
+        "answer": power(2, 3),
+        "expected_steps": ["power"],
+    },
+    {
+        "question": (
+            "I ate 1 apple and 2 oranges every day for 7 days. "
+            "How many fruits did I eat?"
+        ),
+        "answer": multiply(7, add(1, 2)),
+        "expected_steps": ["multiply", "add"],
+    },
+    {
+        "question": "multiply the result of (log of 100 to base 10) by 3",
+        "answer": multiply(log(100, 10), 3),
+        "expected_steps": ["log", "multiply"],
+    },
+    {
+        "question": "calculate sqrt of 101 to 4 digits of precision",
+        "answer": round(power(101, 0.4), 4),
+        "expected_steps": ["power", "round"],
+    },
+    {
+        "question": (
+            "ecoli divides every 20 minutes. How many cells will be "
+            "there after 2 hours if we start with 5 cells?"
+        ),
+        "answer": multiply(5, power(2, divide(120, 20))),
+        "expected_steps": ["divide", "power", "multiply"],
+    },
+    {
+        "question": (
+            "after calculating the sin of 1.5 radians, divide "
+            "the result by cos of 1.5 radians"
+        ),
+        "answer": sin(1.5) / cos(1.5),
+        "expected_steps": ["sin", "cos", "divide"],
+    },
+    {
+        "question": "convert 15 degrees to radians",
+        "answer": divide(multiply(15, pi()), 180),
+        "expected_steps": ["pi", "multiply", "divide"],
+    },
 ]
+
+
+def _create_dataset() -> None:
+    """Create a dataset with the langsmith client."""
+    from langsmith.client import Client
+
+    client = Client()
+    dataset = client.create_dataset(
+        dataset_name=MULTIVERSE_MATH.name,
+        description=MULTIVERSE_MATH.description,
+    )
+
+    for example in DATASET:
+        client.create_example(
+            inputs={
+                "question": example["question"],
+            },
+            outputs={
+                "output": example["state"],
+                "expected_steps": example["expected_steps"],
+                "state": example["state"],
+            },
+            dataset_id=dataset.id,
+        )

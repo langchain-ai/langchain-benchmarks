@@ -65,7 +65,7 @@ def get_environment() -> ToolUsageEnvironment:
 
 
 TYPE_WRITER_26_FUNCS_TASK = ToolUsageTask(
-    name="Tool Usage - Typewriter",
+    name="Tool Usage - Typewriter (26 tools)",
     dataset_id="placeholder",
     create_environment=get_environment,
     instructions=(
@@ -77,19 +77,92 @@ TYPE_WRITER_26_FUNCS_TASK = ToolUsageTask(
     ),
     description=(
         """\
-Environment with 26 functions each representing a letter of the alphabet.
+Environment with 26 tools each tool represents a letter of the alphabet.
 
-In this variation of the typewriter task, there are 26 parameterless functions, where \
-each function represents a letter of the alphabet (instead of a single function that \
-takes a letter as an argument).
-
-The object is to evaluate the ability of use the functions to repeat the given string.
+The objective of this task is to evaluate the model's ability the use tools
+for a simple repetition task.
 
 For example, if the string is 'abc', the tools 'a', 'b', and 'c' must be invoked \
 in that order.
 
 The dataset includes examples of varying difficulty. The difficulty is measured \
 by the length of the string.
+
+This is a variation of the typer writer task, where 26 parameterless tools are
+given instead of a single tool that takes a letter as an argument.
 """
     ),
 )
+
+STRINGS_TO_TYPE = [
+    # letter repetition
+    "a",
+    "aa",
+    "aaa",
+    "aaaa",
+    # 3-letter words
+    "dog",
+    "cat",
+    # 4-letter words
+    "hand",
+    "head",
+    # 5-letter words
+    "house",
+    "horse",
+    # 6-letter words
+    "school",
+    "church",
+    # 7-letter words
+    "teacher",
+    "student",
+    # 8-letter words
+    "computer",
+    "keyboard",
+    # 9-letter words
+    "university",
+    "dictionary",
+    # 10-letter words
+    "information",
+    "communication",
+]
+
+
+def _create_dataset(strings: List[str]) -> List[dict]:
+    """Create the dataset."""
+    dataset = []
+    for string in strings:
+        dataset.append(
+            {
+                "question": string,
+                "expected_steps": [c for c in string],
+                "state": string,
+            }
+        )
+    return dataset
+
+
+DATASET = _create_dataset(STRINGS_TO_TYPE)
+
+
+def _create_dataset() -> None:
+    """Create a dataset with the langsmith client."""
+    from langsmith.client import Client
+
+    client = Client()
+    dataset = client.create_dataset(
+        dataset_name=TYPE_WRITER_26_FUNCS_TASK.name,
+        description=TYPE_WRITER_26_FUNCS_TASK.description,
+    )
+
+    for example in DATASET:
+        client.create_example(
+            inputs={
+                "question": example["question"],
+            },
+            outputs={
+                "output": example["state"],
+                "expected_steps": example["expected_steps"],
+                "state": example["state"],
+            },
+            dataset_id=dataset.id,
+        )
