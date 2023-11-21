@@ -1,10 +1,12 @@
 """Code for creating an agent factory for evaluating tool usage tasks."""
+from typing import Any
+
 from langchain.agents import AgentExecutor
 from langchain.agents.format_scratchpad import format_to_openai_functions
 from langchain.agents.output_parsers import OpenAIFunctionsAgentOutputParser
 from langchain.chat_models import ChatOpenAI
 from langchain.prompts import ChatPromptTemplate, MessagesPlaceholder
-from langchain.schema.runnable import Runnable
+from langchain.schema.runnable import Runnable, RunnablePassthrough
 from langchain.tools.render import format_tool_to_openai_function
 
 from langchain_benchmarks.schema import ToolUsageTask
@@ -65,6 +67,13 @@ class OpenAIAgentFactory:
             | OpenAIFunctionsAgentOutputParser()
         )
 
+        def _read_state(*args: Any, **kwargs: Any) -> Any:
+            """Read the state of the environment."""
+            if env.read_state is not None:
+                return env.read_state()
+            else:
+                return None
+
         return (
             AgentExecutor(
                 agent=runnable_agent,
@@ -73,4 +82,4 @@ class OpenAIAgentFactory:
                 return_intermediate_steps=True,
             )
             | _ensure_output_exists
-        )
+        ) | RunnablePassthrough.assign(state=_read_state)
