@@ -17,6 +17,10 @@ test_watch:
 	poetry run ptw . -- $(TEST_FILE)
 
 build_docs:
+	# Copy README.md to docs/index.md
+	cp README.md ./docs/source/index.md
+	# Append to the table of contents the contents of the file
+	cat ./docs/source/toc.segment >> ./docs/source/index.md
 	poetry run sphinx-build "./docs/source" "./docs/build"
 
 clean_docs:

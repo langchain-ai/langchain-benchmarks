@@ -2,6 +2,7 @@
 import dataclasses
 from typing import Any, Callable, Dict, Iterable, List, Optional, Type, Union
 
+from langchain.prompts import ChatPromptTemplate
 from langchain.schema import BaseRetriever
 from langchain.schema.document import Document
 from langchain.schema.embeddings import Embeddings
@@ -75,8 +76,16 @@ class ToolUsageTask(BaseTask):
 class ExtractionTask(BaseTask):
     """A definition for an extraction task."""
 
-    model: Type[BaseModel]
-    """Get the model for the task."""
+    schema: Type[BaseModel]
+    """Get schema that specifies what should be extracted."""
+
+    # We might want to make this optional / or support more types
+    # and add validation, but let's wait until we have more examples
+    instructions: ChatPromptTemplate
+    """Get the prompt for the task.
+    
+    This is the default prompt to use for the task.
+    """
 
 
 @dataclasses.dataclass(frozen=True)
@@ -125,16 +134,18 @@ class Registry:
         """Return an HTML representation of the registry."""
         headers = [
             "Name",
+            "Type",
             "Dataset ID",
             "Description",
         ]
         table = [
             [
-                env.name,
-                env.dataset_id,
-                env.description,
+                task.name,
+                task.__class__.__name__,
+                task.dataset_id,
+                task.description,
             ]
-            for env in self.tasks
+            for task in self.tasks
         ]
         return tabulate(table, headers=headers, tablefmt="html")
 
