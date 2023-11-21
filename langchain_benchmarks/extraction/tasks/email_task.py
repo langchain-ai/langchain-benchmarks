@@ -2,7 +2,7 @@ from enum import Enum
 from typing import Optional, List
 
 from langchain.prompts import ChatPromptTemplate
-from pydantic import BaseModel, Field
+from langchain.pydantic_v1 import BaseModel, Field
 
 from langchain_benchmarks.schema import ExtractionTask
 
@@ -40,7 +40,8 @@ DEFAULT_CHAT_MODEL_PROMPT = ChatPromptTemplate.from_messages(
         (
             "human",
             "What can you tell me about the following email? Make sure to "
-            "answer in the correct format: {schema}",
+            "extract the question in the correct format. "
+            "Here is the email:\n ```\n{email}\n```",
         ),
     ]
 )
