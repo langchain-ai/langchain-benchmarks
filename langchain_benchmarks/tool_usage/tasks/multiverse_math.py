@@ -38,9 +38,9 @@ or
 multiply(divide(15, 180), pi())
 """
 import math
-from typing import cast, List
+from typing import List, cast
 
-from langchain.tools import tool, BaseTool
+from langchain.tools import BaseTool, tool
 
 from langchain_benchmarks.schema import ToolUsageEnvironment, ToolUsageTask
 

@@ -4,7 +4,7 @@ In this variation of the task, the agent is given a single function,
 that takes a letter as an argument.
 """
 import dataclasses
-from typing import Callable, Any, List, cast
+from typing import Any, Callable, List, cast
 
 from langchain.tools import BaseTool, tool
 
