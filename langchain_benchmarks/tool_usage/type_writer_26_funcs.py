@@ -8,11 +8,7 @@ from typing import Callable, Any, List, cast
 
 from langchain.tools import BaseTool, tool
 
-<<<<<<< HEAD:langchain_benchmarks/tool_usage/environments/type_writer_26_funcs.py
-from langchain_benchmarks.schema import AbstractEnvironment
-=======
 from langchain_benchmarks.schema import ToolUsageEnvironment, ToolUsageTask
->>>>>>> eugene/rag_refactor_2:langchain_benchmarks/tool_usage/type_writer_26_funcs.py
 
 
 @dataclasses.dataclass

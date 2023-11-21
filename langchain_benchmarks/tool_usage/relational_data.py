@@ -12,11 +12,7 @@ from typing import Callable, List, TypedDict
 
 from langchain.tools import BaseTool, tool
 
-<<<<<<< HEAD:langchain_benchmarks/tool_usage/environments/relational_data.py
-from langchain_benchmarks.schema import AbstractEnvironment
-=======
 from langchain_benchmarks.schema import ToolUsageEnvironment, ToolUsageTask
->>>>>>> eugene/rag_refactor_2:langchain_benchmarks/tool_usage/relational_data.py
 
 USER_DATA = [
     # IDs are not consecutive to prevent agents from guessing the ID

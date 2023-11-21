@@ -1,7 +1,7 @@
 """Registry of environments for ease of access."""
 
 from langchain_benchmarks.extraction import email_task
-from langchain_benchmarks.rag import LANGCHAIN_DOCS_TASK
+from langchain_benchmarks.rag.tasks import LANGCHAIN_DOCS_TASK
 from langchain_benchmarks.schema import Registry
 from langchain_benchmarks.tool_usage import (
     multiverse_math,

@@ -52,14 +52,6 @@ class BaseTask:
             ["Description", self.description],
         ]
 
-    def __post_init__(self) -> None:
-        """Validate that all the tasks have unique names and IDs."""
-        if self.task_type not in ["tool_usage", "rag"]:
-            raise ValueError(
-                f"Unknown task type {self.task_type}. "
-                f"Task type must be one of 'tool_usage', 'rag'."
-            )
-
     def _repr_html_(self) -> str:
         """Return an HTML representation of the environment."""
         return tabulate(

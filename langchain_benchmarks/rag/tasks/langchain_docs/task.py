@@ -1,7 +1,9 @@
-from langchain_benchmarks.rag.environments.langchain_docs import (
-    architectures,
-    langchain_docs_retriever,
-)
+from functools import partial
+
+from langchain_benchmarks.rag.tasks.langchain_docs import (
+    architectures, indexing)
+from langchain_benchmarks.rag.tasks.langchain_docs.indexing.retriever_registry import (
+    DOCS_FILE, load_docs_from_parquet)
 from langchain_benchmarks.schema import RetrievalTask
 
 DATASET_ID = (
@@ -11,8 +13,9 @@ DATASET_ID = (
 LANGCHAIN_DOCS_TASK = RetrievalTask(
     name="LangChain Docs Q&A",
     dataset_id=DATASET_ID,
-    retriever_factories=langchain_docs_retriever.RETRIEVER_FACTORIES,
+    retriever_factories=indexing.RETRIEVER_FACTORIES,
     architecture_factories=architectures.ARCH_FACTORIES,
+    get_docs=partial(load_docs_from_parquet, DOCS_FILE),
     description=(
         """\
 Questions and answers based on a snapshot of the LangChain python docs.

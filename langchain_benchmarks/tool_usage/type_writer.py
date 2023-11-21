@@ -8,11 +8,7 @@ from typing import Callable, Any, List, cast
 
 from langchain.tools import BaseTool, tool
 
-<<<<<<< HEAD:langchain_benchmarks/tool_usage/environments/type_writer.py
-from langchain_benchmarks.schema import AbstractEnvironment
-=======
 from langchain_benchmarks.schema import ToolUsageEnvironment, ToolUsageTask
->>>>>>> eugene/rag_refactor_2:langchain_benchmarks/tool_usage/type_writer.py
 
 
 @dataclasses.dataclass
@@ -36,11 +32,7 @@ def function(paper: Paper) -> Callable[[], str]:
 # PUBLIC API
 
 
-<<<<<<< HEAD:langchain_benchmarks/tool_usage/environments/type_writer.py
-def get_environment() -> AbstractEnvironment:
-=======
 def get_environment() -> ToolUsageEnvironment:
->>>>>>> eugene/rag_refactor_2:langchain_benchmarks/tool_usage/type_writer.py
     """Create tools and state reader.
 
     Attention: this is a factory function, so it will create a new environment

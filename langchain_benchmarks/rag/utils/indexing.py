@@ -18,6 +18,7 @@ from langchain.schema.storage import BaseStore
 from langchain.schema.vectorstore import VectorStore
 from langchain.storage import InMemoryStore
 from langchain.text_splitter import RecursiveCharacterTextSplitter, TextSplitter
+from tqdm.auto import tqdm
 
 logger = logging.getLogger(__name__)
 _DIRECTORY = os.path.dirname(os.path.abspath(__file__))
@@ -128,8 +129,6 @@ def transform_docs_hyde(
     docstore.mset(doc_ids)
 
 
-# fetch_remote_file(REMOTE_DOCS_FILE, DOCS_FILE)
-#     docs = load_docs_from_parquet(DOCS_FILE)
 def create_index(
     docs: Iterable[Document],
     embedding: Embeddings,
@@ -158,7 +157,7 @@ def create_index(
     record_manager.create_schema()
 
     return index(
-        transformed_docs,
+        tqdm(transformed_docs),
         record_manager,
         vectorstore,
         cleanup="full",
@@ -178,6 +177,7 @@ def get_vectorstore_retriever(
 ) -> BaseRetriever:
     """Index the documents (with caching) and return a vector store retriever."""
     index_stats = create_index(
+        docs,
         embedding,
         vectorstore,
         collection_name=collection_name,
