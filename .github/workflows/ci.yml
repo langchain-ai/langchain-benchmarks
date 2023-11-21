@@ -115,3 +115,36 @@ jobs:
         run: |
           echo "Attempting to build docs..."
           make build_docs
+  test_datasets:
+    timeout-minutes: 5
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ${{ env.WORKDIR }}
+    strategy:
+      matrix:
+        python-version:
+          - "3.11"
+    name: Validate Public Datasets
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Set up Python ${{ matrix.python-version }} + Poetry ${{ env.POETRY_VERSION }}
+        uses: "./.github/actions/poetry_setup"
+        with:
+          python-version: ${{ matrix.python-version }}
+          poetry-version: ${{ env.POETRY_VERSION }}
+          working-directory: .
+          cache-key: benchmarks-all
+
+      - name: Install dependencies
+        shell: bash
+        run: |
+          echo "Running tests, installing dependencies with poetry..."
+          poetry install --with test,lint,typing,docs
+
+      - name: Request datasets
+        shell: bash
+        run: |
+          echo "Attempting to build docs..."
+          poetry run python -m scripts.check_datasets
