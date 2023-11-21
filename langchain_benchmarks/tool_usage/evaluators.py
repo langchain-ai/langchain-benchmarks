@@ -5,7 +5,7 @@ Requirements:
 * Agents must output "intermediate_steps" in their run outputs.
 * The dataset must have "expected_steps" in its outputs.
 """
-from typing import Optional, Union, List
+from typing import List, Optional, Union
 
 from langchain.evaluation import EvaluatorType
 from langchain.smith import RunEvalConfig
@@ -16,6 +16,7 @@ from langsmith.evaluation.evaluator import (
     RunEvaluator,
 )
 from langsmith.schemas import Example, Run
+
 from langchain_benchmarks.schema import ExtractionTask
 
 
