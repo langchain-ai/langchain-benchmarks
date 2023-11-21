@@ -26,7 +26,7 @@ def _create_typing_func(letter: str, paper: Paper) -> Callable[[], str]:
         return "OK"
 
     func.__doc__ = f'Run to Type the letter "{letter}".'
-    func.__name__ = f"{letter}"
+    func.__name__ = letter
     return func
 
 
@@ -66,7 +66,7 @@ def get_environment() -> ToolUsageEnvironment:
 
 TYPE_WRITER_26_FUNCS_TASK = ToolUsageTask(
     name="Tool Usage - Typewriter (26 tools)",
-    dataset_id="https://smith.langchain.com/public/18bbe336-dd93-462b-8b09-0ffbf13e4fa6/d",
+    dataset_id="https://smith.langchain.com/public/128af05e-aa00-4e3b-a958-d166dd450581/d",
     create_environment=get_environment,
     instructions=(
         "Repeat the given string by using the provided tools. "

@@ -50,8 +50,8 @@ class OpenAIAgentFactory:
                     "system",
                     self.task.instructions,
                 ),
-                MessagesPlaceholder(variable_name="agent_scratchpad"),
                 ("user", "{input}"),
+                MessagesPlaceholder(variable_name="agent_scratchpad"),
             ]
         )
 
@@ -74,7 +74,7 @@ class OpenAIAgentFactory:
             else:
                 return None
 
-        return (
+        runnable = (
             AgentExecutor(
                 agent=runnable_agent,
                 tools=env.tools,
@@ -82,4 +82,13 @@ class OpenAIAgentFactory:
                 return_intermediate_steps=True,
             )
             | _ensure_output_exists
-        ) | RunnablePassthrough.assign(state=_read_state)
+        )
+
+        if env.read_state is not None:
+            # If the environment has a state reader, add it to the runnable
+            runnable = runnable | RunnablePassthrough.assign(state=_read_state)
+
+        return runnable
+
+    def __call__(self) -> Runnable:
+        return self.create()

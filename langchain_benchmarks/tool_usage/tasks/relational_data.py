@@ -406,7 +406,7 @@ def get_environment() -> ToolUsageEnvironment:
 
 
 # ID of a dataset that contains the questions and references
-DATASET_ID = "e95d45da-aaa3-44b3-ba2b-7c15ff6e46f5"  # ID of Agent Gym: E01 Alpha
+DATASET_ID = "https://smith.langchain.com/public/1d89f4b3-5f73-48cf-a127-2fdeb22f6d84/d"
 
 RELATIONAL_DATA_TASK = ToolUsageTask(
     name="Tool Usage - Relational Data",
