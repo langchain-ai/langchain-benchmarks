@@ -2,7 +2,7 @@
 from __future__ import annotations
 
 import dataclasses
-import inspect
+import urllib
 from typing import Any, Callable, Dict, Iterable, List, Optional, Type, Union
 
 from langchain.prompts import ChatPromptTemplate
@@ -47,12 +47,28 @@ class BaseTask:
     """
 
     @property
+    def _dataset_link(self) -> str:
+        """Return a link to the dataset."""
+        dataset_url = (
+            self.dataset_id
+            if self.dataset_id.startswith("http")
+            else f"https://smith.langchain.com/public/{self.dataset_id}/d"
+        )
+        parsed_url = urllib.parse.urlparse(dataset_url)
+        # Extract the UUID from the path
+        path_parts = parsed_url.path.split("/")
+        token_uuid = path_parts[-2] if len(path_parts) >= 2 else "Link"
+        return (
+            f'<a href="{dataset_url}" target="_blank" rel="noopener">{token_uuid}</a>'
+        )
+
+    @property
     def _table(self) -> List[List[str]]:
         """Return a table representation of the environment."""
         return [
             ["Name", self.name],
             ["Type", self.__class__.__name__],
-            ["Dataset ID", self.dataset_id],
+            ["Dataset ID", self._dataset_link],
             ["Description", self.description],
         ]
 
@@ -60,7 +76,7 @@ class BaseTask:
         """Return an HTML representation of the environment."""
         return tabulate(
             self._table,
-            tablefmt="html",
+            tablefmt="unsafehtml",
         )
 
 
@@ -95,7 +111,9 @@ class ExtractionTask(BaseTask):
 class RetrievalTask(BaseTask):
     retriever_factories: Dict[str, Callable[[Embeddings], BaseRetriever]]  # noqa: F821
     """Factories that index the docs using the specified strategy."""
-    architecture_factories: Dict[str, Callable[[Embeddings], BaseRetriever]]  # noqa: F821
+    architecture_factories: Dict[
+        str, Callable[[Embeddings], BaseRetriever]
+    ]  # noqa: F821
     """Factories methods that help build some off-the-shelf architectures。"""
     get_docs: Callable[..., Iterable[Document]]
     """A function that returns the documents to be indexed."""
@@ -146,12 +164,12 @@ class Registry:
             [
                 task.name,
                 task.__class__.__name__,
-                task.dataset_id,
+                task._dataset_link,
                 task.description,
             ]
             for task in self.tasks
         ]
-        return tabulate(table, headers=headers, tablefmt="html")
+        return tabulate(table, headers=headers, tablefmt="unsafehtml")
 
     def filter(
         self,
