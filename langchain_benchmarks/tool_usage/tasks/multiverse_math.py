@@ -129,7 +129,7 @@ def get_environment() -> ToolUsageEnvironment:
 
 MULTIVERSE_MATH = ToolUsageTask(
     name="Multiverse Math",
-    dataset_id="placeholder",
+    dataset_id="https://smith.langchain.com/public/3f2b389f-dcb3-4669-8174-1be4f0a86576/d",
     create_environment=get_environment,
     instructions=(
         "You are requested to solve math questions in an alternate "
@@ -222,6 +222,7 @@ def _create_dataset() -> None:
     from langsmith.client import Client
 
     client = Client()
+
     dataset = client.create_dataset(
         dataset_name=MULTIVERSE_MATH.name,
         description=MULTIVERSE_MATH.description,
@@ -233,9 +234,8 @@ def _create_dataset() -> None:
                 "question": example["question"],
             },
             outputs={
-                "output": example["state"],
+                "output": example["answer"],
                 "expected_steps": example["expected_steps"],
-                "state": example["state"],
             },
             dataset_id=dataset.id,
         )

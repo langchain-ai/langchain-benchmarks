@@ -66,7 +66,7 @@ def get_environment() -> ToolUsageEnvironment:
 
 TYPE_WRITER_26_FUNCS_TASK = ToolUsageTask(
     name="Tool Usage - Typewriter (26 tools)",
-    dataset_id="placeholder",
+    dataset_id="https://smith.langchain.com/public/18bbe336-dd93-462b-8b09-0ffbf13e4fa6/d",
     create_environment=get_environment,
     instructions=(
         "Repeat the given string by using the provided tools. "
