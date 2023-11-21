@@ -15,5 +15,6 @@ def fetch_remote_file(remote: str, local: str):
         if not os.path.exists(os.path.dirname(local)):
             os.makedirs(os.path.dirname(local))
         r = requests.get(remote, allow_redirects=True)
-        open(local, "wb").write(r.content)
+        with open(local, "wb") as f:
+            f.write(r.content)
         print(f"File {remote} downloaded.")
