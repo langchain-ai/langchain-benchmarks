@@ -1,0 +1,4 @@
+db/
+db_docs/
+.sql
+.bin

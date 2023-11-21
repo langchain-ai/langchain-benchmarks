@@ -1,5 +1,5 @@
 from enum import Enum
-from typing import Optional, List
+from typing import List, Optional
 
 from langchain.prompts import ChatPromptTemplate
 from langchain.pydantic_v1 import BaseModel, Field

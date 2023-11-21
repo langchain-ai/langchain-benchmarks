@@ -1,5 +1,5 @@
 """Default implementations of LLMs that can be used for extraction."""
-from typing import Type, Optional, List, Any, Dict
+from typing import Any, Dict, List, Optional, Type
 
 from langchain.chains.openai_functions import convert_to_openai_function
 from langchain.chat_models import ChatOpenAI
@@ -11,7 +11,6 @@ from pydantic import BaseModel
 
 from langchain_benchmarks.extraction.evaluators import get_eval_config
 from langchain_benchmarks.schema import ExtractionTask
-
 
 # PUBLIC API
 

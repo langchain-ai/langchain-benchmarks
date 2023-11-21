@@ -120,6 +120,7 @@ if __name__ == "__main__":
         ]
 
     for experiment in selected_experiments:
+        print("Running experiment:", experiment)
         main(
             **experiment,
             dataset_name=args.dataset_name,

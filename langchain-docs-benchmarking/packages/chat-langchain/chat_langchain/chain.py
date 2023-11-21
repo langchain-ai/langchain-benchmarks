@@ -134,7 +134,7 @@ def create_response_chain(
         ]
     )
 
-    response_synthesizer = (prompt | llm | StrOutputParser()).with_config(
+    response_generator = (prompt | llm | StrOutputParser()).with_config(
         run_name="GenerateResponse",
     )
     return (
@@ -147,7 +147,7 @@ def create_response_chain(
             ),
         }
         | _context
-        | response_synthesizer
+        | response_generator
     )
 
 
