@@ -65,10 +65,11 @@ def partition_pdfs(path: Path, *, config: Optional[dict] = None):
         "max_characters": 4000,
         "new_after_n_chars": 3800,
         "combine_text_under_n_chars": 2000,
-        "image_output_dir_path": path,
         **(config or {}),
     }
-    raw_pdf_elements = partition_pdf(filename=str(path), **config)
+    raw_pdf_elements = partition_pdf(
+        filename=str(path), image_output_dir_path=str(path), **config
+    )
 
     # Categorize by type
     for element in raw_pdf_elements:

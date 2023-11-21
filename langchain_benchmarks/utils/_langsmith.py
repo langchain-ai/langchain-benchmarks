@@ -9,7 +9,7 @@ from langsmith import Client
 from langsmith.utils import LangSmithNotFoundError
 from tqdm import auto
 
-WEB_API_URL = "https://web.smith.langchain.com/"
+API_URL = "https://api.smith.langchain.com/"
 
 
 def _parse_token_or_url(url_or_token: str, api_url: str) -> Tuple[str, Optional[str]]:
@@ -25,7 +25,7 @@ def _parse_token_or_url(url_or_token: str, api_url: str) -> Tuple[str, Optional[
     # Extract the UUID from the path
     path_parts = parsed_url.path.split("/")
     token_uuid = path_parts[-2] if len(path_parts) >= 2 else None
-    return WEB_API_URL, token_uuid
+    return API_URL, token_uuid
 
 
 # PUBLIC API
@@ -35,7 +35,7 @@ def clone_public_dataset(
     token_or_url: str,
     *,
     dataset_name: Optional[str] = None,
-    source_api_url: str = WEB_API_URL,
+    source_api_url: str = API_URL,
 ) -> None:
     """Clone a public dataset to your own langsmith tenant.
 
@@ -96,7 +96,7 @@ def download_public_dataset(
     token_or_url: str,
     *,
     path: Optional[Union[str, Path]] = None,
-    api_url: str = WEB_API_URL,
+    api_url: str = API_URL,
 ) -> None:
     """Download a public dataset."""
     api_url, token_uuid = _parse_token_or_url(token_or_url, api_url)
