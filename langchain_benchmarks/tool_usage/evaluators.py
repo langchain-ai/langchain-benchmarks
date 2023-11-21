@@ -55,6 +55,46 @@ class AgentTrajectoryEvaluator(RunEvaluator):
         }
 
 
+class StateEvaluator(RunEvaluator):
+    """Evaluate that the final state is correct by comparing to the expected state."""
+
+    def evaluate_run(
+        self, run: Run, example: Optional[Example] = None
+    ) -> EvaluationResults:
+        if run.outputs is None:
+            raise ValueError("Run outputs cannot be None")
+        state = run.outputs["state"]
+        example_state = example.outputs["state"]
+
+        return {
+            "results": [
+                EvaluationResult(
+                    key="State Correct",
+                    score=int(state == example_state),
+                ),
+            ]
+        }
+
+
+def create_run_eval_config() -> RunEvalConfig:
+    """Create run eval config."""
+    return RunEvalConfig(
+        # Evaluators can either be an evaluator type
+        # (e.g., "qa", "criteria", "embedding_distance", etc.) or a
+        # configuration for that evaluator
+        evaluators=[
+            # Measures whether a QA response is "Correct", based on a reference answer
+            # You can also select via the raw string "qa"
+            EvaluatorType.QA
+        ],
+        # You can add custom StringEvaluator or RunEvaluator objects
+        # here as well, which will automatically be
+        # applied to each prediction. Check out the docs for examples.
+        custom_evaluators=[AgentTrajectoryEvaluator(), StateEvaluator()],
+        # We now need to specify this because we have multiple outputs in our dataset
+    )
+
+
 STANDARD_AGENT_EVALUATOR = RunEvalConfig(
     # Evaluators can either be an evaluator type
     # (e.g., "qa", "criteria", "embedding_distance", etc.) or a
