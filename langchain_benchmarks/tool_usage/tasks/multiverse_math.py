@@ -10,9 +10,9 @@ appropriate properties. For example, the modified multiplication operation
 should still be commutative.
 """
 import math
-from typing import cast, List
+from typing import List, cast
 
-from langchain.tools import tool, BaseTool
+from langchain.tools import BaseTool, tool
 
 from langchain_benchmarks.schema import ToolUsageEnvironment, ToolUsageTask
 
