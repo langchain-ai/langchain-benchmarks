@@ -1,6 +1,8 @@
 """Schema for the Langchain Benchmarks."""
 from __future__ import annotations
+
 import dataclasses
+import inspect
 from typing import Any, Callable, Dict, Iterable, List, Optional, Type, Union
 
 from langchain.prompts import ChatPromptTemplate
@@ -93,9 +95,7 @@ class ExtractionTask(BaseTask):
 class RetrievalTask(BaseTask):
     retriever_factories: Dict[str, Callable[[Embeddings], BaseRetriever]]  # noqa: F821
     """Factories that index the docs using the specified strategy."""
-    architecture_factories: Dict[
-        str, Callable[[Embeddings], BaseRetriever]
-    ]  # noqa: F821
+    architecture_factories: Dict[str, Callable[[Embeddings], BaseRetriever]]  # noqa: F821
     """Factories methods that help build some off-the-shelf architectures。"""
     get_docs: Callable[..., Iterable[Document]]
     """A function that returns the documents to be indexed."""
@@ -107,6 +107,7 @@ class RetrievalTask(BaseTask):
         return table + [
             ["Retriever Factories", ", ".join(self.retriever_factories.keys())],
             ["Architecture Factories", ", ".join(self.architecture_factories.keys())],
+            ["get_docs", self.get_docs],
         ]
 
 
