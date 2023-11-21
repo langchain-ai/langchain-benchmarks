@@ -1,8 +1,33 @@
+```{toctree}
+:maxdepth: 2
+:caption: Introduction
+
+./notebooks/datasets
+```
+
 
 ```{toctree}
 :maxdepth: 2
-:caption: Contents
-:glob:
+:caption: Tool Usage
 
-./notebooks/*
+./notebooks/tool_usage/relational_data
+./notebooks/tool_usage/multiverse_math
+./notebooks/tool_usage/typewriter_1
+./notebooks/tool_usage/typewriter_26
+```
+
+```{toctree}
+:maxdepth: 2
+:caption: Extraction
+
+./notebooks/extraction/email
+```
+
+```{toctree}
+:maxdepth: 2
+:caption: RAG
+
+./notebooks/rag_langchain_docs
+./notebooks/rag_semi_structured
+./notebooks/rag_evaluations
 ```
