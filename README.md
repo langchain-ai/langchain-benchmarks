@@ -1,8 +1,11 @@
+🚧 Under Active Development 🚧
+
 # 🦜💪 LangChain Benchmarks
 
-This repository shows how we benchmark some of our more popular chains and agents.
-The benchmarks are organized by end-to-end use cases.
-They utilize [LangSmith](https://smith.langchain.com/) heavily.
+A package to help benchmark various LLM related tasks.
+
+The benchmarks are organized by end-to-end use cases, and
+utilize [LangSmith](https://smith.langchain.com/) heavily.
 
 We have several goals in open sourcing this:
 
@@ -12,7 +15,7 @@ We have several goals in open sourcing this:
 - Encouraging others to benchmark their solutions on these tasks (we are always looking for better ways of doing things!)
 
 We currently include the following tasks:
-- [CSV Question Answering](csv-qa)
-- [Extraction](extraction)
-- [Q&A over the LangChain docs](langchain-docs-benchmarking)
-- [Meta-evaluation of 'correctness' evaluators](meta-evals)
+- [CSV Question Answering](https://github.com/langchain-ai/langchain-benchmarks/tree/main/csv-qa)
+- [Extraction](https://github.com/langchain-ai/langchain-benchmarks/tree/main/extraction)
+- [Q&A over the LangChain docs](https://github.com/langchain-ai/langchain-benchmarks/tree/main/langchain-docs-benchmarking)
+- [Meta-evaluation of 'correctness' evaluators](https://github.com/langchain-ai/langchain-benchmarks/tree/main/meta-evals)
