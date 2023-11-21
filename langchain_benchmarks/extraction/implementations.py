@@ -13,6 +13,7 @@ from langchain_benchmarks.schema import ExtractionTask
 
 # PUBLIC API
 
+
 def create_openai_function_based_extractor(
     llm: Runnable,
     schema: Type[BaseModel],
