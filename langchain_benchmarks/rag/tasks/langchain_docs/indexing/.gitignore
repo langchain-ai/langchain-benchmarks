@@ -1,4 +1,4 @@
 db/
-docs_db/
+db_docs/
 .sql
 .bin

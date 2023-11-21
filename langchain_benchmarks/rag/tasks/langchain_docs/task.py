@@ -1,9 +1,10 @@
 from functools import partial
 
-from langchain_benchmarks.rag.tasks.langchain_docs import (
-    architectures, indexing)
+from langchain_benchmarks.rag.tasks.langchain_docs import architectures, indexing
 from langchain_benchmarks.rag.tasks.langchain_docs.indexing.retriever_registry import (
-    DOCS_FILE, load_docs_from_parquet)
+    DOCS_FILE,
+    load_docs_from_parquet,
+)
 from langchain_benchmarks.schema import RetrievalTask
 
 DATASET_ID = (
