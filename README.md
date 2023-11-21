@@ -14,8 +14,11 @@ We have several goals in open sourcing this:
 - Showing how we evaluate each task
 - Encouraging others to benchmark their solutions on these tasks (we are always looking for better ways of doing things!)
 
-We currently include the following tasks:
-- [CSV Question Answering](https://github.com/langchain-ai/langchain-benchmarks/tree/main/csv-qa)
-- [Extraction](https://github.com/langchain-ai/langchain-benchmarks/tree/main/extraction)
-- [Q&A over the LangChain docs](https://github.com/langchain-ai/langchain-benchmarks/tree/main/langchain-docs-benchmarking)
-- [Meta-evaluation of 'correctness' evaluators](https://github.com/langchain-ai/langchain-benchmarks/tree/main/meta-evals)
+
+## Archived
+
+We also include the following tasks that you can run by cloning this repository. We have moved them to the "archive", as they are not directly added to the langchain-benchmarks package:
+- [CSV Question Answering](https://github.com/langchain-ai/langchain-benchmarks/tree/main/archived/csv-qa)
+- [Extraction](https://github.com/langchain-ai/langchain-benchmarks/tree/main/archived/extraction)
+- [Q&A over the LangChain docs](https://github.com/langchain-ai/langchain-benchmarks/tree/main/archived/langchain-docs-benchmarking)
+- [Meta-evaluation of 'correctness' evaluators](https://github.com/langchain-ai/langchain-benchmarks/tree/main/archived/meta-evals)
