@@ -1,7 +1,7 @@
 """Copy the public dataset to your own langsmith tenant."""
 from typing import Optional
+
 from langsmith import Client
-from tqdm import tqdm
 
 DATASET_NAME = "LangChain Docs Q&A"
 PUBLIC_DATASET_TOKEN = "452ccafc-18e1-4314-885b-edd735f17b9d"

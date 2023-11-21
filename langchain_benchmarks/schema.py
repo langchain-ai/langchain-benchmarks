@@ -1,8 +1,9 @@
 """Schema for the Langchain Benchmarks."""
 import dataclasses
-from typing import List, Callable, Any, Optional, Type, Union, Dict
+from typing import Any, Callable, Dict, Iterable, List, Optional, Type, Union
 
 from langchain.schema import BaseRetriever
+from langchain.schema.document import Document
 from langchain.schema.embeddings import Embeddings
 from langchain.tools import BaseTool
 from pydantic import BaseModel
@@ -84,6 +85,8 @@ class RetrievalTask(BaseTask):
     """Factories that index the docs using the specified strategy."""
     architecture_factories: Dict[str, Callable[[Embeddings], BaseRetriever]]  # noqa: F821
     """Factories methods that help build some off-the-shelf architectures。"""
+    get_docs: Callable[..., Iterable[Document]]
+    """A function that returns the documents to be indexed."""
 
     @property
     def _table(self) -> List[List[str]]:
