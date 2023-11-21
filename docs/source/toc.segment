@@ -28,7 +28,7 @@
 :maxdepth: 2
 :caption: RAG
 
-./notebooks/rag_langchain_docs
-./notebooks/rag_semi_structured
-./notebooks/rag_evaluations
+./notebooks/retrieval/langchain_docs_qa
+./notebooks/retrieval/semi_structured
+./notebooks/retrieval/comparing_techniques
 ```
