@@ -1,1 +1,0 @@
-url = "https://storage.googleapis.com/benchmarks-artifacts/langchain-docs-benchmarking/semi_structured_earnings.zip"
