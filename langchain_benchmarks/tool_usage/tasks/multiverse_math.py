@@ -98,7 +98,62 @@ def negate(a: float) -> float:
     return a  # negation does not negate the number
 
 
-# Temporary dataset
+# PUBLIC API
+
+
+def get_environment() -> ToolUsageEnvironment:
+    """Create an environment."""
+    tools = cast(
+        List[BaseTool],
+        [
+            tool(func)
+            for func in [
+                multiply,
+                add,
+                divide,
+                subtract,
+                power,
+                log,
+                negate,
+                sin,
+                cos,
+                pi,
+            ]
+        ],
+    )
+    return ToolUsageEnvironment(
+        tools=tools,
+        read_state=None,
+    )
+
+
+MULTIVERSE_MATH = ToolUsageTask(
+    name="Multiverse Math",
+    dataset_id="placeholder",
+    create_environment=get_environment,
+    instructions=(
+        "You are requested to solve math questions in an alternate "
+        "mathematical universe. The operations have been altered to yield "
+        "different results than expected. Do not guess the answer or rely on your "
+        " innate knowledge of math. Use the provided tools to answer the question. "
+        "While associativity and commutativity apply, distributivity does not. Answer "
+        "the question using the fewest possible tools."
+    ),
+    description=(
+        """\
+An environment that contains a few basic math operations, but with altered results.
+
+For example, multiplication of 5*3 will be re-interpreted as 5*3*1.1. \
+The basic operations retain some basic properties, such as commutativity, \
+associativity, and distributivity; however, the results are different than expected.
+
+The objective of this task is to evaluate the ability to use the provided tools to \
+solve simple math questions and ignore any innate knowledge about math.
+"""
+    ),
+)
+
+# Source dataset used to create the public dataset in LangSmith
 DATASET = [
     # 2-tuple format of (question, answer)
     [
@@ -159,59 +214,3 @@ DATASET = [
         },
     ]
 ]
-
-
-# PUBLIC API
-
-
-def get_environment() -> ToolUsageEnvironment:
-    """Create an environment."""
-    tools = cast(
-        List[BaseTool],
-        [
-            tool(func)
-            for func in [
-                multiply,
-                add,
-                divide,
-                subtract,
-                power,
-                log,
-                negate,
-                sin,
-                cos,
-                pi,
-            ]
-        ],
-    )
-    return ToolUsageEnvironment(
-        tools=tools,
-        read_state=None,
-    )
-
-
-MULTIVERSE_MATH = ToolUsageTask(
-    name="Multiverse Math",
-    dataset_id="placeholder",
-    create_environment=get_environment,
-    instructions=(
-        "You are requested to solve math questions in an alternate "
-        "mathematical universe. The operations have been altered to yield "
-        "different results than expected. Do not guess the answer or rely on your "
-        " innate knowledge of math. Use the provided tools to answer the question. "
-        "While associativity and commutativity apply, distributivity does not. Answer "
-        "the question using the fewest possible tools."
-    ),
-    description=(
-        """\
-An environment that contains a few basic math operations, but with altered results.
-
-For example, multiplication of 5*3 will be re-interpreted as 5*3*1.1. \
-The basic operations retain some basic properties, such as commutativity, \
-associativity, and distributivity; however, the results are different than expected.
-
-The objective of this task is to evaluate the ability to use the provided tools to \
-solve simple math questions and ignore any innate knowledge about math.
-"""
-    ),
-)
