@@ -75,7 +75,7 @@ def serialize_history(request: ChatRequest):
     return converted_chat_history
 
 
-def get_default_response_synthesizer(llm: BaseLanguageModel) -> Runnable:
+def get_default_response_generator(llm: BaseLanguageModel) -> Runnable:
     prompt = ChatPromptTemplate.from_messages(
         [
             ("system", RESPONSE_TEMPLATE),
@@ -90,7 +90,7 @@ def get_default_response_synthesizer(llm: BaseLanguageModel) -> Runnable:
 
 
 def create_response_chain(
-    response_synthesizer: Runnable,
+    response_generator: Runnable,
     retriever: BaseRetriever,
     format_docs: Optional[Callable[[Sequence[Document]], str]] = None,
     format_chat_history: Optional[Callable[[ChatRequest], str]] = None,
@@ -112,5 +112,5 @@ def create_response_chain(
                 ).with_config(run_name="FormatDocs")
             }
         )
-        | response_synthesizer
+        | response_generator
     )
