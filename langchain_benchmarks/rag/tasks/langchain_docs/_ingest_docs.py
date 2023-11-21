@@ -2,10 +2,8 @@
 import logging
 import os
 import re
-from typing import Generator, Iterable, Optional
+from typing import TYPE_CHECKING, Generator, Iterable, Optional
 
-import pandas as pd
-from bs4 import BeautifulSoup, Doctype, NavigableString, SoupStrainer, Tag
 from langchain.document_loaders import RecursiveUrlLoader, SitemapLoader
 from langchain.embeddings import OpenAIEmbeddings, VoyageEmbeddings
 from langchain.indexes import SQLRecordManager, index
@@ -15,6 +13,9 @@ from langchain.text_splitter import RecursiveCharacterTextSplitter
 from langchain.utils.html import PREFIXES_TO_IGNORE_REGEX, SUFFIXES_TO_IGNORE_REGEX
 from langchain.vectorstores.chroma import Chroma
 
+if TYPE_CHECKING:
+    from bs4 import BeautifulSoup
+
 logger = logging.getLogger(__name__)
 directory = os.path.dirname(os.path.realpath(__file__))
 db_directory = os.path.join(directory, "indexing", "db")
@@ -23,6 +24,13 @@ docs_cache_file = os.path.join(docs_cache_directory, "docs.parquet")
 
 
 def langchain_docs_extractor(soup: BeautifulSoup) -> str:
+    try:
+        from bs4 import Doctype, NavigableString, Tag
+    except ImportError:
+        raise ImportError(
+            "Please install beautifulsoup4 to use the langchain docs benchmarking task.\n"
+            "pip install beautifulsoup4"
+        )
     # Remove all the tags that are not meaningful for the extraction.
     SCAPE_TAGS = ["nav", "footer", "aside", "script", "style"]
     [tag.decompose() for tag in soup.find_all(SCAPE_TAGS)]
@@ -147,6 +155,13 @@ def metadata_extractor(meta: dict, soup: BeautifulSoup) -> dict:
 
 
 def load_langchain_docs():
+    try:
+        from bs4 import SoupStrainer
+    except ImportError:
+        raise ImportError(
+            "Please install beautifulsoup4 to use the langchain docs benchmarking task.\n"
+            "pip install beautifulsoup4"
+        )
     return SitemapLoader(
         "https://python.langchain.com/sitemap.xml",
         filter_urls=["https://python.langchain.com/"],
@@ -162,7 +177,20 @@ def load_langchain_docs():
 
 
 def simple_extractor(html: str) -> str:
-    soup = BeautifulSoup(html, "lxml")
+    try:
+        from bs4 import BeautifulSoup
+    except ImportError:
+        raise ImportError(
+            "Please install beautifulsoup4 to ingest the LangChain docs.\n"
+            "pip install beautifulsoup4"
+        )
+    try:
+        soup = BeautifulSoup(html, "lxml")
+    except ImportError:
+        raise ImportError(
+            "Please install beautifulsoup4 to ingest the LangChain docs.\n"
+            "pip install beautifulsoup4"
+        )
     return re.sub(r"\n\n+", "\n\n", soup.text).strip()
 
 
@@ -223,6 +251,8 @@ def get_docs() -> Iterable[Document]:
 
 
 def load_docs_from_parquet(filename: Optional[str] = None) -> Iterable[Document]:
+    import pandas as pd
+
     df = pd.read_parquet(filename or docs_cache_file)
     docs_transformed = [Document(**row) for row in df.to_dict(orient="records")]
     for doc in docs_transformed:
@@ -268,6 +298,13 @@ def ingest_docs(overwrite: bool = False):
 
 
 def download_docs(overwrite: bool = False):
+    try:
+        import pandas as pd
+    except ImportError:
+        raise ImportError(
+            "Please install pandas to use the langchain docs benchmarking task.\n"
+            "pip install pandas"
+        )
     if os.path.exists(docs_cache_file) and not overwrite:
         logger.info(f"Loading docs from {docs_cache_file}")
         return

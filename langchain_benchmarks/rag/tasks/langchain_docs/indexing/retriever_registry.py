@@ -2,7 +2,6 @@ import logging
 import os
 from typing import Callable, Iterable, Optional
 
-import pandas as pd
 from langchain.schema.document import Document
 from langchain.schema.embeddings import Embeddings
 from langchain.schema.retriever import BaseRetriever
@@ -24,6 +23,13 @@ _DEFAULT_SEARCH_KWARGS = {"k": 6}
 
 
 def load_docs_from_parquet(filename: Optional[str] = None) -> Iterable[Document]:
+    try:
+        import pandas as pd
+    except ImportError:
+        raise ImportError(
+            "Please install pandas to use the langchain docs benchmarking task.\n"
+            "pip install pandas"
+        )
     df = pd.read_parquet(filename)
     docs_transformed = [Document(**row) for row in df.to_dict(orient="records")]
     for doc in docs_transformed:
