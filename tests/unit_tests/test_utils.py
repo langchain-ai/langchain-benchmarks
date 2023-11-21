@@ -75,7 +75,7 @@ class MockLangSmithClient:
             dataset_id=public_dataset_token,
         )
         return [example1, example2]
-    
+
     def read_shared_dataset(self, public_dataset_token: str) -> Dataset:
         # Simulate fetching shared dataset and returning a Dataset object
         dataset = Dataset(
