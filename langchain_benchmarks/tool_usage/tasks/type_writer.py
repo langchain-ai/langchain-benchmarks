@@ -18,11 +18,13 @@ class Paper:
     content: str
 
 
-def function(paper: Paper) -> Callable[[], str]:
+def create_typer(paper: Paper) -> Callable[[], str]:
     """Create a function that types the given letter."""
 
     def type_letter(letter: str) -> str:
         """Print the given letter on the paper."""
+        if len(letter) != 1:
+            return "ERROR: The letter must be a single character."
         paper.content += letter
         return "OK"
 
@@ -47,7 +49,7 @@ def get_environment() -> ToolUsageEnvironment:
         """Read the state of the environment."""
         return paper.content
 
-    tools = cast(List[BaseTool], [tool(function(paper))])
+    tools = cast(List[BaseTool], [tool(create_typer(paper))])
 
     return ToolUsageEnvironment(
         tools=tools,
@@ -56,22 +58,21 @@ def get_environment() -> ToolUsageEnvironment:
 
 
 TYPE_WRITER_TASK = ToolUsageTask(
-    name="Tool Usage - Typewriter (1 func)",
-    dataset_id="placeholder",
+    name="Tool Usage - Typewriter (1 tool)",
+    dataset_id="https://smith.langchain.com/public/2300c32a-5063-4b5c-9e60-b97ad7542126/d",
     create_environment=get_environment,
     instructions=(
-        "Repeat the given string by using the provided tools. "
+        "Repeat the given string using the provided tools. "
         "Do not write anything else or provide any explanations. "
-        "For example, if the string is 'abc', you must invoke the tools "
-        "'a', 'b', and 'c' in that order. "
-        "Please invoke the function with a single letter at a time."
+        "For example, if the string is 'abc', you must print the letters "
+        "'a', 'b', and 'c' one at a time and in that order. "
     ),
     description=(
         """\
-Environment with a single function that accepts a single letter as input, and \
-"prints" it on a piece of paper.
+Environment with a single tool that accepts a single letter as input, and \
+prints it on a piece of virtual paper.
 
-The objective of this task is to evaluate the ability to use the provided \
+The objective of this task is to evaluate the ability of the model to use the provided \
 tools to repeat a given input string.
 
 For example, if the string is 'abc', the tools 'a', 'b', and 'c' must be invoked \
@@ -82,3 +83,77 @@ by the length of the string.
 """
     ),
 )
+
+
+STRINGS_TO_TYPE = [
+    # letter repetition
+    "a",
+    "aa",
+    "aaa",
+    "aaaa",
+    # 3-letter words
+    "dog",
+    "cat",
+    # 4-letter words
+    "hand",
+    "head",
+    # 5-letter words
+    "house",
+    "horse",
+    # 6-letter words
+    "school",
+    "church",
+    # 7-letter words
+    "teacher",
+    "student",
+    # 8-letter words
+    "computer",
+    "keyboard",
+    # 9-letter words
+    "university",
+    "dictionary",
+    # 10-letter words
+    "information",
+    "communication",
+]
+
+
+def _create_dataset(strings: List[str]) -> List[dict]:
+    """Create the dataset."""
+    dataset = []
+    for string in strings:
+        dataset.append(
+            {
+                "question": string,
+                "expected_steps": ["type_letter"] * len(string),
+                "state": string,
+            }
+        )
+    return dataset
+
+
+DATASET = _create_dataset(STRINGS_TO_TYPE)
+
+
+def _create_dataset() -> None:
+    """Create a dataset with the langsmith client."""
+    from langsmith.client import Client
+
+    client = Client()
+    dataset = client.create_dataset(
+        dataset_name=TYPE_WRITER_TASK.name,
+        description=TYPE_WRITER_TASK.description,
+    )
+
+    for example in DATASET:
+        client.create_example(
+            inputs={
+                "question": example["question"],
+            },
+            outputs={
+                "output": example["state"],
+                "expected_steps": example["expected_steps"],
+                "state": example["state"],
+            },
+            dataset_id=dataset.id,
+        )
