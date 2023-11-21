@@ -1,7 +1,7 @@
 from enum import Enum
 from typing import Optional, List
 
-from langchain.smith import RunEvalConfig
+from langchain.prompts import ChatPromptTemplate
 from pydantic import BaseModel, Field
 
 from langchain_benchmarks.schema import ExtractionTask
@@ -33,35 +33,22 @@ class Email(BaseModel):
     tone: ToneEnum = Field(..., description="The tone of the email.")
 
 
-def get_eval_config(eval_llm: BaseModel) -> RunEvalConfig:
-    """Get the evaluation configuration for the email task."""
-    return RunEvalConfig(
-        evaluators=[
-            RunEvalConfig.LabeledScoreString(
-                criteria={
-                    "accuracy": """
-    Score 1: The answer is incorrect and unrelated to the question or reference document.
-    Score 3: The answer is partially correct but has more than one omission or major errors.
-    Score 5: The answer is mostly correct but has more than one omission or major error.
-    Score 7: The answer is mostly correct but has at most one omission or major error.
-    Score 9: The answer is mostly correct with no omissions and only minor errors, and aligns with the reference document.
-    Score 10: The answer is correct, complete, and aligns with the reference document. Extra information is acceptable if it is sensible.
-
-    If the reference answer contains multiple alternatives, the predicted answer must only match one of the alternatives to be considered correct.
-    If the predicted answer contains additional helpful and accurate information that is not present in the reference answer, it should still be considered correct and not be penalized.
-    """  # noqa
-                },
-                llm=eval_llm,
-                normalize_by=10.0,
-            ),
-        ],
-    )
-
+# This is a default prompt that works for chat models.
+DEFAULT_CHAT_MODEL_PROMPT = ChatPromptTemplate.from_messages(
+    [
+        ("system", "You are an expert researcher."),
+        (
+            "human",
+            "What can you tell me about the following email? Make sure to "
+            "answer in the correct format: {schema}",
+        ),
+    ]
+)
 
 EMAIL_EXTRACTION_TASK = ExtractionTask(
     name="Email Extraction",
     dataset_id="https://smith.langchain.com/public/36bdfe7d-3cd1-4b36-b957-d12d95810a2b/d",
-    model=Email,
+    schema=Email,
     description="""\
 A dataset of 42 real emails deduped from a spam folder, with semantic HTML tags removed, \
 as well as a script for initial extraction and formatting of other emails from \
@@ -71,4 +58,5 @@ Some additional cleanup of the data was done by hand after the initial pass.
 
 See https://github.com/jacoblee93/oss-model-extraction-evals.
     """,
+    instructions=DEFAULT_CHAT_MODEL_PROMPT,
 )

@@ -2,6 +2,7 @@
 import dataclasses
 from typing import List, Callable, Any, Optional, Type, Union
 
+from langchain.prompts import ChatPromptTemplate
 from langchain.tools import BaseTool
 from pydantic import BaseModel
 from tabulate import tabulate
@@ -68,8 +69,16 @@ class ToolUsageTask(BaseTask):
 class ExtractionTask(BaseTask):
     """A definition for an extraction task."""
 
-    model: Type[BaseModel]
-    """Get the model for the task."""
+    schema: Type[BaseModel]
+    """Get schema that specifies what should be extracted."""
+
+    # We might want to make this optional / or support more types
+    # and add validation, but let's wait until we have more examples
+    instructions: ChatPromptTemplate
+    """Get the prompt for the task.
+    
+    This is the default prompt to use for the task.
+    """
 
 
 @dataclasses.dataclass(frozen=False)

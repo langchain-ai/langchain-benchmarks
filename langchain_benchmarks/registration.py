@@ -1,6 +1,6 @@
 """Registry of environments for ease of access."""
 
-from langchain_benchmarks.extraction import email_task
+from langchain_benchmarks.extraction.tasks import email_task
 from langchain_benchmarks.schema import Registry
 from langchain_benchmarks.tool_usage.tasks import (
     type_writer,
