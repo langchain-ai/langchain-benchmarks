@@ -1,4 +1,6 @@
-from functools import partial
+from typing import Iterable
+
+from langchain.schema.document import Document
 
 from langchain_benchmarks.rag.tasks.langchain_docs import architectures, indexing
 from langchain_benchmarks.rag.tasks.langchain_docs.indexing.retriever_registry import (
@@ -11,12 +13,18 @@ DATASET_ID = (
     "452ccafc-18e1-4314-885b-edd735f17b9d"  # ID of public LangChain Docs dataset
 )
 
+
+def load_cached_docs() -> Iterable[Document]:
+    """Load the docs from the cached file."""
+    return load_docs_from_parquet(DOCS_FILE)
+
+
 LANGCHAIN_DOCS_TASK = RetrievalTask(
     name="LangChain Docs Q&A",
     dataset_id=DATASET_ID,
     retriever_factories=indexing.RETRIEVER_FACTORIES,
     architecture_factories=architectures.ARCH_FACTORIES,
-    get_docs=partial(load_docs_from_parquet, DOCS_FILE),
+    get_docs=load_cached_docs,
     description=(
         """\
 Questions and answers based on a snapshot of the LangChain python docs.

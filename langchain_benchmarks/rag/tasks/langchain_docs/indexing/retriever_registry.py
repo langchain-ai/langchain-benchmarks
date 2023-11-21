@@ -7,6 +7,9 @@ from langchain.schema.embeddings import Embeddings
 from langchain.schema.retriever import BaseRetriever
 from langchain.vectorstores.chroma import Chroma
 
+from langchain_benchmarks.rag.utils._downloading import (
+    fetch_remote_file,
+)
 from langchain_benchmarks.rag.utils.indexing import (
     get_hyde_retriever,
     get_parent_document_retriever,
@@ -30,6 +33,10 @@ def load_docs_from_parquet(filename: Optional[str] = None) -> Iterable[Document]
             "Please install pandas to use the langchain docs benchmarking task.\n"
             "pip install pandas"
         )
+    if filename is None:
+        filename = DOCS_FILE
+    if not os.path.exists(filename):
+        fetch_remote_file(REMOTE_DOCS_FILE, filename)
     df = pd.read_parquet(filename)
     docs_transformed = [Document(**row) for row in df.to_dict(orient="records")]
     for doc in docs_transformed:
@@ -43,11 +50,13 @@ def load_docs_from_parquet(filename: Optional[str] = None) -> Iterable[Document]
 
 def _chroma_retriever_factory(
     embedding: Embeddings,
+    *,
+    docs: Optional[Iterable[Document]] = None,
     search_kwargs: Optional[dict] = None,
     transform_docs: Optional[Callable] = None,
     transformation_name: Optional[str] = None,
 ) -> BaseRetriever:
-    docs = load_docs_from_parquet(DOCS_FILE)
+    docs = docs or load_docs_from_parquet()
     embedding_name = embedding.__class__.__name__
     vectorstore = Chroma(
         collection_name=f"langchain-benchmarks-classic-{embedding_name}",
@@ -67,9 +76,11 @@ def _chroma_retriever_factory(
 
 def _chroma_parent_document_retriever_factory(
     embedding: Embeddings,
+    *,
+    docs: Optional[Iterable[Document]] = None,
     search_kwargs: Optional[dict] = None,
 ) -> BaseRetriever:
-    docs = load_docs_from_parquet(DOCS_FILE)
+    docs = docs or load_docs_from_parquet()
     embedding_name = embedding.__class__.__name__
     vectorstore = Chroma(
         collection_name=f"langchain-benchmarks-parent-doc-{embedding_name}",
@@ -87,9 +98,11 @@ def _chroma_parent_document_retriever_factory(
 
 def _chroma_hyde_retriever_factory(
     embedding: Embeddings,
+    *,
+    docs: Optional[Iterable[Document]] = None,
     search_kwargs: Optional[dict] = None,
 ) -> BaseRetriever:
-    docs = load_docs_from_parquet(DOCS_FILE)
+    docs = docs or load_docs_from_parquet()
     embedding_name = embedding.__class__.__name__
     vectorstore = Chroma(
         collection_name=f"langchain-benchmarks-hyde-{embedding_name}",

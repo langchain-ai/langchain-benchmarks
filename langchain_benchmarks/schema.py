@@ -1,5 +1,8 @@
 """Schema for the Langchain Benchmarks."""
+from __future__ import annotations
+
 import dataclasses
+import inspect
 from typing import Any, Callable, Dict, Iterable, List, Optional, Type, Union
 
 from langchain.prompts import ChatPromptTemplate
@@ -104,6 +107,7 @@ class RetrievalTask(BaseTask):
         return table + [
             ["Retriever Factories", ", ".join(self.retriever_factories.keys())],
             ["Architecture Factories", ", ".join(self.architecture_factories.keys())],
+            ["get_docs", self.get_docs],
         ]
 
 
@@ -148,6 +152,29 @@ class Registry:
             for task in self.tasks
         ]
         return tabulate(table, headers=headers, tablefmt="html")
+
+    def filter(
+        self,
+        Type: Optional[str],
+        dataset_id: Optional[str] = None,
+        name: Optional[str] = None,
+        description: Optional[str] = None,
+    ) -> Registry:
+        """Filter the tasks in the registry."""
+        tasks = self.tasks
+        if Type is not None:
+            tasks = [task for task in tasks if task.__class__.__name__ == Type]
+        if dataset_id is not None:
+            tasks = [task for task in tasks if task.dataset_id == dataset_id]
+        if name is not None:
+            tasks = [task for task in tasks if task.name == name]
+        if description is not None:
+            tasks = [
+                task
+                for task in tasks
+                if description.lower() in task.description.lower()
+            ]
+        return Registry(tasks=tasks)
 
     def __getitem__(self, key: Union[int, str]) -> BaseTask:
         """Get an environment from the registry."""

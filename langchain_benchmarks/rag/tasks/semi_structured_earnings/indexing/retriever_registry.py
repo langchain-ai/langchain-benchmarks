@@ -126,6 +126,7 @@ def _chroma_parent_document_retriever_factory(
     *,
     docs: Optional[Iterable[Document]] = None,
     search_kwargs: Optional[dict] = None,
+    transformation_name: Optional[str] = None,
 ) -> BaseRetriever:
     docs = docs or load_docs()
     embedding_name = embedding.__class__.__name__
@@ -140,6 +141,7 @@ def _chroma_parent_document_retriever_factory(
         vectorstore,
         collection_name="semi-structured-earnings",
         search_kwargs=search_kwargs or _DEFAULT_SEARCH_KWARGS,
+        transformation_name=transformation_name,
     )
 
 
@@ -148,6 +150,7 @@ def _chroma_hyde_retriever_factory(
     *,
     docs: Optional[Iterable[Document]] = None,
     search_kwargs: Optional[dict] = None,
+    transformation_name: Optional[str] = None,
 ) -> BaseRetriever:
     docs = docs or load_docs()
     embedding_name = embedding.__class__.__name__
@@ -162,6 +165,7 @@ def _chroma_hyde_retriever_factory(
         vectorstore,
         collection_name="semi-structured-earnings",
         search_kwargs=search_kwargs or _DEFAULT_SEARCH_KWARGS,
+        transformation_name=transformation_name,
     )
 
 
