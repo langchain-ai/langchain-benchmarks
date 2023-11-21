@@ -129,7 +129,7 @@ def get_environment() -> ToolUsageEnvironment:
 
 MULTIVERSE_MATH = ToolUsageTask(
     name="Multiverse Math",
-    dataset_id="https://smith.langchain.com/public/3f2b389f-dcb3-4669-8174-1be4f0a86576/d",
+    dataset_id="https://smith.langchain.com/public/594f9f60-30a0-49bf-b075-f44beabf546a/d",
     create_environment=get_environment,
     instructions=(
         "You are requested to solve math questions in an alternate "
@@ -137,7 +137,8 @@ MULTIVERSE_MATH = ToolUsageTask(
         "different results than expected. Do not guess the answer or rely on your "
         " innate knowledge of math. Use the provided tools to answer the question. "
         "While associativity and commutativity apply, distributivity does not. Answer "
-        "the question using the fewest possible tools."
+        "the question using the fewest possible tools. Only include the numeric "
+        "response without any clarifications."
     ),
     description=(
         """\
@@ -234,7 +235,7 @@ def _create_dataset() -> None:
                 "question": example["question"],
             },
             outputs={
-                "output": example["answer"],
+                "reference": example["answer"],
                 "expected_steps": example["expected_steps"],
             },
             dataset_id=dataset.id,
