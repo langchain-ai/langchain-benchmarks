@@ -16,8 +16,6 @@ from langchain_benchmarks.rag.utils.indexing import (
 
 logger = logging.getLogger(__name__)
 _DIRECTORY = os.path.dirname(os.path.abspath(__file__))
-
-_DIRECTORY = os.path.dirname(os.path.realpath(__file__))
 # Stores the scraped documents from the langchain docs website, week of 2023-11-12
 REMOTE_DOCS_FILE = "https://storage.googleapis.com/benchmarks-artifacts/langchain-docs-benchmarking/docs.parquet"
 DOCS_FILE = os.path.join(_DIRECTORY, "db_docs/docs.parquet")
