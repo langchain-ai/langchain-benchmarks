@@ -1,8 +1,8 @@
+from langchain.chat_models.base import BaseChatModel
 from langchain.smith import RunEvalConfig
-from pydantic import BaseModel
 
 
-def get_eval_config(eval_llm: BaseModel) -> RunEvalConfig:
+def get_eval_config(eval_llm: BaseChatModel) -> RunEvalConfig:
     """Get the evaluation configuration for the email task."""
     return RunEvalConfig(
         evaluators=[

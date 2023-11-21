@@ -4,6 +4,7 @@ from typing import Type, Optional, List, Any, Dict
 from langchain.chains.openai_functions import convert_to_openai_function
 from langchain.chat_models import ChatOpenAI
 from langchain.output_parsers.openai_functions import JsonOutputFunctionsParser
+from langchain.prompts import ChatPromptTemplate
 from langchain.schema.runnable import Runnable
 from langsmith.client import Client
 from pydantic import BaseModel
@@ -11,10 +12,12 @@ from pydantic import BaseModel
 from langchain_benchmarks.extraction.evaluators import get_eval_config
 from langchain_benchmarks.schema import ExtractionTask
 
+
 # PUBLIC API
 
 
 def create_openai_function_based_extractor(
+    prompt: ChatPromptTemplate,
     llm: Runnable,
     schema: Type[BaseModel],
 ) -> Runnable[dict, dict]:
@@ -24,6 +27,7 @@ def create_openai_function_based_extractor(
     extraction using openai functions format.
 
     Args:
+        prompt: The prompt to use for extraction.
         llm: The LLM to use for extraction.
         schema: The schema to extract.
 
@@ -37,7 +41,7 @@ def create_openai_function_based_extractor(
     }
     output_parser = JsonOutputFunctionsParser()
     extraction_chain = (
-        llm.bind(**llm_kwargs) | output_parser | (lambda x: {"output": x})
+        prompt | llm.bind(**llm_kwargs) | output_parser | (lambda x: {"output": x})
     )
     return extraction_chain
 
@@ -61,7 +65,9 @@ def run_on_dataset(
     eval_llm = ChatOpenAI(model="gpt-4", temperature=0.0, model_kwargs={"seed": 42})
     return client.run_on_dataset(
         dataset_name=task.name,
-        llm_or_chain_factory=create_openai_function_based_extractor(llm, task.schema),
+        llm_or_chain_factory=create_openai_function_based_extractor(
+            task.instructions, llm, task.schema
+        ),
         evaluation=get_eval_config(eval_llm),
         tags=tags,
         **kwargs,
