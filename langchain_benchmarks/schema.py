@@ -95,7 +95,9 @@ class ExtractionTask(BaseTask):
 class RetrievalTask(BaseTask):
     retriever_factories: Dict[str, Callable[[Embeddings], BaseRetriever]]  # noqa: F821
     """Factories that index the docs using the specified strategy."""
-    architecture_factories: Dict[str, Callable[[Embeddings], BaseRetriever]]  # noqa: F821
+    architecture_factories: Dict[
+        str, Callable[[Embeddings], BaseRetriever]
+    ]  # noqa: F821
     """Factories methods that help build some off-the-shelf architectures。"""
     get_docs: Callable[..., Iterable[Document]]
     """A function that returns the documents to be indexed."""
@@ -153,18 +155,27 @@ class Registry:
         ]
         return tabulate(table, headers=headers, tablefmt="html")
 
-    def filter(self, **kwargs) -> Registry:
+    def filter(
+        self,
+        Type: Optional[str],
+        dataset_id: Optional[str] = None,
+        name: Optional[str] = None,
+        description: Optional[str] = None,
+    ) -> Registry:
         """Filter the tasks in the registry."""
-        tasks = []
-        for task in self.tasks:
-            matches = []
-            for k, v in kwargs.items():
-                if k == "Type":
-                    matches.append(task.__class__.__name__ == v)
-                else:
-                    matches.append(getattr(task, k, None) == v)
-            if all(matches):
-                tasks.append(task)
+        tasks = self.tasks
+        if Type is not None:
+            tasks = [task for task in tasks if task.__class__.__name__ == Type]
+        if dataset_id is not None:
+            tasks = [task for task in tasks if task.dataset_id == dataset_id]
+        if name is not None:
+            tasks = [task for task in tasks if task.name == name]
+        if description is not None:
+            tasks = [
+                task
+                for task in tasks
+                if description.lower() in task.description.lower()
+            ]
         return Registry(tasks=tasks)
 
     def __getitem__(self, key: Union[int, str]) -> BaseTask:
