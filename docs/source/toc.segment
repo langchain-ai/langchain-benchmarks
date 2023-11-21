@@ -2,12 +2,13 @@
 :maxdepth: 2
 :caption: Introduction
 
+./notebooks/getting_started
 ./notebooks/datasets
 ```
 
 
 ```{toctree}
-:maxdepth: 2
+:maxdepth: 0
 :caption: Tool Usage
 
 ./notebooks/tool_usage/relational_data
@@ -17,7 +18,7 @@
 ```
 
 ```{toctree}
-:maxdepth: 2
+:maxdepth: 0
 :caption: Extraction
 
 ./notebooks/extraction/email
