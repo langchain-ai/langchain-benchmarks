@@ -146,5 +146,5 @@ jobs:
       - name: Request datasets
         shell: bash
         run: |
-          echo "Verifying public datasets..."
-          python -m scripts.check_datasets
+          echo "Attempting to build docs..."
+          poetry run python -m scripts.check_datasets
