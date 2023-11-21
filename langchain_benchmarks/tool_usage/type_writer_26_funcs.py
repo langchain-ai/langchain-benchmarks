@@ -4,7 +4,7 @@ In this variation of the task, the agent is given access to 26 parameterless fun
 each representing a letter of the alphabet.
 """
 import dataclasses
-from typing import Callable, Any, List, cast
+from typing import Any, Callable, List, cast
 
 from langchain.tools import BaseTool, tool
 

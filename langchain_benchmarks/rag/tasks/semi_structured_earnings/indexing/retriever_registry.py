@@ -1,18 +1,18 @@
 import logging
 import os
+import zipfile
+from pathlib import Path
 from typing import Callable, Iterable, Optional
 
-from pathlib import Path
 from langchain.schema.document import Document
 from langchain.schema.embeddings import Embeddings
 from langchain.schema.retriever import BaseRetriever
 from langchain.vectorstores.chroma import Chroma
+
 from langchain_benchmarks.rag.utils._downloading import (
     fetch_remote_file,
     is_folder_populated,
 )
-import zipfile
-
 from langchain_benchmarks.rag.utils.indexing import (
     get_hyde_retriever,
     get_parent_document_retriever,
