@@ -1,4 +1,5 @@
 """Schema for the Langchain Benchmarks."""
+from __future__ import annotations
 import dataclasses
 from typing import Any, Callable, Dict, Iterable, List, Optional, Type, Union
 
@@ -92,7 +93,9 @@ class ExtractionTask(BaseTask):
 class RetrievalTask(BaseTask):
     retriever_factories: Dict[str, Callable[[Embeddings], BaseRetriever]]  # noqa: F821
     """Factories that index the docs using the specified strategy."""
-    architecture_factories: Dict[str, Callable[[Embeddings], BaseRetriever]]  # noqa: F821
+    architecture_factories: Dict[
+        str, Callable[[Embeddings], BaseRetriever]
+    ]  # noqa: F821
     """Factories methods that help build some off-the-shelf architectures。"""
     get_docs: Callable[..., Iterable[Document]]
     """A function that returns the documents to be indexed."""
@@ -148,6 +151,20 @@ class Registry:
             for task in self.tasks
         ]
         return tabulate(table, headers=headers, tablefmt="html")
+
+    def filter(self, **kwargs) -> Registry:
+        """Filter the tasks in the registry."""
+        tasks = []
+        for task in self.tasks:
+            matches = []
+            for k, v in kwargs.items():
+                if k == "Type":
+                    matches.append(task.__class__.__name__ == v)
+                else:
+                    matches.append(getattr(task, k, None) == v)
+            if all(matches):
+                tasks.append(task)
+        return Registry(tasks=tasks)
 
     def __getitem__(self, key: Union[int, str]) -> BaseTask:
         """Get an environment from the registry."""
