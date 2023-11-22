@@ -41,14 +41,14 @@ DEFAULT_CHAT_MODEL_PROMPT = ChatPromptTemplate.from_messages(
             "human",
             "What can you tell me about the following email? Make sure to "
             "extract the question in the correct format. "
-            "Here is the email:\n ```\n{email}\n```",
+            "Here is the email:\n ```\n{input}\n```",
         ),
     ]
 )
 
 EMAIL_EXTRACTION_TASK = ExtractionTask(
     name="Email Extraction",
-    dataset_id="https://smith.langchain.com/public/36bdfe7d-3cd1-4b36-b957-d12d95810a2b/d",
+    dataset_id="https://smith.langchain.com/public/a1742786-bde5-4f51-a1d8-e148e5251ddb/d",
     schema=Email,
     description="""\
 A dataset of 42 real emails deduped from a spam folder, with semantic HTML tags removed, \
