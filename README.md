@@ -36,6 +36,7 @@ The package is located within [langchain_benchmarks](./langchain_benchmarks/). C
 
 The other directories are legacy and may be moved in the future.
 
+
 ## Archived
 
 Below are archived benchmarks that require cloning this repo to run.
@@ -44,3 +45,10 @@ Below are archived benchmarks that require cloning this repo to run.
 - [Extraction](https://github.com/langchain-ai/langchain-benchmarks/tree/main/extraction)
 - [Q&A over the LangChain docs](https://github.com/langchain-ai/langchain-benchmarks/tree/main/langchain-docs-benchmarking)
 - [Meta-evaluation of 'correctness' evaluators](https://github.com/langchain-ai/langchain-benchmarks/tree/main/meta-evals)
+
+
+## Related
+
+- For cookbooks on other ways to test, debug, monitor, and improve your LLM applications, check out the [LangSmith docs](https://docs.smith.langchain.com/)
+- For information on building with LangChain, check out the [python documentation](https://python.langchain.com/docs/get_started/introduction) or [JS documentation](https://js.langchain.com/docs/get_started/introduction)
+
