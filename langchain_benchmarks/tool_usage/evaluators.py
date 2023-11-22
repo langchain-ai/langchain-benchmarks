@@ -17,7 +17,7 @@ from langsmith.evaluation.evaluator import (
 from langsmith.schemas import Example, Run
 
 
-def compare_outputs(run_outputs: dict, example_outputs: dict) -> EvaluationResults:
+def compare_outputs(run_outputs: dict, example_outputs: dict, qa_evaluator: RunEvaluator) -> EvaluationResults:
     """Compare the outputs of a run to the expected outputs."""
     intermediate_steps = run_outputs["intermediate_steps"]
     # Since we are comparing to the tool names, we now need to get that
@@ -68,8 +68,13 @@ def compare_outputs(run_outputs: dict, example_outputs: dict) -> EvaluationResul
     return {"results": results}
 
 
+from langchain.evaluation import load_evaluator
+
 class AgentTrajectoryEvaluator(RunEvaluator):
     """An evaluator that can be used in conjunction with a standard agent interface."""
+    def __init__(self) -> None:
+        """Initialize the evaluator."""
+        self.qa_evaluator = load_evaluator(EvaluatorType.QA)
 
     def evaluate_run(
         self, run: Run, example: Optional[Example] = None
@@ -92,7 +97,7 @@ class AgentTrajectoryEvaluator(RunEvaluator):
                 "Please make sure that your dataset contains 'expected_steps'"
             )
 
-        return compare_outputs(run.outputs, example.outputs)
+        return compare_outputs(run.outputs, example.outputs, qa_evaluator=self.qa_evaluator)
 
 
 STANDARD_AGENT_EVALUATOR = RunEvalConfig(
