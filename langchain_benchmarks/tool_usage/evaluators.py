@@ -83,9 +83,9 @@ def compare_outputs(
                 reference=example_outputs["reference"],
                 input=run_inputs["question"],
             )
-        results.extend(
+        results.append(
             EvaluationResult(
-                key="qa-correctness",
+                key="correctness",
                 score=qa_results["score"],
                 source_run_id=cb.traced_runs[0].id,
             )
