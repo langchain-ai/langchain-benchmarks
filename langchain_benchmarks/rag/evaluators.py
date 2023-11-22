@@ -5,7 +5,7 @@ from langchain.evaluation import load_evaluator
 from langchain.smith import RunEvalConfig
 
 try:
-    from langchain.chat_models.base import BaseLanguageModel
+    from langchain.schema.language_model import BaseLanguageModel
 except ImportError:
     from langchain_core.language_models import BaseLanguageModel
 from langsmith.evaluation.evaluator import EvaluationResult, RunEvaluator
