@@ -74,7 +74,7 @@ exclude_patterns: List[str] = []
 html_theme = "sphinx_book_theme"
 
 html_theme_options = {
-    "path_to_docs": "docs",
+    "path_to_docs": "docs/source",
     "repository_url": "https://github.com/langchain-ai/langchain-benchmarks",
     "home_page_in_toc": True,
     "show_navbar_depth": 2,
