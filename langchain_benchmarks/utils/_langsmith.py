@@ -24,8 +24,8 @@ def _parse_token_or_url(url_or_token: str, api_url: str) -> Tuple[str, Optional[
     parsed_url = urllib.parse.urlparse(url_or_token)
     # Extract the UUID from the path
     path_parts = parsed_url.path.split("/")
-    uuid = path_parts[-2] if len(path_parts) >= 2 else None
-    return API_URL, uuid
+    token_uuid = path_parts[-2] if len(path_parts) >= 2 else None
+    return API_URL, token_uuid
 
 
 # PUBLIC API
@@ -47,10 +47,10 @@ def clone_public_dataset(
         dataset_name (str): The name of the dataset to create in your tenant.
         source_api_url: The URL of the langsmith server where the data is hosted:w
     """
-    if dataset_name is None:
-        raise NotImplementedError(
-            "Automatic dataset name generation is not implemented yet"
-        )
+    source_api_url, token_uuid = _parse_token_or_url(token_or_url, source_api_url)
+    source_client = Client(api_url=source_api_url, api_key="placeholder")
+    ds = source_client.read_shared_dataset(token_uuid)
+    dataset_name = dataset_name or ds.name
     client = Client()  # Client used to write to langsmith
     try:
         dataset = client.read_dataset(dataset_name=dataset_name)
@@ -62,11 +62,9 @@ def clone_public_dataset(
     except LangSmithNotFoundError:
         pass
 
-    source_api_url, uuid = _parse_token_or_url(token_or_url, source_api_url)
-    source_client = Client(api_url=source_api_url, api_key="placeholder")
     try:
         # Fetch examples first
-        examples = auto.tqdm(list(source_client.list_shared_examples(uuid)))
+        examples = auto.tqdm(list(source_client.list_shared_examples(token_uuid)))
         print("Finished fetching examples. Creating dataset...")
         dataset = client.create_dataset(dataset_name=dataset_name)
         print(f"New dataset created you can access it at {dataset.url}.")
@@ -101,8 +99,8 @@ def download_public_dataset(
     api_url: str = API_URL,
 ) -> None:
     """Download a public dataset."""
-    api_url, uuid = _parse_token_or_url(token_or_url, api_url)
-    _path = str(path) if path else f"{uuid}.json"
+    api_url, token_uuid = _parse_token_or_url(token_or_url, api_url)
+    _path = str(path) if path else f"{token_uuid}.json"
     if not _path.endswith(".json"):
         raise ValueError(f"Path must end with .json got: {_path}")
 
@@ -113,10 +111,25 @@ def download_public_dataset(
     try:
         # Fetch examples first
         print("Fetching examples...")
-        examples = auto.tqdm(list(source_client.list_shared_examples(uuid)))
+        examples = auto.tqdm(list(source_client.list_shared_examples(token_uuid)))
         with open(str(_path), mode="w", encoding="utf-8") as f:
             jsonifable_examples = [json.loads(example.json()) for example in examples]
             json.dump(jsonifable_examples, f, indent=2)
         print("Done fetching examples.")
+    finally:
+        del source_client
+
+
+def exists_public_dataset(token_or_url: str, *, api_url: str = API_URL) -> bool:
+    """Check if a public dataset exists."""
+    api_url, uuid = _parse_token_or_url(token_or_url, api_url)
+    source_client = Client(api_url=api_url, api_key="placeholder")
+    try:
+        try:
+            source_client.read_shared_dataset(uuid)
+            return True
+        except LangSmithNotFoundError:
+            return False
+
     finally:
         del source_client

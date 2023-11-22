@@ -1,15 +1,16 @@
-from langchain_benchmarks.rag.tasks.semi_structured_earnings import (
+from langchain_benchmarks.rag.tasks.semi_structured_reports import (
     indexing,
 )
-from langchain_benchmarks.rag.tasks.semi_structured_earnings.indexing.retriever_registry import (
+from langchain_benchmarks.rag.tasks.semi_structured_reports.indexing.retriever_registry import (
     load_docs,
 )
 from langchain_benchmarks.schema import RetrievalTask
 
-DATASET_ID = "c47d9617-ab99-4d6e-a6e6-92b8daf85a7d"  # ID of public Semi-structured Earnings dataset
+# ID of public Semi-structured Earnings dataset
+DATASET_ID = "https://smith.langchain.com/public/c47d9617-ab99-4d6e-a6e6-92b8daf85a7d/d"
 
-SEMI_STRUCTURED_EARNINGS_TASK = RetrievalTask(
-    name="Semi-structured Earnings",
+SEMI_STRUCTURED_REPORTS_TASK = RetrievalTask(
+    name="Semi-structured Reports",
     dataset_id=DATASET_ID,
     retriever_factories=indexing.RETRIEVER_FACTORIES,
     architecture_factories={},

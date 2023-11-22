@@ -59,7 +59,7 @@ def _chroma_retriever_factory(
     docs = docs or load_docs_from_parquet()
     embedding_name = embedding.__class__.__name__
     vectorstore = Chroma(
-        collection_name=f"langchain-benchmarks-classic-{embedding_name}",
+        collection_name=f"lcbm-b-{embedding_name}-{transformation_name}",
         embedding_function=embedding,
         persist_directory="./chromadb",
     )
@@ -79,11 +79,12 @@ def _chroma_parent_document_retriever_factory(
     *,
     docs: Optional[Iterable[Document]] = None,
     search_kwargs: Optional[dict] = None,
+    transformation_name: Optional[str] = None,
 ) -> BaseRetriever:
     docs = docs or load_docs_from_parquet()
     embedding_name = embedding.__class__.__name__
     vectorstore = Chroma(
-        collection_name=f"langchain-benchmarks-parent-doc-{embedding_name}",
+        collection_name=f"lcbm-b-{embedding_name}-{transformation_name}",
         embedding_function=embedding,
         persist_directory="./chromadb",
     )
@@ -93,6 +94,7 @@ def _chroma_parent_document_retriever_factory(
         vectorstore,
         collection_name="langchain-docs",
         search_kwargs=search_kwargs or _DEFAULT_SEARCH_KWARGS,
+        transformation_name=transformation_name,
     )
 
 
@@ -101,11 +103,12 @@ def _chroma_hyde_retriever_factory(
     *,
     docs: Optional[Iterable[Document]] = None,
     search_kwargs: Optional[dict] = None,
+    transformation_name: Optional[str] = None,
 ) -> BaseRetriever:
     docs = docs or load_docs_from_parquet()
     embedding_name = embedding.__class__.__name__
     vectorstore = Chroma(
-        collection_name=f"langchain-benchmarks-hyde-{embedding_name}",
+        collection_name=f"lcbm-hd-{embedding_name}-{transformation_name}",
         embedding_function=embedding,
         persist_directory="./chromadb",
     )
@@ -115,6 +118,7 @@ def _chroma_hyde_retriever_factory(
         vectorstore,
         collection_name="langchain-docs",
         search_kwargs=search_kwargs or _DEFAULT_SEARCH_KWARGS,
+        transformation_name=transformation_name,
     )
 
 

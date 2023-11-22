@@ -2,8 +2,12 @@ from typing import Optional
 
 from langchain.chat_models import ChatOpenAI
 from langchain.evaluation import load_evaluator
-from langchain.llms.base import BaseLanguageModel
 from langchain.smith import RunEvalConfig
+
+try:
+    from langchain.schema.language_model import BaseLanguageModel
+except ImportError:
+    from langchain_core.language_models import BaseLanguageModel
 from langsmith.evaluation.evaluator import EvaluationResult, RunEvaluator
 from langsmith.schemas import Example, Run
 

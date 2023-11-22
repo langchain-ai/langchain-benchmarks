@@ -9,9 +9,8 @@ from langchain_benchmarks.rag.tasks.langchain_docs.indexing.retriever_registry i
 )
 from langchain_benchmarks.schema import RetrievalTask
 
-DATASET_ID = (
-    "452ccafc-18e1-4314-885b-edd735f17b9d"  # ID of public LangChain Docs dataset
-)
+# URL of public LangChain Docs dataset
+DATASET_ID = "https://smith.langchain.com/public/452ccafc-18e1-4314-885b-edd735f17b9d/d"
 
 
 def load_cached_docs() -> Iterable[Document]:
