@@ -19,7 +19,11 @@ from langsmith.schemas import Example, Run
 
 
 def compare_outputs(
-    run_outputs: dict, example_outputs: dict, qa_evaluator: StringEvaluator
+    run_outputs: dict,
+    example_outputs: dict,
+    *,
+    qa_evaluator: Optional[StringEvaluator] = None,
+    run_inputs: Optional[dict],
 ) -> EvaluationResults:
     """Compare the outputs of a run to the expected outputs."""
     intermediate_steps = run_outputs["intermediate_steps"]
@@ -68,13 +72,12 @@ def compare_outputs(
             )
         )
 
-    if "output" in run_outputs:
+    if "output" in run_outputs and qa_evaluator:
         output = run_outputs["output"]
-        example_output = example_outputs["output"]
         qa_results = qa_evaluator.evaluate_strings(
             prediction=output,
-            reference=example_output["output"],
-            input=example_outputs["question"],
+            reference=example_outputs["reference"],
+            input=run_inputs["question"],
         )
         results.extend(qa_results)
 
@@ -110,7 +113,10 @@ class AgentTrajectoryEvaluator(RunEvaluator):
             )
 
         return compare_outputs(
-            run.outputs, example.outputs, qa_evaluator=self.qa_evaluator
+            run.outputs,
+            example.outputs,
+            qa_evaluator=self.qa_evaluator,
+            run_inputs=run.inputs,
         )
 
 
