@@ -23,9 +23,9 @@ from langsmith.schemas import Example, Run
 def compare_outputs(
     run_outputs: dict,
     example_outputs: dict,
+    run_inputs: dict,
     *,
     qa_evaluator: Optional[StringEvaluator] = None,
-    run_inputs: Optional[dict],
 ) -> EvaluationResults:
     """Compare the outputs of a run to the expected outputs."""
     intermediate_steps = run_outputs["intermediate_steps"]

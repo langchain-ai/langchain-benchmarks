@@ -109,7 +109,7 @@ from langchain_benchmarks.tool_usage.evaluators import compare_outputs
 )
 def test_compare_outputs(run_outputs, example_outputs, expected_results):
     """Test compare outputs."""
-    evaluation_results = compare_outputs(run_outputs, example_outputs)
+    evaluation_results = compare_outputs(run_outputs, example_outputs, run_inputs={})
     assert {
         result.key: result.score for result in evaluation_results["results"]
     } == expected_results
