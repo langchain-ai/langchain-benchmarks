@@ -7,6 +7,7 @@ Requirements:
 """
 from typing import Optional
 
+from langchain.callbacks.manager import collect_runs
 from langchain.evaluation import EvaluatorType, load_evaluator
 from langchain.evaluation.schema import StringEvaluator
 from langchain.smith import RunEvalConfig
@@ -38,12 +39,12 @@ def compare_outputs(
 
     if order_matters:
         # If the order matters trajectory must be the same as expected trajectory
-        score = int(trajectory == expected_trajectory)
+        trajectory_score = int(trajectory == expected_trajectory)
     else:
         # If order does not matter, then we compare the trajectories after sorting
         # them. This will make sure that the number of times each tool is used
         # is the same, but the order does not matter.
-        score = int(sorted(trajectory) == sorted(expected_trajectory))
+        trajectory_score = int(sorted(trajectory) == sorted(expected_trajectory))
 
     # Just score it based on whether it is correct or not
     step_fraction = len(trajectory) / len(expected_trajectory)
@@ -52,7 +53,8 @@ def compare_outputs(
     results = [
         EvaluationResult(
             key="Intermediate steps correctness",
-            score=score,
+            score=trajectory_score,
+            comment=f"Order matters={order_matters}",
         ),
         EvaluationResult(
             key="# steps / # expected steps",
@@ -74,12 +76,19 @@ def compare_outputs(
 
     if "output" in run_outputs and qa_evaluator:
         output = run_outputs["output"]
-        qa_results = qa_evaluator.evaluate_strings(
-            prediction=output,
-            reference=example_outputs["reference"],
-            input=run_inputs["question"],
+        with collect_runs() as cb:
+            qa_results = qa_evaluator.evaluate_strings(
+                prediction=output,
+                reference=example_outputs["reference"],
+                input=run_inputs["question"],
+            )
+        results.extend(
+            EvaluationResult(
+                key="qa-correctness",
+                score=qa_results["score"],
+                source_run_id=cb.traced_runs[0].id,
+            )
         )
-        results.extend(qa_results)
 
     return {"results": results}
 
