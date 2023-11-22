@@ -11,6 +11,7 @@
 :maxdepth: 0
 :caption: Tool Usage
 
+./notebooks/tool_usage/intro
 ./notebooks/tool_usage/relational_data
 ./notebooks/tool_usage/multiverse_math
 ./notebooks/tool_usage/typewriter_1
@@ -21,6 +22,7 @@
 :maxdepth: 0
 :caption: Extraction
 
+./notebooks/extraction/intro
 ./notebooks/extraction/email
 ```
 
@@ -28,6 +30,7 @@
 :maxdepth: 2
 :caption: RAG
 
+./notebooks/retrieval/intro
 ./notebooks/retrieval/langchain_docs_qa
 ./notebooks/retrieval/semi_structured
 ./notebooks/retrieval/comparing_techniques
