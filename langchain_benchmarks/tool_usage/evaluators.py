@@ -8,6 +8,7 @@ Requirements:
 from typing import Optional
 
 from langchain.callbacks.manager import collect_runs
+from langchain.chat_models import ChatOpenAI
 from langchain.evaluation import EvaluatorType, load_evaluator
 from langchain.evaluation.schema import StringEvaluator
 from langchain.smith import RunEvalConfig
@@ -98,7 +99,8 @@ class AgentTrajectoryEvaluator(RunEvaluator):
 
     def __init__(self) -> None:
         """Initialize the evaluator."""
-        self.qa_evaluator = load_evaluator(EvaluatorType.QA)
+        eval_llm = ChatOpenAI(model="gpt-4", temperature=0, model_kwargs={"seed": 42})
+        self.qa_evaluator = load_evaluator(EvaluatorType.QA, llm=eval_llm)
 
     def evaluate_run(
         self, run: Run, example: Optional[Example] = None
