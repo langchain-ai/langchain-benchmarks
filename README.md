@@ -2,6 +2,8 @@
 
 # 🦜💪 LangChain Benchmarks
 
+[📖 Documentation](https://langchain-ai.github.io/langchain-benchmarks/index.html)
+
 A package to help benchmark various LLM related tasks.
 
 The benchmarks are organized by end-to-end use cases, and
