@@ -86,7 +86,7 @@ html_theme_options = {
     "repository_branch": "main",
     "launch_buttons": {
         "notebook_interface": "jupyterlab",
-        "colab_url": "https://colab.research.google.com"
+        "colab_url": "https://colab.research.google.com",
     },
 }
 
