@@ -5,11 +5,10 @@ Requirements:
 * Agents must output "intermediate_steps" in their run outputs.
 * The dataset must have "expected_steps" in its outputs.
 """
-from typing import List, Optional, Union
+from typing import Optional
 
 from langchain.evaluation import EvaluatorType
 from langchain.smith import RunEvalConfig
-from langchain.smith.evaluation.config import EvalConfig
 from langsmith.evaluation.evaluator import (
     EvaluationResult,
     EvaluationResults,
@@ -17,7 +16,56 @@ from langsmith.evaluation.evaluator import (
 )
 from langsmith.schemas import Example, Run
 
-from langchain_benchmarks.schema import ExtractionTask
+
+def compare_outputs(run_outputs: dict, example_outputs: dict) -> EvaluationResults:
+    """Compare the outputs of a run to the expected outputs."""
+    intermediate_steps = run_outputs["intermediate_steps"]
+    # Since we are comparing to the tool names, we now need to get that
+    # Intermediate steps is a Tuple[AgentAction, Any]
+    # The first element is the action taken
+    # The second element is the observation from taking that action
+    trajectory = [action.tool for action, _ in intermediate_steps]
+    expected_trajectory = example_outputs["expected_steps"]
+
+    order_matters = example_outputs.get("order_matters", True)
+
+    if order_matters:
+        # If the order matters trajectory must be the same as expected trajectory
+        score = int(trajectory == expected_trajectory)
+    else:
+        # If order does not matter, then we compare the trajectories after sorting
+        # them. This will make sure that the number of times each tool is used
+        # is the same, but the order does not matter.
+        score = int(sorted(trajectory) == sorted(expected_trajectory))
+
+    # Just score it based on whether it is correct or not
+    step_fraction = len(trajectory) / len(expected_trajectory)
+
+    # Add trajectory results
+    results = [
+        EvaluationResult(
+            key="Intermediate steps correctness",
+            score=score,
+        ),
+        EvaluationResult(
+            key="# steps / # expected steps",
+            score=step_fraction,
+        ),
+    ]
+
+    # Evaluate state score
+    # This will need to be evolved it's too simple.
+    if "state" in run_outputs:
+        state = run_outputs["state"]
+        example_state = example_outputs["state"]
+        results.append(
+            EvaluationResult(
+                key="Correct Final State",
+                score=int(state == example_state),
+            )
+        )
+
+    return {"results": results}
 
 
 class AgentTrajectoryEvaluator(RunEvaluator):
@@ -26,46 +74,25 @@ class AgentTrajectoryEvaluator(RunEvaluator):
     def evaluate_run(
         self, run: Run, example: Optional[Example] = None
     ) -> EvaluationResults:
+        # The run is the run from the agent
         if run.outputs is None:
             raise ValueError("Run outputs cannot be None")
-        # This is the output of each run
-        intermediate_steps = run.outputs["intermediate_steps"]
-        # Since we are comparing to the tool names, we now need to get that
-        # Intermediate steps is a Tuple[AgentAction, Any]
-        # The first element is the action taken
-        # The second element is the observation from taking that action
-        trajectory = [action.tool for action, _ in intermediate_steps]
-        # This is what we uploaded to the dataset
+
+        # The example is the example from the dataset
         if example is None:
             raise ValueError("Example cannot be None")
-        expected_trajectory = example.outputs["expected_steps"]
 
-        # Just score it based on whether it is correct or not
-        score = int(trajectory == expected_trajectory)
-        step_fraction = len(trajectory) / len(expected_trajectory)
-
-        results = [
-            EvaluationResult(
-                key="Intermediate steps correctness",
-                score=score,
-            ),
-            EvaluationResult(
-                key="# steps / # expected steps",
-                score=step_fraction,
-            ),
-        ]
-
-        if "state" in run.outputs:
-            state = run.outputs["state"]
-            example_state = example.outputs["state"]
-            results.append(
-                EvaluationResult(
-                    key="Correct Final State",
-                    score=int(state == example_state),
-                )
+        if "intermediate_steps" not in run.outputs:
+            raise ValueError(
+                "Please make sure that your agent outputs 'intermediate_steps'"
             )
 
-        return {"results": results}
+        if "expected_steps" not in example.outputs:
+            raise ValueError(
+                "Please make sure that your dataset contains 'expected_steps'"
+            )
+
+        return compare_outputs(run.outputs, example.outputs)
 
 
 STANDARD_AGENT_EVALUATOR = RunEvalConfig(
