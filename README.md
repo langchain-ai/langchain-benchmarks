@@ -3,7 +3,7 @@
 # 🦜💪 LangChain Benchmarks
 
 [![Release Notes](https://img.shields.io/github/release/langchain-ai/langchain-benchmarks)](https://github.com/langchain-ai/langchain-benchmarks/releases)
-[![CI](https://github.com/langchain-ai/langchain-benchmarks/actions/workflows/langchain_ci.yml/badge.svg)](https://github.com/langchain-ai/langchain-benchmarks/actions/workflows/ci.yml)
+[![CI](https://github.com/langchain-ai/langchain-benchmarks/actions/workflows/ci.yml/badge.svg)](https://github.com/langchain-ai/langchain-benchmarks/actions/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Twitter](https://img.shields.io/twitter/url/https/twitter.com/langchainai.svg?style=social&label=Follow%20%40LangChainAI)](https://twitter.com/langchainai)
 [![](https://dcbadge.vercel.app/api/server/6adMQxSpJS?compact=true&style=flat)](https://discord.gg/6adMQxSpJS)
