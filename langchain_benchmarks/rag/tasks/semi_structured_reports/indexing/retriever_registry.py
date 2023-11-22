@@ -22,7 +22,7 @@ from langchain_benchmarks.rag.utils.indexing import (
 logger = logging.getLogger(__name__)
 _DIRECTORY = Path(os.path.abspath(__file__)).parent
 # Stores the zipped pdfs for this dataset
-REMOTE_DOCS_FILE = "https://storage.googleapis.com/benchmarks-artifacts/langchain-docs-benchmarking/semi_structured_earnings.zip"
+REMOTE_DOCS_FILE = "https://storage.googleapis.com/benchmarks-artifacts/langchain-docs-benchmarking/semi_structured_reports.zip"
 DOCS_DIR = _DIRECTORY / "pdfs"
 LOCAL_FILE = _DIRECTORY / "chroma_db.zip"
 

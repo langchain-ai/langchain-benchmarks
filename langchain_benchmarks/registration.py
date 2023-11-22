@@ -3,7 +3,7 @@
 from langchain_benchmarks.extraction.tasks import email_task
 from langchain_benchmarks.rag.tasks import (
     LANGCHAIN_DOCS_TASK,
-    SEMI_STRUCTURED_EARNINGS_TASK,
+    semi_structured_reports_TASK,
 )
 from langchain_benchmarks.schema import Registry
 from langchain_benchmarks.tool_usage.tasks import (
@@ -22,6 +22,6 @@ registry = Registry(
         multiverse_math.MULTIVERSE_MATH,
         email_task.EMAIL_EXTRACTION_TASK,
         LANGCHAIN_DOCS_TASK,
-        SEMI_STRUCTURED_EARNINGS_TASK,
+        semi_structured_reports_TASK,
     ]
 )
