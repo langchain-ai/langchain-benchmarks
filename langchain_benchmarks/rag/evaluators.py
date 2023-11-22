@@ -1,9 +1,9 @@
 from typing import Optional
 
-from langchain_core.language_models import BaseLanguageModel
 from langchain.chat_models import ChatOpenAI
 from langchain.evaluation import load_evaluator
 from langchain.smith import RunEvalConfig
+from langchain_core.language_models import BaseLanguageModel
 from langsmith.evaluation.evaluator import EvaluationResult, RunEvaluator
 from langsmith.schemas import Example, Run
 
