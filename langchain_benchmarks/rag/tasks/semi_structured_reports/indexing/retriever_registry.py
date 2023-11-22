@@ -42,6 +42,13 @@ def fetch_raw_docs(
         os.remove(LOCAL_FILE)
 
 
+def get_file_names():
+    fetch_raw_docs()
+    # Traverse the directory and partition the pdfs
+    for path in DOCS_DIR.glob("*.pdf"):
+        yield path
+
+
 def partition_pdfs(path: Path, *, config: Optional[dict] = None):
     try:
         from unstructured.partition.pdf import partition_pdf
@@ -90,9 +97,7 @@ def partition_pdfs(path: Path, *, config: Optional[dict] = None):
 
 
 def load_docs(*, unstructured_config: Optional[dict] = None) -> Iterable[Document]:
-    fetch_raw_docs()
-    # Traverse the directory and partition the pdfs
-    for path in DOCS_DIR.glob("*.pdf"):
+    for path in get_file_names():
         yield from partition_pdfs(path, config=unstructured_config)
 
 
