@@ -155,7 +155,6 @@ def create_index(
         db_url=RECORD_MANAGER_DB_URL,
     )
     record_manager.create_schema()
-
     return index(
         tqdm(transformed_docs),
         record_manager,

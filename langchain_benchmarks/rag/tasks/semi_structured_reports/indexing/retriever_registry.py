@@ -112,7 +112,7 @@ def _chroma_retriever_factory(
     docs = docs or load_docs()
     embedding_name = embedding.__class__.__name__
     vectorstore = Chroma(
-        collection_name=f"lcbm-semistruct-basic-{embedding_name}",
+        collection_name=f"lcbm-ss-b-{embedding_name}-{transformation_name}",
         embedding_function=embedding,
         persist_directory="./chromadb",
     )
@@ -120,7 +120,7 @@ def _chroma_retriever_factory(
         docs,
         embedding,
         vectorstore,
-        collection_name="semi-structured-earnings",
+        collection_name="semi-structured-earnings-b",
         transform_docs=transform_docs,
         transformation_name=transformation_name,
         search_kwargs=search_kwargs or _DEFAULT_SEARCH_KWARGS,
@@ -137,7 +137,7 @@ def _chroma_parent_document_retriever_factory(
     docs = docs or load_docs()
     embedding_name = embedding.__class__.__name__
     vectorstore = Chroma(
-        collection_name=f"lcbm-semistruct-parent-doc-{embedding_name}",
+        collection_name=f"lcbm-ss-pd-{embedding_name}-{transformation_name}",
         embedding_function=embedding,
         persist_directory="./chromadb",
     )
@@ -145,7 +145,7 @@ def _chroma_parent_document_retriever_factory(
         docs,
         embedding,
         vectorstore,
-        collection_name="semi-structured-earnings",
+        collection_name="semi-structured-earnings-pd",
         search_kwargs=search_kwargs or _DEFAULT_SEARCH_KWARGS,
         transformation_name=transformation_name,
     )
@@ -161,7 +161,7 @@ def _chroma_hyde_retriever_factory(
     docs = docs or load_docs()
     embedding_name = embedding.__class__.__name__
     vectorstore = Chroma(
-        collection_name=f"lcbm-semistruct-hyde-{embedding_name}",
+        collection_name=f"lcbm-ss-hd-{embedding_name}-{transformation_name}",
         embedding_function=embedding,
         persist_directory="./chromadb",
     )
@@ -169,7 +169,7 @@ def _chroma_hyde_retriever_factory(
         docs,
         embedding,
         vectorstore,
-        collection_name="semi-structured-earnings",
+        collection_name="semi-structured-earnings-hd",
         search_kwargs=search_kwargs or _DEFAULT_SEARCH_KWARGS,
         transformation_name=transformation_name,
     )

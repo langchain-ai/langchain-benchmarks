@@ -9,7 +9,7 @@ from langchain_benchmarks.schema import RetrievalTask
 # ID of public Semi-structured Earnings dataset
 DATASET_ID = "https://smith.langchain.com/public/c47d9617-ab99-4d6e-a6e6-92b8daf85a7d/d"
 
-semi_structured_reports_TASK = RetrievalTask(
+SEMI_STRUCTURED_REPORTS_TASK = RetrievalTask(
     name="Semi-structured Reports",
     dataset_id=DATASET_ID,
     retriever_factories=indexing.RETRIEVER_FACTORIES,
