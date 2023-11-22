@@ -80,6 +80,14 @@ html_theme_options = {
     "show_navbar_depth": 2,
     "use_sidenotes": True,
     "use_repository_button": True,
+    "use_issues_button": True,
+    "use_source_button": True,
+    "use_fullscreen_button": True,
+    "repository_branch": "main",
+    "launch_buttons": {
+        "notebook_interface": "jupyterlab",
+        "colab_url": "https://colab.research.google.com"
+    },
 }
 
 html_context = {
