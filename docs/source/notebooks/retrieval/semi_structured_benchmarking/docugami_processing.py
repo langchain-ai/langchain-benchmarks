@@ -1,20 +1,21 @@
-import os 
-import requests
+import os
 import tempfile
-from time import sleep
 from pathlib import Path
+from time import sleep
 from typing import Dict, List
-from docugami import Docugami
+
+import requests
 from dgml_utils.segmentation import get_chunks_str
+from docugami import Docugami
 from docugami.types import Document as DocugamiDocument
 
 api_key = "cukRRrDv1lwn2BnM1jiiUmjO+ptFxvg8tfmqpFRkrzlXXUtSWvTulr0ZzY5uCsQHp3doM2ZC3gcOUw+/TbzGB3FaqEcDujPRvgxy1trlhi884QAJ9GL8/AROM2KL6qYdLaelqD5IrGTteqFS9kVPhBaOxkHKYFTTkkjEkU2MOBp03JQAcfs1rt+e3t4mjz1Uf6VeBspRruvr85Jv4OMvqdsZO8qfhexyIcNeIr0Hy7jAc9dCxkvX1mKRxYf+4kPjxD6F9Pdkmf/QuQS5gc5lKKNodehADGL0hPYpbJQF+m+wnUTQYPPwb1YOQecxRx2YqwBjxY0LTyMLMWCjQggggA=="
-os.environ['DOCUGAMI_API_KEY'] = api_key
+os.environ["DOCUGAMI_API_KEY"] = api_key
 
 client = Docugami()
 
-def upload_files(local_paths: List[str], 
-                 docset_name: str) -> List[DocugamiDocument]:
+
+def upload_files(local_paths: List[str], docset_name: str) -> List[DocugamiDocument]:
     # Docs
     docset_list_response = client.docsets.list(name=docset_name)
     if docset_list_response and docset_list_response.docsets:
@@ -47,6 +48,7 @@ def upload_files(local_paths: List[str],
                 )
     return dg_docs
 
+
 def wait_for_xml(dg_docs: List[DocugamiDocument]) -> dict[str, str]:
     dgml_paths: dict[str, str] = {}
     while len(dgml_paths) < len(dg_docs):
@@ -77,4 +79,4 @@ def wait_for_xml(dg_docs: List[DocugamiDocument]) -> dict[str, str]:
             # done
             return dgml_paths
         else:
-            sleep(30)  
+            sleep(30)
