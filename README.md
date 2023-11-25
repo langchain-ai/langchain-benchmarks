@@ -29,7 +29,7 @@ We have several goals in open sourcing this:
 To install the packages, run the following command:
 
 ```bash
-pip install -U langchain_benchmarks
+pip install -U langchain-benchmarks
 ```
 
 All the benchmarks come with an associated benchmark dataset stored in [LangSmith](https://smith.langchain.com). To take advantage of the eval and debugging experience, [sign up](https://smith.langchain.com), and set your API key in your environment:
