@@ -7,7 +7,10 @@ Requirements:
 """
 from typing import Optional
 
-from langchain.evaluation import EvaluatorType
+from langchain.callbacks.manager import collect_runs
+from langchain.chat_models import ChatOpenAI
+from langchain.evaluation import EvaluatorType, load_evaluator
+from langchain.evaluation.schema import StringEvaluator
 from langchain.smith import RunEvalConfig
 from langsmith.evaluation.evaluator import (
     EvaluationResult,
@@ -17,7 +20,13 @@ from langsmith.evaluation.evaluator import (
 from langsmith.schemas import Example, Run
 
 
-def compare_outputs(run_outputs: dict, example_outputs: dict) -> EvaluationResults:
+def compare_outputs(
+    run_outputs: dict,
+    example_outputs: dict,
+    run_inputs: dict,
+    *,
+    qa_evaluator: Optional[StringEvaluator] = None,
+) -> EvaluationResults:
     """Compare the outputs of a run to the expected outputs."""
     intermediate_steps = run_outputs["intermediate_steps"]
     # Since we are comparing to the tool names, we now need to get that
@@ -31,12 +40,12 @@ def compare_outputs(run_outputs: dict, example_outputs: dict) -> EvaluationResul
 
     if order_matters:
         # If the order matters trajectory must be the same as expected trajectory
-        score = int(trajectory == expected_trajectory)
+        trajectory_score = int(trajectory == expected_trajectory)
     else:
         # If order does not matter, then we compare the trajectories after sorting
         # them. This will make sure that the number of times each tool is used
         # is the same, but the order does not matter.
-        score = int(sorted(trajectory) == sorted(expected_trajectory))
+        trajectory_score = int(sorted(trajectory) == sorted(expected_trajectory))
 
     # Just score it based on whether it is correct or not
     step_fraction = len(trajectory) / len(expected_trajectory)
@@ -45,7 +54,8 @@ def compare_outputs(run_outputs: dict, example_outputs: dict) -> EvaluationResul
     results = [
         EvaluationResult(
             key="Intermediate steps correctness",
-            score=score,
+            score=trajectory_score,
+            comment=f"Order matters={order_matters}",
         ),
         EvaluationResult(
             key="# steps / # expected steps",
@@ -65,11 +75,32 @@ def compare_outputs(run_outputs: dict, example_outputs: dict) -> EvaluationResul
             )
         )
 
+    if "output" in run_outputs and qa_evaluator:
+        output = run_outputs["output"]
+        with collect_runs() as cb:
+            qa_results = qa_evaluator.evaluate_strings(
+                prediction=output,
+                reference=example_outputs["reference"],
+                input=run_inputs["question"],
+            )
+        results.append(
+            EvaluationResult(
+                key="correctness",
+                score=qa_results["score"],
+                source_run_id=cb.traced_runs[0].id,
+            )
+        )
+
     return {"results": results}
 
 
 class AgentTrajectoryEvaluator(RunEvaluator):
     """An evaluator that can be used in conjunction with a standard agent interface."""
+
+    def __init__(self) -> None:
+        """Initialize the evaluator."""
+        eval_llm = ChatOpenAI(model="gpt-4", temperature=0, model_kwargs={"seed": 42})
+        self.qa_evaluator = load_evaluator(EvaluatorType.QA, llm=eval_llm)
 
     def evaluate_run(
         self, run: Run, example: Optional[Example] = None
@@ -92,23 +123,14 @@ class AgentTrajectoryEvaluator(RunEvaluator):
                 "Please make sure that your dataset contains 'expected_steps'"
             )
 
-        return compare_outputs(run.outputs, example.outputs)
+        return compare_outputs(
+            run.outputs,
+            example.outputs,
+            qa_evaluator=self.qa_evaluator,
+            run_inputs=run.inputs,
+        )
 
 
-STANDARD_AGENT_EVALUATOR = RunEvalConfig(
-    # Evaluators can either be an evaluator type
-    # (e.g., "qa", "criteria", "embedding_distance", etc.) or a
-    # configuration for that evaluator
-    evaluators=[
-        # Measures whether a QA response is "Correct", based on a reference answer
-        # You can also select via the raw string "qa"
-        EvaluatorType.QA
-    ],
-    # You can add custom StringEvaluator or RunEvaluator objects
-    # here as well, which will automatically be
-    # applied to each prediction. Check out the docs for examples.
-    custom_evaluators=[AgentTrajectoryEvaluator()],
-    # We now need to specify this because we have multiple outputs in our dataset
-    reference_key="reference",
-    prediction_key="output",
-)
+def get_eval_config():
+    """Returns the default evaluator for the environment."""
+    return RunEvalConfig(custom_evaluators=[AgentTrajectoryEvaluator()])
