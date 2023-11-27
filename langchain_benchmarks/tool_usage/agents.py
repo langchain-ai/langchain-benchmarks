@@ -21,22 +21,7 @@ def _ensure_output_exists(inputs: dict) -> dict:
     return inputs
 
 
-def _standardize_output(
-    runnable: Runnable, state_reader: Optional[Callable]
-) -> Runnable:
-    """Update the output of the runnable."""
-
-    def _read_state(*args: Any, **kwargs: Any) -> Any:
-        """Read the state of the environment."""
-        if state_reader is not None:
-            return state_reader()
-        else:
-            return None
-
-    runnable = runnable | _ensure_output_exists
-    if state_reader is not None:
-        runnable = runnable | RunnablePassthrough.assign(state=_read_state)
-    return runnable
+# PUBLIC API
 
 
 class OpenAIAgentFactory:
@@ -96,7 +81,7 @@ class OpenAIAgentFactory:
 
         # Returns `state` in the output if the environment has a state reader
         # makes sure that `output` is always in the output
-        return _standardize_output(runnable, env.read_state)
+        return standardize_executor(runnable, state_reader=env.read_state)
 
     def __call__(self) -> Runnable:
         return self.create()
@@ -119,3 +104,36 @@ def get_xml_agent(
     return AgentExecutor(agent=agent, tools=tools, verbose=True)
 
 
+def standardize_executor(
+    agent_executor: AgentExecutor,
+    *,
+    state_reader: Optional[Callable[[], Any]] = None,
+) -> Runnable:
+    """An adapter for agent executor to standardize its output.
+
+    1) Makes sure that `output` is always returned (will be set to "" if missing) --
+        Note that this should not be necessary after more updates in the eval.
+    2) Populate `state` with the system state if a state reader is provided.
+
+    Args:
+        agent_executor: the agent executor
+        state_reader: A callable without parameters that if invoked will return
+                      the state of the environment. Used to populate the 'state' key.
+
+    Returns:
+        a new runnable with a standardized output.
+    """
+
+    def _read_state(*args: Any, **kwargs: Any) -> Any:
+        """Read the state of the environment."""
+        if state_reader is not None:
+            return state_reader()
+        else:
+            return None
+
+    runnable = agent_executor | _ensure_output_exists
+    if state_reader is not None:
+        runnable = agent_executor | RunnablePassthrough.assign(
+            state=_read_state
+        ).with_config({"run_name": "Read Env State"})
+    return runnable
