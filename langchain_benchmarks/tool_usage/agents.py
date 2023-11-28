@@ -64,7 +64,7 @@ class OpenAIAgentFactory:
 
         runnable_agent = (
             {
-                "input": lambda x: x["question"],
+                "input": lambda x: x["input"],
                 "agent_scratchpad": lambda x: format_to_openai_functions(
                     x["intermediate_steps"]
                 ),
