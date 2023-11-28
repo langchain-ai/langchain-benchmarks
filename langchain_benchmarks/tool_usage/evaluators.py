@@ -131,6 +131,6 @@ class AgentTrajectoryEvaluator(RunEvaluator):
         )
 
 
-def get_eval_config():
+def get_eval_config() -> RunEvalConfig:
     """Returns the default evaluator for the environment."""
     return RunEvalConfig(custom_evaluators=[AgentTrajectoryEvaluator()])

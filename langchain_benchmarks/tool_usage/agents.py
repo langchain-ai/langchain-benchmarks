@@ -1,12 +1,12 @@
 """Code for creating an agent factory for evaluating tool usage tasks."""
-from typing import Any
+from typing import Any, Callable, Optional
 
 from langchain.agents import AgentExecutor
 from langchain.agents.format_scratchpad import format_to_openai_functions
 from langchain.agents.output_parsers import OpenAIFunctionsAgentOutputParser
 from langchain.chat_models import ChatOpenAI
 from langchain.prompts import ChatPromptTemplate, MessagesPlaceholder
-from langchain.schema.runnable import Runnable, RunnablePassthrough
+from langchain.schema.runnable import Runnable, RunnableLambda, RunnablePassthrough
 from langchain.tools.render import format_tool_to_openai_function
 
 from langchain_benchmarks.schema import ToolUsageTask
@@ -17,6 +17,9 @@ def _ensure_output_exists(inputs: dict) -> dict:
     if "output" not in inputs:
         return {"output": "", **inputs}
     return inputs
+
+
+# PUBLIC API
 
 
 class OpenAIAgentFactory:
@@ -34,6 +37,10 @@ class OpenAIAgentFactory:
 
     def create(self) -> Runnable:
         """Agent Executor"""
+        # For backwards compatibility
+        return self()
+
+    def __call__(self) -> Runnable:
         llm = ChatOpenAI(
             model=self.model,
             temperature=0,
@@ -57,7 +64,7 @@ class OpenAIAgentFactory:
 
         runnable_agent = (
             {
-                "input": lambda x: x["question"],
+                "input": lambda x: x["input"],
                 "agent_scratchpad": lambda x: format_to_openai_functions(
                     x["intermediate_steps"]
                 ),
@@ -67,28 +74,75 @@ class OpenAIAgentFactory:
             | OpenAIFunctionsAgentOutputParser()
         )
 
-        def _read_state(*args: Any, **kwargs: Any) -> Any:
-            """Read the state of the environment."""
-            if env.read_state is not None:
-                return env.read_state()
-            else:
-                return None
-
-        runnable = (
-            AgentExecutor(
-                agent=runnable_agent,
-                tools=env.tools,
-                handle_parsing_errors=True,
-                return_intermediate_steps=True,
-            )
-            | _ensure_output_exists
+        runnable = AgentExecutor(
+            agent=runnable_agent,
+            tools=env.tools,
+            handle_parsing_errors=True,
+            return_intermediate_steps=True,
         )
 
-        if env.read_state is not None:
-            # If the environment has a state reader, add it to the runnable
-            runnable = runnable | RunnablePassthrough.assign(state=_read_state)
+        # Returns `state` in the output if the environment has a state reader
+        # makes sure that `output` is always in the output
+        return apply_agent_executor_adapter(runnable, state_reader=env.read_state)
 
-        return runnable
 
-    def __call__(self) -> Runnable:
-        return self.create()
+# PUBLIC API
+
+
+def apply_agent_executor_adapter(
+    agent_executor: AgentExecutor,
+    *,
+    state_reader: Optional[Callable[[], Any]] = None,
+) -> Runnable:
+    """An adapter for the agent executor to standardize its input and output.
+
+    1) Map `question` to `input` (`question` is used in the datasets,
+       but `input` is used in the agent executor)
+    2) Ensure that `output` is always returned (will be set to "" if missing) --
+       note that this may be relaxed after more updates in the eval config.
+    3) Populate `state` key in the response of the agent with the system state
+       if a state reader is provided.
+
+    Args:
+        agent_executor: the agent executor
+        state_reader: A callable without parameters that if invoked will return
+                      the state of the environment. Used to populate the 'state' key.
+
+    Returns:
+        a new runnable with a standardized output.
+    """
+
+    def _read_state(*args: Any, **kwargs: Any) -> Any:
+        """Read the state of the environment."""
+        if state_reader is not None:
+            return state_reader()
+        else:
+            return None
+
+    def _format_input(inputs: dict) -> dict:
+        """Make sure that the input is always called `input`."""
+        if "question" not in inputs:
+            raise ValueError(
+                "Expected 'question' to be in the inputs. Found only the following "
+                f"keys {sorted(inputs.keys())}."
+            )
+
+        inputs = inputs.copy()  # Because 'question' is popped below
+
+        if "input" not in inputs:
+            return {"input": inputs.pop("question"), **inputs}
+        return inputs
+
+    runnable = (
+        RunnableLambda(_format_input).with_config({"run_name": "Format Input"})
+        | agent_executor
+        | RunnableLambda(_ensure_output_exists).with_config(
+            {"run_name": "Ensure Output"}
+        )
+    )
+
+    if state_reader is not None:
+        runnable = agent_executor | RunnablePassthrough.assign(
+            state=_read_state
+        ).with_config({"run_name": "Read Env State"})
+    return runnable
