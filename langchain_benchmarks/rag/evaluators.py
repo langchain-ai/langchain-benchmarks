@@ -89,7 +89,7 @@ def get_eval_config() -> RunEvalConfig:
         temperature=0.0,
         model_kwargs={"seed": 42},
         max_retries=1,
-        request_timeout=120,
+        request_timeout=60,
     )
     # Use a longer-context LLM to check documents
     faithfulness_eval_llm = ChatOpenAI(
@@ -97,7 +97,7 @@ def get_eval_config() -> RunEvalConfig:
         temperature=0.0,
         model_kwargs={"seed": 42},
         max_retries=1,
-        request_timeout=120,
+        request_timeout=60,
     )
 
     return RunEvalConfig(

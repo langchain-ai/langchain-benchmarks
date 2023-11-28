@@ -11,7 +11,7 @@ def get_eval_config(eval_llm: Optional[BaseChatModel] = None) -> RunEvalConfig:
         temperature=0,
         model_kwargs={"seed": 42},
         max_retries=1,
-        request_timeout=120,
+        request_timeout=60,
     )
     """Get the evaluation configuration for the email task."""
     return RunEvalConfig(

@@ -66,7 +66,7 @@ def run_on_dataset(
         temperature=0.0,
         model_kwargs={"seed": 42},
         max_retries=1,
-        request_timeout=120,
+        request_timeout=60,
     )
     return client.run_on_dataset(
         dataset_name=task.name,

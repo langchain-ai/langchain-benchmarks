@@ -104,7 +104,7 @@ class AgentTrajectoryEvaluator(RunEvaluator):
             temperature=0,
             model_kwargs={"seed": 42},
             max_retries=1,
-            request_timeout=120,
+            request_timeout=60,
         )
         self.qa_evaluator = load_evaluator(EvaluatorType.QA, llm=eval_llm)
 
