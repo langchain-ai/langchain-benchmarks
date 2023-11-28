@@ -182,7 +182,7 @@ DATASET = [
             "How many fruits did I eat?"
         ),
         "answer": multiply(7, add(1, 2)),
-        "expected_steps": ["multiply", "add"],
+        "expected_steps": ["add", "multiply"],
     },
     {
         "question": "multiply the result of (log of 100 to base 10) by 3",
