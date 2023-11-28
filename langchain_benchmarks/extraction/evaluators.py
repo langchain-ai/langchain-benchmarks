@@ -1,8 +1,18 @@
+from typing import Optional
+
+from langchain.chat_models import ChatOpenAI
 from langchain.chat_models.base import BaseChatModel
 from langchain.smith import RunEvalConfig
 
 
-def get_eval_config(eval_llm: BaseChatModel) -> RunEvalConfig:
+def get_eval_config(eval_llm: Optional[BaseChatModel] = None) -> RunEvalConfig:
+    eval_llm = eval_llm or ChatOpenAI(
+        model="gpt-4",
+        temperature=0,
+        model_kwargs={"seed": 42},
+        max_retries=1,
+        request_timeout=120,
+    )
     """Get the evaluation configuration for the email task."""
     return RunEvalConfig(
         evaluators=[
