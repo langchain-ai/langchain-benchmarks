@@ -99,7 +99,13 @@ class AgentTrajectoryEvaluator(RunEvaluator):
 
     def __init__(self) -> None:
         """Initialize the evaluator."""
-        eval_llm = ChatOpenAI(model="gpt-4", temperature=0, model_kwargs={"seed": 42})
+        eval_llm = ChatOpenAI(
+            model="gpt-4",
+            temperature=0,
+            model_kwargs={"seed": 42},
+            max_retries=1,
+            request_timeout=60,
+        )
         self.qa_evaluator = load_evaluator(EvaluatorType.QA, llm=eval_llm)
 
     def evaluate_run(
