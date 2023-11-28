@@ -22,9 +22,7 @@ def _ensure_output_exists(inputs: dict) -> dict:
 # PUBLIC API
 
 
-# Retained for backwards compatibility for now
-# Consider deprecated
-class OpenAIAgentFactory:  # Deprecated
+class OpenAIAgentFactory:
     def __init__(
         self, task: ToolUsageTask, *, model: str = "gpt-3.5-turbo-16k"
     ) -> None:
@@ -39,6 +37,10 @@ class OpenAIAgentFactory:  # Deprecated
 
     def create(self) -> Runnable:
         """Agent Executor"""
+        # For backwards compatibility
+        return self()
+
+    def __call__(self) -> Runnable:
         llm = ChatOpenAI(
             model=self.model,
             temperature=0,
@@ -83,9 +85,6 @@ class OpenAIAgentFactory:  # Deprecated
         # makes sure that `output` is always in the output
         return apply_agent_executor_adapter(runnable, state_reader=env.read_state)
 
-    def __call__(self) -> Runnable:
-        return self.create()
-
 
 # PUBLIC API
 
@@ -120,10 +119,22 @@ def apply_agent_executor_adapter(
         else:
             return None
 
+    def _format_input(inputs: dict) -> dict:
+        """Make sure that the input is always called `input`."""
+        if "question" not in inputs:
+            raise ValueError(
+                "Expected 'question' to be in the inputs. Found only the following "
+                f"keys {sorted(inputs.keys())}."
+            )
+
+        inputs = inputs.copy()  # Because 'question' is popped below
+
+        if "input" not in inputs:
+            return {"input": inputs.pop("question"), **inputs}
+        return inputs
+
     runnable = (
-        RunnablePassthrough.assign(input=lambda x: x["question"]).with_config(
-            {"run_name": "Format Input"}
-        )
+        RunnableLambda(_format_input).with_config({"run_name": "Format Input"})
         | agent_executor
         | RunnableLambda(_ensure_output_exists).with_config(
             {"run_name": "Ensure Output"}
