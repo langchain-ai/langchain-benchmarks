@@ -6,7 +6,7 @@ def get_eval_config(eval_llm: BaseChatModel) -> RunEvalConfig:
     """Get the evaluation configuration for the email task."""
     return RunEvalConfig(
         evaluators=[
-            "json_dist",
+            "json_edit_distance",
             RunEvalConfig.LabeledScoreString(
                 criteria={
                     "accuracy": """
