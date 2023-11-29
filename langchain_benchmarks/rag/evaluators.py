@@ -84,10 +84,20 @@ If the predicted answer contains additional helpful and accurate information tha
 
 def get_eval_config() -> RunEvalConfig:
     """Returns the evaluator for the environment."""
-    eval_llm = ChatOpenAI(model="gpt-4", temperature=0.0, model_kwargs={"seed": 42})
+    eval_llm = ChatOpenAI(
+        model="gpt-4",
+        temperature=0.0,
+        model_kwargs={"seed": 42},
+        max_retries=1,
+        request_timeout=60,
+    )
     # Use a longer-context LLM to check documents
     faithfulness_eval_llm = ChatOpenAI(
-        model="gpt-4-1106-preview", temperature=0.0, model_kwargs={"seed": 42}
+        model="gpt-4-1106-preview",
+        temperature=0.0,
+        model_kwargs={"seed": 42},
+        max_retries=1,
+        request_timeout=60,
     )
 
     return RunEvalConfig(

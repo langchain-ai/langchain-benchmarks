@@ -114,7 +114,11 @@ class AgentTrajectoryEvaluator(RunEvaluator):
             qa_evaluator = None
         else:
             eval_llm = eval_llm or ChatOpenAI(
-                model="gpt-4", temperature=0, model_kwargs={"seed": 42}
+                model="gpt-4",
+                temperature=0,
+                model_kwargs={"seed": 42},
+                max_retries=1,
+                request_timeout=60,
             )
             if output_evaluation == "qa":
                 qa_evaluator = load_evaluator(EvaluatorType.QA, llm=eval_llm)
