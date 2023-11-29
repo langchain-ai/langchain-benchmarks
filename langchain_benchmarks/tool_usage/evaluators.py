@@ -8,16 +8,19 @@ Requirements:
 from typing import Optional, Union, Literal
 
 from langchain.callbacks.manager import collect_runs
-from langchain.chat_models.base import BaseChatModel
+from langchain.chat_models import ChatOpenAI
+from langchain.evaluation import EvaluatorType, load_evaluator
 from langchain.evaluation.schema import StringEvaluator
-from langchain.llms.base import BaseLanguageModel
 from langchain.smith import RunEvalConfig
+from langchain_core.language_models import BaseLanguageModel, BaseChatModel
 from langsmith.evaluation.evaluator import (
     EvaluationResult,
     EvaluationResults,
     RunEvaluator,
 )
 from langsmith.schemas import Example, Run
+
+from langchain_benchmarks.tool_usage.prompts import QA_TEMPLATE_FOR_MULTIVERSE_MATH
 
 
 def compare_outputs(
@@ -103,8 +106,31 @@ class AgentTrajectoryEvaluator(RunEvaluator):
         output_evaluation: Literal["qa", "none"] = "qa",
     ) -> None:
         """Initialize the evaluator."""
-        self.eval_llm = eval_llm
-        self.output_evaluation = output_evaluation
+        if output_evaluation == "none":
+            if eval_llm is not None:
+                raise ValueError(
+                    "If output_evaluation is 'none', then eval_llm must be None"
+                )
+            qa_evaluator = None
+        else:
+            eval_llm = eval_llm or ChatOpenAI(
+                model="gpt-4", temperature=0, model_kwargs={"seed": 42}
+            )
+            if output_evaluation == "qa":
+                qa_evaluator = load_evaluator(EvaluatorType.QA, llm=eval_llm)
+            elif output_evaluation == "qa_math":
+                qa_evaluator = load_evaluator(
+                    EvaluatorType.QA,
+                    llm=eval_llm,
+                    prompt=QA_TEMPLATE_FOR_MULTIVERSE_MATH,
+                )
+            else:
+                raise ValueError(
+                    f"output_evaluation must be one of 'qa' or 'none', "
+                    f"got {output_evaluation}"
+                )
+
+        self.qa_evaluator = qa_evaluator
 
     def evaluate_run(
         self, run: Run, example: Optional[Example] = None
@@ -130,6 +156,7 @@ class AgentTrajectoryEvaluator(RunEvaluator):
         return compare_outputs(
             run.outputs,
             example.outputs,
+            qa_evaluator=self.qa_evaluator,
             run_inputs=run.inputs,
         )
 
@@ -137,7 +164,7 @@ class AgentTrajectoryEvaluator(RunEvaluator):
 def get_eval_config(
     *,
     eval_llm: Union[BaseLanguageModel, BaseChatModel, None] = None,
-    output_evaluation: Literal["qa", "none"] = "qa",
+    output_evaluation: Literal["qa", "qa_math", "none"] = "qa",
 ) -> RunEvalConfig:
     """Get the default evaluator for the environment.
 
@@ -145,6 +172,8 @@ def get_eval_config(
         eval_llm: The language model to use for grading the `output` response
         output_evaluation: how to evaluate the output of the agent.
             - 'qa' will use the qa evaluator to compare the output to the reference.
+            - 'qa_math' will use the qa evaluator to compare the output to the reference
+               using a prompt that better works for multiverse math.
             - 'none' will not evaluate the output of the agent -- in some cases
               it's only relevant to evaluate how the agent used tools, not what
               its output.
