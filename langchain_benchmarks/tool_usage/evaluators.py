@@ -5,12 +5,12 @@ Requirements:
 * Agents must output "intermediate_steps" in their run outputs.
 * The dataset must have "expected_steps" in its outputs.
 """
-from typing import Optional
+from typing import Optional, Union, Literal
 
 from langchain.callbacks.manager import collect_runs
-from langchain.chat_models import ChatOpenAI
-from langchain.evaluation import EvaluatorType, load_evaluator
+from langchain.chat_models.base import BaseChatModel
 from langchain.evaluation.schema import StringEvaluator
+from langchain.llms.base import BaseLanguageModel
 from langchain.smith import RunEvalConfig
 from langsmith.evaluation.evaluator import (
     EvaluationResult,
@@ -97,10 +97,14 @@ def compare_outputs(
 class AgentTrajectoryEvaluator(RunEvaluator):
     """An evaluator that can be used in conjunction with a standard agent interface."""
 
-    def __init__(self) -> None:
+    def __init__(
+        self,
+        eval_llm: Union[BaseLanguageModel, BaseChatModel, None] = None,
+        output_evaluation: Literal["qa", "none"] = "qa",
+    ) -> None:
         """Initialize the evaluator."""
-        eval_llm = ChatOpenAI(model="gpt-4", temperature=0, model_kwargs={"seed": 42})
-        self.qa_evaluator = load_evaluator(EvaluatorType.QA, llm=eval_llm)
+        self.eval_llm = eval_llm
+        self.output_evaluation = output_evaluation
 
     def evaluate_run(
         self, run: Run, example: Optional[Example] = None
@@ -126,11 +130,32 @@ class AgentTrajectoryEvaluator(RunEvaluator):
         return compare_outputs(
             run.outputs,
             example.outputs,
-            qa_evaluator=self.qa_evaluator,
             run_inputs=run.inputs,
         )
 
 
-def get_eval_config() -> RunEvalConfig:
-    """Returns the default evaluator for the environment."""
-    return RunEvalConfig(custom_evaluators=[AgentTrajectoryEvaluator()])
+def get_eval_config(
+    *,
+    eval_llm: Union[BaseLanguageModel, BaseChatModel, None] = None,
+    output_evaluation: Literal["qa", "none"] = "qa",
+) -> RunEvalConfig:
+    """Get the default evaluator for the environment.
+
+    Args:
+        eval_llm: The language model to use for grading the `output` response
+        output_evaluation: how to evaluate the output of the agent.
+            - 'qa' will use the qa evaluator to compare the output to the reference.
+            - 'none' will not evaluate the output of the agent -- in some cases
+              it's only relevant to evaluate how the agent used tools, not what
+              its output.
+
+    Returns:
+        A RunEvalConfig that can be used to evaluate the environment
+    """
+    return RunEvalConfig(
+        custom_evaluators=[
+            AgentTrajectoryEvaluator(
+                eval_llm=eval_llm, output_evaluation=output_evaluation
+            )
+        ]
+    )
