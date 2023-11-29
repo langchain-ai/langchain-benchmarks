@@ -207,7 +207,7 @@ DATASET = [
             "after calculating the sin of 1.5 radians, divide "
             "the result by cos of 1.5 radians"
         ),
-        "answer": sin(1.5) / cos(1.5),
+        "answer": divide(sin(1.5), cos(1.5)),
         "expected_steps": ["sin", "cos", "divide"],
     },
     {
