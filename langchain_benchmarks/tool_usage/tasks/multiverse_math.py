@@ -190,8 +190,8 @@ DATASET = [
         "expected_steps": ["log", "multiply"],
     },
     {
-        "question": "calculate sqrt of 101 to 4 digits of precision",
-        "answer": round(power(101, 0.4), 4),
+        "question": "calculate 101 to the power of 0.5 to 4 digits of precision",
+        "answer": round(power(101, 0.5), 4),
         "expected_steps": ["power", "round"],
     },
     {
