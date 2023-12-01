@@ -1,5 +1,8 @@
 from langchain.prompts import ChatPromptTemplate as C
 
+from langchain_benchmarks.extraction.tasks.chat_extraction.evaluators import (
+    get_eval_config,
+)
 from langchain_benchmarks.extraction.tasks.chat_extraction.schema import generateTicket
 from langchain_benchmarks.schema import ExtractionTask
 
@@ -33,3 +36,6 @@ of the LLM to correctly structure the information and its ability to perform sim
 classification tasks.""",
     instructions=DEFAULT_CHAT_MODEL_PROMPT,
 )
+
+
+__all__ = ["CHAT_EXTRACTION_TASK", "get_eval_config"]
