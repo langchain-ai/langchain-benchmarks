@@ -27,7 +27,7 @@ DEFAULT_CHAT_MODEL_PROMPT = ChatPromptTemplate.from_messages(
 
 CHAT_EXTRACTION_TASK = ExtractionTask(
     name="Chat Extraction",
-    dataset_id="https://smith.langchain.com/public/54d6d8e4-b420-4b9e-862d-548b1b65a6fe/d",
+    dataset_id="https://smith.langchain.com/public/00f4444c-9460-4a82-b87a-f50096f1cfef/d",
     schema=GenerateTicket,
     description="""A dataset meant to test the ability of an LLM to extract and infer
 structured information from a dialogue. The dialogue is between a user and a support
