@@ -31,27 +31,36 @@ def compare_outputs(
     qa_evaluator: Optional[StringEvaluator] = None,
 ) -> EvaluationResults:
     """Compare the outputs of a run to the expected outputs."""
-    intermediate_steps = run_outputs["intermediate_steps"]
-    # Since we are comparing to the tool names, we now need to get that
-    # Intermediate steps is a Tuple[AgentAction, Any]
-    # The first element is the action taken
-    # The second element is the observation from taking that action
-    trajectory = [action.tool for action, _ in intermediate_steps]
-    expected_trajectory = example_outputs["expected_steps"]
+    if "intermediate_steps" in run_outputs:
+        intermediate_steps = run_outputs["intermediate_steps"]
+        # Since we are comparing to the tool names, we now need to get that
+        # Intermediate steps is a Tuple[AgentAction, Any]
+        # The first element is the action taken
+        # The second element is the observation from taking that action
+        actual_steps = [action.tool for action, _ in intermediate_steps]
+    elif "actual_steps" in run_outputs:
+        actual_steps = run_outputs["actual_steps"]
+    else:
+        raise ValueError(
+            "Please make sure that your agent outputs 'intermediate_steps or "
+            "'actual_steps'"
+        )
+
+    expected_steps = example_outputs["expected_steps"]
 
     order_matters = example_outputs.get("order_matters", True)
 
     if order_matters:
         # If the order matters trajectory must be the same as expected trajectory
-        trajectory_score = int(trajectory == expected_trajectory)
+        trajectory_score = int(actual_steps == expected_steps)
     else:
         # If order does not matter, then we compare the trajectories after sorting
         # them. This will make sure that the number of times each tool is used
         # is the same, but the order does not matter.
-        trajectory_score = int(sorted(trajectory) == sorted(expected_trajectory))
+        trajectory_score = int(sorted(actual_steps) == sorted(expected_steps))
 
     # Just score it based on whether it is correct or not
-    step_fraction = len(trajectory) / len(expected_trajectory)
+    step_fraction = len(actual_steps) / len(expected_steps)
 
     # Add trajectory results
     results = [
@@ -147,9 +156,13 @@ class AgentTrajectoryEvaluator(RunEvaluator):
         if example is None:
             raise ValueError("Example cannot be None")
 
-        if "intermediate_steps" not in run.outputs:
+        if (
+            "intermediate_steps" not in run.outputs
+            and "actual_steps" not in run.outputs
+        ):
             raise ValueError(
-                "Please make sure that your agent outputs 'intermediate_steps'"
+                "Please make sure that your agent outputs 'intermediate_steps or "
+                "'actual_steps'"
             )
 
         if "expected_steps" not in example.outputs:
