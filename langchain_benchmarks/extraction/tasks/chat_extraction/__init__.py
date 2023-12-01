@@ -3,7 +3,7 @@ from langchain.prompts import ChatPromptTemplate
 from langchain_benchmarks.extraction.tasks.chat_extraction.evaluators import (
     get_eval_config,
 )
-from langchain_benchmarks.extraction.tasks.chat_extraction.schema import generateTicket
+from langchain_benchmarks.extraction.tasks.chat_extraction.schema import GenerateTicket
 from langchain_benchmarks.schema import ExtractionTask
 
 # This is a default prompt that works reasonably for OpenAI models.
@@ -28,7 +28,7 @@ DEFAULT_CHAT_MODEL_PROMPT = ChatPromptTemplate.from_messages(
 CHAT_EXTRACTION_TASK = ExtractionTask(
     name="Chat Extraction",
     dataset_id="https://smith.langchain.com/public/54d6d8e4-b420-4b9e-862d-548b1b65a6fe/d",
-    schema=generateTicket,
+    schema=GenerateTicket,
     description="""A dataset meant to test the ability of an LLM to extract and infer
 structured information from a dialogue. The dialogue is between a user and a support
 engineer. Outputs should be structured as a JSON object and test both the ability

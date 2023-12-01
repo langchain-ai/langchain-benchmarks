@@ -5,7 +5,7 @@ from langsmith.evaluation.evaluator import (
 )
 from langsmith.schemas import Example, Run
 
-from langchain_benchmarks.extraction.tasks.chat_extraction.schema import generateTicket
+from langchain_benchmarks.extraction.tasks.chat_extraction.schema import GenerateTicket
 
 
 @run_evaluator
@@ -13,7 +13,7 @@ def json_schema(run: Run, example: Example) -> EvaluationResult:
     """Evaluate the json schema of the generated ticket."""
     score, comment = None, None
     try:
-        generateTicket.parse_obj(run.outputs["output"])
+        GenerateTicket.parse_obj(run.outputs["output"])
         score = 1
     except Exception as e:
         comment = repr(e)

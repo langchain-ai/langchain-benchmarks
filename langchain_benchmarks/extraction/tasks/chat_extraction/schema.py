@@ -85,7 +85,7 @@ class ResponseCategorization(BaseModel):
     )
 
 
-class generateTicket(BaseModel):
+class GenerateTicket(BaseModel):
     """Generate a ticket containing all the extracted information."""
 
     issue_summary: str = Field(
