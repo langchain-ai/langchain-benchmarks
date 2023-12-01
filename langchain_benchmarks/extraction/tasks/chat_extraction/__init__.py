@@ -1,4 +1,4 @@
-from langchain.prompts import ChatPromptTemplate as C
+from langchain.prompts import ChatPromptTemplate
 
 from langchain_benchmarks.extraction.tasks.chat_extraction.evaluators import (
     get_eval_config,
@@ -8,7 +8,7 @@ from langchain_benchmarks.schema import ExtractionTask
 
 # This is a default prompt that works reasonably for OpenAI models.
 
-DEFAULT_CHAT_MODEL_PROMPT = C.from_messages(
+DEFAULT_CHAT_MODEL_PROMPT = ChatPromptTemplate.from_messages(
     [
         (
             "system",
