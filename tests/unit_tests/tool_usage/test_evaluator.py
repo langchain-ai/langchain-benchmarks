@@ -123,17 +123,17 @@ from langchain_benchmarks.tool_usage.evaluators import compare_outputs
         # Using actual steps
         # With order mattering
         (
-                {
-                    "actual_steps": ["action_2", "action_1"],
-                },
-                {
-                    "expected_steps": ["action_1", "action_2"],
-                    "order_matters": True,
-                },
-                {
-                    "Intermediate steps correctness": False,
-                    "# steps / # expected steps": 1.0,
-                },
+            {
+                "actual_steps": ["action_2", "action_1"],
+            },
+            {
+                "expected_steps": ["action_1", "action_2"],
+                "order_matters": True,
+            },
+            {
+                "Intermediate steps correctness": False,
+                "# steps / # expected steps": 1.0,
+            },
         ),
     ],
 )
