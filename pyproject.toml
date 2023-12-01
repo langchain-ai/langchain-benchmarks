@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "langchain-benchmarks"
-version = "0.0.1"
+version = "0.0.5"
 description = "🦜💪 Flex those feathers!"
 authors = ["LangChain AI"]
 license = "MIT"

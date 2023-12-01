@@ -61,7 +61,13 @@ def run_on_dataset(
         kwargs: Additional arguments to pass to the client.
     """
     client = Client()
-    eval_llm = ChatOpenAI(model="gpt-4", temperature=0.0, model_kwargs={"seed": 42})
+    eval_llm = ChatOpenAI(
+        model="gpt-4",
+        temperature=0.0,
+        model_kwargs={"seed": 42},
+        max_retries=1,
+        request_timeout=60,
+    )
     return client.run_on_dataset(
         dataset_name=task.name,
         llm_or_chain_factory=create_openai_function_based_extractor(
