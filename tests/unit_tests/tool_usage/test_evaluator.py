@@ -105,6 +105,36 @@ from langchain_benchmarks.tool_usage.evaluators import compare_outputs
                 "# steps / # expected steps": 1.0,
             },
         ),
+        # Using actual steps
+        # With order not mattering
+        (
+            {
+                "actual_steps": ["action_2", "action_1"],
+            },
+            {
+                "expected_steps": ["action_1", "action_2"],
+                "order_matters": False,
+            },
+            {
+                "Intermediate steps correctness": True,
+                "# steps / # expected steps": 1.0,
+            },
+        ),
+        # Using actual steps
+        # With order mattering
+        (
+            {
+                "actual_steps": ["action_2", "action_1"],
+            },
+            {
+                "expected_steps": ["action_1", "action_2"],
+                "order_matters": True,
+            },
+            {
+                "Intermediate steps correctness": False,
+                "# steps / # expected steps": 1.0,
+            },
+        ),
     ],
 )
 def test_compare_outputs(run_outputs, example_outputs, expected_results):
