@@ -24,6 +24,7 @@
 
 ./notebooks/extraction/intro
 ./notebooks/extraction/email
+./notebooks/extractionc
 ```
 
 ```{toctree}
