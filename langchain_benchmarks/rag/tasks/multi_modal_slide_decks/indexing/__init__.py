@@ -1,4 +1,4 @@
-from langchain_benchmarks.rag.tasks.semi_structured_reports.indexing.retriever_registry import (
+from langchain_benchmarks.rag.tasks.multi_modal_slide_decks.indexing.retriever_registry import (
     RETRIEVER_FACTORIES,
     load_docs,
 )
