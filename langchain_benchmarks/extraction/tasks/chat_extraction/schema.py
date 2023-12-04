@@ -58,7 +58,7 @@ class QuestionCategorization(BaseModel):
         " to assist in building applications with LLMs. Questions may also be about similar packages like LangServe, LangSmith, OpenAI, Anthropic, vectorstores, agents, etc."
     )
     toxicity: int = Field(
-        ge=0, lt=6, default=0, description="Whether or not the input question is toxic"
+        ge=0, lt=6, description="Whether or not the input question is toxic"
     )
     sentiment: Sentiment
     programming_language: ProgrammingLanguage
