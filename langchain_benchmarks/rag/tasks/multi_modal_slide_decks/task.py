@@ -18,7 +18,6 @@ Questions and answers based on slide decks containing visual tables and charts.
 Each example is composed of a question and reference answer.
 
 Success is measured based on the accuracy of the answer relative to the reference answer.
-We also measure the faithfulness of the model's response relative to the retrieved documents (if any).
 """  # noqa: E501
     ),
 )

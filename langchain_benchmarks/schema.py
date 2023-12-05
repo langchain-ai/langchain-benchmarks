@@ -109,12 +109,16 @@ class ExtractionTask(BaseTask):
 
 @dataclasses.dataclass(frozen=True)
 class RetrievalTask(BaseTask):
-    retriever_factories: Dict[str, Callable[[Embeddings], BaseRetriever]]  # noqa: F821
-    """Factories that index the docs using the specified strategy."""
-    architecture_factories: Dict[str, Callable[[Embeddings], BaseRetriever]]  # noqa: F821
-    """Factories methods that help build some off-the-shelf architectures。"""
-    get_docs: Callable[..., Iterable[Document]]
+    get_docs: Optional[Callable[..., Iterable[Document]]] = None
     """A function that returns the documents to be indexed."""
+    retriever_factories: Dict[
+        str, Callable[[Embeddings], BaseRetriever]
+    ] = dataclasses.field(default_factory=dict)  # noqa: F821
+    """Factories that index the docs using the specified strategy."""
+    architecture_factories: Dict[
+        str, Callable[[Embeddings], BaseRetriever]
+    ] = dataclasses.field(default_factory=dict)  # noqa: F821
+    """Factories methods that help build some off-the-shelf architectures。"""
 
     @property
     def _table(self) -> List[List[str]]:

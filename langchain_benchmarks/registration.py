@@ -26,5 +26,6 @@ registry = Registry(
         LANGCHAIN_DOCS_TASK,
         MULTI_MODAL_SLIDE_DECKS_TASK,
         SEMI_STRUCTURED_REPORTS_TASK,
+        MULTI_MODAL_SLIDE_DECKS_TASK,
     ]
 )
