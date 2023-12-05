@@ -3,6 +3,7 @@
 from langchain_benchmarks.extraction.tasks import chat_extraction, email_task
 from langchain_benchmarks.rag.tasks import (
     LANGCHAIN_DOCS_TASK,
+    MULTI_MODAL_SLIDE_DECKS_TASK,
     SEMI_STRUCTURED_REPORTS_TASK,
 )
 from langchain_benchmarks.schema import Registry
@@ -24,5 +25,6 @@ registry = Registry(
         chat_extraction.CHAT_EXTRACTION_TASK,
         LANGCHAIN_DOCS_TASK,
         SEMI_STRUCTURED_REPORTS_TASK,
+        MULTI_MODAL_SLIDE_DECKS_TASK,
     ]
 )

@@ -24,7 +24,6 @@ _DIRECTORY = Path(os.path.abspath(__file__)).parent
 # Stores the zipped pdfs for this dataset
 REMOTE_DOCS_FILE = "https://storage.googleapis.com/benchmarks-artifacts/langchain-docs-benchmarking/semi_structured_earnings.zip"
 DOCS_DIR = _DIRECTORY / "pdfs"
-LOCAL_FILE = _DIRECTORY / "chroma_db.zip"
 
 _DEFAULT_SEARCH_KWARGS = {"k": 6}
 
@@ -32,17 +31,17 @@ _DEFAULT_SEARCH_KWARGS = {"k": 6}
 def fetch_raw_docs(
     filename: Optional[str] = None, docs_dir: Optional[str] = None
 ) -> None:
-    filename = filename or LOCAL_FILE
+    filename = filename or _DIRECTORY / Path(REMOTE_DOCS_FILE).name
     docs_dir = docs_dir or DOCS_DIR
     if not is_folder_populated(docs_dir):
         fetch_remote_file(REMOTE_DOCS_FILE, filename)
         with zipfile.ZipFile(filename, "r") as zip_ref:
             zip_ref.extractall(docs_dir)
 
-        os.remove(LOCAL_FILE)
+        os.remove(filename)
 
 
-def get_file_names():
+def get_file_names() -> Iterable[Path]:
     fetch_raw_docs()
     # Traverse the directory and partition the pdfs
     for path in DOCS_DIR.glob("*.pdf"):
