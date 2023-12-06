@@ -5,4 +5,6 @@ def test_public_api() -> None:
     """Test that the public API is correct."""
     # This test will also fail if __all__ is not sorted.
     # Please keep it sorted!
-    assert __all__ == sorted(["STANDARD_AGENT_EVALUATOR"], key=str.lower)
+    assert __all__ == sorted(
+        ["apply_agent_executor_adapter", "get_eval_config"], key=str.lower
+    )

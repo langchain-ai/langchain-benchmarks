@@ -182,7 +182,7 @@ DATASET = [
             "How many fruits did I eat?"
         ),
         "answer": multiply(7, add(1, 2)),
-        "expected_steps": ["multiply", "add"],
+        "expected_steps": ["add", "multiply"],
     },
     {
         "question": "multiply the result of (log of 100 to base 10) by 3",
@@ -190,8 +190,8 @@ DATASET = [
         "expected_steps": ["log", "multiply"],
     },
     {
-        "question": "calculate sqrt of 101 to 4 digits of precision",
-        "answer": round(power(101, 0.4), 4),
+        "question": "calculate 101 to the power of 0.5 to 4 digits of precision",
+        "answer": round(power(101, 0.5), 4),
         "expected_steps": ["power", "round"],
     },
     {
@@ -207,7 +207,7 @@ DATASET = [
             "after calculating the sin of 1.5 radians, divide "
             "the result by cos of 1.5 radians"
         ),
-        "answer": sin(1.5) / cos(1.5),
+        "answer": divide(sin(1.5), cos(1.5)),
         "expected_steps": ["sin", "cos", "divide"],
     },
     {

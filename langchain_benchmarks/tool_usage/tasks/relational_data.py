@@ -10,7 +10,8 @@ question using the tools.
 """
 from typing import Callable, List, TypedDict
 
-from langchain.tools import BaseTool, tool
+from langchain.tools import StructuredTool
+from langchain_core.tools import ToolException
 
 from langchain_benchmarks.schema import ToolUsageEnvironment, ToolUsageTask
 
@@ -187,7 +188,7 @@ def _get_user(id: int) -> dict:
     for user in USER_DATA:
         if user["id"] == id:
             return user
-    raise ValueError(f"User ID {id} cannot be resolved")
+    raise ToolException(f"User ID {id} cannot be resolved")
 
 
 def _get_location(id: int) -> dict:
@@ -202,7 +203,7 @@ def _get_location(id: int) -> dict:
     for location in LOCATION_DATA:
         if location["id"] == id:
             return location
-    raise ValueError(f"Location ID {id} cannot be resolved")
+    raise ToolException(f"Location ID {id} cannot be resolved")
 
 
 def _get_food(food_id: int) -> dict:
@@ -217,7 +218,7 @@ def _get_food(food_id: int) -> dict:
     for food in FOOD_DATA:
         if food["id"] == food_id:
             return food
-    raise ValueError(f"Food ID {food_id} cannot be resolved")
+    raise ToolException(f"Food ID {food_id} cannot be resolved")
 
 
 def get_available_functions() -> List[Callable]:
@@ -391,10 +392,10 @@ def get_available_functions() -> List[Callable]:
     return functions
 
 
-def get_tools() -> List[BaseTool]:
+def get_tools() -> List[StructuredTool]:
     """Get all the available tools."""
     functions = get_available_functions()
-    return [tool(f) for f in functions]
+    return [StructuredTool.from_function(f, handle_tool_error=True) for f in functions]
 
 
 def get_environment() -> ToolUsageEnvironment:

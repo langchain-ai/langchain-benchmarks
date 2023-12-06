@@ -24,6 +24,7 @@
 
 ./notebooks/extraction/intro
 ./notebooks/extraction/email
+./notebooks/extraction/chat_extraction
 ```
 
 ```{toctree}
@@ -33,5 +34,7 @@
 ./notebooks/retrieval/intro
 ./notebooks/retrieval/langchain_docs_qa
 ./notebooks/retrieval/semi_structured
+./notebooks/retrieval/multi_modal_benchmarking/multi_modal_eval_baseline
+./notebooks/retrieval/multi_modal_benchmarking/multi_modal_eval
 ./notebooks/retrieval/comparing_techniques
 ```
