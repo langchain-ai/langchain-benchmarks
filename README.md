@@ -1,6 +1,6 @@
 🚧 Under Active Development 🚧
 
-# 🦜💪 LangChain Benchmarks
+# 🦜💯 LangChain Benchmarks
 
 [![Release Notes](https://img.shields.io/github/release/langchain-ai/langchain-benchmarks)](https://github.com/langchain-ai/langchain-benchmarks/releases)
 [![CI](https://github.com/langchain-ai/langchain-benchmarks/actions/workflows/ci.yml/badge.svg)](https://github.com/langchain-ai/langchain-benchmarks/actions/workflows/ci.yml)
