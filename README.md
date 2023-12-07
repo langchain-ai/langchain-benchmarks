@@ -1,5 +1,3 @@
-🚧 Under Active Development 🚧
-
 # 🦜💯 LangChain Benchmarks
 
 [![Release Notes](https://img.shields.io/github/release/langchain-ai/langchain-benchmarks)](https://github.com/langchain-ai/langchain-benchmarks/releases)
