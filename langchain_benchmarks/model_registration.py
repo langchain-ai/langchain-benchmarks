@@ -1,13 +1,56 @@
 from __future__ import annotations
 
 import dataclasses
-from typing import Dict, Any, Sequence, Optional, Union, Iterable
+import importlib
+from typing import Dict, Any, Sequence, Optional, Union, Iterable, Type
+
+from langchain_core.language_models import BaseLanguageModel, BaseChatModel
 from tabulate import tabulate
 
 from typing_extensions import Literal
 
 Provider = Literal["fireworks", "openai"]
 ModelType = Literal["chat", "llm"]
+
+AUTHORIZED_NAMESPACES = {"langchain"}
+
+
+def _get_model_class_from_path(
+    path: str
+) -> Union[Type[BaseChatModel], Type[BaseLanguageModel]]:
+    """Get the class of the model."""
+    module_name, attribute_name = path.rsplit(".", 1)
+    top_namespace = path.split(".")[0]
+
+    if top_namespace not in AUTHORIZED_NAMESPACES:
+        raise ValueError(
+            f"Unauthorized namespace {top_namespace}. "
+            f"Authorized namespaces are: {AUTHORIZED_NAMESPACES}"
+        )
+
+    # Import the module dynamically
+    module = importlib.import_module(module_name)
+    model_class = getattr(module, attribute_name)
+    if not issubclass(model_class, (BaseLanguageModel, BaseChatModel)):
+        raise ValueError(
+            f"Model class {model_class} is not a subclass of BaseLanguageModel"
+        )
+    return model_class
+
+
+def _get_default_path(provider: str, type_: ModelType) -> str:
+    """Get the default path for a model."""
+    paths = {
+        ("fireworks", "chat"): "langchain.chat_models.fireworks.ChatFireworks",
+        ("fireworks", "llm"): "langchain.language_models.fireworks.Fireworks",
+        ("openai", "chat"): "langchain.chat_models.openai.ChatOpenAI",
+        ("openai", "llm"): "langchain.language_models.openai.OpenAI",
+    }
+
+    if (provider, type_) not in paths:
+        raise ValueError(f"Unknown provider {provider} and type {type_}")
+
+    return paths[(provider, type_)]
 
 
 @dataclasses.dataclass(frozen=True)
@@ -22,15 +65,18 @@ class RegisteredModel:
     description: str
     params: Dict[str, Any]
     type: ModelType
-    #
-    # def get_model(
-    #     self,
-    #     *,
-    #     model_params: Optional[Dict[str, Any]] = None,
-    # ) -> Union[BaseChatModel, BaseLanguageModel]:
-    #     """Get the class of the model."""
-    #     all_params = {**self.params, **(model_params or {})}
-    #     return None
+    # Path to the model class.
+    # For example, "langchain.chat_models.anthropic import ChatAnthropicModel"
+    path: Optional[str] = None  # If not provided, will use default path
+
+    def get_model(
+        self, *, model_params: Optional[Dict[str, Any]] = None
+    ) -> Union[BaseChatModel, BaseLanguageModel]:
+        """Get the class of the model."""
+        all_params = {**self.params, **(model_params or {})}
+        path = self.path or _get_default_path(self.provider, self.type)
+        model_class = _get_model_class_from_path(path)
+        return model_class(**all_params)
 
 
 StrFilter = Union[None, str, Sequence[str]]
@@ -131,6 +177,33 @@ class ModelRegistry:
 
 model_registry = ModelRegistry(
     registered_models=[
+        RegisteredModel(
+            provider="openai",
+            name="gpt-3.5-turbo-1106",
+            type="chat",
+            description="",
+            params={
+                "model": "gpt-3.5-turbo-1106",
+            },
+        ),
+        RegisteredModel(
+            provider="openai",
+            name="gpt-3.5-turbo-0613",
+            type="chat",
+            description="",
+            params={
+                "model": "gpt-3.5-turbo-0613",
+            },
+        ),
+        RegisteredModel(
+            provider="openai",
+            name="gpt-3.5-turbo-0613",
+            type="chat",
+            description="",
+            params={
+                "model": "gpt-4-0613",
+            },
+        ),
         RegisteredModel(
             provider="fireworks",
             name="llama-v2-7b-chat",
