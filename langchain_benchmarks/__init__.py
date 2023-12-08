@@ -1,5 +1,5 @@
-from langchain_benchmarks.registration import registry
 from langchain_benchmarks.model_registration import model_registry
+from langchain_benchmarks.registration import registry
 from langchain_benchmarks.utils._langsmith import (
     clone_public_dataset,
     download_public_dataset,
@@ -11,4 +11,5 @@ __all__ = [
     "download_public_dataset",
     "registry",
     "model_registry",
+
 ]
