@@ -45,7 +45,7 @@ class FunctionDefinition(TypedDict):
 class FunctionInvocation(TypedDict):
     """Representation for a function invocation."""
 
-    id: Optional[str]
+    id: NotRequired[str]
     name: str
     arguments: List[Arguments]
 
@@ -53,34 +53,28 @@ class FunctionInvocation(TypedDict):
 class FunctionResult(TypedDict):
     """Representation for a function result."""
 
-    id: Optional[str]
+    id: NotRequired[str]
     name: str
     result: Optional[str]
     error: Optional[str]
 
 
-class Renderer(abc.ABC):
-    def render_function_definition(
-        self, function_definition: FunctionDefinition
-    ) -> str:
+class Visitor(abc.ABC):
+    def visit_function_definition(self, function_definition: FunctionDefinition) -> str:
         """Render a function."""
         raise NotImplementedError()
 
-    def render_function_invocation(
-        self, function_invocation: FunctionInvocation
-    ) -> str:
+    def visit_function_invocation(self, function_invocation: FunctionInvocation) -> str:
         """Render a function invocation."""
         raise NotImplementedError()
 
-    def render_function_result(self, function_result: FunctionResult) -> str:
+    def visit_function_result(self, function_result: FunctionResult) -> str:
         """Render a function result."""
         raise NotImplementedError()
 
 
-class XML(Renderer):
-    def render_function_definition(
-        self, function_definition: FunctionDefinition
-    ) -> str:
+class XMLEncoder(Visitor):
+    def visit_function_definition(self, function_definition: FunctionDefinition) -> str:
         """Render a function."""
         parameters_as_strings = [
             "<parameter>\n"
@@ -99,11 +93,15 @@ class XML(Renderer):
             "<parameters>\n"
             f"{''.join(parameters_as_strings)}"  # Already includes trailing newline
             "</parameters>\n"
+            "<return_value>\n"
+            f"<type>{function_definition['return_value']['type']}</type>\n"
+            f"<description>{function_definition['return_value']['description']}</description>\n"
+            "</return_value>\n"
             "</function>"
         )
         return function
 
-    def render_function_invocation(self, invocation: FunctionInvocation) -> str:
+    def visit_function_invocation(self, invocation: FunctionInvocation) -> str:
         """Render a function invocation."""
         arguments_as_strings = [
             "<argument>\n"
@@ -128,7 +126,7 @@ class XML(Renderer):
         )
         return "\n".join(lines)
 
-    def render_function_result(self, function_result: FunctionResult) -> str:
+    def visit_function_result(self, function_result: FunctionResult) -> str:
         """Render a function result."""
         lines = [
             "<function_result>",
@@ -149,10 +147,8 @@ class XML(Renderer):
         return "\n".join(lines)
 
 
-class TypeScript(Renderer):
-    def render_function_definition(
-        self, function_definition: FunctionDefinition
-    ) -> str:
+class TypeScriptEncoder(Visitor):
+    def visit_function_definition(self, function_definition: FunctionDefinition) -> str:
         """Render a function."""
         parameters_as_strings = [
             f"{parameter['name']}: {parameter['type']}"
@@ -166,7 +162,7 @@ class TypeScript(Renderer):
         )
         return function
 
-    def render_function_invocation(self, invocation: FunctionInvocation) -> str:
+    def visit_function_invocation(self, invocation: FunctionInvocation) -> str:
         """Render a function invocation."""
         arguments_as_strings = [
             f"{argument['name']}: {argument['value']}"
@@ -175,7 +171,7 @@ class TypeScript(Renderer):
         lines = [f"{invocation['name']}(" f"{', '.join(arguments_as_strings)});"]
         return "\n".join(lines)
 
-    def render_function_result(self, function_result: FunctionResult) -> str:
+    def visit_function_result(self, function_result: FunctionResult) -> str:
         """Render a function result."""
         lines = []
         if function_result["error"]:

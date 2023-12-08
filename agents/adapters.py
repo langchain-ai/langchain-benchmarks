@@ -2,7 +2,7 @@ from typing import List, Sequence
 
 from langchain.tools.base import StructuredTool
 
-from agents.render import Parameter, FunctionDefinition
+from agents.encoder import Parameter, FunctionDefinition
 
 
 def get_parameters_from_tool(tool: StructuredTool) -> List[Parameter]:
