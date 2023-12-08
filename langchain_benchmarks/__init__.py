@@ -1,3 +1,4 @@
+from langchain_benchmarks.model_registration import model_registry
 from langchain_benchmarks.registration import registry
 from langchain_benchmarks.utils._langsmith import (
     clone_public_dataset,
@@ -5,4 +6,10 @@ from langchain_benchmarks.utils._langsmith import (
 )
 
 # Please keep this list sorted!
-__all__ = ["clone_public_dataset", "download_public_dataset", "registry"]
+__all__ = [
+    "clone_public_dataset",
+    "download_public_dataset",
+    "registry",
+    "model_registry",
+
+]
