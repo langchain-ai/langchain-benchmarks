@@ -7,17 +7,17 @@ from langchain.agents import AgentOutputParser
 from langchain.chat_models import ChatAnthropic, ChatFireworks
 from langchain.chat_models.base import BaseChatModel
 from langchain.prompts.chat import ChatPromptTemplate
-from langchain.schema.messages import AIMessage, HumanMessage
+from langchain.schema.messages import HumanMessage
 from langchain.schema.runnable import Runnable
 from langchain.tools import StructuredTool
 from langchain_core.agents import AgentFinish, AgentAction
-from langchain_core.exceptions import OutputParserException
 from langchain_core.messages import BaseMessage
 from langchain_core.prompts import MessagesPlaceholder
 from langchain_core.runnables import RunnableConfig
 from typing_extensions import TypedDict, NotRequired
 
-from agents.encoder import AstPrinter, XMLEncoder, TypeScriptEncoder
+from agents.encoder import AstPrinter, TypeScriptEncoder
+from agents.model_registry import FIREWORK_NAME_TO_MODEL
 from agents.parser import ParameterizedAgentParser
 from agents.adapters import convert_tool_to_function_definition
 from agents.prompts import AGENT_INSTRUCTIONS_BLOB_STYLE
@@ -112,13 +112,6 @@ def create_chat_agent(
         | parser
     )
     return agent
-
-
-FIREWORK_NAME_TO_MODEL = {
-    "llama-v2-7b-chat": "accounts/fireworks/models/llama-v2-7b-chat",
-    "llama-v2-13b-chat": "accounts/fireworks/models/llama-v2-13b-chat",
-    "llama-v2-70b-chat": "accounts/fireworks/models/llama-v2-70b-chat",
-}
 
 
 class CustomAgentFactory:
