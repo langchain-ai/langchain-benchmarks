@@ -122,7 +122,7 @@ _OpenAIModels = [
 _FireworksModels = [
     RegisteredModel(
         provider="fireworks",
-        name="llama-v2-7b-chat",
+        name="llama-v2-7b-chat-fw",
         type="chat",
         description="7b parameter LlamaChat model",
         params={
@@ -131,7 +131,7 @@ _FireworksModels = [
     ),
     RegisteredModel(
         provider="fireworks",
-        name="llama-v2-13b-chat",
+        name="llama-v2-13b-chat-fw",
         type="chat",
         description="13b parameter LlamaChat model",
         params={
@@ -140,7 +140,7 @@ _FireworksModels = [
     ),
     RegisteredModel(
         provider="fireworks",
-        name="llama-v2-70b-chat",
+        name="llama-v2-70b-chat-fw",
         type="chat",
         description="70b parameter LlamaChat model",
         params={
