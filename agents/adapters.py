@@ -69,5 +69,7 @@ def convert_tool_to_function_definition(tool: StructuredTool) -> FunctionDefinit
         "name": tool.name,
         "description": tool.description,
         "parameters": parameters,
-        "return_value": "Any",
+        "return_value": {
+            "type": "Any",
+        },
     }
