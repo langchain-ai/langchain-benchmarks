@@ -153,6 +153,7 @@ class Registry:
                 raise ValueError(
                     f"Duplicate task name {task.name}. " f"Task names must be unique."
                 )
+            seen_names.add(task.name)
 
     def _repr_html_(self) -> str:
         """Return an HTML representation of the registry."""
