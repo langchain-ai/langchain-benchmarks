@@ -1,6 +1,6 @@
 import pytest
 
-from langchain_benchmarks.schema import RegisteredModel, ModelRegistry
+from langchain_benchmarks.schema import ModelRegistry, RegisteredModel
 
 # Create some sample RegisteredModel instances for testing
 SAMPLE_MODELS = [

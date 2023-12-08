@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from langchain_benchmarks.schema import RegisteredModel, ModelRegistry
+from langchain_benchmarks.schema import ModelRegistry, RegisteredModel
 
 _OpenAIModels = [
     RegisteredModel(

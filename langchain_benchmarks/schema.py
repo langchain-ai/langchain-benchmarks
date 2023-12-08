@@ -4,18 +4,17 @@ from __future__ import annotations
 import dataclasses
 import importlib
 import urllib
-from typing import Any, Callable, Dict, Iterable, List, Optional, Type, Union, Sequence
-
-from langchain_core.language_models import BaseChatModel, BaseLanguageModel
-from typing_extensions import Literal
+from typing import Any, Callable, Dict, Iterable, List, Optional, Sequence, Type, Union
 
 from langchain.prompts import ChatPromptTemplate
 from langchain.schema import BaseRetriever
 from langchain.schema.document import Document
 from langchain.schema.embeddings import Embeddings
 from langchain.tools import BaseTool
+from langchain_core.language_models import BaseChatModel, BaseLanguageModel
 from pydantic import BaseModel
 from tabulate import tabulate
+from typing_extensions import Literal
 
 
 @dataclasses.dataclass(frozen=True)

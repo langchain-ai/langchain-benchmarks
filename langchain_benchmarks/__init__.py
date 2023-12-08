@@ -9,7 +9,6 @@ from langchain_benchmarks.utils._langsmith import (
 __all__ = [
     "clone_public_dataset",
     "download_public_dataset",
-    "registry",
     "model_registry",
-
+    "registry",
 ]
