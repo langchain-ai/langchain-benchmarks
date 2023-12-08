@@ -6,8 +6,9 @@ We should actually support something like pydantic or jsonschema for the types, 
 we can expand them recursively for nested types.
 """
 import abc
-from typing import Optional
-from typing import TypedDict, List, Any
+from typing import Optional, List, Any
+
+from typing_extensions import NotRequired, TypedDict
 
 
 class Parameter(TypedDict):
@@ -29,7 +30,7 @@ class ReturnValue(TypedDict):
     """Representation for a return value of a function call."""
 
     type: str
-    description: str
+    description: NotRequired[str]
 
 
 class FunctionDefinition(TypedDict):
