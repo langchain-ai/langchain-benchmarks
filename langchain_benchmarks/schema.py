@@ -259,6 +259,16 @@ def _get_default_path(provider: str, type_: ModelType) -> str:
     return paths[(provider, type_)]
 
 
+def _get_default_url(provider: str, type_: ModelType) -> Optional[str]:
+    """Get default URL to API page for model."""
+    if provider == "fireworks":
+        return "https://app.fireworks.ai/models"
+    elif provider == "openai":
+        return "https://platform.openai.com/docs/models"
+    else:
+        return None
+
+
 @dataclasses.dataclass(frozen=True)
 class RegisteredModel:
     """Descriptive information about a model.
@@ -274,6 +284,7 @@ class RegisteredModel:
     # Path to the model class.
     # For example, "langchain.chat_models.anthropic import ChatAnthropicModel"
     path: Optional[str] = None  # If not provided, will use default path
+    url: Optional[str] = None  # If not provided, will use default URL
 
     def get_model(
         self, *, model_params: Optional[Dict[str, Any]] = None
@@ -289,14 +300,28 @@ class RegisteredModel:
         return self.path or _get_default_path(self.provider, self.type)
 
     @property
+    def model_url(self) -> Optional[str]:
+        """Get the URL of the model."""
+        return self.url or _get_default_url(self.provider, self.type)
+
+    @property
     def _table(self) -> List[List[str]]:
         """Return a table representation of the environment."""
+        if self.model_path:
+            url = (
+                f'<a href="{self.model_path}" target="_blank" rel="noopener">'
+                "ModelPage"
+                "</a>"
+            )
+        else:
+            url = ""
         return [
             ["name", self.name],
             ["type", self.type],
             ["provider", self.provider],
             ["description", self.description],
             ["model_path", self.model_path],
+            ["url", url],
         ]
 
     def _repr_html_(self) -> str:
