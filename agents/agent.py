@@ -1,6 +1,4 @@
-import ast
-import re
-from typing import Any, Tuple, List, Optional
+from typing import Tuple, List, Optional
 from typing import Sequence
 from typing import Union
 
@@ -9,11 +7,10 @@ from langchain.agents import AgentOutputParser
 from langchain.chat_models import ChatAnthropic, ChatFireworks
 from langchain.chat_models.base import BaseChatModel
 from langchain.prompts.chat import ChatPromptTemplate
-from langchain.pydantic_v1 import BaseModel, ValidationError, Field
 from langchain.schema.messages import AIMessage, HumanMessage
 from langchain.schema.runnable import Runnable
 from langchain.tools import StructuredTool
-from langchain_core.agents import AgentFinish, AgentAction, AgentActionMessageLog
+from langchain_core.agents import AgentFinish, AgentAction
 from langchain_core.exceptions import OutputParserException
 from langchain_core.messages import BaseMessage
 from langchain_core.prompts import MessagesPlaceholder
@@ -23,99 +20,10 @@ from typing_extensions import TypedDict, NotRequired
 from agents.adapters import (
     format_structured_tool_as_xml,
 )
+from agents.parser import ParameterizedAgentParser
 from agents.prompts import AGENT_INSTRUCTIONS_BLOB_STYLE
 from langchain_benchmarks.schema import ToolUsageTask
 from langchain_benchmarks.tool_usage.agents import apply_agent_executor_adapter
-
-
-class ToolInvocationRequest(BaseModel):
-    """Request to invoke a tool."""
-
-    tool_name: str
-    # OK parameterless tools which do not take arguments
-    arguments: Any = Field(default_factory=dict)
-
-
-class ParameterizedAgentParser(AgentOutputParser):
-    """A generalized parser that makes it easier to parameterize different parsing."""
-
-    wrapping_xml_tag: str
-    """The tag that wraps the function invocation request.
-    
-    For example, if "tool", then the function invocation request should be wrapped
-    in <tool>...</tool>.
-    """
-    require_closing_xml_tag: bool = False
-    """Whether we should require a closing tag for the wrapping_xml_tag.
-    
-    For example, if True, then the function invocation request should be wrapped
-    """
-
-    def parse(self, text: str) -> Union[AgentFinish, AgentAction]:
-        """Parse the output of the agent."""
-        open_tag = f"<{self.wrapping_xml_tag}>"
-        close_tag = f"</{self.wrapping_xml_tag}>"
-        if open_tag in text:
-            # This is a hack to make sure that </tool> is always present
-            # in the output if <tool>. </tool> may be a stop sequence for the
-            # language model, so depending on implementation it may get cut off.
-            if not self.require_closing_xml_tag:  # Fix regular expression instead
-                text += close_tag
-
-        pattern = rf"{open_tag}(?P<invocation>.*?){close_tag}"
-
-        match = re.search(pattern, text, re.DOTALL)
-        if match:
-            content = match.group("invocation").strip()
-            return parse_invocation(content, self.wrapping_xml_tag)
-
-        return AgentFinish(
-            log=text,
-            return_values={
-                "output": text,
-            },
-        )
-
-
-def parse_invocation(text: str, tag: str) -> Union[AgentAction]:
-    """Parse the content of the function invocation."""
-    ai_content = f"<{tag}>{text}</{tag}>"
-
-    try:
-        result = ast.literal_eval(text)
-    except Exception as e:
-        # Convert this to something controllable by the user.
-        err_msg = (
-            f"ERROR: Please use the format "
-            f'<{tag}>{{"tool_name": $TOOL_NAME, "arguments": $ARGUMENTS}}</{tag}>'
-        )
-        raise OutputParserException(
-            error=e,
-            llm_output=ai_content,
-            observation=err_msg,
-            send_to_llm=True,
-        )
-
-    try:
-        request = ToolInvocationRequest(**result)
-    except ValidationError as e:
-        err_msg = (
-            f"ERROR: Please use the format "
-            f'<{tag}>{{"tool_name": $TOOL_NAME, "arguments": $ARGUMENTS}}</{tag}>'
-        )
-        raise OutputParserException(
-            error=e,
-            llm_output=ai_content,
-            send_to_llm=True,
-            observation=err_msg,
-        )
-
-    return AgentActionMessageLog(
-        message_log=[AIMessage(content=ai_content)],
-        tool=request.tool_name,
-        tool_input=request.arguments,
-        log=f"\nInvoking {request.tool_name}: {request.arguments}\n\t",
-    )
 
 
 def format_observation(tool_name: str, observation: str) -> BaseMessage:
