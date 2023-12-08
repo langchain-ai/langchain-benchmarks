@@ -6,5 +6,10 @@ def test_public_api() -> None:
     # This test will also fail if __all__ is not sorted.
     # Please keep it sorted!
     assert __all__ == sorted(
-        ["clone_public_dataset", "download_public_dataset", "registry"]
+        [
+            "clone_public_dataset",
+            "download_public_dataset",
+            "registry",
+            "model_registry",
+        ]
     )

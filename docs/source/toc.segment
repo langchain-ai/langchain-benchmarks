@@ -3,6 +3,7 @@
 :caption: Introduction
 
 ./notebooks/getting_started
+./notebooks/models
 ./notebooks/datasets
 ```
 
