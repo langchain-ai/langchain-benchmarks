@@ -1,7 +1,7 @@
 """Test XML encoding and decoding of function definitions, invocation, and results."""
 from agents.encoder import (
-    TypeScriptEncoder,
     FunctionDefinition,
+    TypeScriptEncoder,
 )
 
 

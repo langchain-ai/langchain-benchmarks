@@ -4,7 +4,7 @@ from typing import List
 
 from langchain.tools.base import StructuredTool
 
-from agents.encoder import Parameter, FunctionDefinition
+from agents.encoder import FunctionDefinition, Parameter
 
 
 # This is temporary until we have a better way to represent parameters

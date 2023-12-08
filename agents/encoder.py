@@ -6,7 +6,7 @@ We should actually support something like pydantic or jsonschema for the types, 
 we can expand them recursively for nested types.
 """
 import abc
-from typing import Optional, List, Any
+from typing import Any, List, Optional
 
 from typing_extensions import NotRequired, TypedDict
 

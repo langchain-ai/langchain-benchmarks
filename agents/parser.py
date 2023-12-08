@@ -4,7 +4,7 @@ from typing import Any, Union
 
 from langchain.agents import AgentOutputParser
 from langchain.pydantic_v1 import BaseModel, Field, ValidationError
-from langchain_core.agents import AgentFinish, AgentAction, AgentActionMessageLog
+from langchain_core.agents import AgentAction, AgentActionMessageLog, AgentFinish
 from langchain_core.exceptions import OutputParserException
 from langchain_core.messages import AIMessage
 

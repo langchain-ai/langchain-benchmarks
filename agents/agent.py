@@ -1,20 +1,18 @@
-from typing import Tuple, List, Literal
-from typing import Sequence
-from typing import Union
+from typing import List, Literal, Sequence, Tuple, Union
 
 from langchain.agents import AgentOutputParser
-from langchain_core.language_models import BaseChatModel, BaseLanguageModel
 from langchain.prompts.chat import ChatPromptTemplate
 from langchain.schema.messages import HumanMessage
 from langchain.schema.runnable import Runnable
 from langchain.tools import StructuredTool
-from langchain_core.agents import AgentFinish, AgentAction
+from langchain_core.agents import AgentAction, AgentFinish
+from langchain_core.language_models import BaseChatModel, BaseLanguageModel
 from langchain_core.messages import BaseMessage
 from langchain_core.prompts import MessagesPlaceholder
-from typing_extensions import TypedDict, NotRequired
+from typing_extensions import NotRequired, TypedDict
 
-from agents.encoder import AstPrinter, TypeScriptEncoder
 from agents.adapters import convert_tool_to_function_definition
+from agents.encoder import AstPrinter, TypeScriptEncoder
 from agents.prompts import AGENT_INSTRUCTIONS_BLOB_STYLE
 
 

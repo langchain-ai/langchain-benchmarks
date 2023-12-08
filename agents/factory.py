@@ -5,8 +5,8 @@ from langchain.chat_models import ChatAnthropic, ChatFireworks
 from langchain_core.runnables import Runnable, RunnableConfig
 
 from agents.agent import create_agent
-from langchain_benchmarks.model_registration import FIREWORK_NAME_TO_MODEL
 from agents.parser import ParameterizedAgentParser
+from langchain_benchmarks.model_registration import FIREWORK_NAME_TO_MODEL
 from langchain_benchmarks.schema import ToolUsageTask
 from langchain_benchmarks.tool_usage import apply_agent_executor_adapter
 

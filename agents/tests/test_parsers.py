@@ -1,6 +1,5 @@
-from langchain_core.agents import AgentFinish
-
 from langchain_adapters.alternative import AgentOutputParser
+from langchain_core.agents import AgentFinish
 
 
 def test_parser() -> None:
