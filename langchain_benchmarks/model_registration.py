@@ -149,4 +149,28 @@ _FireworksModels = [
     ),
 ]
 
+_ANTHROPIC_MODELS = [
+    RegisteredModel(
+        provider="anthropic",
+        name="claude-2",
+        description=("Superior performance on tasks that require complex reasoning"),
+        type="chat",
+    ),
+    RegisteredModel(
+        provider="anthropic",
+        name="claude-2.1",
+        description=(
+            "Same performance as Claude 2, plus significant reduction in model hallucination rates"
+        ),
+        type="chat",
+    ),
+    RegisteredModel(
+        provider="anthropic",
+        name="claude-2.1",
+        desription=(
+"Low latency, high throughput use cases"
+    )
+]
+
+name = ("claude-2.1",)
 model_registry = ModelRegistry(registered_models=_OpenAIModels + _FireworksModels)

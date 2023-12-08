@@ -216,7 +216,7 @@ class Registry:
         self.tasks.append(task)
 
 
-Provider = Literal["fireworks", "openai"]
+Provider = Literal["fireworks", "openai", "anthropic"]
 ModelType = Literal["chat", "llm"]
 AUTHORIZED_NAMESPACES = {"langchain"}
 
@@ -265,6 +265,8 @@ def _get_default_url(provider: str, type_: ModelType) -> Optional[str]:
         return "https://app.fireworks.ai/models"
     elif provider == "openai":
         return "https://platform.openai.com/docs/models"
+    elif provider == "anthropic":
+        return "https://docs.anthropic.com/claude/reference/selecting-a-model"
     else:
         return None
 
