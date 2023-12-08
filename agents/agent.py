@@ -1,4 +1,4 @@
-from typing import Tuple, List, Optional
+from typing import Tuple, List, Optional, Literal
 from typing import Sequence
 from typing import Union
 
@@ -17,10 +17,9 @@ from langchain_core.prompts import MessagesPlaceholder
 from langchain_core.runnables import RunnableConfig
 from typing_extensions import TypedDict, NotRequired
 
-from agents.adapters import (
-    format_structured_tool_as_xml,
-)
+from agents.encoder import AstPrinter, XMLEncoder, TypeScriptEncoder
 from agents.parser import ParameterizedAgentParser
+from agents.adapters import convert_tool_to_function_definition
 from agents.prompts import AGENT_INSTRUCTIONS_BLOB_STYLE
 from langchain_benchmarks.schema import ToolUsageTask
 from langchain_benchmarks.tool_usage.agents import apply_agent_executor_adapter
@@ -54,11 +53,6 @@ def format_steps_for_chat(
     return messages
 
 
-def parsing_error_handler(parsing_exception: OutputParserException) -> str:
-    """Handle parsing errors."""
-    return parsing_exception.error
-
-
 # PUBLIC API
 
 
@@ -73,40 +67,30 @@ class AgentInput(TypedDict):
     """A list of messages that can be used to form example traces."""
 
 
-EXAMPLE_TRACE = [
-    HumanMessage(content="type the letter 'o'"),
-    AIMessage(
-        content="""
-<tool>
-{
-    "tool_name": "type_letter",
-    "arguments": {
-        "letter": "o"
-    }
-}
-</tool>\
-"""
-    ),
-    HumanMessage(
-        content="""\
-<tool_outputs>
-<tool_name>type_letter</tool_name>
-<output>o</output>
-</tool_outputs>\
-"""
-    ),
-]
-
-
 def create_chat_agent(
     chat_model: BaseChatModel,
     tools: Sequence[StructuredTool],
     parser: AgentOutputParser,
+    *,
+    ast_printer: Union[AstPrinter, Literal["xml"]] = "xml",
 ) -> Runnable[AgentInput, Union[AgentAction, AgentFinish]]:
     """Create an agent for a chat model."""
-    tool_description = "\n".join(
-        [format_structured_tool_as_xml(tool) for tool in tools]
-    )
+    if isinstance(ast_printer, str):
+        if ast_printer == "xml":
+            ast_printer = AstPrinter()
+        elif ast_printer == "typescript":
+            ast_printer = TypeScriptEncoder()
+        else:
+            raise ValueError(f"Unknown ast printer: {ast_printer}")
+    elif isinstance(ast_printer, AstPrinter):
+        pass
+    else:
+        raise TypeError(
+            f"Expected AstPrinter or str, got {type(ast_printer)} for `ast_printer`"
+        )
+
+    function_definitions = [convert_tool_to_function_definition(tool) for tool in tools]
+    tool_description = ast_printer.visit_function_definitions(function_definitions)
 
     template = ChatPromptTemplate.from_messages(
         [

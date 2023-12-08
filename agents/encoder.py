@@ -64,6 +64,12 @@ class Visitor(abc.ABC):
         """Render a function."""
         raise NotImplementedError()
 
+    def visit_function_definitions(
+        self, function_definitions: List[FunctionDefinition]
+    ) -> str:
+        """Render a function."""
+        raise NotImplementedError()
+
     def visit_function_invocation(self, function_invocation: FunctionInvocation) -> str:
         """Render a function invocation."""
         raise NotImplementedError()
@@ -73,7 +79,11 @@ class Visitor(abc.ABC):
         raise NotImplementedError()
 
 
-class XMLEncoder(Visitor):
+class AstPrinter(Visitor):
+    """Print the AST."""
+
+
+class XMLEncoder(AstPrinter):
     def visit_function_definition(self, function_definition: FunctionDefinition) -> str:
         """Render a function."""
         parameters_as_strings = [
@@ -100,6 +110,16 @@ class XMLEncoder(Visitor):
             "</function>"
         )
         return function
+
+    def visit_function_definitions(
+        self, function_definitions: List[FunctionDefinition]
+    ) -> str:
+        """Render a function."""
+        strs = [
+            self.visit_function_definition(function_definition)
+            for function_definition in function_definitions
+        ]
+        return "<functions>\n" + "\n".join(strs) + "\n</functions>"
 
     def visit_function_invocation(self, invocation: FunctionInvocation) -> str:
         """Render a function invocation."""
@@ -147,20 +167,43 @@ class XMLEncoder(Visitor):
         return "\n".join(lines)
 
 
-class TypeScriptEncoder(Visitor):
+class TypeScriptEncoder(AstPrinter):
     def visit_function_definition(self, function_definition: FunctionDefinition) -> str:
         """Render a function."""
         parameters_as_strings = [
             f"{parameter['name']}: {parameter['type']}"
             for parameter in function_definition["parameters"]
         ]
-        function = (
-            f"// {function_definition['description']}\n"
-            f"function { function_definition['name']}("
+        # Let's use JSdoc style comments
+        # First the function description
+        lines = [
+            f"// {function_definition['description']}",
+            # Then the parameter descriptions
+            *[
+                f"// @param {parameter['name']} {parameter['description']}"
+                for parameter in function_definition["parameters"]
+            ],
+            # Then the return value description
+            f"// @returns {function_definition['return_value']['description']}",
+            # Then the function definition
+            f"function {function_definition['name']}("
             f"{', '.join(parameters_as_strings)}): "
-            f"{function_definition['return_value']['type']};"
-        )
+            f"{function_definition['return_value']['type']};",
+        ]
+
+        # finally join
+        function = "\n".join(lines)
         return function
+
+    def visit_function_definitions(
+        self, function_definitions: List[FunctionDefinition]
+    ) -> str:
+        """Render a function."""
+        strs = [
+            self.visit_function_definition(function_definition)
+            for function_definition in function_definitions
+        ]
+        return "\n\n".join(strs)
 
     def visit_function_invocation(self, invocation: FunctionInvocation) -> str:
         """Render a function invocation."""

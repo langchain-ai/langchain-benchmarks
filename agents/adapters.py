@@ -30,38 +30,7 @@ def get_parameters_from_tool(tool: StructuredTool) -> List[Parameter]:
     return parameters
 
 
-def format_as_xml_tool(
-    name: str, description: str, parameters: Sequence[Parameter]
-) -> str:
-    """Format a tool as XML."""
-    parameters_as_strings = [
-        "<parameter>\n"
-        f"<name>{parameter['name']}</name>\n"
-        f"<type>{parameter['type']}</type>\n"
-        f"<description>{parameter['description']}</description>\n"
-        "</parameter>\n"
-        for parameter in parameters
-    ]
-    tool = (
-        "<tool>\n"
-        f"<tool_name>{name}</tool_name>\n"
-        "<description>\n"
-        f"{description}\n"
-        "</description>\n"
-        "<parameters>\n"
-        f"{''.join(parameters_as_strings)}"  # Already includes trailing newline
-        "</parameters>\n"
-        "</tool>"
-    )
-    return tool
-
-
-def format_structured_tool_as_xml(tool: StructuredTool) -> str:
-    """Format a StructuredTool as XML."""
-    parameters = get_parameters_from_tool(tool)
-    return format_as_xml_tool(tool.name, tool.description, parameters)
-
-
+#
 def convert_tool_to_function_definition(tool: StructuredTool) -> FunctionDefinition:
     """Convert a langchain tool to a tool user tool."""
     parameters = get_parameters_from_tool(tool)
