@@ -10,7 +10,7 @@ _OpenAIModels = [
         description=(
             "The latest GPT-3.5 Turbo model with improved instruction following, "
             "JSON mode, reproducible outputs, parallel function calling, and more. "
-            "Returns a maximum of 4,096 output tokens. Learn more."
+            "Returns a maximum of 4,096 output tokens."
         ),
         params={
             "model": "gpt-3.5-turbo-1106",
