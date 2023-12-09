@@ -270,6 +270,8 @@ def _get_default_url(provider: str, type_: ModelType) -> Optional[str]:
         return "https://docs.anthropic.com/claude/reference/selecting-a-model"
     else:
         return None
+
+
 @dataclasses.dataclass(frozen=True)
 class RegisteredModel:
     """Descriptive information about a model.
