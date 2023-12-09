@@ -248,9 +248,10 @@ def _get_default_path(provider: str, type_: ModelType) -> str:
     """Get the default path for a model."""
     paths = {
         ("fireworks", "chat"): "langchain.chat_models.fireworks.ChatFireworks",
-        ("fireworks", "llm"): "langchain.language_models.fireworks.Fireworks",
+        ("fireworks", "llm"): "langchain.llms.fireworks.Fireworks",
         ("openai", "chat"): "langchain.chat_models.openai.ChatOpenAI",
-        ("openai", "llm"): "langchain.language_models.openai.OpenAI",
+        ("openai", "llm"): "langchain.llms.openai.OpenAI",
+        ("anthropic", "chat"): "langchain.chat_models.anthropic.ChatAnthropic",
     }
 
     if (provider, type_) not in paths:
@@ -269,8 +270,6 @@ def _get_default_url(provider: str, type_: ModelType) -> Optional[str]:
         return "https://docs.anthropic.com/claude/reference/selecting-a-model"
     else:
         return None
-
-
 @dataclasses.dataclass(frozen=True)
 class RegisteredModel:
     """Descriptive information about a model.

@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from langchain_benchmarks.schema import ModelRegistry, RegisteredModel
 
-_OpenAIModels = [
+_OPEN_AI_MODELS = [
     RegisteredModel(
         provider="openai",
         name="gpt-3.5-turbo-1106",
@@ -119,7 +119,7 @@ _OpenAIModels = [
     ),
 ]
 
-_FireworksModels = [
+_FIREWORKS_MODELS = [
     RegisteredModel(
         provider="fireworks",
         name="llama-v2-7b-chat-fw",
@@ -155,22 +155,42 @@ _ANTHROPIC_MODELS = [
         name="claude-2",
         description=("Superior performance on tasks that require complex reasoning"),
         type="chat",
+        params={
+            "model": "claude-2",
+        },
     ),
     RegisteredModel(
         provider="anthropic",
         name="claude-2.1",
         description=(
-            "Same performance as Claude 2, plus significant reduction in model hallucination rates"
+            "Same performance as Claude 2, plus significant reduction in model "
+            "hallucination rates"
         ),
         type="chat",
+        params={
+            "model": "claude-2.1",
+        },
     ),
     RegisteredModel(
         provider="anthropic",
-        name="claude-2.1",
-        desription=(
-"Low latency, high throughput use cases"
-    )
+        name="claude-instant-1.2",
+        description="low-latency, high throughput.",
+        type="chat",
+        params={
+            "model": "claude-instant-1.2",
+        },
+    ),
+    RegisteredModel(
+        provider="anthropic",
+        name="claude-instant-1",
+        description="low-latency, high throughput.",
+        type="chat",
+        params={
+            "model": "claude-instant-1",
+        },
+    ),
 ]
 
-name = ("claude-2.1",)
-model_registry = ModelRegistry(registered_models=_OpenAIModels + _FireworksModels)
+model_registry = ModelRegistry(
+    registered_models=_OPEN_AI_MODELS + _FIREWORKS_MODELS + _ANTHROPIC_MODELS
+)
