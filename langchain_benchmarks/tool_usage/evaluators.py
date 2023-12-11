@@ -77,7 +77,7 @@ def compare_outputs(
 
     # Evaluate state score
     # This will need to be evolved it's too simple.
-    if "state" in run_outputs:
+    if "state" in run_outputs and "state" in example_outputs:
         state = run_outputs["state"]
         example_state = example_outputs["state"]
         results.append(
