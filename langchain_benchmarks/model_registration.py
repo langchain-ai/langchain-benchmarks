@@ -189,6 +189,24 @@ _ANTHROPIC_MODELS = [
             "model": "claude-instant-1",
         },
     ),
+    RegisteredModel(
+        provider="fireworks",
+        name="accounts/fireworks/models/mixtral-8x7b-fw-chat",
+        description="8x7b parameter mixture of experts Mistral model, adapted for Chats",
+        type="chat",
+        params={
+            "model": "accounts/fireworks/models/mixtral-8x7b-fw-chat",
+        },
+    ),
+    RegisteredModel(
+        provider="fireworks",
+        name="accounts/fireworks/models/mixtral-8x7b",
+        description="8x7b parameter mixture of experts Mistral model",
+        type="llm",
+        params={
+            "model": "accounts/fireworks/models/mixtral-8x7b",
+        },
+    ),
 ]
 
 model_registry = ModelRegistry(
