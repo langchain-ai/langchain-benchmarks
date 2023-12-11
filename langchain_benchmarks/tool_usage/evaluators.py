@@ -112,7 +112,7 @@ class AgentTrajectoryEvaluator(RunEvaluator):
     def __init__(
         self,
         eval_llm: Union[BaseLanguageModel, BaseChatModel, None] = None,
-        output_evaluation: Literal["qa", "none"] = "qa",
+        output_evaluation: Literal["qa", "none", "qa_math"] = "qa",
     ) -> None:
         """Initialize the evaluator."""
         if output_evaluation == "none":

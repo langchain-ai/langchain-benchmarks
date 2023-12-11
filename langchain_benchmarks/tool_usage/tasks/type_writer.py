@@ -18,7 +18,7 @@ class Paper:
     content: str
 
 
-def create_typer(paper: Paper) -> Callable[[], str]:
+def create_typer(paper: Paper) -> Callable[[str], str]:
     """Create a function that types the given letter."""
 
     def type_letter(letter: str) -> str:
@@ -82,6 +82,12 @@ The dataset includes examples of varying difficulty. The difficulty is measured 
 by the length of the string.
 """
     ),
+    eval_params={
+        # For this task, the agent's output is irrelevant
+        # what we care about is the final state of the environment
+        # (i.e., what's written on the virtual paper)
+        "output_evaluation": "none",
+    },
 )
 
 
