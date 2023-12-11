@@ -92,6 +92,12 @@ This is a variation of the typer writer task, where 26 parameterless tools are
 given instead of a single tool that takes a letter as an argument.
 """
     ),
+    eval_params={
+        # For this task, the agent's output is irrelevant
+        # what we care about is the final state of the environment
+        # (i.e., what's written on the virtual paper)
+        "output_evaluation": "none",
+    },
 )
 
 STRINGS_TO_TYPE = [

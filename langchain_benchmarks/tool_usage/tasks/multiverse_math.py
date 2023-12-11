@@ -152,6 +152,9 @@ The objective of this task is to evaluate the ability to use the provided tools 
 solve simple math questions and ignore any innate knowledge about math.
 """
     ),
+    eval_params={
+        "output_evaluation": "qa_math",
+    },
 )
 
 # Source dataset used to create the public dataset in LangSmith

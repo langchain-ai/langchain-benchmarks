@@ -10,6 +10,7 @@ from langchain.prompts import ChatPromptTemplate
 from langchain.schema import BaseRetriever
 from langchain.schema.document import Document
 from langchain.schema.embeddings import Embeddings
+from langchain.smith import RunEvalConfig
 from langchain.tools import BaseTool
 from langchain_core.language_models import BaseChatModel, BaseLanguageModel
 from pydantic import BaseModel
@@ -92,6 +93,27 @@ class ToolUsageTask(BaseTask):
 
     instructions: str
     """Instructions for the agent/chain/llm."""
+
+    eval_params: Dict[str, Any]
+    """Used to parameterize differences in the evaluation of the task.
+    
+    These are passed to the standard factory method for creating an evaluator
+    for tool usage.
+    
+    An example, for MultiVerse math the `output_evaluation` parameter is set to
+    `qa_math` to use a different prompt for evaluating the output of the agent.
+    
+    This prompt performs better at comparing the output of the agent against
+    the reference output.
+    """
+
+    def get_eval_config(self, **params: Any) -> RunEvalConfig:
+        """Get the default evaluator for the environment."""
+        # Import locally to avoid potential circular imports in the future.
+        from langchain_benchmarks.tool_usage.evaluators import get_eval_config
+
+        finalized_params = {**self.eval_params, **params}
+        return get_eval_config(**finalized_params)
 
 
 @dataclasses.dataclass(frozen=True)

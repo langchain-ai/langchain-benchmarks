@@ -77,7 +77,7 @@ def compare_outputs(
 
     # Evaluate state score
     # This will need to be evolved it's too simple.
-    if "state" in run_outputs:
+    if "state" in run_outputs and "state" in example_outputs:
         state = run_outputs["state"]
         example_state = example_outputs["state"]
         results.append(
@@ -112,7 +112,7 @@ class AgentTrajectoryEvaluator(RunEvaluator):
     def __init__(
         self,
         eval_llm: Union[BaseLanguageModel, BaseChatModel, None] = None,
-        output_evaluation: Literal["qa", "none"] = "qa",
+        output_evaluation: Literal["qa", "none", "qa_math"] = "qa",
     ) -> None:
         """Initialize the evaluator."""
         if output_evaluation == "none":

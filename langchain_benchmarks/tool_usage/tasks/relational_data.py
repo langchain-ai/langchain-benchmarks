@@ -438,4 +438,5 @@ the question.
 Success is measured by the ability to answer the question correctly, and efficiently.
 """
     ),
+    eval_params={},  # No special evaluation parameters
 )
