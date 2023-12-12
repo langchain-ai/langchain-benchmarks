@@ -3,16 +3,23 @@ import threading
 import time
 from typing import Optional, Any
 
-from langchain.schema.runnable import RunnableLambda
+from langchain.schema.runnable import RunnableLambda, Runnable
+from langchain.schema.runnable.utils import Input, Output
 
 
 class RateLimiter:
-    def __init__(self, *, rate: float) -> None:
+    def __init__(
+        self, *, rate: float = 1, amount: int = 1, check_every_n_seconds: float = 0.1
+    ) -> None:
         """Initialize the token bucket.
 
         Args:
             rate: The number of tokens to add per second to the bucket.
                   Must be at least one.
+            amount: default amount of tokens to consume
+            check_every_n_seconds: check whether the tokens are available
+                every this many seconds. Can be a float to represent
+                fractions of a second.
         """
         if rate < 1:
             raise ValueError("Rate must be at least 1 request per second")
@@ -22,10 +29,12 @@ class RateLimiter:
         # A lock to ensure that tokens can only be consumed by one thread
         # at a given time.
         self._consume_lock = threading.Lock()
+        self.amount = amount
         # The last time we tried to consume tokens.
         self.last: Optional[time.time] = None
+        self.check_every_n_seconds = check_every_n_seconds
 
-    def consume(self, *, amount: int = 0) -> bool:
+    def consume(self) -> bool:
         """Consume the given amount of tokens if possible.
 
         Args:
@@ -49,43 +58,38 @@ class RateLimiter:
 
             self.tokens = min(self.tokens, self.rate)
 
-            if self.tokens >= amount:
-                self.tokens -= amount
+            if self.tokens >= self.amount:
+                self.tokens -= self.amount
                 return True
 
             return False
 
-    def wait(self, *, amount: int = 1, try_every_n_seconds: float = 0.1) -> None:
-        """Blocking wait until the given number of tokens are available.
-
-        Args:
-            amount: The number of tokens to wait for.
-            try_every_n_seconds: The number of seconds to sleep between checks.
-        """
-        while not self.consume(amount=amount):
-            time.sleep(try_every_n_seconds)
+    def wait(self) -> None:
+        """Blocking wait until the given number of tokens are available."""
+        while not self.consume():
+            time.sleep(self.check_every_n_seconds)
 
 
 def with_rate_limit(
-    throttle: RateLimiter,
-    *,
-    amount: int = 1,
-    try_every_n_seconds: float = 0.1,
-) -> RunnableLambda:
-    """Create a passthrough that throttles before passing through.
+    runnable: Runnable[Input, Output],
+    rate_limiter: RateLimiter,
+) -> Runnable[Input, Output]:
+    """Add a rate limiter to the runnable.
 
     Args:
-        throttle: The throttle to use.
-        amount: The number of tokens to wait for.
-        try_every_n_seconds: The number of seconds to sleep between checks.
+        runnable: The runnable to throttle.
+        rate_limiter: The throttle to use.
 
     Returns:
         A runnable lambda that acts as a throttled passthrough.
     """
 
-    def _throttle_step(input: dict, **kwargs: Any) -> dict:
+    def _rate_limited_passthrough(input: dict, **kwargs: Any) -> dict:
         """Throttle the input."""
-        throttle.wait(amount=amount, try_every_n_seconds=try_every_n_seconds)
+        rate_limiter.wait()
         return input
 
-    return RunnableLambda(_throttle_step).with_config({"name": "throttle"})
+    return (
+        RunnableLambda(_rate_limited_passthrough).with_config({"name": "Rate Limit"})
+        | runnable
+    )

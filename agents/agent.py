@@ -1,4 +1,4 @@
-from typing import List, Literal, Sequence, Tuple, Union
+from typing import List, Literal, Sequence, Tuple, Union, Optional
 
 from langchain.agents import AgentOutputParser
 from langchain.prompts.chat import ChatPromptTemplate
@@ -14,6 +14,7 @@ from typing_extensions import NotRequired, TypedDict
 from agents.adapters import convert_tool_to_function_definition
 from agents.encoder import AstPrinter, TypeScriptEncoder
 from agents.prompts import AGENT_INSTRUCTIONS_BLOB_STYLE
+from langchain_benchmarks.rate_limiting import RateLimiter, with_rate_limit
 
 
 def format_observation(tool_name: str, observation: str) -> BaseMessage:
