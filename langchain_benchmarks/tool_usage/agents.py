@@ -8,6 +8,7 @@ from langchain.chat_models import ChatOpenAI
 from langchain.prompts import ChatPromptTemplate, MessagesPlaceholder
 from langchain.schema.runnable import Runnable, RunnableLambda, RunnablePassthrough
 from langchain.tools.render import format_tool_to_openai_function
+from langchain_benchmarks import rate_limiting, with_rate_limit
 
 from langchain_benchmarks.schema import ToolUsageTask
 
@@ -24,16 +25,22 @@ def _ensure_output_exists(inputs: dict) -> dict:
 
 class OpenAIAgentFactory:
     def __init__(
-        self, task: ToolUsageTask, *, model: str = "gpt-3.5-turbo-16k"
+        self,
+        task: ToolUsageTask,
+        *,
+        model: str = "gpt-3.5-turbo-16k",
+        rate_limiter: Optional[rate_limiting.RateLimiter] = None,
     ) -> None:
         """Create an OpenAI agent factory for the given task.
 
         Args:
             task: The task to create an agent factory for.
             model: The model to use -- this must be an open AI model.
+            rate_limiter: The rate limiter to use
         """
         self.task = task
         self.model = model
+        self.rate_limiter = rate_limiter
 
     def create(self) -> Runnable:
         """Agent Executor"""
@@ -41,16 +48,21 @@ class OpenAIAgentFactory:
         return self()
 
     def __call__(self) -> Runnable:
-        llm = ChatOpenAI(
+        model = ChatOpenAI(
             model=self.model,
             temperature=0,
         )
 
         env = self.task.create_environment()
 
-        llm_with_tools = llm.bind(
+        model = model.bind(
             functions=[format_tool_to_openai_function(t) for t in env.tools]
         )
+
+        if rate_limiting:
+            # Rate limited model
+            model = with_rate_limit(model, self.rate_limiter)
+
         prompt = ChatPromptTemplate.from_messages(
             [
                 (
@@ -70,7 +82,7 @@ class OpenAIAgentFactory:
                 ),
             }
             | prompt
-            | llm_with_tools
+            | model
             | OpenAIFunctionsAgentOutputParser()
         )
 
