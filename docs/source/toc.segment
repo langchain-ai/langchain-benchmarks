@@ -33,7 +33,10 @@
 
 ./notebooks/retrieval/intro
 ./notebooks/retrieval/langchain_docs_qa
-./notebooks/retrieval/semi_structured
+./notebooks/retrieval/semi_structured_benchmarking/semi_structured
+./notebooks/retrieval/semi_structured_benchmarking/ss_eval_chunk_sizes
+./notebooks/retrieval/semi_structured_benchmarking/ss_eval_long_context
+./notebooks/retrieval/semi_structured_benchmarking/ss_eval_multi_vector
 ./notebooks/retrieval/multi_modal_benchmarking/multi_modal_eval_baseline
 ./notebooks/retrieval/multi_modal_benchmarking/multi_modal_eval
 ./notebooks/retrieval/comparing_techniques
