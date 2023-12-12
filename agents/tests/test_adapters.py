@@ -2,7 +2,6 @@ import pytest
 from langchain.tools import tool
 
 from agents.adapters import convert_tool_to_function_definition
-from agents.encoder import XMLEncoder
 
 
 @tool

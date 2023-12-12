@@ -1,49 +1,37 @@
-from typing import List, Optional
+"""Factory for creating agents for the tool usage task."""
+from typing import Optional
 
 from langchain.agents import AgentExecutor
-from langchain.chat_models import ChatAnthropic, ChatFireworks
 from langchain_core.runnables import Runnable, RunnableConfig
 
 from agents.agent import create_agent
 from agents.parser import ParameterizedAgentParser
-from langchain_benchmarks.model_registration import FIREWORK_NAME_TO_MODEL
+from langchain_benchmarks import model_registry
 from langchain_benchmarks.schema import ToolUsageTask
 from langchain_benchmarks.tool_usage import apply_agent_executor_adapter
 
 
-class CustomAgentFactory:
+class AgentFactory:
     def __init__(self, task: ToolUsageTask, model: str) -> None:
-        """Create an OpenAI agent factory for the given task.
+        """Create an agent factory for the given tool usage task.
 
         Args:
             task: The task to create an agent factory for.
+            model: model name (check model_registry)
         """
-        if model not in self.list_models():
+        if model not in model_registry:
             raise ValueError(f"Unknown model: {model}")
         self.task = task
         self.model = model
 
-    @staticmethod
-    def list_models() -> List[str]:
-        """List all models."""
-        return sorted(
-            [
-                "claude-2.1",
-                "claude-2",
-                *FIREWORK_NAME_TO_MODEL.keys(),
-            ]
-        )
-
     def __call__(self) -> Runnable:
-        env = self.task.create_environment()
-        if self.model in {"claude-2.1", "claude-2"}:
-            model = ChatAnthropic(model=self.model, temperature=0)
-        elif self.model in FIREWORK_NAME_TO_MODEL:
-            model = ChatFireworks(
-                model=FIREWORK_NAME_TO_MODEL[self.model], temperature=0
-            )
+        if isinstance(self.model, str):
+            registered_model = model_registry.get_model(self.model)
+            if registered_model is None:
+                raise ValueError(f"Unknown model: {self.model}")
+            model = registered_model.get_model(model_params={"temperature": 0})
         else:
-            raise ValueError(f"Unknown model: {self.model}")
+            model = self.model
 
         def _add_task_instructions(
             input: dict, config: Optional[RunnableConfig] = None, **kwargs
@@ -55,6 +43,8 @@ class CustomAgentFactory:
                 f"but do not explain it. Input: `{input['question']}`"
             )
             return input
+
+        env = self.task.create_environment()
 
         agent = create_agent(
             model,
