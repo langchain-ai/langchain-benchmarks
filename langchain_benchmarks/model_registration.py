@@ -117,6 +117,51 @@ _OPEN_AI_MODELS = [
             "model": "code-davinci-002",
         },
     ),
+    RegisteredModel(
+        provider="openai",
+        name="gpt-4-1106-preview",
+        type="chat",
+        description="GPT-4 TurboNew - The latest GPT-4 model with improved instruction following, JSON mode, reproducible outputs, parallel function calling, and more. Returns a maximum of 4,096 output tokens. This preview model is not yet suited for production traffic.",
+        params={
+            "model": "gpt-4-1106-preview",
+        },
+    ),
+    RegisteredModel(
+        provider="openai",
+        name="gpt-4-0613",
+        type="chat",
+        description="Snapshot of gpt-4 from June 13th 2023 with improved function calling support.",
+        params={
+            "model": "gpt-4-0613",
+        },
+    ),
+    RegisteredModel(
+        provider="openai",
+        name="gpt-4-32k-0613",
+        type="chat",
+        description="Snapshot of gpt-4-32k from June 13th 2023 with improved function calling support.",
+        params={
+            "model": "gpt-4-32k-0613",
+        },
+    ),
+    RegisteredModel(
+        provider="openai",
+        name="gpt-4-0314",
+        description="Snapshot of gpt-4 from March 14th 2023 with function calling support. This model version will be deprecated on June 13th 2024.",
+        type="chat",
+        params={
+            "model": "gpt-4-0314",
+        },
+    ),
+    RegisteredModel(
+        provider="openai",
+        name="gpt-4-32k-0314",
+        description="Snapshot of gpt-4-32k from March 14th 2023 with function calling support. This model version will be deprecated on June 13th 2024.",
+        type="chat",
+        params={
+            "model": "gpt-4-32k-0314",
+        },
+    ),
 ]
 
 _FIREWORKS_MODELS = [
@@ -158,7 +203,7 @@ _FIREWORKS_MODELS = [
     ),
     RegisteredModel(
         provider="fireworks",
-        name="mixtral-8x7b",
+        name="mixtral-8x7b-fw-llm",
         description="8x7b parameter mixture of experts Mistral model",
         type="llm",
         params={
