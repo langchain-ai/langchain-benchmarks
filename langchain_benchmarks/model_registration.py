@@ -147,6 +147,113 @@ _FIREWORKS_MODELS = [
             "model": "accounts/fireworks/models/llama-v2-70b-chat",
         },
     ),
+    RegisteredModel(
+        provider="fireworks",
+        name='mixtral-moe-8x7b-chat-fw',
+        type="chat",
+        description="Mistral MoE model, unofficial implementation. Further fine-tuned for chat by Fireworks.",
+        params={
+            "model": "accounts/fireworks/models/mixtral-moe-8x7b-chat",
+        },
+    ),
+    RegisteredModel(
+        provider="fireworks",
+        name="llama-v2-7b-llm-fw",
+        type="llm",
+    )
+
+    {
+        "name": "Mixtral MoE 8x7B",
+        "description": "Mistral MoE model, unofficial implementation.",
+        "type": "llm",
+    },
+    {
+        "name": "Capybara 34B",
+        "description": "34B chat model from NousResearch, based on Yi-34B-200k.",
+        "type": "chat",
+    },
+    {
+        "name": "Yi 34B 200k context window",
+        "description": "34B LLM model from 01.ai, with context window 200k.",
+        "params": {"model": "accounts/fireworks/models/yi-34b-200k-capybara"},
+        "type": "llm",
+    },
+    {
+        "name": "Yi 6B",
+        "description": "6B LLM model from 01.ai.",
+        "params": {"model": "accounts/fireworks/models/yi-6b"},
+        "type": "llm",
+    },
+]
+
+
+[
+    {
+        "name": "Mistral 7B Instruct",
+        "description": "Mistral-7B model fine-tuned for conversations.",
+        "params": {"model": "accounts/fireworks/models/mistral-7b-instruct"},
+        "type": "llm",
+    },
+    {
+        "name": "Llama 2 13B code instruct",
+        "description": "Instruction-tuned version of Llama 2 13B, optimized for code generation.",
+        "params": {"model": "accounts/fireworks/models/llama-2-13b-code-instruct"},
+        "type": "llm",
+    },
+    {
+        "name": "Llama 2 34B Code Llama instruct",
+        "description": "Code Llama 34B, optimized for code generation.",
+        "params": {"model": "accounts/fireworks/models/llama-2-34b-code-instruct"},
+        "type": "llm",
+    },
+    {
+        "name": "Llama 2 7B Chat",
+        "description": "Fine-tuned version of Llama 2 7B, optimized for dialogue applications using RLHF, comparable to ChatGPT.",
+        "params": {"model": "accounts/fireworks/models/llama-2-7b-chat"},
+        "type": "chat",
+    },
+    {
+        "name": "Llama 2 13B Chat",
+        "description": "Fine-tuned version of Llama 2 13B, optimized for dialogue applications using RLHF, comparable to ChatGPT.",
+        "params": {"model": "accounts/fireworks/models/llama-2-13b-chat"},
+        "type": "chat",
+    },
+    {
+        "name": "Llama 2 70B Chat",
+        "description": "Fine-tuned version of Llama 2 70B, optimized for dialogue applications using RLHF, comparable to ChatGPT.",
+    },
+    {
+        "name": "StarCoder 7B",
+        "description": "7B parameter model trained on 80+ programming languages from The Stack (v1.2), using Multi Query Attention and Fill-in-the-Middle objective.",
+    },
+    {
+        "name": "StarCoder 15.5B",
+        "description": "15.5B parameter model trained on 80+ programming languages from The Stack (v1.2), using Multi Query Attention and Fill-in-the-Middle objective.",
+    },
+    {
+        "name": "Traditional Chinese Llama2 QLoRa",
+        "description": "Fine-tuned Llama 2 model on traditional Chinese Alpaca dataset.",
+    },
+    {
+        "name": "Llama 2 13B French",
+        "description": "Fine-tuned meta-llama/Llama-2-13b-chat-hf to answer French questions in French.",
+    },
+    {
+        "name": "Chinese Llama 2 LoRA 7B",
+        "description": "The LoRA version of Chinese-Llama-2 based on Llama-2-7b-hf.",
+    },
+    {
+        "name": "Bleat",
+        "description": "Enables function calling in LLaMA 2, similar to OpenAI's implementation for ChatGPT.",
+    },
+    {
+        "name": "Llama2 13B Guanaco QLoRA GGML",
+        "description": "Fine-tuned Llama 2 13B model using the Open Assist dataset.",
+    },
+    {
+        "name": "Llama 7B Summarize",
+        "description": "Summarizes articles and conversations.",
+    },
 ]
 
 _ANTHROPIC_MODELS = [
