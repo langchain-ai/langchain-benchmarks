@@ -13,7 +13,7 @@ class RateLimiter:
         *,
         requests_per_second: float = 1,
         check_every_n_seconds: float = 0.1,
-        max_bucket_size: Optional[int] = 1,
+        max_bucket_size: float = 1,
     ) -> None:
         """A rate limiter based on a token bucket.
 
@@ -37,9 +37,6 @@ class RateLimiter:
             max_bucket_size: The maximum number of tokens that can be in the bucket.
                 This is used to prevent bursts of requests.
         """
-
-        if requests_per_second < 1:
-            raise ValueError("Rate must be at least 1 request per second")
         # Number of requests that we can make per second.
         self.requests_per_second = requests_per_second
         # Number of tokens in the bucket.
