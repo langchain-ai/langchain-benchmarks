@@ -71,7 +71,7 @@ class BaseTask:
         """Return a table representation of the environment."""
         return [
             ["Name", self.name],
-            ["Type", self.__class__.__name__],
+            ["Type", self.type],
             ["Dataset ID", self._dataset_link],
             ["Description", self.description],
         ]
@@ -82,6 +82,11 @@ class BaseTask:
             self._table,
             tablefmt="unsafehtml",
         )
+
+    @property
+    def type(self) -> str:
+        """Return the type of the task."""
+        return self.__class__.__name__
 
 
 @dataclasses.dataclass(frozen=True)
@@ -180,6 +185,14 @@ class Registry:
                 )
             seen_names.add(task.name)
 
+    def __len__(self) -> int:
+        """Return the number of tasks in the registry."""
+        return len(self.tasks)
+
+    def __iter__(self) -> Iterable[BaseTask]:
+        """Iterate over the tasks in the registry."""
+        return iter(self.tasks)
+
     def _repr_html_(self) -> str:
         """Return an HTML representation of the registry."""
         headers = [
@@ -222,10 +235,10 @@ class Registry:
             ]
         return Registry(tasks=tasks)
 
-    def __getitem__(self, key: Union[int, str]) -> BaseTask:
+    def __getitem__(self, key: Union[int, str, slice]) -> Union[BaseTask, Registry]:
         """Get an environment from the registry."""
         if isinstance(key, slice):
-            raise NotImplementedError("Slicing is not supported.")
+            return Registry(tasks=self.tasks[key])
         elif isinstance(key, (int, str)):
             # If key is an integer, return the corresponding environment
             return self.get_task(key)
@@ -438,7 +451,7 @@ class ModelRegistry:
         return iter(self.registered_models)
 
     def __getitem__(
-        self, key: Union[int, str]
+        self, key: Union[int, str, slice]
     ) -> Union[RegisteredModel, ModelRegistry]:
         """Get an environment from the registry."""
         if isinstance(key, slice):
