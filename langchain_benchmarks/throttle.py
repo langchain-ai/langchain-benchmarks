@@ -1,7 +1,7 @@
 """Throttle using a token bucket."""
 import threading
 import time
-from typing import Optional
+from typing import Optional, Any
 from langchain.schema.runnable import RunnableLambda
 
 
@@ -51,12 +51,37 @@ class Throttle:
 
             return False
 
-    def wait(self, *, amount: int = 1, sleep_seconds: float = 0.1) -> None:
+    def wait(self, *, amount: int = 1, try_every_n_seconds: float = 0.1) -> None:
         """Blocking wait until the given number of tokens are available.
 
         Args:
             amount: The number of tokens to wait for.
-            sleep_seconds: The number of seconds to sleep between checks.
+            try_every_n_seconds: The number of seconds to sleep between checks.
         """
         while not self.consume(amount=amount):
-            time.sleep(sleep_seconds)
+            time.sleep(try_every_n_seconds)
+
+
+def _with_throttle(
+    throttle: Throttle,
+    *,
+    amount: int = 1,
+    try_every_n_seconds: float = 0.1,
+) -> RunnableLambda:
+    """Create a passthrough that throttles before passing through.
+
+    Args:
+        throttle: The throttle to use.
+        amount: The number of tokens to wait for.
+        try_every_n_seconds: The number of seconds to sleep between checks.
+
+    Returns:
+        A runnable lambda that acts as a throttled passthrough.
+    """
+
+    def _throttle_step(input: dict, **kwargs: Any) -> dict:
+        """Throttle the input."""
+        throttle.wait(amount=amount, try_every_n_seconds=try_every_n_seconds)
+        return input
+
+    return RunnableLambda(_throttle_step)
