@@ -6,7 +6,7 @@ from typing import Optional, Any
 from langchain.schema.runnable import RunnableLambda
 
 
-class Throttle:
+class RateLimiter:
     def __init__(self, *, rate: float) -> None:
         """Initialize the token bucket.
 
@@ -66,8 +66,8 @@ class Throttle:
             time.sleep(try_every_n_seconds)
 
 
-def with_throttle(
-    throttle: Throttle,
+def with_rate_limit(
+    throttle: RateLimiter,
     *,
     amount: int = 1,
     try_every_n_seconds: float = 0.1,
