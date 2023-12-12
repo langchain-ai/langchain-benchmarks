@@ -11,7 +11,7 @@ __all__ = [
     "clone_public_dataset",
     "download_public_dataset",
     "model_registry",
+    "RateLimiter",
     "registry",
     "with_rate_limit",
-    "RateLimiter",
 ]
