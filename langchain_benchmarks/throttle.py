@@ -2,16 +2,20 @@
 import threading
 import time
 from typing import Optional, Any
+
 from langchain.schema.runnable import RunnableLambda
 
 
 class Throttle:
-    def __init__(self, rate: float) -> None:
+    def __init__(self, *, rate: float) -> None:
         """Initialize the token bucket.
 
         Args:
             rate: The number of tokens to add per second to the bucket.
+                  Must be at least one.
         """
+        if rate < 1:
+            raise ValueError("Rate must be at least 1 request per second")
         self.rate = rate
         # Number of tokens in the bucket.
         self.tokens = 0.0
@@ -62,7 +66,7 @@ class Throttle:
             time.sleep(try_every_n_seconds)
 
 
-def _with_throttle(
+def with_throttle(
     throttle: Throttle,
     *,
     amount: int = 1,
@@ -84,4 +88,4 @@ def _with_throttle(
         throttle.wait(amount=amount, try_every_n_seconds=try_every_n_seconds)
         return input
 
-    return RunnableLambda(_throttle_step)
+    return RunnableLambda(_throttle_step).with_config({"name": "throttle"})
