@@ -60,9 +60,7 @@ class AgentFactory:
         agent = create_agent(
             model,
             env.tools,
-            GenericAgentParser(
-                wrapping_xml_tag="tool", require_closing_xml_tag=False
-            ),
+            GenericAgentParser(wrapping_xml_tag="tool", require_closing_xml_tag=False),
         )
         executor = AgentExecutor(
             agent=agent,

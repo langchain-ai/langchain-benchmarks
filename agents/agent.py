@@ -11,9 +11,9 @@ from langchain_core.messages import BaseMessage
 from langchain_core.prompts import MessagesPlaceholder
 from typing_extensions import NotRequired, TypedDict
 
-from agents.tool_utils import convert_tool_to_function_definition
 from agents.encoder import AstPrinter, TypeScriptEncoder
 from agents.prompts import AGENT_INSTRUCTIONS_BLOB_STYLE
+from agents.tool_utils import convert_tool_to_function_definition
 
 
 def format_observation(tool_name: str, observation: str) -> BaseMessage:

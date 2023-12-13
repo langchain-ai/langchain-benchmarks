@@ -7,7 +7,6 @@ from langchain.tools.base import StructuredTool
 
 from agents.encoder import FunctionDefinition, Parameter
 
-
 # PUBLIC API
 
 

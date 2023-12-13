@@ -23,7 +23,3 @@ def test_function_definition() -> None:
         "// @returns A test return value\n"
         "function test_function(test_parameter: str): str;"
     )
-
-
-# Not important to test other ones right now since we can't parse / interpret
-# typescript anyway.

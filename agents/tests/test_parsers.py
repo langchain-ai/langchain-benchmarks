@@ -1,5 +1,6 @@
-from agents.parser import GenericAgentParser
 from langchain_core.agents import AgentFinish
+
+from agents.parser import GenericAgentParser
 
 
 def test_parser() -> None:
