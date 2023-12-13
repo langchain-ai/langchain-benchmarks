@@ -194,21 +194,11 @@ _FIREWORKS_MODELS = [
     ),
     RegisteredModel(
         provider="fireworks",
-        name="mixtral-8x7b-fw-chat",
-        description="8x7b parameter mixture of experts Mistral model, adapted for Chats",
-        type="chat",
-        params={
-            "model": "accounts/fireworks/models/mixtral-8x7b-fw-chat",
-        },
-    ),
-    RegisteredModel(
-        provider="fireworks",
-        name="mixtral-8x7b-fw-llm",
-        description="8x7b parameter mixture of experts Mistral model",
+        name="mixtral-8x7b-instruct",
+        description="Mistral MoE 8x7B Instruct v0.1 model with Sparse "
+        "Mixture of Experts. Fine tuned for instruction following",
         type="llm",
-        params={
-            "model": "accounts/fireworks/models/mixtral-8x7b",
-        },
+        params={"model": "accounts/fireworks/models/mixtral-8x7b-instruct"},
     ),
 ]
 
