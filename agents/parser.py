@@ -81,7 +81,7 @@ def parse_invocation(text: str, tag: str) -> AgentAction:
         This exception is meant to be caught by the agent executor and
         handled appropriately to provide feedback to the LLM.
     """
-    ai_content = f"<{tag}>{text}</{tag}>"
+    ai_content = f"<{tag}>{text}</{tag}>\n"
 
     try:
         result = ast.literal_eval(text)
@@ -89,7 +89,7 @@ def parse_invocation(text: str, tag: str) -> AgentAction:
         # Convert this to something controllable by the user.
         err_msg = (
             f"ERROR: Please use the format "
-            f'<{tag}>{{"tool_name": $TOOL_NAME, "arguments": $ARGUMENTS}}</{tag}>'
+            f'<{tag}>{{"tool_name": $TOOL_NAME, "arguments": $ARGUMENTS}}</{tag}>\n'
         )
         raise OutputParserException(
             error=e,
@@ -103,7 +103,7 @@ def parse_invocation(text: str, tag: str) -> AgentAction:
     except ValidationError as e:
         err_msg = (
             f"ERROR: Please use the format "
-            f'<{tag}>{{"tool_name": $TOOL_NAME, "arguments": $ARGUMENTS}}</{tag}>'
+            f'<{tag}>{{"tool_name": $TOOL_NAME, "arguments": $ARGUMENTS}}</{tag}>\n'
         )
         raise OutputParserException(
             error=e,
