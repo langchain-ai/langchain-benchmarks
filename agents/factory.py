@@ -6,13 +6,20 @@ from langchain_core.runnables import Runnable, RunnableConfig
 
 from agents.agent import create_agent
 from agents.parser import ParameterizedAgentParser
+from langchain_benchmarks import RateLimiter, with_rate_limit
 from langchain_benchmarks import model_registry
 from langchain_benchmarks.schema import ToolUsageTask
 from langchain_benchmarks.tool_usage import apply_agent_executor_adapter
 
 
 class AgentFactory:
-    def __init__(self, task: ToolUsageTask, model: str) -> None:
+    def __init__(
+        self,
+        task: ToolUsageTask,
+        model: str,
+        *,
+        rate_limiter: Optional[RateLimiter] = None,
+    ) -> None:
         """Create an agent factory for the given tool usage task.
 
         Args:
@@ -23,6 +30,7 @@ class AgentFactory:
             raise ValueError(f"Unknown model: {model}")
         self.task = task
         self.model = model
+        self.rate_limiter = rate_limiter
 
     def __call__(self) -> Runnable:
         if isinstance(self.model, str):
@@ -32,6 +40,10 @@ class AgentFactory:
             model = registered_model.get_model(model_params={"temperature": 0})
         else:
             model = self.model
+
+        # TODO(Team): This won't work well with
+        if self.rate_limiter is not None:
+            model = with_rate_limit(model, self.rate_limiter)
 
         def _add_task_instructions(
             input: dict, config: Optional[RunnableConfig] = None, **kwargs
