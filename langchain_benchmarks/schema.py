@@ -257,7 +257,7 @@ AUTHORIZED_NAMESPACES = {"langchain"}
 
 
 def _get_model_class_from_path(
-    path: str
+    path: str,
 ) -> Union[Type[BaseChatModel], Type[BaseLanguageModel]]:
     """Get the class of the model."""
     module_name, attribute_name = path.rsplit(".", 1)
