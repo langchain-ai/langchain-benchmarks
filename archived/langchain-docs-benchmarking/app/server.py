@@ -1,8 +1,7 @@
 from chat_langchain.chain import chain
 from fastapi import FastAPI
-from openai_functions_agent import agent_executor as openai_functions_agent_chain
-
 from langserve import add_routes
+from openai_functions_agent import agent_executor as openai_functions_agent_chain
 
 app = FastAPI()
 
