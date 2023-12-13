@@ -11,7 +11,7 @@ from langchain_benchmarks.schema import ToolUsageTask
 from langchain_benchmarks.tool_usage import apply_agent_executor_adapter
 
 
-class AgentFactory:
+class CustomAgentFactory:
     def __init__(
         self,
         task: ToolUsageTask,
@@ -40,7 +40,7 @@ class AgentFactory:
         else:
             model = self.model
 
-        # TODO(Team): This won't work well with
+        # Rate limiting doesn't take into account retries at the model level.
         if self.rate_limiter is not None:
             model = with_rate_limit(model, self.rate_limiter)
 
