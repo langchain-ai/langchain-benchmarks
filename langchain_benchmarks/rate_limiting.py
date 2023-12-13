@@ -66,7 +66,7 @@ class RateLimiter:
 
             elapsed = now - self.last
 
-            if elapsed * self.requests_per_second > 1:
+            if elapsed * self.requests_per_second >= 1:
                 self.available_tokens += elapsed * self.requests_per_second
                 self.last = now
 
