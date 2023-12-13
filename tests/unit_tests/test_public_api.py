@@ -12,7 +12,6 @@ def test_public_api() -> None:
             "model_registry",
             "RateLimiter",
             "registry",
-            "with_rate_limit",
         ],
         key=lambda x: x.lower(),
     )
