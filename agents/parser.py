@@ -22,7 +22,7 @@ class _ToolInvocationRequest(BaseModel):
     named_arguments: Any = Field(default_factory=dict)
 
 
-class ParameterizedAgentParser(AgentOutputParser):
+class GenericAgentParser(AgentOutputParser):
     """A generalized parser that makes it easier to parameterize different parsing."""
 
     wrapping_xml_tag: str

@@ -1,3 +1,4 @@
+"""Utilities to extract information from langchain tools for use in prompts."""
 import inspect
 from textwrap import dedent
 from typing import List
@@ -7,7 +8,9 @@ from langchain.tools.base import StructuredTool
 from agents.encoder import FunctionDefinition, Parameter
 
 
-# This is temporary until we have a better way to represent parameters
+# PUBLIC API
+
+
 def get_parameters_from_tool(tool: StructuredTool) -> List[Parameter]:
     """Convert a langchain tool to a tool user tool."""
     schema = tool.args_schema.schema()

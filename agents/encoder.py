@@ -155,14 +155,20 @@ class XMLEncoder(AstPrinter):
         if function_result.get("id"):
             lines.append(f"<id>{function_result['id']}</id>")
 
-        lines.extend(
-            [
-                f"<function_name>{function_result['name']}</function_name>",
+        lines.append(f"<function_name>{function_result['name']}</function_name>")
+
+        if function_result["error"]:
+            lines.extend(
+                [
+                    f"<error>{function_result['error']}</error>",
+                ]
+            )
+        else:
+            lines.append(
                 f"<result>{function_result['result']}</result>",
-                f"<error>{function_result['error']}</error>",
-                "</function_result>",
-            ]
-        )
+            )
+
+        lines.append("</function_result>")
 
         return "\n".join(lines)
 

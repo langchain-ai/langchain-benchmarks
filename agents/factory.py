@@ -5,7 +5,7 @@ from langchain.agents import AgentExecutor
 from langchain_core.runnables import Runnable, RunnableConfig
 
 from agents.agent import create_agent
-from agents.parser import ParameterizedAgentParser
+from agents.parser import GenericAgentParser
 from langchain_benchmarks import RateLimiter, model_registry, with_rate_limit
 from langchain_benchmarks.schema import ToolUsageTask
 from langchain_benchmarks.tool_usage import apply_agent_executor_adapter
@@ -60,7 +60,7 @@ class AgentFactory:
         agent = create_agent(
             model,
             env.tools,
-            ParameterizedAgentParser(
+            GenericAgentParser(
                 wrapping_xml_tag="tool", require_closing_xml_tag=False
             ),
         )
