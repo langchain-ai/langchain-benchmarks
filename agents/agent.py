@@ -1,4 +1,4 @@
-from typing import List, Literal, Sequence, Tuple, Union, Optional
+from typing import List, Literal, Optional, Sequence, Tuple, Union
 
 from langchain.agents import AgentOutputParser
 from langchain.prompts.chat import ChatPromptTemplate

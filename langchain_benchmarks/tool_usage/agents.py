@@ -8,7 +8,6 @@ from langchain.chat_models import ChatOpenAI
 from langchain.prompts import ChatPromptTemplate, MessagesPlaceholder
 from langchain.schema.runnable import Runnable, RunnableLambda, RunnablePassthrough
 from langchain.tools.render import format_tool_to_openai_function
-from langchain_benchmarks import rate_limiting, with_rate_limit
 
 from langchain_benchmarks import rate_limiting, with_rate_limit
 from langchain_benchmarks.schema import ToolUsageTask

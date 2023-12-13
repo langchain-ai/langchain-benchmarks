@@ -6,8 +6,7 @@ from langchain_core.runnables import Runnable, RunnableConfig
 
 from agents.agent import create_agent
 from agents.parser import ParameterizedAgentParser
-from langchain_benchmarks import RateLimiter, with_rate_limit
-from langchain_benchmarks import model_registry
+from langchain_benchmarks import RateLimiter, model_registry, with_rate_limit
 from langchain_benchmarks.schema import ToolUsageTask
 from langchain_benchmarks.tool_usage import apply_agent_executor_adapter
 
