@@ -60,23 +60,23 @@ class FunctionResult(TypedDict):
 
 
 class Visitor(abc.ABC):
+    @abc.abstractmethod
     def visit_function_definition(self, function_definition: FunctionDefinition) -> str:
         """Render a function."""
-        raise NotImplementedError()
 
+    @abc.abstractmethod
     def visit_function_definitions(
         self, function_definitions: List[FunctionDefinition]
     ) -> str:
         """Render a function."""
-        raise NotImplementedError()
 
+    @abc.abstractmethod
     def visit_function_invocation(self, function_invocation: FunctionInvocation) -> str:
         """Render a function invocation."""
-        raise NotImplementedError()
 
+    @abc.abstractmethod
     def visit_function_result(self, function_result: FunctionResult) -> str:
         """Render a function result."""
-        raise NotImplementedError()
 
 
 class AstPrinter(Visitor):
@@ -94,22 +94,26 @@ class XMLEncoder(AstPrinter):
             "</parameter>\n"
             for parameter in function_definition["parameters"]
         ]
-        function = (
-            "<function>\n"
-            f"<function_name>{function_definition['name']}</function_name>\n"
-            "<description>\n"
-            f"{function_definition['description']}\n"
-            "</description>\n"
-            "<parameters>\n"
-            f"{''.join(parameters_as_strings)}"  # Already includes trailing newline
-            "</parameters>\n"
-            "<return_value>\n"
-            f"<type>{function_definition['return_value']['type']}</type>\n"
-            f"<description>{function_definition['return_value']['description']}</description>\n"
-            "</return_value>\n"
-            "</function>"
-        )
-        return function
+        lines = [
+            "<function>",
+            f"<function_name>{function_definition['name']}</function_name>",
+            "<description>",
+            f"{function_definition['description']}",
+            "</description>",
+            "<parameters>",
+            f"{''.join(parameters_as_strings)}",  # Already includes trailing newline
+            "</parameters>",
+            "<return_value>",
+            f"<type>{function_definition['return_value']['type']}</type>",
+        ]
+        if function_definition["return_value"].get("description"):
+            lines.append(
+                f"<description>{function_definition['return_value']['description']}"
+                f"</description>"
+            )
+
+        lines.extend(["</return_value>", "</function>"])
+        return "\n".join(lines)
 
     def visit_function_definitions(
         self, function_definitions: List[FunctionDefinition]

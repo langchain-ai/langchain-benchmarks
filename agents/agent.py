@@ -11,7 +11,7 @@ from langchain_core.messages import BaseMessage
 from langchain_core.prompts import MessagesPlaceholder
 from typing_extensions import NotRequired, TypedDict
 
-from agents.encoder import AstPrinter, TypeScriptEncoder
+from agents.encoder import AstPrinter, TypeScriptEncoder, XMLEncoder
 from agents.prompts import AGENT_INSTRUCTIONS_BLOB_STYLE
 from agents.tool_utils import convert_tool_to_function_definition
 
@@ -68,7 +68,7 @@ def create_agent(
     """Create an agent for a chat model."""
     if isinstance(ast_printer, str):
         if ast_printer == "xml":
-            ast_printer = AstPrinter()
+            ast_printer = XMLEncoder()
         elif ast_printer == "typescript":
             ast_printer = TypeScriptEncoder()
         else:
