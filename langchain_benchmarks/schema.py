@@ -446,6 +446,10 @@ class ModelRegistry:
         """Return the number of tasks in the registry."""
         return len(self.registered_models)
 
+    def __contains__(self, item: Any) -> bool:
+        """Return whether the registry contains the given model."""
+        return self.get_model(item) is not None
+
     def __iter__(self) -> Iterable[RegisteredModel]:
         """Iterate over the tasks in the registry."""
         return iter(self.registered_models)
