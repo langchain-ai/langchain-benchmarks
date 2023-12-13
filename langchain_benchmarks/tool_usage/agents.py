@@ -10,6 +10,7 @@ from langchain.schema.runnable import Runnable, RunnableLambda, RunnablePassthro
 from langchain.tools.render import format_tool_to_openai_function
 from langchain_benchmarks import rate_limiting, with_rate_limit
 
+from langchain_benchmarks import rate_limiting, with_rate_limit
 from langchain_benchmarks.schema import ToolUsageTask
 
 

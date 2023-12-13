@@ -1,9 +1,9 @@
 """Implementation of a rate limiter based on a token bucket."""
 import threading
 import time
-from typing import Optional, Any
+from typing import Any, Optional
 
-from langchain.schema.runnable import RunnableLambda, Runnable
+from langchain.schema.runnable import Runnable, RunnableLambda
 from langchain.schema.runnable.utils import Input, Output
 
 
@@ -13,12 +13,12 @@ class RateLimiter:
         *,
         requests_per_second: float = 1,
         check_every_n_seconds: float = 0.1,
-        max_bucket_size: Optional[int] = 1,
+        max_bucket_size: float = 1,
     ) -> None:
         """A rate limiter based on a token bucket.
 
         These *tokens* have NOTHING to do with LLM tokens. They are just
-        a way to keep track of how many requests can be made.
+        a way to keep track of how many requests can be made at a given time.
 
         This rate limiter is designed to work in a threaded environment.
 
@@ -29,16 +29,15 @@ class RateLimiter:
 
         Args:
             requests_per_second: The number of tokens to add per second to the bucket.
-                Must be at least 1.
+                Must be at least 1. The tokens represent "credit" that can be used
+                to make requests.
             check_every_n_seconds: check whether the tokens are available
                 every this many seconds. Can be a float to represent
                 fractions of a second.
             max_bucket_size: The maximum number of tokens that can be in the bucket.
                 This is used to prevent bursts of requests.
         """
-
-        if requests_per_second < 1:
-            raise ValueError("Rate must be at least 1 request per second")
+        # Number of requests that we can make per second.
         self.requests_per_second = requests_per_second
         # Number of tokens in the bucket.
         self.available_tokens = 0.0
@@ -67,13 +66,15 @@ class RateLimiter:
 
             elapsed = now - self.last
 
-            if elapsed * self.requests_per_second > 1:
+            if elapsed * self.requests_per_second >= 1:
                 self.available_tokens += elapsed * self.requests_per_second
                 self.last = now
 
             # Make sure that we don't exceed the bucket size.
+            # This is used to prevent bursts of requests.
             self.available_tokens = min(self.available_tokens, self.max_bucket_size)
 
+            # As long as we have at least one token, we can proceed.
             if self.available_tokens >= 1:
                 self.available_tokens -= 1
                 return True

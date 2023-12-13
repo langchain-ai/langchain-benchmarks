@@ -9,7 +9,10 @@ def test_public_api() -> None:
         [
             "clone_public_dataset",
             "download_public_dataset",
-            "registry",
             "model_registry",
-        ]
+            "RateLimiter",
+            "registry",
+            "with_rate_limit",
+        ],
+        key=lambda x: x.lower(),
     )
