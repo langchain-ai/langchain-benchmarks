@@ -56,10 +56,7 @@ extend-include = ["*.ipynb"]
 line-length = 88
 
 [tool.ruff.isort]
-# TODO(Team): Temporary to make isort work with examples.
-# examples assume langserve is available as a 3rd party package
-# For simplicity we'll define it as first party for now can update later.
-known-first-party = ["langserve"]
+known-first-party = ["langchain-benchmarks"]
 
 [tool.mypy]
 disallow_untyped_defs = "True"
