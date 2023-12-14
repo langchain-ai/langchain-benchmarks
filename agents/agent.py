@@ -1,4 +1,4 @@
-from typing import List, Literal, Sequence, Tuple, Union
+from typing import List, Literal, Optional, Sequence, Tuple, Union
 
 from langchain.agents import AgentOutputParser
 from langchain.prompts.chat import ChatPromptTemplate
@@ -14,6 +14,8 @@ from typing_extensions import NotRequired, TypedDict
 from agents.encoder import AstPrinter, TypeScriptEncoder, XMLEncoder
 from agents.prompts import AGENT_INSTRUCTIONS_BLOB_STYLE
 from agents.tool_utils import convert_tool_to_function_definition
+from langchain_benchmarks import RateLimiter
+from langchain_benchmarks.rate_limiting import with_rate_limit
 
 
 def format_observation(tool_name: str, observation: str) -> BaseMessage:
@@ -64,6 +66,7 @@ def create_agent(
     parser: AgentOutputParser,
     *,
     ast_printer: Union[AstPrinter, Literal["xml"]] = "xml",
+    rate_limiter: Optional[RateLimiter] = None,
 ) -> Runnable[AgentInput, Union[AgentAction, AgentFinish]]:
     """Create an agent for a chat model."""
     if isinstance(ast_printer, str):
@@ -92,6 +95,12 @@ def create_agent(
         ]
     ).partial(tool_description=tool_description)
 
+    # For the time being, hard-coding the fact that we're using a <tool> tag.
+    model = model.bind(stop=["</tool>"])
+
+    if rate_limiter:
+        model = with_rate_limit(model, rate_limiter)
+
     agent = (
         {
             "input": lambda x: x["input"],
@@ -99,7 +108,7 @@ def create_agent(
             "examples": lambda x: x.get("examples", []),
         }
         | template
-        | model.bind(stop=["</tool>"])
+        | model
         | parser
     )
     return agent

@@ -6,7 +6,7 @@ from langchain_core.runnables import Runnable, RunnableConfig
 
 from agents.agent import create_agent
 from agents.parser import GenericAgentParser
-from langchain_benchmarks import RateLimiter, model_registry, with_rate_limit
+from langchain_benchmarks import RateLimiter, model_registry
 from langchain_benchmarks.schema import ToolUsageTask
 from langchain_benchmarks.tool_usage import apply_agent_executor_adapter
 
@@ -40,10 +40,6 @@ class CustomAgentFactory:
         else:
             model = self.model
 
-        # Rate limiting doesn't take into account retries at the model level.
-        if self.rate_limiter is not None:
-            model = with_rate_limit(model, self.rate_limiter)
-
         def _add_task_instructions(
             input: dict, config: Optional[RunnableConfig] = None, **kwargs
         ) -> dict:
@@ -61,6 +57,7 @@ class CustomAgentFactory:
             model,
             env.tools,
             GenericAgentParser(wrapping_xml_tag="tool", require_closing_xml_tag=False),
+            rate_limiter=self.rate_limiter,
         )
         executor = AgentExecutor(
             agent=agent,
