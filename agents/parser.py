@@ -65,27 +65,6 @@ class GenericAgentParser(AgentOutputParser):
         )
 
 
-def _remove_unescaped_new_lines(input_str: str) -> str:
-    """Remove unescaped new lines from the input string."""
-    result = []
-    i = 0
-    while i < len(input_str):
-        if input_str[i] == "\\" and i + 1 < len(input_str) and input_str[i + 1] == "\n":
-            # If a backslash is followed by a newline,
-            # keep both characters (escaped newline)
-            result.append(input_str[i : i + 2])
-            i += 2
-        elif input_str[i] == "\n":
-            # If it's an unescaped newline, skip it
-            i += 1
-        else:
-            # Otherwise, keep the character as is
-            result.append(input_str[i])
-            i += 1
-
-    return "".join(result)
-
-
 def parse_invocation(text: str, tag: str) -> AgentAction:
     """Parse the content of the function invocation.
 
