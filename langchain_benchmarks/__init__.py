@@ -18,10 +18,10 @@ del metadata  # optional, avoids polluting the results of dir(__package__)
 
 # Please keep this list sorted!
 __all__ = [
+    "__version__",
     "clone_public_dataset",
     "download_public_dataset",
     "model_registry",
     "RateLimiter",
     "registry",
-    "__version__",
 ]
