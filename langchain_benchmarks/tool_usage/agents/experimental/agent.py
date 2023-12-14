@@ -6,7 +6,7 @@ from langchain.schema.runnable import Runnable
 from langchain.tools import StructuredTool
 from langchain_core.agents import AgentAction, AgentFinish
 from langchain_core.language_models import BaseChatModel, BaseLanguageModel
-from langchain_core.messages import BaseMessage
+from langchain_core.messages import BaseMessage, HumanMessage, AIMessage
 from langchain_core.prompts import MessagesPlaceholder
 from typing_extensions import NotRequired, TypedDict
 
@@ -34,17 +34,30 @@ def format_steps_for_chat(
     messages = []
     for action, observation in intermediate_steps:
         # Action messages contains the tool invocation request from the LLM
-        messages.extend(action.messages)
         # Now add the result of the tool invocation.
 
         if action.tool == "_Exception":
-            raise ValueError(action)
-        function_result: FunctionResult = {
-            "name": action.tool,
-            "error": None,
-            "result": observation,
-        }
-        messages.append(ast_printer.visit_function_result(function_result))
+            messages.append(
+                AIMessage(
+                    content=action.log,
+                )
+            )
+            messages.append(
+                # Tool input is the error message for the exception
+                HumanMessage(content=action.tool_input)
+            )
+        else:
+            messages.extend(action.messages)
+            function_result: FunctionResult = {
+                "name": action.tool,
+                "error": None,
+                "result": observation,
+            }
+            messages.append(
+                HumanMessage(
+                    content=ast_printer.visit_function_result(function_result),
+                )
+            )
 
     return messages
 

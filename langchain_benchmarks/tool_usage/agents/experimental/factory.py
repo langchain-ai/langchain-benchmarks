@@ -6,7 +6,7 @@ from langchain_core.runnables import Runnable, RunnableConfig
 
 from langchain_benchmarks import RateLimiter, model_registry
 from langchain_benchmarks.schema import ToolUsageTask
-from langchain_benchmarks.tool_usage import apply_agent_executor_adapter
+from langchain_benchmarks.tool_usage.agents.adapters import apply_agent_executor_adapter
 from langchain_benchmarks.tool_usage.agents.experimental.agent import create_agent
 from langchain_benchmarks.tool_usage.agents.experimental.parser import (
     GenericAgentParser,
@@ -54,6 +54,11 @@ class CustomAgentFactory:
             input: dict, config: Optional[RunnableConfig] = None, **kwargs
         ) -> dict:
             """Add task instructions to the question."""
+            if not isinstance(input, dict):
+                raise ValueError(
+                    f"Expected input to be a dict with key `question`. "
+                    f"Found {type(input)}."
+                )
             input = input.copy()
             input["question"] = (
                 f"{self.task.instructions}\nWrite down your answer, "
