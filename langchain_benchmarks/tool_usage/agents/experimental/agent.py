@@ -2,7 +2,6 @@ from typing import List, Literal, Optional, Sequence, Tuple, Union
 
 from langchain.agents import AgentOutputParser
 from langchain.prompts.chat import ChatPromptTemplate
-from langchain.schema.messages import HumanMessage
 from langchain.schema.runnable import Runnable
 from langchain.tools import StructuredTool
 from langchain_core.agents import AgentAction, AgentFinish
@@ -18,39 +17,35 @@ from langchain_benchmarks.tool_usage.agents.experimental.encoder import (
     TypeScriptEncoder,
     XMLEncoder,
 )
-from langchain_benchmarks.tool_usage.agents.experimental.tool_utils import (
-    convert_tool_to_function_definition,
-)
+from langchain_benchmarks.tool_usage.agents.experimental.encoder import FunctionResult
 from langchain_benchmarks.tool_usage.agents.experimental.prompts import (
     _AGENT_INSTRUCTIONS_BLOB_STYLE,
 )
-
-
-def format_observation(tool_name: str, observation: str) -> BaseMessage:
-    """Format the observation."""
-    result = (
-        "<tool_output>\n"
-        f"<tool_name>{tool_name}</tool_name>\n"
-        f"<output>{observation}</output>\n"
-        "</tool_output>"
-    )
-
-    return HumanMessage(content=result)
+from langchain_benchmarks.tool_usage.agents.experimental.tool_utils import (
+    convert_tool_to_function_definition,
+)
 
 
 def format_steps_for_chat(
     intermediate_steps: List[Tuple[AgentAction, str]],
+    ast_printer: AstPrinter,
 ) -> List[BaseMessage]:
     """Format the steps."""
     messages = []
     for action, observation in intermediate_steps:
-        if not isinstance(action, AgentAction):
-            if action.tool != "_Exception":
-                raise AssertionError(f"Unexpected step: {action}. type: {type(action)}")
-
-            messages.append(HumanMessage(content=observation))
+        # Action messages contains the tool invocation request from the LLM
         messages.extend(action.messages)
-        messages.append(format_observation(action.tool, observation))
+        # Now add the result of the tool invocation.
+
+        if action.tool == "_Exception":
+            raise ValueError(action)
+        function_result: FunctionResult = {
+            "name": action.tool,
+            "error": None,
+            "result": observation,
+        }
+        messages.append(ast_printer.visit_function_result(function_result))
+
     return messages
 
 
@@ -79,20 +74,20 @@ def create_agent(
     """Create an agent for a chat model."""
     if isinstance(ast_printer, str):
         if ast_printer == "xml":
-            ast_printer = XMLEncoder()
+            ast_printer_ = XMLEncoder()
         elif ast_printer == "typescript":
-            ast_printer = TypeScriptEncoder()
+            ast_printer_ = TypeScriptEncoder()
         else:
             raise ValueError(f"Unknown ast printer: {ast_printer}")
     elif isinstance(ast_printer, AstPrinter):
-        pass
+        ast_printer_ = ast_printer
     else:
         raise TypeError(
             f"Expected AstPrinter or str, got {type(ast_printer)} for `ast_printer`"
         )
 
     function_definitions = [convert_tool_to_function_definition(tool) for tool in tools]
-    tool_description = ast_printer.visit_function_definitions(function_definitions)
+    tool_description = ast_printer_.visit_function_definitions(function_definitions)
 
     template = ChatPromptTemplate.from_messages(
         [
@@ -107,12 +102,15 @@ def create_agent(
     model = model.bind(stop=["</tool>"])
 
     if rate_limiter:
+        # Apply a rate limiter if it was provided
         model = with_rate_limit(model, rate_limiter)
 
     agent = (
         {
             "input": lambda x: x["input"],
-            "history": lambda x: format_steps_for_chat(x["intermediate_steps"]),
+            "history": lambda x: format_steps_for_chat(
+                x["intermediate_steps"], ast_printer_
+            ),
             "examples": lambda x: x.get("examples", []),
         }
         | template

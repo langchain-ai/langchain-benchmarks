@@ -10,7 +10,6 @@ from langchain_benchmarks.tool_usage.agents.experimental.encoder import (
     FunctionDefinition,
 )
 
-
 # PUBLIC API
 
 
