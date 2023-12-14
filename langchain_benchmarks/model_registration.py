@@ -194,6 +194,15 @@ _FIREWORKS_MODELS = [
     ),
     RegisteredModel(
         provider="fireworks",
+        name="yi-34b-200k-fw",
+        type="llm",
+        description=" 4B LLM model from 01.ai, with context window 200k.",
+        params={
+            "model": "accounts/fireworks/models/yi-34b-200k",
+        },
+    ),
+    RegisteredModel(
+        provider="fireworks",
         name="mixtral-8x7b-instruct-fw",
         description="Mistral MoE 8x7B Instruct v0.1 model with Sparse "
         "Mixture of Experts. Fine tuned for instruction following",
