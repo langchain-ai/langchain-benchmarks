@@ -3,7 +3,9 @@ from langchain_core.agents import AgentFinish, AgentActionMessageLog
 from langchain_core.exceptions import OutputParserException
 from langchain_core.messages import AIMessage
 
-from agents.parser import GenericAgentParser
+from langchain_benchmarks.tool_usage.agents.experimental.parser import (
+    GenericAgentParser,
+)
 
 
 def test_parser() -> None:

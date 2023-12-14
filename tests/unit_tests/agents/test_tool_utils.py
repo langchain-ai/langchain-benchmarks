@@ -1,7 +1,9 @@
 import pytest
 from langchain.tools import tool
 
-from agents.tool_utils import convert_tool_to_function_definition
+from langchain_benchmarks.tool_usage.agents.experimental.tool_utils import (
+    convert_tool_to_function_definition,
+)
 
 
 @tool

@@ -4,8 +4,8 @@ from typing import Optional
 from langchain.agents import AgentExecutor
 from langchain_core.runnables import Runnable, RunnableConfig
 
-from agents.agent import create_agent
-from agents.parser import GenericAgentParser
+from agents import create_agent
+from agents import GenericAgentParser
 from langchain_benchmarks import RateLimiter, model_registry
 from langchain_benchmarks.schema import ToolUsageTask
 from langchain_benchmarks.tool_usage import apply_agent_executor_adapter

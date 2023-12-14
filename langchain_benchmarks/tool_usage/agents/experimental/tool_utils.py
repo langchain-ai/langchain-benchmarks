@@ -5,7 +5,7 @@ from typing import List
 
 from langchain.tools.base import StructuredTool
 
-from agents.encoder import FunctionDefinition, Parameter
+from agents import FunctionDefinition, Parameter
 
 # PUBLIC API
 

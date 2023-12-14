@@ -61,7 +61,7 @@ class OpenAIAgentFactory:
 
         if rate_limiting:
             # Rate limited model
-            model = with_rate_limit(model, self.rate_limiter)
+            model = rate_limiting.with_rate_limit(model, self.rate_limiter)
 
         prompt = ChatPromptTemplate.from_messages(
             [

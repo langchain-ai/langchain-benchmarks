@@ -11,9 +11,9 @@ from langchain_core.messages import BaseMessage
 from langchain_core.prompts import MessagesPlaceholder
 from typing_extensions import NotRequired, TypedDict
 
-from agents.encoder import AstPrinter, TypeScriptEncoder, XMLEncoder
-from agents.prompts import AGENT_INSTRUCTIONS_BLOB_STYLE
-from agents.tool_utils import convert_tool_to_function_definition
+from agents import AstPrinter, TypeScriptEncoder, XMLEncoder
+from agents import AGENT_INSTRUCTIONS_BLOB_STYLE
+from agents import convert_tool_to_function_definition
 from langchain_benchmarks import RateLimiter
 from langchain_benchmarks.rate_limiting import with_rate_limit
 
