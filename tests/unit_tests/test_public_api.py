@@ -7,6 +7,7 @@ def test_public_api() -> None:
     # Please keep it sorted!
     assert __all__ == sorted(
         [
+            "__version__",
             "clone_public_dataset",
             "download_public_dataset",
             "model_registry",

@@ -1,6 +1,6 @@
 import ast
 import re
-from typing import Union, Dict, Optional
+from typing import Dict, Optional, Union
 
 from langchain.agents import AgentOutputParser
 from langchain.pydantic_v1 import BaseModel, Field

@@ -1,4 +1,4 @@
-from typing import Optional, Callable, Any
+from typing import Any, Callable, Optional
 
 from langchain.agents import AgentExecutor
 from langchain_core.runnables import Runnable, RunnableLambda, RunnablePassthrough

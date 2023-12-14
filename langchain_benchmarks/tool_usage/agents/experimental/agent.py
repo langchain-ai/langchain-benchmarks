@@ -6,7 +6,7 @@ from langchain.schema.runnable import Runnable
 from langchain.tools import StructuredTool
 from langchain_core.agents import AgentAction, AgentFinish
 from langchain_core.language_models import BaseChatModel, BaseLanguageModel
-from langchain_core.messages import BaseMessage, HumanMessage, AIMessage
+from langchain_core.messages import AIMessage, BaseMessage, HumanMessage
 from langchain_core.prompts import MessagesPlaceholder
 from typing_extensions import NotRequired, TypedDict
 
@@ -14,10 +14,10 @@ from langchain_benchmarks import RateLimiter
 from langchain_benchmarks.rate_limiting import with_rate_limit
 from langchain_benchmarks.tool_usage.agents.experimental.encoder import (
     AstPrinter,
+    FunctionResult,
     TypeScriptEncoder,
     XMLEncoder,
 )
-from langchain_benchmarks.tool_usage.agents.experimental.encoder import FunctionResult
 from langchain_benchmarks.tool_usage.agents.experimental.prompts import (
     _AGENT_INSTRUCTIONS_BLOB_STYLE,
 )

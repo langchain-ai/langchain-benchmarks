@@ -6,8 +6,8 @@ from typing import List
 from langchain.tools.base import StructuredTool
 
 from langchain_benchmarks.tool_usage.agents.experimental.encoder import (
-    Parameter,
     FunctionDefinition,
+    Parameter,
 )
 
 # PUBLIC API
