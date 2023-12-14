@@ -253,6 +253,21 @@ _ANTHROPIC_MODELS = [
     ),
 ]
 
+_ANYSCALE_MODELS = [
+    RegisteredModel(
+        provider="anyscale",
+        name="mistral-7b-instruct-v0.1",
+        description="Mistral 7B model fine-tuned for function-calling.",
+        type="chat",
+        params={
+            "model": "mistralai/Mistral-7B-Instruct-v0.1",
+        },
+    ),
+]
+
 model_registry = ModelRegistry(
-    registered_models=_OPEN_AI_MODELS + _FIREWORKS_MODELS + _ANTHROPIC_MODELS
+    registered_models=_OPEN_AI_MODELS
+    + _FIREWORKS_MODELS
+    + _ANYSCALE_MODELS
+    + _ANTHROPIC_MODELS
 )
