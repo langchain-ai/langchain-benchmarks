@@ -13,7 +13,6 @@ langsmith = ">=0.0.66"
 tqdm = "^4"
 ipywidgets = "^8"
 tabulate = ">=0.8.0"
-griffe = "^0.38.1"
 
 [tool.poetry.group.dev.dependencies]
 jupyterlab = "^3.6.1"
