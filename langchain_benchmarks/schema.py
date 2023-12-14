@@ -251,7 +251,7 @@ class Registry:
         self.tasks.append(task)
 
 
-Provider = Literal["fireworks", "openai", "anthropic"]
+Provider = Literal["fireworks", "openai", "anthropic", "anyscale"]
 ModelType = Literal["chat", "llm"]
 AUTHORIZED_NAMESPACES = {"langchain"}
 
@@ -284,6 +284,8 @@ def _get_default_path(provider: str, type_: ModelType) -> str:
     paths = {
         ("fireworks", "chat"): "langchain.chat_models.fireworks.ChatFireworks",
         ("fireworks", "llm"): "langchain.llms.fireworks.Fireworks",
+        ("anyscale", "chat"): "langchain.chat_models.anyscale.ChatAnyscale",
+        ("anyscale", "llm"): "langchain.llms.anyscale.Anyscale",
         ("openai", "chat"): "langchain.chat_models.openai.ChatOpenAI",
         ("openai", "llm"): "langchain.llms.openai.OpenAI",
         ("anthropic", "chat"): "langchain.chat_models.anthropic.ChatAnthropic",
@@ -303,6 +305,8 @@ def _get_default_url(provider: str, type_: ModelType) -> Optional[str]:
         return "https://platform.openai.com/docs/models"
     elif provider == "anthropic":
         return "https://docs.anthropic.com/claude/reference/selecting-a-model"
+    elif provider == "anyscale":
+        return "https://docs.endpoints.anyscale.com/category/supported-models"
     else:
         return None
 

@@ -91,9 +91,16 @@ class OpenAIAgentFactory:
 
     def _create_model(self) -> Union[BaseChatModel, BaseLanguageModel]:
         if isinstance(self.model, RegisteredModel):
-            return self.model.get_model(model_params={"temperature": 0, "seed": 0})
+            return self.model.get_model(
+                model_params={"temperature": 0, "model_kwargs": {"seed": 0}}
+            )
         else:
-            return ChatOpenAI(self.model, temperature=0, model_kwargs={"seed": 0})
+            return ChatOpenAI(model=self.model, temperature=0, model_kwargs={"seed": 0})
+
+    def create(self) -> Runnable:
+        """Agent Executor"""
+        # For backwards compatibility
+        return self()
 
     def __call__(self) -> Runnable:
         model = self._create_model()
@@ -102,7 +109,7 @@ class OpenAIAgentFactory:
 
         model = _bind_tools(model, env.tools)
 
-        if rate_limiting:
+        if self.rate_limiter is not None:
             # Rate limited model
             model = rate_limiting.with_rate_limit(model, self.rate_limiter)
 
