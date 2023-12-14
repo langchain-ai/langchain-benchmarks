@@ -12,6 +12,7 @@ def test_public_api() -> None:
             "model_registry",
             "RateLimiter",
             "registry",
+            "__version__"
         ],
         key=lambda x: x.lower(),
     )
