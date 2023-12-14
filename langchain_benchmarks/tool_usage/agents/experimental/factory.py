@@ -4,11 +4,13 @@ from typing import Optional
 from langchain.agents import AgentExecutor
 from langchain_core.runnables import Runnable, RunnableConfig
 
-from agents import create_agent
-from agents import GenericAgentParser
 from langchain_benchmarks import RateLimiter, model_registry
 from langchain_benchmarks.schema import ToolUsageTask
 from langchain_benchmarks.tool_usage import apply_agent_executor_adapter
+from langchain_benchmarks.tool_usage.agents.experimental.agent import create_agent
+from langchain_benchmarks.tool_usage.agents.experimental.parser import (
+    GenericAgentParser,
+)
 
 
 class CustomAgentFactory:

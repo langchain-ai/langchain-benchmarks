@@ -17,7 +17,7 @@ Here are the tools available:
 {tool_description}
 """  # noqa: E501
 
-AGENT_INSTRUCTIONS_BLOB_STYLE = """\
+_AGENT_INSTRUCTIONS_BLOB_STYLE = """\
 In this environment you have access to a set of tools you can use to answer the user's question.
 
 Here are the tools available:

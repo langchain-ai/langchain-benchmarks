@@ -11,11 +11,19 @@ from langchain_core.messages import BaseMessage
 from langchain_core.prompts import MessagesPlaceholder
 from typing_extensions import NotRequired, TypedDict
 
-from agents import AstPrinter, TypeScriptEncoder, XMLEncoder
-from agents import AGENT_INSTRUCTIONS_BLOB_STYLE
-from agents import convert_tool_to_function_definition
 from langchain_benchmarks import RateLimiter
 from langchain_benchmarks.rate_limiting import with_rate_limit
+from langchain_benchmarks.tool_usage.agents.experimental.encoder import (
+    AstPrinter,
+    TypeScriptEncoder,
+    XMLEncoder,
+)
+from langchain_benchmarks.tool_usage.agents.experimental.tool_utils import (
+    convert_tool_to_function_definition,
+)
+from langchain_benchmarks.tool_usage.agents.experimental.prompts import (
+    _AGENT_INSTRUCTIONS_BLOB_STYLE,
+)
 
 
 def format_observation(tool_name: str, observation: str) -> BaseMessage:
@@ -88,7 +96,7 @@ def create_agent(
 
     template = ChatPromptTemplate.from_messages(
         [
-            ("system", AGENT_INSTRUCTIONS_BLOB_STYLE),
+            ("system", _AGENT_INSTRUCTIONS_BLOB_STYLE),
             MessagesPlaceholder("examples"),  # Can use to add example traces
             ("human", "{input}"),
             MessagesPlaceholder("history"),
