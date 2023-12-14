@@ -1,6 +1,6 @@
 import ast
 import re
-from typing import Any, Union
+from typing import Any, Union, Dict, Optional
 
 from langchain.agents import AgentOutputParser
 from langchain.pydantic_v1 import BaseModel, Field, ValidationError
@@ -19,7 +19,7 @@ class _ToolInvocationRequest(BaseModel):
 
     tool_name: str
     # OK parameterless tools which do not take arguments
-    named_arguments: Any = Field(default_factory=dict)
+    arguments: Optional[Dict] = Field(default_factory=dict)
 
 
 class GenericAgentParser(AgentOutputParser):
@@ -65,6 +65,27 @@ class GenericAgentParser(AgentOutputParser):
         )
 
 
+def _remove_unescaped_new_lines(input_str: str) -> str:
+    """Remove unescaped new lines from the input string."""
+    result = []
+    i = 0
+    while i < len(input_str):
+        if input_str[i] == "\\" and i + 1 < len(input_str) and input_str[i + 1] == "\n":
+            # If a backslash is followed by a newline,
+            # keep both characters (escaped newline)
+            result.append(input_str[i : i + 2])
+            i += 2
+        elif input_str[i] == "\n":
+            # If it's an unescaped newline, skip it
+            i += 1
+        else:
+            # Otherwise, keep the character as is
+            result.append(input_str[i])
+            i += 1
+
+    return "".join(result)
+
+
 def parse_invocation(text: str, tag: str) -> AgentAction:
     """Parse the content of the function invocation.
 
@@ -85,12 +106,13 @@ def parse_invocation(text: str, tag: str) -> AgentAction:
 
     try:
         result = ast.literal_eval(text)
-    except Exception as e:
+    except BaseException as e:
         # Convert this to something controllable by the user.
         err_msg = (
             f"ERROR: Please use the format "
             f'<{tag}>{{"tool_name": $TOOL_NAME, "arguments": $ARGUMENTS}}</{tag}>\n'
         )
+
         raise OutputParserException(
             error=e,
             llm_output=ai_content,
@@ -99,8 +121,9 @@ def parse_invocation(text: str, tag: str) -> AgentAction:
         )
 
     try:
-        request = _ToolInvocationRequest(**result)
-    except ValidationError as e:
+        request = _ToolInvocationRequest.validate(result)
+    except Exception as e:  # Using broad exception since it's not just ValidationError
+        # Can also raise DictError if result is not a dict.
         err_msg = (
             f"ERROR: Please use the format "
             f'<{tag}>{{"tool_name": $TOOL_NAME, "arguments": $ARGUMENTS}}</{tag}>\n'
@@ -115,6 +138,6 @@ def parse_invocation(text: str, tag: str) -> AgentAction:
     return AgentActionMessageLog(
         message_log=[AIMessage(content=ai_content)],
         tool=request.tool_name,
-        tool_input=request.named_arguments,
-        log=f"\nInvoking {request.tool_name}: {request.named_arguments}\n\t",
+        tool_input=request.arguments,
+        log=f"\nInvoking {request.tool_name}: {request.arguments}\n\t",
     )

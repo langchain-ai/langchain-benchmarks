@@ -12,6 +12,13 @@ from langchain_benchmarks.tool_usage import apply_agent_executor_adapter
 
 
 class CustomAgentFactory:
+    """A factory for creating tool using agents.
+
+    A factory for agents that do not leverage any special JSON mode for
+    function usage; instead all function invocation behavior is implemented solely
+    through prompt engineering and parsing.
+    """
+
     def __init__(
         self,
         task: ToolUsageTask,
@@ -22,8 +29,9 @@ class CustomAgentFactory:
         """Create an agent factory for the given tool usage task.
 
         Args:
-            task: The task to create an agent factory for.
+            task: The task to create an agent factory for
             model: model name (check model_registry)
+            rate_limiter: The rate limiter to use if provided
         """
         if model not in model_registry:
             raise ValueError(f"Unknown model: {model}")
