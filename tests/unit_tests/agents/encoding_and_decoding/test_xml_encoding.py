@@ -42,18 +42,29 @@ def test_function_definition_encoding() -> None:
 
 def test_function_result_encoding() -> None:
     """Test encoding a function result."""
+    encoder = XMLEncoder()
     function_result = FunctionResult(
         name="test_function",
         result="test_result",
-        error="test_error",
+        error=None,
     )
-    encoder = XMLEncoder()
     xml = encoder.visit_function_result(function_result)
     assert xml == (
         "<function_result>\n"
         "<function_name>test_function</function_name>\n"
         "<result>test_result</result>\n"
-        "<error>test_error</error>\n"
+        "</function_result>"
+    )
+
+    function_result = FunctionResult(
+        name="test_function",
+        error="error",
+    )
+    xml = encoder.visit_function_result(function_result)
+    assert xml == (
+        "<function_result>\n"
+        "<function_name>test_function</function_name>\n"
+        "<error>error</error>\n"
         "</function_result>"
     )
 

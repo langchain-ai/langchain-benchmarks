@@ -86,14 +86,18 @@ class AstPrinter(Visitor):
 class XMLEncoder(AstPrinter):
     def visit_function_definition(self, function_definition: FunctionDefinition) -> str:
         """Render a function."""
-        parameters_as_strings = [
-            "<parameter>\n"
-            f"<name>{parameter['name']}</name>\n"
-            f"<type>{parameter['type']}</type>\n"
-            f"<description>{parameter['description']}</description>\n"
-            "</parameter>\n"
-            for parameter in function_definition["parameters"]
-        ]
+        parameters_lines = []
+
+        for parameter in function_definition["parameters"]:
+            parameters_lines.extend(
+                [
+                    "<parameter>",
+                    f"<name>{parameter['name']}</name>",
+                    f"<type>{parameter['type']}</type>",
+                    f"<description>{parameter['description']}</description>",
+                    "</parameter>",
+                ]
+            )
         lines = [
             "<function>",
             f"<function_name>{function_definition['name']}</function_name>",
@@ -101,7 +105,7 @@ class XMLEncoder(AstPrinter):
             f"{function_definition['description']}",
             "</description>",
             "<parameters>",
-            f"{''.join(parameters_as_strings)}",  # Already includes trailing newline
+            *parameters_lines,
             "</parameters>",
             "<return_value>",
             f"<type>{function_definition['return_value']['type']}</type>",
