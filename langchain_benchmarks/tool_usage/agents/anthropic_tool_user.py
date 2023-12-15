@@ -7,8 +7,7 @@ of other implementations.
 """
 
 from importlib.util import find_spec
-from typing import Any, List, Optional
-from typing import Sequence
+from typing import Any, List, Optional, Sequence
 
 from langchain.tools import StructuredTool
 from langchain_core.callbacks.manager import trace_as_chain_group
