@@ -15,7 +15,7 @@ from langchain_core.language_models.base import LanguageModelInput
 from langchain_core.messages import BaseMessage
 from langchain_core.pydantic_v1 import BaseModel
 
-from langchain_benchmarks import rate_limiting
+from langchain_benchmarks import model_registry, rate_limiting
 from langchain_benchmarks.model_registration import RegisteredModel
 from langchain_benchmarks.schema import ToolUsageTask
 from langchain_benchmarks.tool_usage.agents.adapters import apply_agent_executor_adapter
@@ -77,7 +77,9 @@ class OpenAIAgentFactory:
         self,
         task: ToolUsageTask,
         *,
-        model: Union[str, RegisteredModel] = "gpt-3.5-turbo-16k",
+        model: Union[
+            str, RegisteredModel, BaseLanguageModel, BaseChatModel
+        ] = "gpt-3.5-turbo-16k",
         rate_limiter: Optional[rate_limiting.RateLimiter] = None,
     ) -> None:
         """Create an OpenAI agent factory for the given task.
@@ -96,8 +98,19 @@ class OpenAIAgentFactory:
             return self.model.get_model(
                 model_params={"temperature": 0, "model_kwargs": {"seed": 0}}
             )
+        elif isinstance(self.model, (BaseChatModel, BaseLanguageModel)):
+            return self.model
+        elif isinstance(self.model, str):
+            if self.model in model_registry:
+                registered_model = model_registry.get_model(self.model)
+                model_instance = registered_model.get_model(
+                    model_params={"temperature": 0, "model_kwargs": {"seed": 0}}
+                )
+                return model_instance
+            else:
+                raise ValueError(f"Unknown model: {self.model}")
         else:
-            return ChatOpenAI(model=self.model, temperature=0, model_kwargs={"seed": 0})
+            raise TypeError(f"Expected str or RegisteredModel, got {type(self.model)}")
 
     def create(self) -> Runnable:
         """Agent Executor"""
@@ -106,7 +119,6 @@ class OpenAIAgentFactory:
 
     def __call__(self) -> Runnable:
         model = self._create_model()
-
         env = self.task.create_environment()
 
         model = _bind_tools(model, env.tools)
