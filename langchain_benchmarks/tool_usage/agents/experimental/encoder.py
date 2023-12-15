@@ -75,7 +75,17 @@ class Visitor(abc.ABC):
         """Render a function invocation."""
 
     @abc.abstractmethod
+    def visit_function_invocations(
+        self, function_invocations: List[FunctionInvocation]
+    ) -> str:
+        """Render a function invocation."""
+
+    @abc.abstractmethod
     def visit_function_result(self, function_result: FunctionResult) -> str:
+        """Render a function result."""
+
+    @abc.abstractmethod
+    def visit_function_results(self, function_results: List[FunctionResult]) -> str:
         """Render a function result."""
 
 
@@ -154,6 +164,18 @@ class XMLEncoder(AstPrinter):
         )
         return "\n".join(lines)
 
+    def visit_function_invocations(
+        self, function_invocations: List[FunctionInvocation]
+    ) -> str:
+        """Render a function invocation."""
+        strs = [
+            self.visit_function_invocation(function_invocation)
+            for function_invocation in function_invocations
+        ]
+        return (
+            "<function_invocations>\n" + "\n".join(strs) + "\n</function_invocations>"
+        )
+
     def visit_function_result(self, function_result: FunctionResult) -> str:
         """Render a function result."""
         lines = [
@@ -178,6 +200,158 @@ class XMLEncoder(AstPrinter):
 
         lines.append("</function_result>")
 
+        return "\n".join(lines)
+
+    def visit_function_results(self, function_results: List[FunctionResult]) -> str:
+        """Render a function result."""
+        strs = [
+            self.visit_function_result(function_result)
+            for function_result in function_results
+        ]
+        return "<function_results>\n" + "\n".join(strs) + "\n</function_results>"
+
+
+class AnthropicXMLEncoder(AstPrinter):
+    """Adapter for Anthropic tool usage api.
+
+    As described here: https://github.com/anthropics/anthropic-tools/tree/main
+    """
+
+    def visit_function_definition(self, function_definition: FunctionDefinition) -> str:
+        """Render a function.
+
+        Function definition example:
+
+        <tool_description>
+        <tool_name>get_time_of_day</tool_name>
+        <description>
+        get_time_of_day(time_zone: str) -> str - Retrieve the current time of day
+
+            Args:
+                time_zone: The time zone to get the current time for,
+
+            Returns:
+                time format
+        </description>
+        <parameters>
+        <parameter>
+        <name>time_zone</name>
+        <type>str</type>
+        <description></description>
+        </parameter>
+        </parameters>
+        </tool_description>
+        """
+        parameters_lines = []
+
+        for parameter in function_definition["parameters"]:
+            parameters_lines.extend(
+                [
+                    "<parameter>",
+                    f"<name>{parameter['name']}</name>",
+                    f"<type>{parameter['type']}</type>",
+                    f"<description>{parameter['description']}</description>",
+                    "</parameter>",
+                ]
+            )
+        lines = [
+            "<tool_description>",
+            f"<tool_name>{function_definition['name']}</tool_name>",
+            "<description>",
+            f"{function_definition['description']}",
+            "</description>",
+            "<parameters>",
+            *parameters_lines,
+            "</parameters>",
+            "</tool_description>",
+        ]
+        return "\n".join(lines)
+
+    def visit_function_definitions(
+        self, function_definitions: List[FunctionDefinition]
+    ) -> str:
+        """Render a function."""
+        strs = [
+            self.visit_function_definition(function_definition)
+            for function_definition in function_definitions
+        ]
+
+        lines = [
+            "<tools>",
+            *strs,
+            "</tools>",
+        ]
+        return "\n".join(lines)
+
+    def visit_function_invocation(self, invocation: FunctionInvocation) -> str:
+        """Render a function invocation.
+
+        <invoke>
+        <tool_name>get_time_of_day</tool_name>
+        <parameters>
+        <time_zone>UTC</time_zone>
+        </parameters>
+        </invoke>
+        """
+        arguments_as_strings = [
+            f"<{argument['name']}>{argument['value']}</{argument['name']}>"
+            for argument in invocation["arguments"]
+        ]
+        lines = [
+            "<invoke>",
+            f"<tool_name>{invocation['name']}</tool_name>",
+            "<parameters>",
+            *arguments_as_strings,
+            "</parameters>",
+            "</invoke>",
+        ]
+        return "\n".join(lines)
+
+    def visit_function_invocations(self, invocations: List[FunctionInvocation]) -> str:
+        """Render a function invocation."""
+        strs = [
+            self.visit_function_invocation(invocation) for invocation in invocations
+        ]
+
+        lines = [
+            "<function_calls>",
+            *strs,
+            "</function_calls>",
+        ]
+        return "\n".join(lines)
+
+    def visit_function_result(self, function_result: FunctionResult) -> str:
+        """Render a function result.
+
+        <function_results>
+        <result>
+        <tool_name>get_time_of_day</tool_name>
+        <stdout>
+        02:57:27
+        </stdout>
+        </result>
+        </function_results>
+        """
+        lines = [
+            "<result>",
+            f"<tool_name>{function_result['name']}</tool_name>",
+            f"<stdout>{function_result['result']}</stdout>",
+            "</result>",
+        ]
+        return "\n".join(lines)
+
+    def visit_function_results(self, function_results: List[FunctionResult]) -> str:
+        """Render a function result."""
+        strs = [
+            self.visit_function_result(function_result)
+            for function_result in function_results
+        ]
+
+        lines = [
+            "<function_results>",
+            *strs,
+            "</function_results>",
+        ]
         return "\n".join(lines)
 
 
@@ -238,3 +412,18 @@ class TypeScriptEncoder(AstPrinter):
         if function_result.get("id"):
             lines.append(f"// ID: {function_result['id']}")
         return "\n".join(lines)
+
+    def visit_function_results(self, function_results: List[FunctionResult]) -> str:
+        """Render a function result."""
+        strs = [
+            self.visit_function_result(function_result)
+            for function_result in function_results
+        ]
+        return "\n".join(strs)
+
+    def visit_function_invocations(self, invocations: List[FunctionInvocation]) -> str:
+        """Render a function invocation."""
+        strs = [
+            self.visit_function_invocation(invocation) for invocation in invocations
+        ]
+        return "\n".join(strs)
