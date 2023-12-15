@@ -20,6 +20,7 @@ from langchain_benchmarks.tool_usage.agents.experimental.encoder import (
 )
 from langchain_benchmarks.tool_usage.agents.experimental.prompts import (
     _AGENT_INSTRUCTIONS_BLOB_STYLE,
+    _ANTHROPIC_TOOL_USER_PROMPT,
 )
 from langchain_benchmarks.tool_usage.agents.experimental.tool_utils import (
     convert_tool_to_function_definition,
@@ -83,6 +84,9 @@ def create_agent(
     *,
     ast_printer: Union[AstPrinter, Literal["xml"]] = "xml",
     rate_limiter: Optional[RateLimiter] = None,
+    prompt_template: Union[
+        ChatPromptTemplate, Literal["xml", "anthropic-tool-user"]
+    ] = "xml",
 ) -> Runnable[AgentInput, Union[AgentAction, AgentFinish]]:
     """Create an agent for a chat model."""
     if isinstance(ast_printer, str):
@@ -102,14 +106,38 @@ def create_agent(
     function_definitions = [convert_tool_to_function_definition(tool) for tool in tools]
     tool_description = ast_printer_.visit_function_definitions(function_definitions)
 
-    template = ChatPromptTemplate.from_messages(
-        [
-            ("system", _AGENT_INSTRUCTIONS_BLOB_STYLE),
-            MessagesPlaceholder("examples"),  # Can use to add example traces
-            ("human", "{input}"),
-            MessagesPlaceholder("history"),
-        ]
-    ).partial(tool_description=tool_description)
+    if isinstance(prompt_template, str):
+        if prompt_template == "xml":
+            system_message = _AGENT_INSTRUCTIONS_BLOB_STYLE
+        elif prompt_template == "anthropic-tool-user":
+            system_message = _ANTHROPIC_TOOL_USER_PROMPT
+        else:
+            raise ValueError(f"Unknown prompt template: {prompt_template}")
+
+        template = ChatPromptTemplate.from_messages(
+            [
+                ("system", system_message),
+                MessagesPlaceholder("examples"),  # Can use to add example traces
+                ("human", "{input}"),
+                MessagesPlaceholder("history"),
+            ]
+        ).partial(tool_description=tool_description)
+    elif isinstance(prompt_template, ChatPromptTemplate):
+        template = prompt_template
+        # Validate required variables are present
+        if "input" not in template.input_variables:
+            raise ValueError(
+                f"Expected `input` to be a variable in the prompt template."
+            )
+        if "history" not in template.input_variables:
+            raise ValueError(
+                f"Expected `history` to be a variable in the prompt template."
+            )
+    else:
+        raise TypeError(
+            f"Expected ChatPromptTemplate or str, got {type(prompt_template)} "
+            f"for `prompt_template`"
+        )
 
     # For the time being, hard-coding the fact that we're using a <tool> tag.
     model = model.bind(stop=["</tool>"])
