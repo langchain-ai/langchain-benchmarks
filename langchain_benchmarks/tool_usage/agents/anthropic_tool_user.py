@@ -7,7 +7,7 @@ of other implementations.
 """
 
 from importlib.util import find_spec
-from typing import Any, List, Optional, Sequence
+from typing import Any, List, Optional, Sequence, Dict
 
 from langchain.tools import StructuredTool
 from langchain_core.callbacks.manager import trace_as_chain_group
@@ -50,10 +50,10 @@ def convert_langchain_tool_to_tool_user_tool(lc_tool: StructuredTool) -> Any:
 
 
 def _handle_tool_inputs(
-    tool_inputs: list[dict],
+    tool_inputs: List[Dict[str, Any]],
     tools: Sequence[StructuredTool],
     config: Optional[RunnableConfig] = None,
-) -> dict[str, Any]:
+) -> Dict[str, Any]:
     """Handle tool inputs."""
     tool_by_name = {tool.name: tool for tool in tools}
     tool_error: Optional[str] = None
@@ -145,7 +145,9 @@ def run_anthropic_agent_simple(
     return messages
 
 
-def convert_messages_to_finalized_output(messages: list[dict]) -> dict:
+def convert_messages_to_finalized_output(
+    messages: List[Dict[str, Any]],
+) -> Dict[str, Any]:
     """Convert the history of messages into the expected output for eval.
 
     This matches the agent executor output which has the following structure:
