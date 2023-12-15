@@ -13,6 +13,7 @@ langsmith = ">=0.0.70"
 tqdm = "^4"
 ipywidgets = "^8"
 tabulate = ">=0.8.0"
+xmltodict = "^0.13.0"
 
 [tool.poetry.group.dev.dependencies]
 jupyterlab = "^3.6.1"
