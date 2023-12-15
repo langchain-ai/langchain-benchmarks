@@ -1,4 +1,4 @@
-AGENT_INSTRUCTIONS_XML_FORMAT = """\
+_ANTHROPIC_TOOL_USER_PROMPT = """\
 In this environment you have access to a set of tools you can use to answer the user's question.
 
 You may call them like this:

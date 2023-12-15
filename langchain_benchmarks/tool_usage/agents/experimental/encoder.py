@@ -75,7 +75,17 @@ class Visitor(abc.ABC):
         """Render a function invocation."""
 
     @abc.abstractmethod
+    def visit_function_invocations(
+        self, function_invocations: List[FunctionInvocation]
+    ) -> str:
+        """Render a function invocation."""
+
+    @abc.abstractmethod
     def visit_function_result(self, function_result: FunctionResult) -> str:
+        """Render a function result."""
+
+    @abc.abstractmethod
+    def visit_function_results(self, function_results: List[FunctionResult]) -> str:
         """Render a function result."""
 
 
@@ -154,6 +164,18 @@ class XMLEncoder(AstPrinter):
         )
         return "\n".join(lines)
 
+    def visit_function_invocations(
+        self, function_invocations: List[FunctionInvocation]
+    ) -> str:
+        """Render a function invocation."""
+        strs = [
+            self.visit_function_invocation(function_invocation)
+            for function_invocation in function_invocations
+        ]
+        return (
+            "<function_invocations>\n" + "\n".join(strs) + "\n</function_invocations>"
+        )
+
     def visit_function_result(self, function_result: FunctionResult) -> str:
         """Render a function result."""
         lines = [
@@ -179,6 +201,14 @@ class XMLEncoder(AstPrinter):
         lines.append("</function_result>")
 
         return "\n".join(lines)
+
+    def visit_function_results(self, function_results: List[FunctionResult]) -> str:
+        """Render a function result."""
+        strs = [
+            self.visit_function_result(function_result)
+            for function_result in function_results
+        ]
+        return "<function_results>\n" + "\n".join(strs) + "\n</function_results>"
 
 
 class AnthropicXMLEncoder(AstPrinter):
@@ -382,3 +412,18 @@ class TypeScriptEncoder(AstPrinter):
         if function_result.get("id"):
             lines.append(f"// ID: {function_result['id']}")
         return "\n".join(lines)
+
+    def visit_function_results(self, function_results: List[FunctionResult]) -> str:
+        """Render a function result."""
+        strs = [
+            self.visit_function_result(function_result)
+            for function_result in function_results
+        ]
+        return "\n".join(strs)
+
+    def visit_function_invocations(self, invocations: List[FunctionInvocation]) -> str:
+        """Render a function invocation."""
+        strs = [
+            self.visit_function_invocation(invocation) for invocation in invocations
+        ]
+        return "\n".join(strs)
