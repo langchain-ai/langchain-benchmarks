@@ -16,7 +16,7 @@ from langchain_core.runnables import Runnable, RunnableConfig, RunnableLambda
 
 from langchain_benchmarks import rate_limiting
 from langchain_benchmarks.schema import ToolUsageTask
-from langchain_benchmarks.tool_usage import apply_agent_executor_adapter
+from langchain_benchmarks.tool_usage.agents.adapters import apply_agent_executor_adapter
 
 
 def convert_langchain_tool_to_tool_user_tool(lc_tool: StructuredTool) -> Any:
@@ -110,7 +110,7 @@ def run_anthropic_agent_simple(
     with trace_as_chain_group(
         "Anthropic Agent Run",
         inputs={"user_message": user_message},
-        callback_manager=config["callbacks"],
+        callback_manager=config.get("callbacks", None) if config else None,
     ) as group_manager:
         for num_iteration in range(max_iterations):
             with trace_as_chain_group(
@@ -210,7 +210,7 @@ def create_agent(tools: Sequence[StructuredTool]) -> RunnableLambda:
     return RunnableLambda(run_agent)
 
 
-class AnthropicAgentFactory:
+class AnthropicToolUserFactory:
     def __init__(
         self,
         task: ToolUsageTask,
@@ -231,7 +231,7 @@ class AnthropicAgentFactory:
                 f"https://github.com/anthropics/anthropic-tools/tree/main"
             )
 
-    def __call__(self) -> Runnable:
+    def __call__(self, **kwargs: Any) -> Runnable:
         env = self.task.create_environment()
 
         def _add_task_instructions(
@@ -254,6 +254,9 @@ class AnthropicAgentFactory:
         agent = create_agent(env.tools)  # type: ignore
         # Returns `state` in the output if the environment has a state reader
         # makes sure that `output` is always in the output
+
+        if kwargs:
+            agent = agent.bind(**kwargs)
 
         runnable = _add_task_instructions | apply_agent_executor_adapter(
             agent, state_reader=env.read_state
