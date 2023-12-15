@@ -42,3 +42,9 @@
 ./notebooks/retrieval/multi_modal_benchmarking/multi_modal_eval
 ./notebooks/retrieval/comparing_techniques
 ```
+
+```{toctree}
+:maxdepth: 2
+:caption: Benchmarking Without LangSmith 
+./notebooks/run_without_langsmith
+```
