@@ -2,11 +2,11 @@
 Module contains re-implementation of the anthropic tool agent SDK using
 langchain primitives.
 """
-import ast
 import re
 from typing import Dict, Optional, Union
 from typing import List, Sequence, Tuple
 
+import xmltodict
 from langchain.agents import AgentOutputParser
 from langchain.prompts.chat import ChatPromptTemplate
 from langchain.pydantic_v1 import BaseModel, Field
@@ -96,16 +96,13 @@ def parse_invocation(text: str, tag: str) -> AgentAction:
         This exception is meant to be caught by the agent executor and
         handled appropriately to provide feedback to the LLM.
     """
-    ai_content = f"<{tag}>{text}</{tag}>\n"
 
+    ai_content = f"<{tag}>{text}</{tag}>\n"
     try:
-        result = ast.literal_eval(text)
-    except BaseException as e:
+        function_calls = xmltodict.parse(ai_content, force_list=("function_calls",))
+    except Exception as e:
         # Convert this to something controllable by the user.
-        err_msg = (
-            f"ERROR: Please use the format "
-            f'<{tag}>{{"tool_name": $TOOL_NAME, "arguments": $ARGUMENTS}}</{tag}>\n'
-        )
+        err_msg = ()
 
         raise OutputParserException(
             error=e,
