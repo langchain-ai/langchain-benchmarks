@@ -2,12 +2,14 @@
 from typing import Any, Callable, Dict, List, Optional, Sequence, Type, Union
 
 from langchain.agents import AgentExecutor
-from langchain.agents.format_scratchpad import format_to_openai_functions
-from langchain.agents.output_parsers import OpenAIFunctionsAgentOutputParser
+from langchain.agents.format_scratchpad.openai_tools import (
+    format_to_openai_tool_messages,
+)
 from langchain.chat_models import ChatOpenAI
 from langchain.prompts import ChatPromptTemplate, MessagesPlaceholder
 from langchain.schema.runnable import Runnable
 from langchain.tools.render import format_tool_to_openai_tool
+from langchain.agents.output_parsers.openai_tools import OpenAIToolsAgentOutputParser
 from langchain_core.language_models import BaseChatModel, BaseLanguageModel
 from langchain_core.language_models.base import LanguageModelInput
 from langchain_core.messages import BaseMessage
@@ -127,13 +129,13 @@ class OpenAIAgentFactory:
         runnable_agent = (
             {
                 "input": lambda x: x["input"],
-                "agent_scratchpad": lambda x: format_to_openai_functions(
+                "agent_scratchpad": lambda x: format_to_openai_tool_messages(
                     x["intermediate_steps"]
                 ),
             }
             | prompt
             | model
-            | OpenAIFunctionsAgentOutputParser()
+            | OpenAIToolsAgentOutputParser()
         )
 
         runnable = AgentExecutor(
