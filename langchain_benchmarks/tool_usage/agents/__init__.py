@@ -5,10 +5,14 @@ from langchain_benchmarks.tool_usage.agents.anthropic_tool_user import (
 from langchain_benchmarks.tool_usage.agents.experimental.factory import (
     CustomAgentFactory,
 )
+from langchain_benchmarks.tool_usage.agents.openai_assistant import (
+    OpenAIAssistantFactory,
+)
 from langchain_benchmarks.tool_usage.agents.openai_functions import OpenAIAgentFactory
 
 __all__ = [
     "OpenAIAgentFactory",
+    "OpenAIAssistantFactory",
     "apply_agent_executor_adapter",
     "CustomAgentFactory",
     "AnthropicToolUserFactory",

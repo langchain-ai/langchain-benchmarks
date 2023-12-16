@@ -227,9 +227,9 @@ class AnthropicToolUserFactory:
         self.rate_limiter = rate_limiter
         if not find_spec("tool_use_package"):
             raise ImportError(
-                f'Could not import "tool_use_package". Please '
-                f"follow instructions here to install "
-                f"https://github.com/anthropics/anthropic-tools/tree/main"
+                'Could not import "tool_use_package". Please '
+                "follow instructions here to install "
+                "https://github.com/anthropics/anthropic-tools/tree/main"
             )
 
     def __call__(self, **kwargs: Any) -> Runnable:
