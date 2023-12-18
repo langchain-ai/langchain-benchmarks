@@ -199,7 +199,7 @@ DATASET = [
     },
     {
         "question": (
-            "ecoli divides every 20 minutes. How many cells will be "
+            "ecoli divides every 20 minutes (120 minutes). How many cells will be "
             "there after 2 hours if we start with 5 cells?"
         ),
         "answer": multiply(5, power(2, divide(120, 20))),
