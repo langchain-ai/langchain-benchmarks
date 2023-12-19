@@ -20,7 +20,7 @@ registry = Registry(
         type_writer.TYPE_WRITER_TASK,
         type_writer_26_funcs.TYPE_WRITER_26_FUNCS_TASK,
         relational_data.RELATIONAL_DATA_TASK,
-        multiverse_math.MULTIVERSE_MATH,
+        multiverse_math.MULTIVERSE_MATH_TINY,
         email_task.EMAIL_EXTRACTION_TASK,
         chat_extraction.CHAT_EXTRACTION_TASK,
         LANGCHAIN_DOCS_TASK,

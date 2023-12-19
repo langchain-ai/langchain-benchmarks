@@ -127,8 +127,8 @@ def get_environment() -> ToolUsageEnvironment:
     )
 
 
-MULTIVERSE_MATH = ToolUsageTask(
-    name="Multiverse Math",
+MULTIVERSE_MATH_TINY = ToolUsageTask(
+    name="Multiverse Math (Tiny)",
     dataset_id="https://smith.langchain.com/public/594f9f60-30a0-49bf-b075-f44beabf546a/d",
     create_environment=get_environment,
     instructions=(
@@ -158,7 +158,7 @@ solve simple math questions and ignore any innate knowledge about math.
 )
 
 # Source dataset used to create the public dataset in LangSmith
-DATASET = [
+DATASET_TINY = [
     {
         "question": "Add 2 and 3",
         "answer": add(2, 3),
@@ -193,9 +193,9 @@ DATASET = [
         "expected_steps": ["log", "multiply"],
     },
     {
-        "question": "calculate 101 to the power of 0.5 to 4 digits of precision",
-        "answer": round(power(101, 0.5), 4),
-        "expected_steps": ["power", "round"],
+        "question": "calculate 101 to the power of 0.5",
+        "answer": power(101, 0.5),
+        "expected_steps": ["power"],
     },
     {
         "question": (
@@ -220,6 +220,61 @@ DATASET = [
     },
 ]
 
+DATASET = DATASET_TINY + [
+    {
+        "question": "evaluate negate(-131,778)",
+        "answer": negate(-131_778),
+        "expected_steps": ["negate"],
+    },
+    {
+        "question": "what is the value of pi?",
+        "answer": pi(),
+        "expected_steps": ["pi"],
+    },
+    {
+        "question": "what is cos(pi)?",
+        "answer": cos(pi()),
+        "expected_steps": ["pi", "cos"],
+    },
+    {
+        "question": "how much is 131,778 divided by 2?",
+        "answer": divide(131_778, 2),
+        "expected_steps": ["divide"],
+    },
+    {
+        "question": "131,778 + 22,312?",
+        "answer": add(131_778, 22_312),
+        "expected_steps": ["add"],
+    },
+    {
+        "question": "(1+2) + 5",
+        "answer": add(add(1, 2), 5),
+        "expected_steps": ["add", "add"],
+    },
+    {
+        "question": "-(1 + 1)",
+        "answer": negate(add(1, 1)),
+        "expected_steps": ["add", "negate"],
+    },
+    {
+        "question": "Evaluate 1 + 2 + 3 + 4 + 5 using only the add function",
+        "answer": add(add(add(add(1, 2), 3), 4), 5),
+        "expected_steps": ["add", "add", "add", "add"],
+    },
+    {
+        "question": "Evaluate the sum of the numbers 1 through 10 using only the add function",
+        "answer": add(
+            add(add(add(add(add(add(add(add(1, 2), 3), 4), 5), 6), 7), 8), 9), 10
+        ),
+        "expected_steps": ["add"] * (10 - 1),
+    },
+    {
+        "question": "Calculate 5 divided by 5",
+        "answer": divide(5, 5),
+        "expected_steps": ["divide"],
+    },
+]
+
 
 def _create_dataset() -> None:
     """Create a dataset with the langsmith client."""
@@ -228,11 +283,11 @@ def _create_dataset() -> None:
     client = Client()
 
     dataset = client.create_dataset(
-        dataset_name=MULTIVERSE_MATH.name,
-        description=MULTIVERSE_MATH.description,
+        dataset_name=MULTIVERSE_MATH_TINY.name,
+        description=MULTIVERSE_MATH_TINY.description,
     )
 
-    for example in DATASET:
+    for example in DATASET_TINY:
         client.create_example(
             inputs={
                 "question": example["question"],
