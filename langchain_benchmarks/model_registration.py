@@ -252,6 +252,18 @@ _ANTHROPIC_MODELS = [
         },
     ),
 ]
+_GOOGLE_GENAI_MODELS = [
+    RegisteredModel(
+        provider="google-genai",
+        name="gemini-pro",
+        description="Gemini Pro is a large model from Google trained on a diverse set of tasks.",
+        type="chat",
+        params={
+            "model": "gemini-pro",
+            "convert_system_message_to_human": True,
+        },
+    )
+]
 
 _ANYSCALE_MODELS = [
     RegisteredModel(
@@ -270,4 +282,5 @@ model_registry = ModelRegistry(
     + _FIREWORKS_MODELS
     + _ANYSCALE_MODELS
     + _ANTHROPIC_MODELS
+    + _GOOGLE_GENAI_MODELS
 )
