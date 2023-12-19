@@ -23,7 +23,7 @@ class CustomRunnableAgentFactory:
     def __init__(
         self,
         task: ToolUsageTask,
-        agent: Union[BaseSingleActionAgent, BaseMultiActionAgent],
+        agent: Union[Runnable, BaseSingleActionAgent, BaseMultiActionAgent],
     ) -> None:
         """Create an agent factory for the given tool usage task.
 
