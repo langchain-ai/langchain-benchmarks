@@ -54,11 +54,13 @@ class QAMathEvaluator(StringEvaluator):
         **kwargs: Any,
     ) -> dict:
         """Evaluate the prediction against the reference."""
-        return {
-            "score": self.eval_chain.invoke(
-                {"answer": reference, "result": prediction}, **kwargs
-            )
-        }
+        result = self.eval_chain.invoke(
+            {"answer": reference, "result": prediction}, **kwargs
+        )
+        if result.content.startswith("CORRECT"):
+            return {"score": 1}
+        else:
+            return {"score": 0}
 
 
 def compare_outputs(
