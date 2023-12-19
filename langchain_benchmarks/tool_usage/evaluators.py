@@ -46,6 +46,14 @@ class QAMathEvaluator(StringEvaluator):
         """Return the name of the evaluator."""
         return "QAMathEvaluator"
 
+    @property
+    def requires_reference(self) -> bool:
+        return True
+
+    @property
+    def requires_input(self) -> bool:
+        return False
+
     def _evaluate_strings(
         self,
         prediction: str,
