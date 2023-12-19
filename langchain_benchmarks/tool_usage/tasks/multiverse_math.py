@@ -127,36 +127,6 @@ def get_environment() -> ToolUsageEnvironment:
     )
 
 
-MULTIVERSE_MATH_TINY = ToolUsageTask(
-    name="Multiverse Math (Tiny)",
-    dataset_id="https://smith.langchain.com/public/594f9f60-30a0-49bf-b075-f44beabf546a/d",
-    create_environment=get_environment,
-    instructions=(
-        "You are requested to solve math questions in an alternate "
-        "mathematical universe. The operations have been altered to yield "
-        "different results than expected. Do not guess the answer or rely on your "
-        " innate knowledge of math. Use the provided tools to answer the question. "
-        "While associativity and commutativity apply, distributivity does not. Answer "
-        "the question using the fewest possible tools. Only include the numeric "
-        "response without any clarifications."
-    ),
-    description=(
-        """\
-An environment that contains a few basic math operations, but with altered results.
-
-For example, multiplication of 5*3 will be re-interpreted as 5*3*1.1. \
-The basic operations retain some basic properties, such as commutativity, \
-associativity, and distributivity; however, the results are different than expected.
-
-The objective of this task is to evaluate the ability to use the provided tools to \
-solve simple math questions and ignore any innate knowledge about math.
-"""
-    ),
-    eval_params={
-        "output_evaluation": "qa_math_without_question",
-    },
-)
-
 # Source dataset used to create the public dataset in LangSmith
 DATASET_TINY = [
     {
@@ -275,6 +245,70 @@ DATASET = DATASET_TINY + [
     },
 ]
 
+MULTIVERSE_MATH_TINY = ToolUsageTask(
+    name="Multiverse Math (Tiny)",
+    dataset_id="https://smith.langchain.com/public/594f9f60-30a0-49bf-b075-f44beabf546a/d",
+    create_environment=get_environment,
+    instructions=(
+        "You are requested to solve math questions in an alternate "
+        "mathematical universe. The operations have been altered to yield "
+        "different results than expected. Do not guess the answer or rely on your "
+        " innate knowledge of math. Use the provided tools to answer the question. "
+        "While associativity and commutativity apply, distributivity does not. Answer "
+        "the question using the fewest possible tools. Only include the numeric "
+        "response without any clarifications."
+    ),
+    description=(
+        """\
+An environment that contains a few basic math operations, but with altered results.
+
+For example, multiplication of 5*3 will be re-interpreted as 5*3*1.1. \
+The basic operations retain some basic properties, such as commutativity, \
+associativity, and distributivity; however, the results are different than expected.
+
+The objective of this task is to evaluate the ability to use the provided tools to \
+solve simple math questions and ignore any innate knowledge about math.
+
+This is a tiny version of the Multiverse Math task, with 10 examples only.
+"""
+    ),
+    eval_params={
+        "output_evaluation": "qa_math_without_question",
+    },
+)
+
+MULTIVERSE_MATH = ToolUsageTask(
+    name="Multiverse Math",
+    dataset_id="https://smith.langchain.com/public/47ed57bc-e852-4f84-a23e-cce4793864e9/d",
+    create_environment=get_environment,
+    instructions=(
+        "You are requested to solve math questions in an alternate "
+        "mathematical universe. The operations have been altered to yield "
+        "different results than expected. Do not guess the answer or rely on your "
+        " innate knowledge of math. Use the provided tools to answer the question. "
+        "While associativity and commutativity apply, distributivity does not. Answer "
+        "the question using the fewest possible tools. Only include the numeric "
+        "response without any clarifications."
+    ),
+    description=(
+        """\
+An environment that contains a few basic math operations, but with altered results.
+
+For example, multiplication of 5*3 will be re-interpreted as 5*3*1.1. \
+The basic operations retain some basic properties, such as commutativity, \
+associativity, and distributivity; however, the results are different than expected.
+
+The objective of this task is to evaluate the ability to use the provided tools to \
+solve simple math questions and ignore any innate knowledge about math.
+
+This task is associated with 20 test examples.
+"""
+    ),
+    eval_params={
+        "output_evaluation": "qa_math_without_question",
+    },
+)
+
 
 def _create_dataset() -> None:
     """Create a dataset with the langsmith client."""
@@ -283,11 +317,11 @@ def _create_dataset() -> None:
     client = Client()
 
     dataset = client.create_dataset(
-        dataset_name=MULTIVERSE_MATH_TINY.name,
-        description=MULTIVERSE_MATH_TINY.description,
+        dataset_name=MULTIVERSE_MATH.name,
+        description=MULTIVERSE_MATH.description,
     )
 
-    for example in DATASET_TINY:
+    for example in DATASET:
         client.create_example(
             inputs={
                 "question": example["question"],
