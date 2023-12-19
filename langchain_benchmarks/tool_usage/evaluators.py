@@ -5,17 +5,13 @@ Requirements:
 * Agents must output "intermediate_steps" in their run outputs.
 * The dataset must have "expected_steps" in its outputs.
 """
-from typing import Literal, Optional, Union
-
 import re
-from typing import Any, Optional
+from typing import Any, Literal, Optional, Union
 
+from langchain.callbacks.manager import collect_runs
 from langchain.chains import LLMChain
 from langchain.chat_models import ChatOpenAI
-from langchain.evaluation import StringEvaluator
-from langchain.callbacks.manager import collect_runs
-from langchain.chat_models import ChatOpenAI
-from langchain.evaluation import EvaluatorType, load_evaluator
+from langchain.evaluation import EvaluatorType, StringEvaluator, load_evaluator
 from langchain.evaluation.schema import StringEvaluator
 from langchain.smith import RunEvalConfig
 from langchain_core.language_models import BaseChatModel, BaseLanguageModel
