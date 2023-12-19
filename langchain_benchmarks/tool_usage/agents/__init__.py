@@ -9,6 +9,9 @@ from langchain_benchmarks.tool_usage.agents.openai_assistant import (
     OpenAIAssistantFactory,
 )
 from langchain_benchmarks.tool_usage.agents.openai_functions import OpenAIAgentFactory
+from langchain_benchmarks.tool_usage.agents.runnable_agent import (
+    CustomRunnableAgentFactory,
+)
 
 __all__ = [
     "OpenAIAgentFactory",
@@ -16,4 +19,5 @@ __all__ = [
     "apply_agent_executor_adapter",
     "CustomAgentFactory",
     "AnthropicToolUserFactory",
+    "CustomRunnableAgentFactory",
 ]
