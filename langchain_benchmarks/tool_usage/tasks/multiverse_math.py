@@ -153,7 +153,7 @@ solve simple math questions and ignore any innate knowledge about math.
 """
     ),
     eval_params={
-        "output_evaluation": "qa_math",
+        "output_evaluation": "qa_math_without_question",
     },
 )
 

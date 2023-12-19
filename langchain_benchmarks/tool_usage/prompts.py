@@ -22,3 +22,26 @@ GRADE:"""
 QA_TEMPLATE_FOR_MULTIVERSE_MATH = PromptTemplate(
     input_variables=["result", "answer"], template=MATH_TEMPLATE
 )
+
+MATH_TEMPLATE_NO_QUESTION = """\
+Compare the INPUT_A and INPUT_B and determine whether the numeric result in them is the same.
+
+If the result is the same, reply with CORRECT. If the result is different, reply with INCORRECT.
+
+Example Format:
+INPUT_A: input_a here
+INPUT_B: input_b here
+COMPARISON: CORRECT or INCORRECT here
+
+Ignore differences in punctuation and phrasing between the student answer and true answer. 
+
+Begin!
+
+INPUT_A: {answer}
+INPUT_B: {result}
+COMPARISON:"""
+
+# Version without the query
+QA_TEMPLATE_FOR_MULTIVERSE_MATH_WITHOUT_QUESTION = PromptTemplate(
+    input_variables=["result", "answer"], template=MATH_TEMPLATE_NO_QUESTION
+)
