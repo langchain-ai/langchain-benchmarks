@@ -20,6 +20,7 @@ class OpenAIAssistantFactory:
         *,
         model: str,
         rate_limiter: Optional[rate_limiting.RateLimiter] = None,
+        num_retries: int = 0,
     ) -> None:
         """Create an OpenAI agent factory for the given task.
 
@@ -27,6 +28,7 @@ class OpenAIAssistantFactory:
             task: The task to create an agent factory for.
             model: The model to use -- this must be an open AI model.
             rate_limiter: The rate limiter to use
+            num_retries: The number of times to retry the assistant if it fails
         """
         if not isinstance(model, str):
             raise ValueError(f"Expected str for model, got {type(model)}")
@@ -41,6 +43,7 @@ class OpenAIAssistantFactory:
             as_agent=True,
         )
         self.rate_limiter = rate_limiter
+        self.num_retries = num_retries
 
     def __call__(self) -> Runnable:
         env = self.task.create_environment()
@@ -57,8 +60,13 @@ class OpenAIAssistantFactory:
                 **{k: v for k, v in x.items() if k != "input"},
             }
 
+        agent = _map_key | self.agent
+        if self.num_retries > 0:
+            agent = agent.with_retry(
+                stop_after_attempt=self.num_retries + 1,
+            )
         runnable = AgentExecutor(
-            agent=_map_key | self.agent,
+            agent=agent,
             tools=env.tools,
             handle_parsing_errors=True,
             return_intermediate_steps=True,
