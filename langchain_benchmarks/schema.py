@@ -143,15 +143,11 @@ class RetrievalTask(BaseTask):
     """A function that returns the documents to be indexed."""
     retriever_factories: Dict[
         str, Callable[[Embeddings], BaseRetriever]
-    ] = dataclasses.field(
-        default_factory=dict
-    )  # noqa: F821
+    ] = dataclasses.field(default_factory=dict)  # noqa: F821
     """Factories that index the docs using the specified strategy."""
     architecture_factories: Dict[
         str, Callable[[Embeddings], BaseRetriever]
-    ] = dataclasses.field(
-        default_factory=dict
-    )  # noqa: F821
+    ] = dataclasses.field(default_factory=dict)  # noqa: F821
     """Factories methods that help build some off-the-shelf architectures。"""
 
     @property
