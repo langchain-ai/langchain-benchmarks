@@ -17,6 +17,7 @@
 ./notebooks/tool_usage/multiverse_math
 ./notebooks/tool_usage/typewriter_1
 ./notebooks/tool_usage/typewriter_26
+./notebooks/tool_usage/benchmark_all_tasks
 ```
 
 ```{toctree}
