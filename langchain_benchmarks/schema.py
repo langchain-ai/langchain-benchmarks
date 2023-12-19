@@ -143,11 +143,15 @@ class RetrievalTask(BaseTask):
     """A function that returns the documents to be indexed."""
     retriever_factories: Dict[
         str, Callable[[Embeddings], BaseRetriever]
-    ] = dataclasses.field(default_factory=dict)  # noqa: F821
+    ] = dataclasses.field(
+        default_factory=dict
+    )  # noqa: F821
     """Factories that index the docs using the specified strategy."""
     architecture_factories: Dict[
         str, Callable[[Embeddings], BaseRetriever]
-    ] = dataclasses.field(default_factory=dict)  # noqa: F821
+    ] = dataclasses.field(
+        default_factory=dict
+    )  # noqa: F821
     """Factories methods that help build some off-the-shelf architectures。"""
 
     @property
@@ -253,7 +257,7 @@ class Registry:
 
 Provider = Literal["fireworks", "openai", "anthropic", "anyscale"]
 ModelType = Literal["chat", "llm"]
-AUTHORIZED_NAMESPACES = {"langchain"}
+AUTHORIZED_NAMESPACES = {"langchain", "langchain_google_genai"}
 
 
 def _get_model_class_from_path(
@@ -289,6 +293,10 @@ def _get_default_path(provider: str, type_: ModelType) -> str:
         ("openai", "chat"): "langchain.chat_models.openai.ChatOpenAI",
         ("openai", "llm"): "langchain.llms.openai.OpenAI",
         ("anthropic", "chat"): "langchain.chat_models.anthropic.ChatAnthropic",
+        (
+            "google-genai",
+            "chat",
+        ): "langchain_google_genai.chat_models.ChatGoogleGenerativeAI",
     }
 
     if (provider, type_) not in paths:
@@ -307,6 +315,8 @@ def _get_default_url(provider: str, type_: ModelType) -> Optional[str]:
         return "https://docs.anthropic.com/claude/reference/selecting-a-model"
     elif provider == "anyscale":
         return "https://docs.endpoints.anyscale.com/category/supported-models"
+    elif provider == "google-genai":
+        return "https://ai.google.dev/"
     else:
         return None
 
