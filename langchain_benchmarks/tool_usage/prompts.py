@@ -23,7 +23,7 @@ QA_TEMPLATE_FOR_MULTIVERSE_MATH = PromptTemplate(
     input_variables=["result", "answer"], template=MATH_TEMPLATE
 )
 
-MATH_TEMPLATE = """\
+MATH_TEMPLATE_NO_QUESTION = """\
 Compare the INPUT_A and INPUT_B and determine whether the numeric result in them is the same.
 
 If the result is the same, reply with CORRECT. If the result is different, reply with INCORRECT.
@@ -42,6 +42,6 @@ INPUT_B: {result}
 COMPARISON:"""
 
 # Version without the query
-QA_TEMPLATE_FOR_MULTIVERSE_MATH_WITHOUT_QUEESTION = PromptTemplate(
-    input_variables=["result", "answer"], template=MATH_TEMPLATE
+QA_TEMPLATE_FOR_MULTIVERSE_MATH_WITHOUT_QUESTION = PromptTemplate(
+    input_variables=["result", "answer"], template=MATH_TEMPLATE_NO_QUESTION
 )

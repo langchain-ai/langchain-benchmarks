@@ -7,6 +7,12 @@ Requirements:
 """
 from typing import Literal, Optional, Union
 
+import re
+from typing import Any, Optional
+
+from langchain.chains import LLMChain
+from langchain.chat_models import ChatOpenAI
+from langchain.evaluation import StringEvaluator
 from langchain.callbacks.manager import collect_runs
 from langchain.chat_models import ChatOpenAI
 from langchain.evaluation import EvaluatorType, load_evaluator
@@ -22,10 +28,37 @@ from langsmith.schemas import Example, Run
 
 from langchain_benchmarks.tool_usage.prompts import (
     QA_TEMPLATE_FOR_MULTIVERSE_MATH,
-    QA_TEMPLATE_FOR_MULTIVERSE_MATH_WITHOUT_QUEESTION,
+    QA_TEMPLATE_FOR_MULTIVERSE_MATH_WITHOUT_QUESTION,
 )
 
 OutputEvaluation = Literal["qa", "qa_math", "none", "qa_math_without_question"]
+
+
+class QAMathEvaluator(StringEvaluator):
+    """An LLM-based relevance evaluator."""
+
+    def __init__(self, chat_model: BaseChatModel) -> None:
+        """Initialize the evaluator."""
+        self.eval_chain = QA_TEMPLATE_FOR_MULTIVERSE_MATH_WITHOUT_QUESTION | chat_model
+
+    @property
+    def evaluation_name(self) -> str:
+        """Return the name of the evaluator."""
+        return "QAMathEvaluator"
+
+    def _evaluate_strings(
+        self,
+        prediction: str,
+        input: Optional[str] = None,
+        reference: Optional[str] = None,
+        **kwargs: Any,
+    ) -> dict:
+        """Evaluate the prediction against the reference."""
+        return {
+            "score": self.eval_chain.invoke(
+                {"answer": reference, "result": prediction}, **kwargs
+            )
+        }
 
 
 def compare_outputs(
@@ -143,11 +176,7 @@ class AgentTrajectoryEvaluator(RunEvaluator):
                     prompt=QA_TEMPLATE_FOR_MULTIVERSE_MATH,
                 )
             elif output_evaluation == "qa_math_without_question":
-                qa_evaluator = load_evaluator(
-                    EvaluatorType.QA,
-                    llm=eval_llm,
-                    prompt=QA_TEMPLATE_FOR_MULTIVERSE_MATH_WITHOUT_QUEESTION,
-                )
+                qa_evaluator = QAMathEvaluator(eval_llm)
             else:
                 raise ValueError(
                     f"output_evaluation must be one of 'qa' or 'none', "
@@ -155,6 +184,7 @@ class AgentTrajectoryEvaluator(RunEvaluator):
                 )
 
         self.qa_evaluator = qa_evaluator
+        self.output_evaluation = output_evaluation
 
     def evaluate_run(
         self, run: Run, example: Optional[Example] = None
