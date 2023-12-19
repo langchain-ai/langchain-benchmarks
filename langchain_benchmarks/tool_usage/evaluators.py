@@ -20,7 +20,12 @@ from langsmith.evaluation.evaluator import (
 )
 from langsmith.schemas import Example, Run
 
-from langchain_benchmarks.tool_usage.prompts import QA_TEMPLATE_FOR_MULTIVERSE_MATH
+from langchain_benchmarks.tool_usage.prompts import (
+    QA_TEMPLATE_FOR_MULTIVERSE_MATH,
+    QA_TEMPLATE_FOR_MULTIVERSE_MATH_WITHOUT_QUEESTION,
+)
+
+OutputEvaluation = Literal["qa", "qa_math", "none", "qa_math_without_question"]
 
 
 def compare_outputs(
@@ -137,6 +142,12 @@ class AgentTrajectoryEvaluator(RunEvaluator):
                     llm=eval_llm,
                     prompt=QA_TEMPLATE_FOR_MULTIVERSE_MATH,
                 )
+            elif output_evaluation == "qa_math_without_question":
+                qa_evaluator = load_evaluator(
+                    EvaluatorType.QA,
+                    llm=eval_llm,
+                    prompt=QA_TEMPLATE_FOR_MULTIVERSE_MATH_WITHOUT_QUEESTION,
+                )
             else:
                 raise ValueError(
                     f"output_evaluation must be one of 'qa' or 'none', "
@@ -181,7 +192,7 @@ class AgentTrajectoryEvaluator(RunEvaluator):
 def get_eval_config(
     *,
     eval_llm: Union[BaseLanguageModel, BaseChatModel, None] = None,
-    output_evaluation: Literal["qa", "qa_math", "none"] = "qa",
+    output_evaluation: OutputEvaluation = "qa",
 ) -> RunEvalConfig:
     """Get the default evaluator for the environment.
 
