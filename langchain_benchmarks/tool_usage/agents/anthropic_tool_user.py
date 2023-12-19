@@ -220,8 +220,10 @@ class AnthropicToolUserFactory:
     ) -> None:
         """Create an OpenAI agent factory for the given task.
 
+
         Args:
             task: The task to create an agent factory for.
+            rate_limiter: The rate limiter to use
         """
         self.task = task
         self.rate_limiter = rate_limiter

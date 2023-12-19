@@ -27,6 +27,7 @@ class CustomAgentFactory:
         model: str,
         *,
         rate_limiter: Optional[RateLimiter] = None,
+        num_retries: int = 0,
     ) -> None:
         """Create an agent factory for the given tool usage task.
 
@@ -34,12 +35,14 @@ class CustomAgentFactory:
             task: The task to create an agent factory for
             model: model name (check model_registry)
             rate_limiter: The rate limiter to use if provided
+            num_retries: The number of times to retry the agent if it fails
         """
         if model not in model_registry:
             raise ValueError(f"Unknown model: {model}")
         self.task = task
         self.model = model
         self.rate_limiter = rate_limiter
+        self.num_retries = num_retries
 
     def __call__(self) -> Runnable:
         if isinstance(self.model, str):
@@ -74,6 +77,10 @@ class CustomAgentFactory:
             GenericAgentParser(wrapping_xml_tag="tool", require_closing_xml_tag=False),
             rate_limiter=self.rate_limiter,
         )
+        if self.num_retries > 0:
+            agent = agent.with_retry(
+                stop_after_attempt=self.num_retries + 1,
+            )
         executor = AgentExecutor(
             agent=agent,
             tools=env.tools,
