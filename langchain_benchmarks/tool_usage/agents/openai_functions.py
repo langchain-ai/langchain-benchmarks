@@ -80,6 +80,7 @@ class OpenAIAgentFactory:
             str, RegisteredModel, BaseLanguageModel, BaseChatModel
         ] = "gpt-3.5-turbo-16k",
         rate_limiter: Optional[rate_limiting.RateLimiter] = None,
+        num_retries: int = 0,
     ) -> None:
         """Create an OpenAI agent factory for the given task.
 
@@ -91,6 +92,7 @@ class OpenAIAgentFactory:
         self.task = task
         self.model = model
         self.rate_limiter = rate_limiter
+        self.num_retries = num_retries
 
     def _create_model(self) -> Union[BaseChatModel, BaseLanguageModel]:
         if isinstance(self.model, RegisteredModel):
@@ -148,7 +150,10 @@ class OpenAIAgentFactory:
             | model
             | OpenAIToolsAgentOutputParser()
         )
-
+        if self.num_retries > 0:
+            runnable_agent = runnable_agent.with_retry(
+                stop_after_attempt=self.num_retries + 1,
+            )
         runnable = AgentExecutor(
             agent=runnable_agent,
             tools=env.tools,
