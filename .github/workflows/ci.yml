@@ -114,7 +114,7 @@ jobs:
         shell: bash
         run: |
           echo "Attempting to build docs..."
-          make build_docs
+          make docs_build
   test_datasets:
     timeout-minutes: 5
     runs-on: ubuntu-latest
