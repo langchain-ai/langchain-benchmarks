@@ -34,7 +34,7 @@ jobs:
       - name: Sphinx build
         shell: bash
         run: |
-          make build_docs
+          make docs_build
       - name: Publish Docs
         uses: peaceiris/actions-gh-pages@v3
         with:
