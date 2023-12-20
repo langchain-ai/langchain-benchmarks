@@ -262,7 +262,17 @@ _GOOGLE_GENAI_MODELS = [
             "model": "gemini-pro",
             "convert_system_message_to_human": True,
         },
-    )
+    ),
+    RegisteredModel(
+        provider="google-genai",
+        name="gemini-ultra",
+        description="Gemini Ultra is a large model from Google trained on a diverse set of tasks.",
+        type="chat",
+        params={
+            "model": "gemini-ultra",
+            "convert_system_message_to_human": True,
+        },
+    ),
 ]
 
 _ANYSCALE_MODELS = [
