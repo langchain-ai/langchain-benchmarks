@@ -47,10 +47,10 @@ The other directories are legacy and may be moved in the future.
 
 Below are archived benchmarks that require cloning this repo to run.
 
-- [CSV Question Answering](https://github.com/langchain-ai/langchain-benchmarks/tree/main/csv-qa)
-- [Extraction](https://github.com/langchain-ai/langchain-benchmarks/tree/main/extraction)
-- [Q&A over the LangChain docs](https://github.com/langchain-ai/langchain-benchmarks/tree/main/langchain-docs-benchmarking)
-- [Meta-evaluation of 'correctness' evaluators](https://github.com/langchain-ai/langchain-benchmarks/tree/main/meta-evals)
+- [CSV Question Answering](https://github.com/langchain-ai/langchain-benchmarks/tree/main/archived/csv-qa)
+- [Extraction](https://github.com/langchain-ai/langchain-benchmarks/tree/main/archived/extraction)
+- [Q&A over the LangChain docs](https://github.com/langchain-ai/langchain-benchmarks/tree/main/archived/langchain-docs-benchmarking)
+- [Meta-evaluation of 'correctness' evaluators](https://github.com/langchain-ai/langchain-benchmarks/tree/main/archived/meta-evals)
 
 
 ## Related
