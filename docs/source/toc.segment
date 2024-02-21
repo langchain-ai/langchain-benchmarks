@@ -1,0 +1,51 @@
+```{toctree}
+:maxdepth: 2
+:caption: Introduction
+
+./notebooks/getting_started
+./notebooks/models
+./notebooks/datasets
+```
+
+
+```{toctree}
+:maxdepth: 0
+:caption: Tool Usage
+
+./notebooks/tool_usage/intro
+./notebooks/tool_usage/relational_data
+./notebooks/tool_usage/multiverse_math
+./notebooks/tool_usage/typewriter_1
+./notebooks/tool_usage/typewriter_26
+./notebooks/tool_usage/benchmark_all_tasks
+```
+
+```{toctree}
+:maxdepth: 0
+:caption: Extraction
+
+./notebooks/extraction/intro
+./notebooks/extraction/email
+./notebooks/extraction/chat_extraction
+```
+
+```{toctree}
+:maxdepth: 2
+:caption: RAG
+
+./notebooks/retrieval/intro
+./notebooks/retrieval/langchain_docs_qa
+./notebooks/retrieval/semi_structured_benchmarking/semi_structured
+./notebooks/retrieval/semi_structured_benchmarking/ss_eval_chunk_sizes
+./notebooks/retrieval/semi_structured_benchmarking/ss_eval_long_context
+./notebooks/retrieval/semi_structured_benchmarking/ss_eval_multi_vector
+./notebooks/retrieval/multi_modal_benchmarking/multi_modal_eval_baseline
+./notebooks/retrieval/multi_modal_benchmarking/multi_modal_eval
+./notebooks/retrieval/comparing_techniques
+```
+
+```{toctree}
+:maxdepth: 2
+:caption: Benchmarking Without LangSmith 
+./notebooks/run_without_langsmith
+```

@@ -1,0 +1,44 @@
+name: Publish Docs
+on: [workflow_dispatch]
+permissions:
+    contents: write
+
+env:
+  POETRY_VERSION: "1.6.1"
+
+jobs:
+  docs:
+    strategy:
+      matrix:
+        python-version:
+          - "3.11"
+    runs-on: ubuntu-latest
+    name: Documentation Publish
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Set up Python ${{ matrix.python-version }} + Poetry ${{ env.POETRY_VERSION }}
+        uses: "./.github/actions/poetry_setup"
+        with:
+          python-version: ${{ matrix.python-version }}
+          poetry-version: ${{ env.POETRY_VERSION }}
+          working-directory: .
+          cache-key: benchmarks-all
+
+      - name: Install dependencies
+        shell: bash
+        run: |
+          echo "Running tests, installing dependencies with poetry..."
+          poetry install --with test,lint,typing,docs
+
+      - name: Sphinx build
+        shell: bash
+        run: |
+          make docs_build
+      - name: Publish Docs
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          publish_branch: gh-pages
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./docs/build
+          force_orphan: true
