@@ -130,11 +130,14 @@ class ExtractionTask(BaseTask):
 
     # We might want to make this optional / or support more types
     # and add validation, but let's wait until we have more examples
-    instructions: ChatPromptTemplate
+    instructions: Optional[ChatPromptTemplate] = None
     """Get the prompt for the task.
     
     This is the default prompt to use for the task.
     """
+    dataset_url: Optional[str] = None
+    dataset_name: Optional[str] = None
+    eval_config: Optional[RunEvalConfig] = None
 
 
 @dataclasses.dataclass(frozen=True)
