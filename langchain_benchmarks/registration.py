@@ -1,6 +1,10 @@
 """Registry of environments for ease of access."""
 
-from langchain_benchmarks.extraction.tasks import chat_extraction, email_task
+from langchain_benchmarks.extraction.tasks import (
+    chat_extraction,
+    email_task,
+    high_cardinality,
+)
 from langchain_benchmarks.rag.tasks import (
     LANGCHAIN_DOCS_TASK,
     MULTI_MODAL_SLIDE_DECKS_TASK,
@@ -27,5 +31,6 @@ registry = Registry(
         LANGCHAIN_DOCS_TASK,
         SEMI_STRUCTURED_REPORTS_TASK,
         MULTI_MODAL_SLIDE_DECKS_TASK,
+        high_cardinality.NAME_CORRECTION_TASK,
     ]
 )

@@ -39,7 +39,7 @@ jobs:
 
       - name: Install dependencies
         shell: bash
-        run: poetry install
+        run: poetry install --with test
 
       - name: Install the opposite major version of pydantic
         # If normal tests use pydantic v1, here we'll use v2, and vice versa.
