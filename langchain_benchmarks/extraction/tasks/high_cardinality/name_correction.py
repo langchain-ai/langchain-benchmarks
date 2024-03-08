@@ -17,12 +17,6 @@ def correct_name(run: Run, example: Example) -> EvaluationResult:
     return EvaluationResult(key="correct", score=score)
 
 
-def get_eval_config() -> RunEvalConfig:
-    return RunEvalConfig(
-        custom_evaluators=[correct_name],
-    )
-
-
 class Person(BaseModel):
     """Information about a person."""
 
