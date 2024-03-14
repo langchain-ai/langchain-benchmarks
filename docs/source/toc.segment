@@ -27,6 +27,7 @@
 ./notebooks/extraction/intro
 ./notebooks/extraction/email
 ./notebooks/extraction/chat_extraction
+./notebooks/extraction/high_cardinality
 ```
 
 ```{toctree}
