@@ -214,8 +214,29 @@ _FIREWORKS_MODELS = [
 _ANTHROPIC_MODELS = [
     RegisteredModel(
         provider="anthropic",
+        name="claude-3-haiku-20240307",
+        description="Fastest and most compact model for near-instant responsiveness",
+        type="chat",
+        params={"model": "claude-3-haiku-20240307"},
+    ),
+    RegisteredModel(
+        provider="anthropic",
+        name="claude-3-sonnet-20240229",
+        description="Ideal balance of intelligence and speed for enterprise workloads",
+        type="chat",
+        params={"model": "claude-3-sonnet-20240229"},
+    ),
+    RegisteredModel(
+        provider="anthropic",
+        name="claude-3-opus-20240229",
+        description="Most powerful model for highly complex tasks",
+        type="chat",
+        params={"model": "claude-3-opus-20240229"},
+    ),
+    RegisteredModel(
+        provider="anthropic",
         name="claude-2",
-        description=("Superior performance on tasks that require complex reasoning"),
+        description="Superior performance on tasks that require complex reasoning",
         type="chat",
         params={
             "model": "claude-2",
