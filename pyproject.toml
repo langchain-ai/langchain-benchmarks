@@ -8,7 +8,7 @@ readme = "README.md"
 
 [tool.poetry.dependencies]
 python = "^3.8.1"
-langchain = ">=0.0.300"
+langchain = ">=0.1.0"
 langsmith = ">=0.0.70"
 tqdm = "^4"
 ipywidgets = "^8"
