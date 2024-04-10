@@ -58,7 +58,7 @@ class StandardAgentFactory:
         else:
             finalized_prompt = self.prompt
 
-        agent = create_tools_agent(self.model, env.tools, finalized_prompt)
+        agent = create_tool_calling_agent(self.model, env.tools, finalized_prompt)
 
         executor = AgentExecutor(
             agent=agent,
