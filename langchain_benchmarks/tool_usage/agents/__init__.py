@@ -12,6 +12,7 @@ from langchain_benchmarks.tool_usage.agents.openai_functions import OpenAIAgentF
 from langchain_benchmarks.tool_usage.agents.runnable_agent import (
     CustomRunnableAgentFactory,
 )
+from langchain_benchmarks.tool_usage.agents.tool_using_agent import StandardAgentFactory
 
 __all__ = [
     "OpenAIAgentFactory",
@@ -20,4 +21,5 @@ __all__ = [
     "CustomAgentFactory",
     "AnthropicToolUserFactory",
     "CustomRunnableAgentFactory",
+    "StandardAgentFactory",
 ]
