@@ -2,7 +2,7 @@
 
 This is useful for agents that follow the standard LangChain tool format.
 """
-from langchain.agents import AgentExecutor, create_tools_agent
+from langchain.agents import AgentExecutor, create_tool_calling_agent
 from langchain_core.language_models import BaseChatModel
 from langchain_core.prompts import ChatPromptTemplate
 from langchain_core.runnables import Runnable
@@ -56,7 +56,7 @@ class StandardAgentFactory:
         else:
             finalized_prompt = self.prompt
 
-        agent = create_tools_agent(self.model, env.tools, finalized_prompt)
+        agent = create_tool_calling_agent(self.model, env.tools, finalized_prompt)
 
         executor = AgentExecutor(
             agent=agent,
