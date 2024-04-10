@@ -24,7 +24,7 @@ langchain = {git = "https://github.com/langchain-ai/langchain.git", subdirectory
 langchain-anthropic = {git = "https://github.com/langchain-ai/langchain.git", subdirectory = "libs/partners/anthropic"}
 langchain-fireworks = {git = "https://github.com/langchain-ai/langchain.git", subdirectory = "libs/partners/fireworks"}
 langchain-mistralai = {git = "https://github.com/langchain-ai/langchain.git", subdirectory = "libs/partners/mistralai"}
-langchain-cohere = {git = "https://github.com/langchain-ai/langchain-cohere.git"}
+langchain-cohere = {git = "https://github.com/langchain-ai/langchain-cohere.git", subdirectory="libs/cohere"}
 langchain-groq = {git = "https://github.com/langchain-ai/langchain.git", subdirectory = "libs/partners/groq"}
 langchain-openai = {git = "https://github.com/langchain-ai/langchain.git", subdirectory = "libs/partners/openai"}
 
@@ -39,7 +39,7 @@ langchain = {git = "https://github.com/langchain-ai/langchain.git", subdirectory
 langchain-anthropic = {git = "https://github.com/langchain-ai/langchain.git", subdirectory = "libs/partners/anthropic"}
 langchain-fireworks = {git = "https://github.com/langchain-ai/langchain.git", subdirectory = "libs/partners/fireworks"}
 langchain-mistralai = {git = "https://github.com/langchain-ai/langchain.git", subdirectory = "libs/partners/mistralai"}
-langchain-cohere = {git = "https://github.com/langchain-ai/langchain-cohere.git"}
+langchain-cohere = {git = "https://github.com/langchain-ai/langchain-cohere.git", subdirectory="libs/cohere"}
 langchain-groq = {git = "https://github.com/langchain-ai/langchain.git", subdirectory = "libs/partners/groq"}
 langchain-openai = {git = "https://github.com/langchain-ai/langchain.git", subdirectory = "libs/partners/openai"}
 
@@ -78,7 +78,7 @@ langchain = {git = "https://github.com/langchain-ai/langchain.git", subdirectory
 langchain-anthropic = {git = "https://github.com/langchain-ai/langchain.git", subdirectory = "libs/partners/anthropic"}
 langchain-fireworks = {git = "https://github.com/langchain-ai/langchain.git", subdirectory = "libs/partners/fireworks"}
 langchain-mistralai = {git = "https://github.com/langchain-ai/langchain.git", subdirectory = "libs/partners/mistralai"}
-langchain-cohere = {git = "https://github.com/langchain-ai/langchain-cohere.git"}
+langchain-cohere = {git = "https://github.com/langchain-ai/langchain-cohere.git", subdirectory="libs/cohere"}
 langchain-groq = {git = "https://github.com/langchain-ai/langchain.git", subdirectory = "libs/partners/groq"}
 langchain-openai = {git = "https://github.com/langchain-ai/langchain.git", subdirectory = "libs/partners/openai"}
 
