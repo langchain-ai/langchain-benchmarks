@@ -2,7 +2,7 @@
 
 This is useful for agents that follow the standard LangChain tool format.
 """
-from langchain.agents import AgentExecutor, create_tools_agent
+from langchain.agents import AgentExecutor
 from langchain_core.language_models import BaseChatModel
 from langchain_core.prompts import ChatPromptTemplate
 from langchain_core.runnables import Runnable
@@ -15,8 +15,7 @@ class StandardAgentFactory:
     """A standard agent factory.
 
     Use this factory with chat models that support the standard LangChain tool
-    calling API where the chat model populates the tool_calls attribute on
-    AIMessage.
+    calling API where the chat model populates the tool_calls attribute on AIMessage.
     """
 
     def __init__(
@@ -49,6 +48,9 @@ class StandardAgentFactory:
 
     def __call__(self) -> Runnable:
         """Call the factory to create Runnable agent."""
+        # Temporarily import here until new langchain is released with create_tools_agent
+        from langchain.agents import create_tools_agent
+
         env = self.task.create_environment()
 
         if "instructions" in self.prompt.input_variables:
