@@ -49,7 +49,7 @@ class StandardAgentFactory:
     def __call__(self) -> Runnable:
         """Call the factory to create Runnable agent."""
         # Temporarily import here until new langchain is released with create_tools_agent
-        from langchain.agents import create_tools_agent
+        from langchain.agents import create_tool_calling_agent
 
         env = self.task.create_environment()
 
