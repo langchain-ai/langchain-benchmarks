@@ -43,7 +43,6 @@ def apply_agent_executor_adapter(
 
     def _format_input(inputs: dict) -> dict:
         """Make sure that the input is always called `input`."""
-
         if "question" not in inputs:
             raise ValueError(
                 "Expected 'question' to be in the inputs. Found only the following "
