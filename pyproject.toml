@@ -8,7 +8,7 @@ readme = "README.md"
 
 [tool.poetry.dependencies]
 python = "^3.8.1"
-langchain = "^0.1.0"
+langchain = "^0.1.15"
 langsmith = ">=0.0.70"
 tqdm = "^4"
 ipywidgets = "^8"
@@ -22,6 +22,7 @@ jupyter = "^1.0.0"
 langchain-core = {git = "https://github.com/langchain-ai/langchain.git", subdirectory = "libs/core"}
 langchain = {git = "https://github.com/langchain-ai/langchain.git", subdirectory = "libs/langchain"}
 langchain-anthropic = {git = "https://github.com/langchain-ai/langchain.git", subdirectory = "libs/partners/anthropic"}
+langchain-google-vertexai= {git = "https://github.com/langchain-ai/langchain-google.git", subdirectory = "libs/vertexai/"}
 langchain-fireworks = {git = "https://github.com/langchain-ai/langchain.git", subdirectory = "libs/partners/fireworks"}
 langchain-mistralai = {git = "https://github.com/langchain-ai/langchain.git", subdirectory = "libs/partners/mistralai"}
 langchain-cohere = {git = "https://github.com/langchain-ai/langchain-cohere.git", subdirectory="libs/cohere"}
