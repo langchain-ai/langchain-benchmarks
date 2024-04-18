@@ -245,6 +245,9 @@ DATASET = DATASET_TINY + [
     },
 ]
 
+# Provided here for backwards compatibility, but we do not register
+# it as a task in the task registry.
+# TINY is just the multiverse math task with 10 examples instead of full dataset.
 MULTIVERSE_MATH_TINY = ToolUsageTask(
     name="Multiverse Math (Tiny)",
     dataset_id="https://smith.langchain.com/public/594f9f60-30a0-49bf-b075-f44beabf546a/d",
