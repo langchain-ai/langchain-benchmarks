@@ -40,10 +40,10 @@ See [tool usage docs](https://langchain-ai.github.io/langchain-benchmarks/notebo
 
 Explore Agent Traces on LangSmith:
 
-Relational Data: https://smith.langchain.com/public/22721064-dcf6-4e42-be65-e7c46e6835e7/d
-Tool Usage (1-tool): https://smith.langchain.com/public/ac23cb40-e392-471f-b129-a893a77b6f62/d
-Tool Usage (26-tools): https://smith.langchain.com/public/366bddca-62b3-4b6e-849b-a478abab73db/d
-Mutiverse Math: https://smith.langchain.com/public/983faff2-54b9-4875-9bf2-c16913e7d489/d
+* Relational Data: https://smith.langchain.com/public/22721064-dcf6-4e42-be65-e7c46e6835e7/d
+* Tool Usage (1-tool): https://smith.langchain.com/public/ac23cb40-e392-471f-b129-a893a77b6f62/d
+* Tool Usage (26-tools): https://smith.langchain.com/public/366bddca-62b3-4b6e-849b-a478abab73db/d
+* Mutiverse Math: https://smith.langchain.com/public/983faff2-54b9-4875-9bf2-c16913e7d489/d
 
 ## Installation
 
