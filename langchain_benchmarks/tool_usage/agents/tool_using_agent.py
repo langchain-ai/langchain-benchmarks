@@ -12,9 +12,10 @@ from langchain_core.runnables import Runnable
 from langchain_benchmarks.rate_limiting import RateLimiter, with_rate_limit
 from langchain_benchmarks.schema import ToolUsageTask
 from langchain_benchmarks.tool_usage.agents.adapters import apply_agent_executor_adapter
+from langchain_benchmarks.tool_usage.agents.base import AgentFactory
 
 
-class StandardAgentFactory:
+class StandardAgentFactory(AgentFactory):
     """A standard agent factory.
 
     Use this factory with chat models that support the standard LangChain tool
