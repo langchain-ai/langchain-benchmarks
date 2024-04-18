@@ -5,6 +5,7 @@ This is useful for agents that follow the standard LangChain tool format.
 from typing import Optional
 
 from langchain.agents import AgentExecutor
+from langchain.agents import create_tool_calling_agent
 from langchain_core.language_models import BaseChatModel
 from langchain_core.prompts import ChatPromptTemplate
 from langchain_core.runnables import Runnable
@@ -55,8 +56,6 @@ class StandardAgentFactory:
 
     def __call__(self) -> Runnable:
         """Call the factory to create Runnable agent."""
-        # Temporarily import here until new langchain is released with create_tools_agent
-        from langchain.agents import create_tool_calling_agent
 
         env = self.task.create_environment()
 

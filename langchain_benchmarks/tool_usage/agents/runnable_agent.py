@@ -46,4 +46,6 @@ class CustomRunnableAgentFactory:
             return_intermediate_steps=True,
         )
 
-        return apply_agent_executor_adapter(executor, state_reader=env.read_state)
+        return apply_agent_executor_adapter(
+            executor, state_reader=env.read_state
+        ).with_config({"run_name": "Agent", "metadata": {"task": self.task.name}})
