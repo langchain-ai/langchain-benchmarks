@@ -4,7 +4,7 @@ This is useful for agents that follow the standard LangChain tool format.
 """
 from typing import Optional
 
-from langchain.agents import AgentExecutor
+from langchain.agents import AgentExecutor, create_tool_calling_agent
 from langchain_core.language_models import BaseChatModel
 from langchain_core.prompts import ChatPromptTemplate
 from langchain_core.runnables import Runnable
@@ -12,9 +12,10 @@ from langchain_core.runnables import Runnable
 from langchain_benchmarks.rate_limiting import RateLimiter, with_rate_limit
 from langchain_benchmarks.schema import ToolUsageTask
 from langchain_benchmarks.tool_usage.agents.adapters import apply_agent_executor_adapter
+from langchain_benchmarks.tool_usage.agents.base import AgentFactory
 
 
-class StandardAgentFactory:
+class StandardAgentFactory(AgentFactory):
     """A standard agent factory.
 
     Use this factory with chat models that support the standard LangChain tool
@@ -55,8 +56,6 @@ class StandardAgentFactory:
 
     def __call__(self) -> Runnable:
         """Call the factory to create Runnable agent."""
-        # Temporarily import here until new langchain is released with create_tools_agent
-        from langchain.agents import create_tool_calling_agent
 
         env = self.task.create_environment()
 

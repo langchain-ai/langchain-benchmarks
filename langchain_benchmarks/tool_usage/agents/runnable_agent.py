@@ -10,9 +10,10 @@ from langchain_core.runnables import Runnable
 
 from langchain_benchmarks.schema import ToolUsageTask
 from langchain_benchmarks.tool_usage.agents.adapters import apply_agent_executor_adapter
+from langchain_benchmarks.tool_usage.agents.base import AgentFactory
 
 
-class CustomRunnableAgentFactory:
+class CustomRunnableAgentFactory(AgentFactory):
     """A factory for creating tool using agents.
 
     A factory for agents that do not leverage any special JSON mode for
@@ -46,4 +47,6 @@ class CustomRunnableAgentFactory:
             return_intermediate_steps=True,
         )
 
-        return apply_agent_executor_adapter(executor, state_reader=env.read_state)
+        return apply_agent_executor_adapter(
+            executor, state_reader=env.read_state
+        ).with_config({"run_name": "Agent", "metadata": {"task": self.task.name}})
