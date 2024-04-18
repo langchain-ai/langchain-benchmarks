@@ -29,6 +29,7 @@ Read some of the articles about benchmarking results on our blog.
 * Agent Tool Use: https://blog.langchain.dev/benchmarking-agent-tool-use/
 * Query Analysis in High Cardinality Situations: https://blog.langchain.dev/high-cardinality/
 * Rag on Tables: https://blog.langchain.dev/benchmarking-rag-on-tables/
+* Q&A over CSV data: https://blog.langchain.dev/benchmarking-question-answering-over-csv-data/
 
 ## Installation
 
