@@ -41,27 +41,8 @@ def apply_agent_executor_adapter(
         else:
             return None
 
-    def _format_input(inputs: dict) -> dict:
-        """Make sure that the input is always called `input`."""
-
-        if "question" not in inputs:
-            raise ValueError(
-                "Expected 'question' to be in the inputs. Found only the following "
-                f"keys {sorted(inputs.keys())}."
-            )
-
-        inputs = inputs.copy()  # Because 'question' is popped below
-
-        if "input" not in inputs:
-            return {"input": inputs.pop("question"), **inputs}
-        return inputs
-
-    runnable = (
-        RunnableLambda(_format_input).with_config({"run_name": "Format Input"})
-        | agent_executor
-        | RunnableLambda(_ensure_output_exists).with_config(
-            {"run_name": "Ensure Output"}
-        )
+    runnable = agent_executor | RunnableLambda(_ensure_output_exists).with_config(
+        {"run_name": "Ensure Output"}
     )
 
     if state_reader is not None:
