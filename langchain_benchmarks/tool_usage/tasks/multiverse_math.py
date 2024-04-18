@@ -128,7 +128,7 @@ def get_environment() -> ToolUsageEnvironment:
 
 
 # Source dataset used to create the public dataset in LangSmith
-DATASET = [
+DATASET_TINY = [
     {
         "question": "Add 2 and 3",
         "answer": add(2, 3),
@@ -188,6 +188,9 @@ DATASET = [
         "answer": divide(multiply(15, pi()), 180),
         "expected_steps": ["pi", "multiply", "divide"],
     },
+]
+
+DATASET = DATASET_TINY + [
     {
         "question": "evaluate negate(-131,778)",
         "answer": negate(-131_778),
@@ -241,6 +244,41 @@ DATASET = [
         "expected_steps": ["divide"],
     },
 ]
+
+# Provided here for backwards compatibility, but we do not register
+# it as a task in the task registry.
+# TINY is just the multiverse math task with 10 examples instead of full dataset.
+MULTIVERSE_MATH_TINY = ToolUsageTask(
+    name="Multiverse Math (Tiny)",
+    dataset_id="https://smith.langchain.com/public/594f9f60-30a0-49bf-b075-f44beabf546a/d",
+    create_environment=get_environment,
+    instructions=(
+        "You are requested to solve math questions in an alternate "
+        "mathematical universe. The operations have been altered to yield "
+        "different results than expected. Do not guess the answer or rely on your "
+        " innate knowledge of math. Use the provided tools to answer the question. "
+        "While associativity and commutativity apply, distributivity does not. Answer "
+        "the question using the fewest possible tools. Only include the numeric "
+        "response without any clarifications."
+    ),
+    description=(
+        """\
+An environment that contains a few basic math operations, but with altered results.
+
+For example, multiplication of 5*3 will be re-interpreted as 5*3*1.1. \
+The basic operations retain some basic properties, such as commutativity, \
+associativity, and distributivity; however, the results are different than expected.
+
+The objective of this task is to evaluate the ability to use the provided tools to \
+solve simple math questions and ignore any innate knowledge about math.
+
+This is a tiny version of the Multiverse Math task, with 10 examples only.
+"""
+    ),
+    eval_params={
+        "output_evaluation": "qa_math_without_question",
+    },
+)
 
 MULTIVERSE_MATH = ToolUsageTask(
     name="Multiverse Math",
