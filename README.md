@@ -32,9 +32,9 @@ Read some of the articles about benchmarking results on our blog.
 * Q&A over CSV data: https://blog.langchain.dev/benchmarking-question-answering-over-csv-data/
 
 
-## Results
+### Tool Usage (2024-04-18)
 
-Tool Usage as of 2024-04-18. See documentation to re-generate.
+See [tool usage docs](https://langchain-ai.github.io/langchain-benchmarks/notebooks/tool_usage/benchmark_all_tasks.html) to recreate!
 
 ![download](https://github.com/langchain-ai/langchain-benchmarks/assets/3205522/0da33de8-e03f-49cf-bd48-e9ff945828a9)
 
