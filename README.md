@@ -26,10 +26,10 @@ We have several goals in open sourcing this:
 
 Read some of the articles about benchmarking results on our blog.
 
-* Agent Tool Use: https://blog.langchain.dev/benchmarking-agent-tool-use/
-* Query Analysis in High Cardinality Situations: https://blog.langchain.dev/high-cardinality/
-* Rag on Tables: https://blog.langchain.dev/benchmarking-rag-on-tables/
-* Q&A over CSV data: https://blog.langchain.dev/benchmarking-question-answering-over-csv-data/
+* [Agent Tool Use](https://blog.langchain.dev/benchmarking-agent-tool-use/)
+* [Query Analysis in High Cardinality Situations](https://blog.langchain.dev/high-cardinality/)
+* [RAG on Tables](https://blog.langchain.dev/benchmarking-rag-on-tables/)
+* [Q&A over CSV data](https://blog.langchain.dev/benchmarking-question-answering-over-csv-data/)
 
 
 ### Tool Usage (2024-04-18)
@@ -40,10 +40,10 @@ See [tool usage docs](https://langchain-ai.github.io/langchain-benchmarks/notebo
 
 Explore Agent Traces on LangSmith:
 
-* Relational Data: https://smith.langchain.com/public/22721064-dcf6-4e42-be65-e7c46e6835e7/d
-* Tool Usage (1-tool): https://smith.langchain.com/public/ac23cb40-e392-471f-b129-a893a77b6f62/d
-* Tool Usage (26-tools): https://smith.langchain.com/public/366bddca-62b3-4b6e-849b-a478abab73db/d
-* Mutiverse Math: https://smith.langchain.com/public/983faff2-54b9-4875-9bf2-c16913e7d489/d
+* [Relational Data](https://smith.langchain.com/public/22721064-dcf6-4e42-be65-e7c46e6835e7/d)
+* [Tool Usage (1-tool)](https://smith.langchain.com/public/ac23cb40-e392-471f-b129-a893a77b6f62/d)
+* [Tool Usage (26-tools)](https://smith.langchain.com/public/366bddca-62b3-4b6e-849b-a478abab73db/d)
+* [Mutiverse Math](https://smith.langchain.com/public/983faff2-54b9-4875-9bf2-c16913e7d489/d)
 
 ## Installation
 
