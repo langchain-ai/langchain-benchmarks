@@ -10,6 +10,8 @@ lint format: PYTHON_FILES=.
 lint_diff format_diff: PYTHON_FILES=$(shell git diff --relative=. --name-only --diff-filter=d master | grep -E '\.py$$|\.ipynb$$')
 
 lint lint_diff:
+	# [ "$(PYTHON_FILES)" = "" ] ||	poetry run ruff check $(PYTHON_FILES)
+	[ "$(PYTHON_FILES)" = "" ] ||	poetry run ruff check --select I $(PYTHON_FILES)
 	[ "$(PYTHON_FILES)" = "" ] ||	poetry run ruff format $(PYTHON_FILES) --diff
 	# [ "$(PYTHON_FILES)" = "" ] || poetry run mypy $(PYTHON_FILES)
 
