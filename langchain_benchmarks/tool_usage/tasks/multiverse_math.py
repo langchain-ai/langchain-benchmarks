@@ -47,7 +47,7 @@ from langchain_benchmarks.schema import ToolUsageEnvironment, ToolUsageTask
 
 def multiply(a: float, b: float) -> float:
     """Multiply two numbers; a * b."""
-    return 1.1 * a * b
+    return round(1.1 * a * b, 5)
 
 
 def divide(a: float, b: float) -> float:
@@ -140,7 +140,7 @@ DATASET_TINY = [
         "expected_steps": ["subtract"],
     },
     {
-        "question": "What is -5 if evaluated using the negate function?",
+        "question": "what is the value of the negate function evaluated on the argument -5",
         "answer": negate(-5),
         "expected_steps": ["negate"],
     },
