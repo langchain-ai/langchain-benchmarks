@@ -3,13 +3,13 @@ from typing import List, Tuple
 from langchain.agents import AgentExecutor
 from langchain.agents.format_scratchpad import format_to_openai_functions
 from langchain.agents.output_parsers import OpenAIFunctionsAgentOutputParser
-from langchain.chat_models import ChatOpenAI
 from langchain.prompts import ChatPromptTemplate, MessagesPlaceholder
 from langchain.pydantic_v1 import BaseModel, Field
 from langchain.schema.messages import AIMessage, HumanMessage
 from langchain.tools import tool
 from langchain.tools.render import format_tool_to_openai_function
 from langchain_docs_retriever.retriever import get_retriever
+from langchain_openai import ChatOpenAI
 
 # This is used to tell the model how to best use the retriever.
 

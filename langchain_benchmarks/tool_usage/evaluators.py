@@ -10,11 +10,11 @@ from typing import Any, Literal, Optional, Union
 
 from langchain.callbacks.manager import collect_runs
 from langchain.chains import LLMChain
-from langchain.chat_models import ChatOpenAI
 from langchain.evaluation import EvaluatorType, StringEvaluator, load_evaluator
 from langchain.evaluation.schema import StringEvaluator
 from langchain.smith import RunEvalConfig
 from langchain_core.language_models import BaseChatModel, BaseLanguageModel
+from langchain_openai import ChatOpenAI
 from langsmith.evaluation.evaluator import (
     EvaluationResult,
     EvaluationResults,
