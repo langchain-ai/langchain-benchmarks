@@ -1,18 +1,13 @@
 import datetime
 import uuid
-from typing import List, cast
-
-from langchain.tools import BaseTool, tool
 from langchain_anthropic import ChatAnthropic
-from langchain_chroma import Chroma
-from langchain_core.documents import Document
 from langchain_core.messages import HumanMessage, SystemMessage
 from langchain_core.messages.utils import convert_to_messages
 from langchain_core.prompts import ChatPromptTemplate, MessagesPlaceholder
-from langchain_core.tools import tool
 from langchain_fireworks import ChatFireworks
 from langchain_openai import ChatOpenAI, OpenAIEmbeddings
 from langsmith.client import Client
+from langchain_community.vectorstores import FAISS
 
 from langchain_benchmarks import (
     __version__,
@@ -21,25 +16,8 @@ from langchain_benchmarks import (
 from langchain_benchmarks.rate_limiting import RateLimiter
 from langchain_benchmarks.tool_usage.agents import StandardAgentFactory
 from langchain_benchmarks.tool_usage.tasks.multiverse_math import *
-
-tools = cast(
-    List[BaseTool],
-    [
-        tool(func)
-        for func in [
-            multiply,
-            add,
-            divide,
-            subtract,
-            power,
-            log,
-            negate,
-            sin,
-            cos,
-            pi,
-        ]
-    ],
-)
+from langchain_core.prompts.few_shot import FewShotChatMessagePromptTemplate
+from langchain_core.example_selectors import SemanticSimilarityExampleSelector
 
 tests = [
     (
@@ -61,22 +39,8 @@ tests = [
     ),
 ]
 
-
-def semantic_similar_few_shots(question, retriever, examples):
-    ans = []
-    for doc in retriever.get_relevant_documents(question)[:3]:
-        ans += [
-            m
-            for m in convert_to_messages(
-                examples[doc.metadata["index"]].outputs["output"]
-            )
-            if isinstance(m, SystemMessage) == False
-        ]
-    return ans
-
-
 client = Client()  # Launch langsmith client for cloning datasets
-llm = ChatOpenAI(model="gpt-4-turbo-2024-04-09", temperature=0).bind_tools(tools)
+
 experiment_uuid = uuid.uuid4().hex[:4]
 today = datetime.date.today().isoformat()
 for task in registry.tasks:
@@ -90,18 +54,19 @@ for task in registry.tasks:
 
     dataset_name = task.name
 
-    examples = [
+    uncleaned_examples = [
         e
         for e in client.list_examples(
             dataset_name="multiverse-math-examples-for-few-shot"
         )
     ]
     few_shot_messages = []
-    questions = []
-    for i in range(len(examples)):
-        converted_messages = convert_to_messages(examples[i].outputs["output"])
-        questions.append(
-            Document(page_content=converted_messages[1].content, metadata={"index": i})
+    examples = []
+    for i in range(len(uncleaned_examples)):
+        converted_messages = convert_to_messages(uncleaned_examples[i].outputs["output"])
+        examples.append(
+            # The message at index 1 is the human message (0th message is system prompt)
+            {"question":converted_messages[1].content, "messages":[m for m in converted_messages if isinstance(m, SystemMessage) == False]}
         )
         few_shot_messages += converted_messages
 
@@ -127,11 +92,22 @@ for task in registry.tasks:
 
         few_shot_message += "\n"
 
-    vectorstore = Chroma.from_documents(
-        documents=questions, embedding=OpenAIEmbeddings()
+
+    example_selector = SemanticSimilarityExampleSelector.from_examples(
+        examples,
+        OpenAIEmbeddings(),
+        FAISS,
+        k=3,
+        input_keys=["question"],
+        example_keys=["messages"]
     )
 
-    retriever = vectorstore.as_retriever()
+    few_shot_prompt = FewShotChatMessagePromptTemplate(
+        input_variables=[],
+        example_selector=example_selector,
+        example_prompt=MessagesPlaceholder("messages"),
+    )
+
 
     prompts = [
         (
@@ -174,24 +150,19 @@ for task in registry.tasks:
             ),
             "few-shot-string",
         ),
-        (
+        (   
             ChatPromptTemplate.from_messages(
                 [
-                    (
-                        "system",
-                        "{instructions} Here are some example conversations of the user interacting with the AI until the correct answer is reached: ",
-                    ),
-                ]
-                + semantic_similar_few_shots("{question}", retriever, examples)
-                + [
+                    ("system", "{instructions} Here are some example conversations of the user interacting with the AI until the correct answer is reached: "),
+                    few_shot_prompt,
                     ("human", "{question}"),
-                    MessagesPlaceholder("agent_scratchpad"),  # Workspace for the agent
+                    MessagesPlaceholder("agent_scratchpad"),
                 ]
             ),
             "few-shot-semantic",
-        ),
-    ]
-
+        )
+    ] 
+    
     for model_name, model in tests[:-1]:
         rate_limiter = RateLimiter(requests_per_second=1)
 
