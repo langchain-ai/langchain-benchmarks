@@ -1,8 +1,8 @@
 import pandas as pd
-from langchain.chat_models import ChatOpenAI
 from langchain.prompts import ChatPromptTemplate
 from langchain.schema.output_parser import StrOutputParser
 from langchain.smith import RunEvalConfig, run_on_dataset
+from langchain_openai import ChatOpenAI
 from langsmith import Client
 from pandasai import PandasAI
 

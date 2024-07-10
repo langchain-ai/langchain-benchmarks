@@ -300,8 +300,8 @@ def _get_default_path(provider: str, type_: ModelType) -> str:
     """Get the default path for a model."""
     paths = {
         ("anthropic", "chat"): "langchain_anthropic.ChatAnthropic",
-        ("anyscale", "chat"): "langchain.chat_models.anyscale.ChatAnyscale",
-        ("anyscale", "llm"): "langchain.llms.anyscale.Anyscale",
+        ("anyscale", "chat"): "langchain_community.chat_models.anyscale.ChatAnyscale",
+        ("anyscale", "llm"): "langchain_community.llms.anyscale.Anyscale",
         ("fireworks", "chat"): "langchain_fireworks.ChatFireworks",
         ("fireworks", "llm"): "langchain_fireworks.Fireworks",
         ("openai", "chat"): "langchain_openai.ChatOpenAI",

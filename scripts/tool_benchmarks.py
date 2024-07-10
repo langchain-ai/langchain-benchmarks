@@ -9,10 +9,7 @@ from langchain_openai import ChatOpenAI, OpenAIEmbeddings
 from langsmith.client import Client
 from langchain_community.vectorstores import FAISS
 
-from langchain_benchmarks import (
-    __version__,
-    registry,
-)
+from langchain_benchmarks import __version__
 from langchain_benchmarks.rate_limiting import RateLimiter
 from langchain_benchmarks.tool_usage.agents import StandardAgentFactory
 from langchain_benchmarks.tool_usage.tasks.multiverse_math import *
@@ -70,27 +67,25 @@ for task in registry.tasks:
         )
         few_shot_messages += converted_messages
 
-    few_shot_messages = [
-        m for m in few_shot_messages if isinstance(m, SystemMessage) == False
-    ]
+few_shot_messages = [m for m in few_shot_messages if not isinstance(m, SystemMessage)]
 
-    few_shot_message = ""
-    for m in few_shot_messages:
-        if isinstance(m.content, list):
-            few_shot_message += "AI message: "
-            for tool_use in m.content:
-                if "name" in tool_use:
-                    few_shot_message += f"Use tool {tool_use['name']}, input: {', '.join(f'{k}:{v}' for k,v in tool_use['input'].items())}"
-                else:
-                    few_shot_message += tool_use["text"]
-                few_shot_message += "\n"
-        else:
-            if isinstance(m, HumanMessage):
-                few_shot_message += f"Human message: {m.content}"
+few_shot_str = ""
+for m in few_shot_messages:
+    if isinstance(m.content, list):
+        few_shot_str += "AI message: "
+        for tool_use in m.content:
+            if "name" in tool_use:
+                few_shot_str += f"Use tool {tool_use['name']}, input: {', '.join(f'{k}:{v}' for k,v in tool_use['input'].items())}"
             else:
-                few_shot_message += f"AI message: {m.content}"
+                few_shot_str += tool_use["text"]
+            few_shot_str += "\n"
+    else:
+        if isinstance(m, HumanMessage):
+            few_shot_str += f"Human message: {m.content}"
+        else:
+            few_shot_str += f"AI message: {m.content}"
 
-        few_shot_message += "\n"
+    few_shot_str += "\n"
 
 
     example_selector = SemanticSimilarityExampleSelector.from_examples(
@@ -166,13 +161,13 @@ for task in registry.tasks:
     for model_name, model in tests[:-1]:
         rate_limiter = RateLimiter(requests_per_second=1)
 
-        print(f"Benchmarking {task.name} with model: {model_name}")
-        eval_config = task.get_eval_config()
+    print(f"Benchmarking {task.name} with model: {model_name}")
+    eval_config = task.get_eval_config()
 
-        for prompt, prompt_name in prompts:
-            agent_factory = StandardAgentFactory(
-                task, model, prompt, rate_limiter=rate_limiter
-            )
+    for prompt, prompt_name in prompts:
+        agent_factory = StandardAgentFactory(
+            task, llm, prompt, rate_limiter=rate_limiter
+        )
 
             client.run_on_dataset(
                 dataset_name=dataset_name,

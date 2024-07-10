@@ -2,10 +2,10 @@
 from typing import Any, Dict, List, Optional, Type
 
 from langchain.chains.openai_functions import convert_to_openai_function
-from langchain.chat_models import ChatOpenAI
 from langchain.output_parsers.openai_functions import JsonOutputFunctionsParser
 from langchain.prompts import ChatPromptTemplate
 from langchain.schema.runnable import Runnable
+from langchain_openai import ChatOpenAI
 from langsmith.client import Client
 from pydantic import BaseModel
 

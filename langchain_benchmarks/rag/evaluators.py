@@ -1,8 +1,8 @@
 from typing import Optional
 
-from langchain.chat_models import ChatOpenAI
 from langchain.evaluation import load_evaluator
 from langchain.smith import RunEvalConfig
+from langchain_openai import ChatOpenAI
 
 try:
     from langchain.schema.language_model import BaseLanguageModel
