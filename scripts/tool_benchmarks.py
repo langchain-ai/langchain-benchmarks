@@ -1,20 +1,21 @@
 import datetime
 import uuid
+
 from langchain_anthropic import ChatAnthropic
+from langchain_community.vectorstores import FAISS
+from langchain_core.example_selectors import SemanticSimilarityExampleSelector
 from langchain_core.messages import HumanMessage, SystemMessage
 from langchain_core.messages.utils import convert_to_messages
 from langchain_core.prompts import ChatPromptTemplate, MessagesPlaceholder
+from langchain_core.prompts.few_shot import FewShotChatMessagePromptTemplate
 from langchain_fireworks import ChatFireworks
 from langchain_openai import ChatOpenAI, OpenAIEmbeddings
 from langsmith.client import Client
-from langchain_community.vectorstores import FAISS
 
 from langchain_benchmarks import __version__
 from langchain_benchmarks.rate_limiting import RateLimiter
 from langchain_benchmarks.tool_usage.agents import StandardAgentFactory
 from langchain_benchmarks.tool_usage.tasks.multiverse_math import *
-from langchain_core.prompts.few_shot import FewShotChatMessagePromptTemplate
-from langchain_core.example_selectors import SemanticSimilarityExampleSelector
 
 tests = [
     (
@@ -60,10 +61,19 @@ for task in registry.tasks:
     few_shot_messages = []
     examples = []
     for i in range(len(uncleaned_examples)):
-        converted_messages = convert_to_messages(uncleaned_examples[i].outputs["output"])
+        converted_messages = convert_to_messages(
+            uncleaned_examples[i].outputs["output"]
+        )
         examples.append(
             # The message at index 1 is the human message (0th message is system prompt)
-            {"question":converted_messages[1].content, "messages":[m for m in converted_messages if isinstance(m, SystemMessage) == False]}
+            {
+                "question": converted_messages[1].content,
+                "messages": [
+                    m
+                    for m in converted_messages
+                    if isinstance(m, SystemMessage) == False
+                ],
+            }
         )
         few_shot_messages += converted_messages
 
@@ -87,14 +97,13 @@ for m in few_shot_messages:
 
     few_shot_str += "\n"
 
-
     example_selector = SemanticSimilarityExampleSelector.from_examples(
         examples,
         OpenAIEmbeddings(),
         FAISS,
         k=3,
         input_keys=["question"],
-        example_keys=["messages"]
+        example_keys=["messages"],
     )
 
     few_shot_prompt = FewShotChatMessagePromptTemplate(
@@ -102,7 +111,6 @@ for m in few_shot_messages:
         example_selector=example_selector,
         example_prompt=MessagesPlaceholder("messages"),
     )
-
 
     prompts = [
         (
@@ -145,19 +153,22 @@ for m in few_shot_messages:
             ),
             "few-shot-string",
         ),
-        (   
+        (
             ChatPromptTemplate.from_messages(
                 [
-                    ("system", "{instructions} Here are some example conversations of the user interacting with the AI until the correct answer is reached: "),
+                    (
+                        "system",
+                        "{instructions} Here are some example conversations of the user interacting with the AI until the correct answer is reached: ",
+                    ),
                     few_shot_prompt,
                     ("human", "{question}"),
                     MessagesPlaceholder("agent_scratchpad"),
                 ]
             ),
             "few-shot-semantic",
-        )
-    ] 
-    
+        ),
+    ]
+
     for model_name, model in tests[:-1]:
         rate_limiter = RateLimiter(requests_per_second=1)
 
