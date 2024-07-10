@@ -161,13 +161,13 @@ for m in few_shot_messages:
     for model_name, model in tests[:-1]:
         rate_limiter = RateLimiter(requests_per_second=1)
 
-    print(f"Benchmarking {task.name} with model: {model_name}")
-    eval_config = task.get_eval_config()
+        print(f"Benchmarking {task.name} with model: {model_name}")
+        eval_config = task.get_eval_config()
 
-    for prompt, prompt_name in prompts:
-        agent_factory = StandardAgentFactory(
-            task, llm, prompt, rate_limiter=rate_limiter
-        )
+        for prompt, prompt_name in prompts:
+            agent_factory = StandardAgentFactory(
+                task, model, prompt, rate_limiter=rate_limiter
+            )
 
             client.run_on_dataset(
                 dataset_name=dataset_name,
