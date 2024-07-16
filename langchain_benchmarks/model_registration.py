@@ -162,9 +162,27 @@ _OPEN_AI_MODELS = [
             "model": "gpt-4-32k-0314",
         },
     ),
+    RegisteredModel(
+        provider="openai",
+        name="gpt-4o",
+        description="GPT-4o base model",
+        type="chat",
+        params={
+            "model": "gpt-4o",
+        },
+    ),
 ]
 
 _FIREWORKS_MODELS = [
+    RegisteredModel(
+        provider="fireworks",
+        name="firefunction-v2",
+        type="chat",
+        description="Fireworks function calling model",
+        params={
+            "model": "accounts/fireworks/models/firefunction-v2",
+        }, 
+    ),
     RegisteredModel(
         provider="fireworks",
         name="llama-v2-7b-chat-fw",
@@ -207,7 +225,9 @@ _FIREWORKS_MODELS = [
         description="Mistral MoE 8x7B Instruct v0.1 model with Sparse "
         "Mixture of Experts. Fine tuned for instruction following",
         type="llm",
-        params={"model": "accounts/fireworks/models/mixtral-8x7b-instruct"},
+        params={
+            "model": "accounts/fireworks/models/mixtral-8x7b-instruct"
+        },
     ),
 ]
 
