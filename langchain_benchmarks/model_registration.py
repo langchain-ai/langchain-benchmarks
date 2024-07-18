@@ -5,7 +5,7 @@ from langchain_benchmarks.schema import ModelRegistry, RegisteredModel
 _OPEN_AI_MODELS = [
     RegisteredModel(
         provider="openai",
-        name="gpt-3.5-turbo-1106",
+        name="gpt-3.5-turbo-0125",
         type="chat",
         description=(
             "The latest GPT-3.5 Turbo model with improved instruction following, "
@@ -13,7 +13,7 @@ _OPEN_AI_MODELS = [
             "Returns a maximum of 4,096 output tokens."
         ),
         params={
-            "model": "gpt-3.5-turbo-1106",
+            "model": "gpt-3.5-turbo-0125",
         },
     ),
     RegisteredModel(
@@ -234,6 +234,13 @@ _FIREWORKS_MODELS = [
 _ANTHROPIC_MODELS = [
     RegisteredModel(
         provider="anthropic",
+        name="claude-3-5-sonnet-20240620",
+        description="Highest performing Claude model as of July 2024",
+        type="chat",
+        params={"model": "claude-3-5-sonnet-20240620"},
+    ),
+    RegisteredModel(
+        provider="anthropic",
         name="claude-3-haiku-20240307",
         description="Fastest and most compact model for near-instant responsiveness",
         type="chat",
@@ -317,6 +324,7 @@ _ANYSCALE_MODELS = [
         },
     ),
 ]
+
 
 model_registry = ModelRegistry(
     registered_models=_OPEN_AI_MODELS

@@ -69,143 +69,169 @@ def get_environment() -> ToolUsageEnvironment:
 
 DOC_DATASET = [
     {
-        "question": [HumanMessage("How do I use the langgraph Send method?")],
+        "question": [HumanMessage("Can I use the send method to map-reduce the values of different branch points?")],
         "tool_calls": [
             {
                 "name": "DocQuery",
-                "args": {"query": "Send method", "source": "langgraph"},
+                "args": {"query": "send method map-reduce", "source": "langgraph"},
             }
         ],
     },
     {
-        "question": [HumanMessage("How do you chain a prompt with a model?")],
+        "question": [HumanMessage("where is olllama function calling mentioned?")],
         "tool_calls": [
             {
                 "name": "DocQuery",
-                "args": {"query": "chaining prompt and model", "source": "langchain"},
-            }
-        ],
-    },
-    {
-        "question": [
-            HumanMessage("How do you run a pairwise experiment in langsmith?")
-        ],
-        "tool_calls": [
+                "args": {"query": "ollama function calling", "source": "langchain"},
+            },
             {
-                "name": "DocQuery",
-                "args": {"query": "pairwise experiment", "source": "langsmith"},
-            }
-        ],
-    },
-    {
-        "question": [HumanMessage("What is a tool node?")],
-        "tool_calls": [
-            {"name": "DocQuery", "args": {"query": "tool node", "source": "langgraph"}}
-        ],
-    },
-    {
-        "question": [
-            HumanMessage("How do I get the log probabilities of my chat model?")
-        ],
-        "tool_calls": [
+                "name": "TweetQuery",
+                "args": {
+                    "subject": "ollama function calling",
+                    "min_likes": None,
+                    "max_likes": None,
+                    "start_date": None,
+                    "end_date": None,
+                    "has_link": False,
+                },
+            },
             {
-                "name": "DocQuery",
-                "args": {"query": "log probabilities", "source": "langchain"},
-            }
-        ],
-    },
-    {
-        "question": [HumanMessage("How can I build my own custom evaluator?")],
-        "tool_calls": [
-            {
-                "name": "DocQuery",
-                "args": {"query": "custom evaluator", "source": "langsmith"},
-            }
-        ],
-    },
-    {
-        "question": [HumanMessage("How do I use a tool in a routing function?")],
-        "tool_calls": [
-            {
-                "name": "DocQuery",
-                "args": {"query": "tool in routing function", "source": "langgraph"},
+                "name": "BlogQuery",
+                "args": {
+                    "subject": "ollama function calling",
+                    "authors": None,
+                    "start_date": None,
+                    "end_date": None,
+                },
             }
         ],
     },
     {
         "question": [
-            HumanMessage("How do use Pinecone as a vectorstore for few shot prompting?")
+            HumanMessage("Are pairwise evals supported for different models?")
+        ],
+        "tool_calls": [
+            {
+                "name": "DocQuery",
+                "args": {"query": "pairwise evals different models", "source": "langsmith"},
+            }
+        ],
+    },
+    {
+        "question": [HumanMessage("Can a user update state during a run?")],
+        "tool_calls": [
+            {"name": "DocQuery", "args": {"query": "user update state", "source": "langgraph"}}
+        ],
+    },
+    {
+        "question": [
+            HumanMessage("Can I change config after each AI response?")
+        ],
+        "tool_calls": [
+            {
+                "name": "DocQuery",
+                "args": {"query": "update model config", "source": "langchain"},
+            }
+        ],
+    },
+    {
+        "question": [HumanMessage("How can I build my own run rules? Can I set up a schedule for them?")],
+        "tool_calls": [
+            {
+                "name": "DocQuery",
+                "args": {"query": "custom run rules", "source": "langsmith"},
+            },
+            {
+                "name": "DocQuery",
+                "args": {"query": "run rules schedule", "source": "langsmith"},
+            }
+        ],
+    },
+    {
+        "question": [HumanMessage("Is there a page on routing functions?")],
+        "tool_calls": [
+            {
+                "name": "DocQuery",
+                "args": {"query": "routing functions", "source": "langgraph"},
+            }
+        ],
+    },
+    {
+        "question": [
+            HumanMessage("Is there information on using Pinecone as a vectorstore?")
         ],
         "tool_calls": [
             {
                 "name": "DocQuery",
                 "args": {
-                    "query": "Pinecone for few shot prompting",
+                    "query": "Pinecone vectorstore",
                     "source": "langchain",
                 },
-            }
-        ],
-    },
-    {
-        "question": [
-            HumanMessage(
-                "How do I prevent personal data from being logged in my traces?"
-            )
-        ],
-        "tool_calls": [
-            {
-                "name": "DocQuery",
-                "args": {"query": "personal data logging", "source": "langsmith"},
-            }
-        ],
-    },
-    {
-        "question": [
-            HumanMessage(
-                "How do you use a nested graph? Can you stream messages from inside them?"
-            )
-        ],
-        "tool_calls": [
-            {
-                "name": "DocQuery",
-                "args": {"query": "nested graph", "source": "langgraph"},
             },
             {
-                "name": "DocQuery",
+                "name": "BlogQuery",
                 "args": {
-                    "query": "stream messages nested graph",
-                    "source": "langgraph",
+                    "subject": "Pinecone vectorstore",
+                    "authors": None,
+                    "start_date": None,
+                    "end_date": None,
                 },
+            }
+        ],
+    },
+    {
+        "question": [
+            HumanMessage(
+                "is it possible to prevent exposing personal data?"
+            )
+        ],
+        "tool_calls": [
+            {
+                "name": "DocQuery",
+                "args": {"query": "personal data privacy", "source": "langsmith"},
+            }
+        ],
+    },
+    {
+        "question": [
+            HumanMessage(
+                "How do you use conditional entry?"
+            )
+        ],
+        "tool_calls": [
+            {
+                "name": "DocQuery",
+                "args": {"query": "conditional entry", "source": "langgraph"},
             },
         ],
     },
     {
         "question": [
             HumanMessage(
-                "How do I extract text from PDF data for my retrieval chain? Can I combine image and text in a prompt?"
+                "How do I extract text from PDF data using PyPDF? Can I combine image and text in a prompt?"
             )
         ],
         "tool_calls": [
             {
                 "name": "DocQuery",
-                "args": {"query": "PDF extraction for chain", "source": "langchain"},
+                "args": {"query": "PDF extraction using PyPDF", "source": "langchain"},
             },
             {
                 "name": "DocQuery",
-                "args": {"query": "multimodal prompt", "source": "langchain"},
+                "args": {"query": "combine image and text in a prompt", "source": "langchain"},
             },
         ],
     },
     {
         "question": [
             HumanMessage(
-                "How do I setup automation rules for my traces? How do I view logs for those rules?"
+                "How do I setup automation rules for my chat model app? How do I view logs for those rules?"
             )
         ],
         "tool_calls": [
             {
                 "name": "DocQuery",
-                "args": {"query": "automation rules for traces", "source": "langsmith"},
+                "args": {"query": "automation rules for chat model app", "source": "langsmith"},
             },
             {
                 "name": "DocQuery",
@@ -213,13 +239,52 @@ DOC_DATASET = [
             },
         ],
     },
+    {
+        "question": [
+            HumanMessage(
+                "where can I read about how use Chroma embeddings locally?"
+            )
+        ],
+        "tool_calls": [
+            {
+                "name": "DocQuery",
+                "args": {"query": "local Chroma embeddings", "source": "langchain"},
+            },
+            {
+                "name": "BlogQuery",
+                "args": {
+                    "subject": "local Chroma embeddings",
+                    "authors": None,
+                    "start_date": None,
+                    "end_date": None,
+                },
+            }
+        ],
+    },
+    {
+        "question": [
+            HumanMessage(
+                "how to index documents in a RAG app?"
+            )
+        ],
+        "tool_calls": [
+            {
+                "name": "DocQuery",
+                "args": {"query": "index documents RAG app", "source": "langchain"},
+            },
+            {
+                "name": "DocQuery",
+                "args": {"query": "index documents RAG app", "source": "langgraph"},
+            },
+        ],
+    }
 ]
 
 TWEET_DATASET = [
     {
         "question": [
             HumanMessage(
-                "Did we have any tweets about agents with more than 1000 likes that also included a link?"
+                "Did we have any announcements about agents with more than 1000 likes that also included a link?"
             )
         ],
         "tool_calls": [
@@ -239,7 +304,7 @@ TWEET_DATASET = [
     {
         "question": [
             HumanMessage(
-                "Are there any tweets about evaluators by langchain with less than 100 likes?"
+                "Are there any posts about evaluators by langchain with less than 100 likes?"
             )
         ],
         "tool_calls": [
@@ -259,7 +324,7 @@ TWEET_DATASET = [
     {
         "question": [
             HumanMessage(
-                "Are there any tweets that link to the anthropic website in the last year?"
+                "Is there anywhere on socials where we link to the anthropic website in the last year?"
             )
         ],
         "tool_calls": [
@@ -273,11 +338,20 @@ TWEET_DATASET = [
                     "end_date": None,
                     "has_link": True,
                 },
+            },
+            {
+                "name": "BlogQuery",
+                "args": {
+                    "subject": "anthropic",
+                    "authors": None,
+                    "start_date": datetime(2023, 1, 1),
+                    "end_date": None,
+                },
             }
         ],
     },
     {
-        "question": [HumanMessage("In Q2 2023 did we tweet anything about LangSmith?")],
+        "question": [HumanMessage("In Q2 2023 what updates to LangSmith were made?")],
         "tool_calls": [
             {
                 "name": "TweetQuery",
@@ -285,9 +359,18 @@ TWEET_DATASET = [
                     "subject": "LangSmith",
                     "min_likes": None,
                     "max_likes": None,
-                    "start_date": datetime(2023, 3, 1),
-                    "end_date": datetime(2023, 6, 1),
+                    "start_date": datetime(2023, 4, 1),
+                    "end_date": datetime(2023, 6, 30),
                     "has_link": False,
+                },
+            },
+            {
+                "name": "BlogQuery",
+                "args": {
+                    "subject": "LangSmith",
+                    "authors": None,
+                    "start_date": datetime(2023, 4, 1),
+                    "end_date": datetime(2023, 6, 30),
                 },
             }
         ],
@@ -315,7 +398,7 @@ TWEET_DATASET = [
     {
         "question": [
             HumanMessage(
-                "Are there any posts aout LangServe before June 2023 that have more than 2000 likes and include a link?"
+                "Are there any posts about LangServe before June 2023 that have more than 2000 likes and include a link?"
             )
         ],
         "tool_calls": [
@@ -337,7 +420,7 @@ TWEET_DATASET = [
 BLOG_DATASET = [
     {
         "question": [
-            HumanMessage("what are some blog posts in the past year about agents?")
+            HumanMessage("Have there been release notes in the past year about agents?")
         ],
         "tool_calls": [
             {
@@ -354,35 +437,28 @@ BLOG_DATASET = [
     {
         "question": [
             HumanMessage(
-                "how many blogs mentioned chat-gpt in the month after October 2023?"
+                "how many press releases mentioned chat-gpt in the month after October 2023?"
             )
         ],
         "tool_calls": [
             {
                 "name": "BlogQuery",
                 "args": {
-                    "subject": "chat gpt",
+                    "subject": "chat-gpt",
                     "authors": None,
                     "start_date": datetime(2023, 11, 1),
                     "end_date": datetime(2023, 11, 30),
                 },
-            }
-        ],
-    },
-    {
-        "question": [
-            HumanMessage(
-                "what has Bagatur written about universal configurable models?"
-            )
-        ],
-        "tool_calls": [
+            },
             {
-                "name": "BlogQuery",
+                "name": "TweetQuery",
                 "args": {
-                    "subject": "universal configurable model",
-                    "authors": "Bagatur",
-                    "start_date": None,
-                    "end_date": None,
+                    "subject": "chat-gpt",
+                    "min_likes": None,
+                    "max_likes": None,
+                    "start_date": datetime(2023, 11, 1),
+                    "end_date": datetime(2023, 11, 30),
+                    "has_link": False,
                 },
             }
         ],
@@ -390,7 +466,36 @@ BLOG_DATASET = [
     {
         "question": [
             HumanMessage(
-                "Have Harrison or Bagatur written anything about passing in runnables as tools in the last week?"
+                "what has been said about universal configurable models?"
+            )
+        ],
+        "tool_calls": [
+            {
+                "name": "BlogQuery",
+                "args": {
+                    "subject": "universal configurable models",
+                    "authors": None,
+                    "start_date": None,
+                    "end_date": None,
+                },
+            },
+            {
+                "name": "TweetQuery",
+                "args": {
+                    "subject": "universal configurable models",
+                    "min_likes": None,
+                    "max_likes": None,
+                    "start_date": None,
+                    "end_date": None,
+                    "has_link": False,
+                },
+            }
+        ],
+    },
+    {
+        "question": [
+            HumanMessage(
+                "In the last week, Have Harrison or Bagatur written anything about passing in runnables as tools in LangChain?"
             )
         ],
         "tool_calls": [
@@ -399,7 +504,7 @@ BLOG_DATASET = [
                 "args": {
                     "subject": "runnables as tools",
                     "authors": ["Harrison", "Bagatur"],
-                    "start_date": datetime(2023, 12, 24),
+                    "start_date": datetime(2023, 12, 25),
                     "end_date": None,
                 },
             }
@@ -408,24 +513,145 @@ BLOG_DATASET = [
     {
         "question": [
             HumanMessage(
-                "Did Harrison write anything about LangGraph in the time frame up to the end of Q1 2023?"
+                "Are there any case studies of agents running on swe-benchmark?"
             )
         ],
         "tool_calls": [
             {
                 "name": "BlogQuery",
                 "args": {
-                    "subject": "LangGraph",
-                    "authors": "Harrison",
+                    "subject": "agents running on swe-benchmark",
+                    "authors": None,
                     "start_date": None,
-                    "end_date": datetime(2023, 3, 1),
+                    "end_date": None,
                 },
             }
         ],
     },
+    {
+        "question": [
+            HumanMessage(
+                "Why is using fewshot prompting helpful?"
+            )
+        ],
+        "tool_calls": [
+            {
+                "name": "BlogQuery",
+                "args": {
+                    "subject": "fewshot prompting",
+                    "authors": None,
+                    "start_date": None,
+                    "end_date": None,
+                },
+            },
+            {
+                "name": "DocQuery",
+                "args": {"query": "few shot prompting", "source": "langchain"},
+            },
+        ],
+    },
+    {
+        "question": [
+            HumanMessage(
+                "i need to implement similarity search with filtering in FAISS. how can i do that in my app?"
+            )
+        ],
+        "tool_calls": [
+            {
+                "name": "BlogQuery",
+                "args": {
+                    "subject": "similarity search with FAISS",
+                    "authors": None,
+                    "start_date": None,
+                    "end_date": None,
+                },
+            }
+        ],
+    },
+]# Realease notes/announcements + Case studies + 
+
+AMBIGUOUS_DATASET = [
+    {
+        "question": [
+            HumanMessage(
+                "I want to migrate from agentexecutor to langgraph. What do I need to do?"
+            )
+        ],
+        "tool_calls": [
+            {
+                "name": "DocQuery",
+                "args": {"query": "migrate agentexecutor", "source": "langchain"},
+            },
+            {
+                "name": "DocQuery",
+                "args": {"query": "migrate agentexecutor", "source": "langgraph"},
+            },
+        ],
+    },
+    {
+        "question": [
+            HumanMessage(
+                "In the last month, what are the latest updates to the openai partner package?"
+            )
+        ],
+        "tool_calls": [
+            {
+                "name": "TweetQuery",
+                "args": {
+                    "subject": "openai partner package",
+                    "min_likes": None,
+                    "max_likes": None,
+                    "start_date": datetime(2023, 12, 1),
+                    "end_date": None,
+                    "has_link": False,
+                },
+            }
+        ],
+    },
+    {
+        "question": [
+            HumanMessage(
+                "What are best practices for setting up a document loader for a RAG chain?"
+            )
+        ],
+        "tool_calls": [
+            {
+                "name": "DocQuery",
+                "args": {"query": "document loader for RAG chain", "source": "langchain"},
+            },
+            {
+                "name": "BlogQuery",
+                "args": {
+                    "subject": "document loader best practies",
+                    "authors": None,
+                    "start_date": None,
+                    "end_date": None,
+                },
+            }
+        ],
+    },
+    {
+        "question": [
+            HumanMessage(
+                "case studies using langgraph last week?"
+            )
+        ],
+        "tool_calls": [
+            {
+                "name": "BlogQuery",
+                "args": {
+                    "subject": "langgraph case studies",
+                    "authors": None,
+                    "start_date": datetime(2023, 12, 25),
+                    "end_date": None,
+                },
+            }
+        ],
+    },
+    
 ]
 
-DATASET = DOC_DATASET + TWEET_DATASET + BLOG_DATASET
+DATASET = DOC_DATASET + TWEET_DATASET + BLOG_DATASET + AMBIGUOUS_DATASET
 
 EXTRACTION_TASK = ToolUsageTask(
     name="Extraction Task",
@@ -434,10 +660,12 @@ EXTRACTION_TASK = ToolUsageTask(
     instructions=("""
                     You are requested to generate queries for searching either through tweets, docs, or blog entries. 
                     Inside the docs there are three different sources that you may wish to query for: LangGraph, LangSmith, or LangChain. 
-                    LangGraph is a library for building stateful, multi-actor applications with LLMs, used to create agent and multi-agent workflows. 
+                    LangGraph is a library for building multi-actor applications with LLMs, used to create agent and multi-agent workflows. 
                     LangSmith is an all-in-one developer platform for every step of the LLM-powered application lifecycle. 
                     It helps you debug, evaluate, test, and monitor your LLM applications. LangChain is a framework to build with LLMs by chaining interoperable components.
-                    One last important thing to remember is that some queries will ask for date ranges, and you must remember that today is 2024-01-01.
+                    One last important thing to remember is that some queries will ask for date ranges, and you must remember that today is 2024-01-01. Also, remember that \
+                    each question should be answered by a single query. In addition, you can return multiple queries to answer one question. Do not generate text, just tool calls that \
+                    if executed would answer the users question. Do NOT pass the whole question as the query/subject, only extract key ideas/words.
                  """
     ),
     description=(
@@ -456,6 +684,281 @@ merely the process of constructing the query.
     },
 )
 
+FEW_SHOT_DATASET = [
+    {
+        "question": [
+            HumanMessage(
+                "What are good rules to follow when using multi modal chat models?"
+            )
+        ],
+        "tool_calls": [
+            {
+                "name": "DocQuery",
+                "args": {"query": "multi modal chat models", "source": "langchain"},
+            },
+            {
+                "name": "BlogQuery",
+                "args": {
+                    "subject": "multi modal chat models",
+                    "authors": None,
+                    "start_date": None,
+                    "end_date": None,
+                },
+            }
+        ],
+    },
+    {
+        "question": [
+            HumanMessage(
+                "How do you build a RAG chain with a Postgres vectorstore?"
+            )
+        ],
+        "tool_calls": [
+            {
+                "name": "BlogQuery",
+                "args": {
+                    "subject": "RAG chain with Postgres vectorstore",
+                    "authors": None,
+                    "start_date": None,
+                    "end_date": None,
+                },
+            },
+            {
+                "name": "DocQuery",
+                "args": {"query": "RAG chain with Postgres vectorstore", "source": "langchain"},
+            },
+        ],
+    },
+    {
+        "question": [
+            HumanMessage(
+                "What case studies have we written about tool usage?"
+            )
+        ],
+        "tool_calls": [
+            {
+                "name": "BlogQuery",
+                "args": {
+                    "subject": "tool usage case study",
+                    "authors": None,
+                    "start_date": None,
+                    "end_date": None,
+                },
+            },
+        ],
+    },
+    {
+        "question": [
+            HumanMessage(
+                "How do I migrate from run_on_dataset to evaluate?"
+            )
+        ],
+        "tool_calls": [
+            {
+                "name": "DocQuery",
+                "args": {"query": "migrate run_on_dataset to evaluate", "source": "langchain"},
+            },
+            {
+                "name": "DocQuery",
+                "args": {"query": "migrate run_on_dataset to evaluate", "source": "langsmith"},
+            },
+        ],
+    },
+    {
+        "question": [
+            HumanMessage(
+                "Do any of our posts in the last 2 months about Anthropic have less than 100 likes?"
+            )
+        ],
+        "tool_calls": [
+            {
+                "name": "TweetQuery",
+                "args": {
+                    "subject": "Anthropic",
+                    "min_likes": None,
+                    "max_likes": 100,
+                    "start_date": datetime(2023,11,1),
+                    "end_date": None,
+                    "has_link": True,
+                },
+            }
+        ],
+    },
+    {
+        "question": [
+            HumanMessage(
+                "Did we release any information about claude-3.5 in the last week?"
+            )
+        ],
+        "tool_calls": [
+            {
+                "name": "BlogQuery",
+                "args": {
+                    "subject": "claude-3.5",
+                    "authors": None,
+                    "start_date": datetime(2023, 12, 25),
+                    "end_date": None,
+                },
+            },
+            {
+                "name": "TweetQuery",
+                "args": {
+                    "subject": "claude-3.5",
+                    "min_likes": None,
+                    "max_likes": None,
+                    "start_date": datetime(2023, 12, 25),
+                    "end_date": None,
+                    "has_link": False,
+                },
+            }
+        ],
+    },
+    {
+        "question": [
+            HumanMessage(
+                "Do we have press statements about filtering traces by metadata before October 2023?"
+            )
+        ],
+        "tool_calls": [
+            {
+                "name": "BlogQuery",
+                "args": {
+                    "subject": "filtering traces by metadata",
+                    "authors": None,
+                    "start_date": None,
+                    "end_date": datetime(2023,9,30),
+                },
+            },
+            {
+                "name": "TweetQuery",
+                "args": {
+                    "subject": "filtering traces by metadata",
+                    "min_likes": None,
+                    "max_likes": None,
+                    "start_date": None,
+                    "end_date": datetime(2023,9,30),
+                    "has_link": False,
+                },
+            }
+        ],
+    },
+    {
+        "question": [HumanMessage("What updates to mistral partner package were posted in the last year?")],
+        "tool_calls": [
+            {
+                "name": "TweetQuery",
+                "args": {
+                    "subject": "mistral partner package",
+                    "min_likes": None,
+                    "max_likes": None,
+                    "start_date": datetime(2023,1,1),
+                    "end_date": None,
+                    "has_link": False,
+                },
+            },
+        ],
+    },
+    {
+        "question": [
+            HumanMessage(
+                "Have there been updates to the best practices for initializing chat models in the past month?"
+            )
+        ],
+        "tool_calls": [
+            {
+                "name": "TweetQuery",
+                "args": {
+                    "subject": "best practices for initializing chat models",
+                    "min_likes": None,
+                    "max_likes": None,
+                    "start_date": datetime(2023,12,1),
+                    "end_date": None,
+                    "has_link": False,
+                },
+            },
+            {
+                "name": "BlogQuery",
+                "args": {
+                    "subject": "best practices for initializing chat models",
+                    "authors": None,
+                    "start_date": datetime(2023,12,1),
+                    "end_date": None,
+                },
+            }
+        ],
+    },
+    {
+        "question": [HumanMessage("How can I learn about the differences between chat agents and graphs")],
+        "tool_calls": [
+            {
+                "name": "DocQuery",
+                "args": {"query": "differences between chat agents and graphs", "source": "langchain"},
+            },
+            {
+                "name": "DocQuery",
+                "args": {"query": "differences between chat agents and graphs", "source": "langgraph"},
+            }
+        ],
+    },
+    {
+        "question": [HumanMessage("What are good practices to follow for switching from legacy packages?")],
+        "tool_calls": [
+            {
+                "name": "DocQuery",
+                "args": {"query": "switching from legacy packages", "source": "langchain"},
+            },
+            {
+                "name": "BlogQuery",
+                "args": {
+                    "subject": "switching from legacy packages",
+                    "authors": None,
+                    "start_date": None,
+                    "end_date": None,
+                },
+            }
+        ],
+    },
+    {
+        "question": [HumanMessage("What data is exposed when I run custom evals?")],
+        "tool_calls": [
+            {
+                "name": "DocQuery",
+                "args": {"query": "data exposed running custom evaluation", "source": "langsmith"},
+            },
+        ],
+    },
+    {
+        "question": [HumanMessage("Where are document loaders talked about?")],
+        "tool_calls": [
+            {
+                "name": "DocQuery",
+                "args": {"query": "document loaders", "source": "langchain"},
+            },
+            {
+                "name": "TweetQuery",
+                "args": {
+                    "subject": "document loaders",
+                    "min_likes": None,
+                    "max_likes": None,
+                    "start_date": None,
+                    "end_date": None,
+                    "has_link": False,
+                },
+            },
+            {
+                "name": "BlogQuery",
+                "args": {
+                    "subject": "document loaders",
+                    "authors": None,
+                    "start_date": None,
+                    "end_date": None,
+                },
+            }
+        ],
+    },
+]
+
+
 
 def _create_dataset() -> None:
     """Create a dataset with the langsmith client."""
@@ -463,9 +966,14 @@ def _create_dataset() -> None:
 
     client = Client()
 
+    # Test dataset
     dataset_id = "e3101cae-af77-476f-a331-eb2e92e809e6"
+    dataset = DATASET
+    # Few shot dataset
+    dataset_id = "d833a66e-4074-413b-9c6d-313b15e307c8"
+    dataset = FEW_SHOT_DATASET
 
-    for example in DATASET:
+    for example in dataset:
         client.create_example(
             inputs={
                 "question": example["question"],
@@ -475,3 +983,7 @@ def _create_dataset() -> None:
             },
             dataset_id=dataset_id,
         )
+
+if __name__=="__main__":
+    #print(len(FEW_SHOT_DATASET))
+    _create_dataset()
