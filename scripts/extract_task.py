@@ -7,7 +7,7 @@ from langchain_core.output_parsers import StrOutputParser
 from langchain_core.prompts import ChatPromptTemplate, MessagesPlaceholder
 from langchain_openai import ChatOpenAI
 from langsmith.evaluation import evaluate
-from model_registration import model_registry
+from langchain.chat_models import init_chat_model
 from langsmith.evaluation.evaluator import (
     EvaluationResult,
     EvaluationResults,
@@ -21,6 +21,9 @@ from langchain_core.example_selectors import SemanticSimilarityExampleSelector
 from langchain_openai import OpenAIEmbeddings
 from langchain_core.prompts.few_shot import FewShotChatMessagePromptTemplate
 from collections import Counter
+from langchain_core.utils.function_calling import convert_pydantic_to_openai_tool
+from vertexai.generative_models import FunctionDeclaration
+
 
 def calculate_recall(A, B):
     # Count the occurrences of each element in A and B
@@ -181,9 +184,15 @@ prompt = ChatPromptTemplate.from_messages(
                         ("human", "{input}"),
                     ]
 )
-def predict_for_model(model,instructions,few_shot_method):
+
+
+
+def predict_for_model(model,instructions,few_shot_method,model_name):
     few_shot_message_list = []
-    chain = prompt | model.bind_tools(tools,tool_choice="any").with_retry(stop_after_attempt=5)
+    if "groq" not in model_name:
+        chain = prompt | model.bind_tools(tools,tool_choice="any").with_retry(stop_after_attempt=5)
+    else:
+        chain = prompt | model.bind_tools(tools).with_retry(stop_after_attempt=5)
     if few_shot_method == "few-shot-string":
         instructions += f"\n Here are some examples: \n {few_shot_str}"
     elif few_shot_method == "few-shot-messages":
@@ -216,22 +225,29 @@ def predict_for_model(model,instructions,few_shot_method):
     return predict
 
 
-models = ["claude-3-haiku-20240307","claude-3-5-sonnet-20240620","gpt-3.5-turbo-0125","gpt-4o", "firefunction-v2"]
-# "few-shot-static-messages" "no-few-shot","few-shot-string","few-shot-messages"
-few_shot_methods = ["few-shot-static-messages","few-shot-dynamic-messages"]
+models = [("claude-3-haiku-20240307","anthropic",),
+            ("claude-3-sonnet-20240229","anthropic",),
+            ("claude-3-opus-20240229","anthropic",),
+            ("claude-3-5-sonnet-20240620","anthropic",),
+          ("gpt-3.5-turbo-0125","openai"),
+          ("gpt-4o","openai"),
+          ("gpt-4o-mini","openai"),
+          ("gemini-1.5-pro","google_vertexai"),
+    ("gemini-1.5-flash","google_vertexai"),
+            ("llama3-groq-70b-8192-tool-use-preview","groq"),
+            ("llama3-groq-8b-8192-tool-use-preview","groq"),]
 
+few_shot_methods = ["no-few-shot","few-shot-string","few-shot-messages","few-shot-static-messages","few-shot-dynamic-messages"]
 
-for model_name in models:
-    model = model_registry[model_name].get_model()
-    for few_shot_method in few_shot_methods:
-        #predict = predict_for_model(model,EXTRACTION_TASK.instructions,few_shot_method)
-        #print(predict({"question":"what is up"}))
-        #'''
-        evaluate(
-            predict_for_model(model,EXTRACTION_TASK.instructions,few_shot_method),
-            data=EXTRACTION_TASK.name,
-            evaluators=[evaluate_run],
-            experiment_prefix=f"test-{model_name}-{few_shot_method}",
-        )
-        #'''
-
+from tqdm import tqdm
+for i in tqdm(range(2)):
+    for model_name, model_provider in models[-4:-2]:
+        model = init_chat_model(model_name,model_provider=model_provider)
+        for few_shot_method in few_shot_methods[2:]:
+            evaluate(
+                predict_for_model(model,EXTRACTION_TASK.instructions,few_shot_method,model_name),
+                data=EXTRACTION_TASK.name,
+                evaluators=[evaluate_run],
+                experiment_prefix=f"{model_name}-TEST-{i+2}-{few_shot_method}",
+            )
+            

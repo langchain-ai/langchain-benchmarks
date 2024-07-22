@@ -13,7 +13,7 @@ class DocQuery(BaseModel):
     source: Literal["langchain", "langsmith", "langgraph"] = Field(
         ...,
         description="The documentation source to search against. Should be one of 'langchain', 'langsmith', or "
-        "'langgraph' depending on which one product the user question pertains to",
+        "'langgraph' depending on which one product the user question pertains to"
     )
 
 
@@ -43,7 +43,7 @@ class BlogQuery(BaseModel):
     """Query against blog posts"""
 
     subject: Union[str, None] = Field(..., description="Subject to search for")
-    authors: Union[None, str, list[str]] = Field(
+    authors: List[str] = Field(
         None,
         description="Authors to search for. None if not searching for a speific author,  list if searching for more than one.",
     )
@@ -984,6 +984,3 @@ def _create_dataset() -> None:
             dataset_id=dataset_id,
         )
 
-if __name__=="__main__":
-    #print(len(FEW_SHOT_DATASET))
-    _create_dataset()
