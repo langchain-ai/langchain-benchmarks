@@ -1,5 +1,6 @@
 import json
 import sys
+
 sys.path.append("../langchain_benchmarks")
 from tool_usage.tasks.extraction_query import *
 from datetime import datetime
@@ -22,23 +23,26 @@ from langchain_openai import OpenAIEmbeddings
 from langchain_core.prompts.few_shot import FewShotChatMessagePromptTemplate
 from collections import Counter
 
+
 def calculate_recall(A, B):
     # Count the occurrences of each element in A and B
     count_A = Counter(A)
     count_B = Counter(B)
-    
+
     # Calculate the number of true positives
     true_positives = sum(min(count_A[elem], count_B.get(elem, 0)) for elem in count_A)
-    
+
     # Calculate recall
     recall = true_positives / sum(count_A.values()) if count_A else 0
-    
+
     return recall
+
 
 client = Client()
 
+
 def is_iso_format(date_str):
-    if not isinstance(date_str,str):
+    if not isinstance(date_str, str):
         return False
     try:
         # Try to parse the string with datetime.fromisoformat
@@ -46,6 +50,7 @@ def is_iso_format(date_str):
         return True
     except ValueError:
         return False
+
 
 llm_judge = ChatOpenAI(model="gpt-4o")
 
@@ -69,14 +74,15 @@ judge_chain = judge_prompt | llm_judge | StrOutputParser()
 
 tools = [DocQuery, TweetQuery, BlogQuery]
 
+
 def compare_outputs(run_outputs: dict, example_outputs: dict) -> EvaluationResults:
-    if len(run_outputs['response'].tool_calls) == 0:
-        correct_tool_score, determinstic_score, underministic_score = 0,0,0
+    if len(run_outputs["response"].tool_calls) == 0:
+        correct_tool_score, determinstic_score, underministic_score = 0, 0, 0
     else:
         # Chose the correct tool
         reference_tools = [tool["name"] for tool in example_outputs["reference"]]
         outputted_tools = [tool["name"] for tool in run_outputs["response"].tool_calls]
-        correct_tool_score = calculate_recall(reference_tools,outputted_tools)
+        correct_tool_score = calculate_recall(reference_tools, outputted_tools)
 
         # Has the correct determenistic args
         determinstic_score = 0
@@ -87,10 +93,10 @@ def compare_outputs(run_outputs: dict, example_outputs: dict) -> EvaluationResul
             determinstic_score, underministic_score = 1, 1
             for tool in example_outputs["reference"]:
                 corresponding_response_tool = [
-                        t
-                        for t in run_outputs["response"].tool_calls
-                        if t["name"] == tool["name"]
-                    ][0]["args"]
+                    t
+                    for t in run_outputs["response"].tool_calls
+                    if t["name"] == tool["name"]
+                ][0]["args"]
                 for arg in tool["args"]:
                     if arg in ["query", "subject"]:
                         ans = judge_chain.invoke(
@@ -105,9 +111,12 @@ def compare_outputs(run_outputs: dict, example_outputs: dict) -> EvaluationResul
                             tool["args"][arg] and arg not in corresponding_response_tool
                         ) or (
                             tool["args"][arg]
-                            and not (tool["args"][arg] == corresponding_response_tool[arg])
-                            and not (is_iso_format(tool["args"][arg]) 
-                                and is_iso_format(corresponding_response_tool[arg]) 
+                            and not (
+                                tool["args"][arg] == corresponding_response_tool[arg]
+                            )
+                            and not (
+                                is_iso_format(tool["args"][arg])
+                                and is_iso_format(corresponding_response_tool[arg])
                                 and datetime.fromisoformat(
                                     (corresponding_response_tool[arg])
                                 ).replace(tzinfo=None)
@@ -148,41 +157,70 @@ def evaluate_run(run: Run, example: Optional[Example] = None) -> EvaluationResul
 
 
 uncleaned_examples = [
-    e
-    for e in client.list_examples(
-        dataset_name="Extraction Task Few Shot"
-    )
+    e for e in client.list_examples(dataset_name="Extraction Task Few Shot")
 ]
-static_indices = [0,2,5]
+static_indices = [0, 2, 5]
 few_shot_messages, few_shot_str = [], ""
 few_shot_messages_by_index = {}
 examples_for_semantic_search = []
 
-for j,example in enumerate(uncleaned_examples):
+for j, example in enumerate(uncleaned_examples):
     few_shot_messages_for_example = []
-    few_shot_messages_for_example.append(HumanMessage(name="example_human",content=example.inputs['question'][0]['content']))
-    few_shot_messages_for_example.append(AIMessage(name="example_assistant", content="", tool_calls=[{"name": tc["name"], "args": tc["args"], "type": "tool_call", "id": f"{10*j+i}"} for i, tc in enumerate(example.outputs["reference"])]))
-    few_shot_str += f"<|im_start|>user\n{example.inputs['question'][0]['content']}\n<|im_end|>"
+    few_shot_messages_for_example.append(
+        HumanMessage(
+            name="example_human", content=example.inputs["question"][0]["content"]
+        )
+    )
+    few_shot_messages_for_example.append(
+        AIMessage(
+            name="example_assistant",
+            content="",
+            tool_calls=[
+                {
+                    "name": tc["name"],
+                    "args": tc["args"],
+                    "type": "tool_call",
+                    "id": f"{10*j+i}",
+                }
+                for i, tc in enumerate(example.outputs["reference"])
+            ],
+        )
+    )
+    few_shot_str += (
+        f"<|im_start|>user\n{example.inputs['question'][0]['content']}\n<|im_end|>"
+    )
     few_shot_str += "\n<|im_start|>assistant\n"
     for i, tool_call in enumerate(example.outputs["reference"]):
-        few_shot_messages_for_example.append(ToolMessage("You have correctly called this tool", name=tool_call["name"], tool_call_id=f"{10*j+i}"))
+        few_shot_messages_for_example.append(
+            ToolMessage(
+                "You have correctly called this tool",
+                name=tool_call["name"],
+                tool_call_id=f"{10*j+i}",
+            )
+        )
         few_shot_str += f"Tool Call: Name: {tool_call['name']} Args: {{{', '.join(f'{k}: {v}' for k,v in tool_call['args'].items())}}}"
         few_shot_str += "\n"
     few_shot_str += "<|im_end|>"
 
     few_shot_messages += few_shot_messages_for_example
     few_shot_messages_by_index[j] = few_shot_messages_for_example
-    examples_for_semantic_search.append({"question":example.inputs['question'][0]['content'],"messages":few_shot_messages_for_example})
+    examples_for_semantic_search.append(
+        {
+            "question": example.inputs["question"][0]["content"],
+            "messages": few_shot_messages_for_example,
+        }
+    )
 
 prompt = ChatPromptTemplate.from_messages(
-                    [
-                        ("system", "{instructions}"),
-                        MessagesPlaceholder("few_shot_message_list"),
-                        ("human", "{input}"),
-                    ]
+    [
+        ("system", "{instructions}"),
+        MessagesPlaceholder("few_shot_message_list"),
+        ("human", "{input}"),
+    ]
 )
 
-def predict_for_model(model,instructions,few_shot_method,model_name):
+
+def predict_for_model(model, instructions, few_shot_method, model_name):
     few_shot_message_list = []
     chain = prompt | model.bind_tools(tools).with_retry(stop_after_attempt=5)
     if few_shot_method == "few-shot-string":
@@ -190,8 +228,13 @@ def predict_for_model(model,instructions,few_shot_method,model_name):
     elif few_shot_method == "few-shot-messages":
         few_shot_message_list = few_shot_messages
     elif few_shot_method == "few-shot-static-messages":
-        few_shot_message_list = [message for index in static_indices for message in few_shot_messages_by_index[index]]
+        few_shot_message_list = [
+            message
+            for index in static_indices
+            for message in few_shot_messages_by_index[index]
+        ]
     elif few_shot_method == "few-shot-dynamic-messages":
+
         def predict(example: dict):
             example_selector = SemanticSimilarityExampleSelector.from_examples(
                 examples_for_semantic_search,
@@ -207,36 +250,75 @@ def predict_for_model(model,instructions,few_shot_method,model_name):
                 example_selector=example_selector,
                 example_prompt=MessagesPlaceholder("messages"),
             )
-            return {"response": chain.invoke({"input":example["question"],"instructions":instructions,"few_shot_message_list":few_shot_prompt.invoke({"question":example["question"][0]['content']}).messages})}
+            return {
+                "response": chain.invoke(
+                    {
+                        "input": example["question"],
+                        "instructions": instructions,
+                        "few_shot_message_list": few_shot_prompt.invoke(
+                            {"question": example["question"][0]["content"]}
+                        ).messages,
+                    }
+                )
+            }
+
         return predict
-    
+
     def predict(example: dict):
-        return {"response": chain.invoke({"input":example["question"],"instructions":instructions,"few_shot_message_list":few_shot_message_list})}
-    
+        return {
+            "response": chain.invoke(
+                {
+                    "input": example["question"],
+                    "instructions": instructions,
+                    "few_shot_message_list": few_shot_message_list,
+                }
+            )
+        }
+
     return predict
 
 
 models = [
-            ("claude-3-haiku-20240307","anthropic",),
-            ("claude-3-sonnet-20240229","anthropic",),
-            ("claude-3-opus-20240229","anthropic",),
-            ("claude-3-5-sonnet-20240620","anthropic",),
-            ("gpt-3.5-turbo-0125","openai"),
-            ("gpt-4o","openai"),
-            ("gpt-4o-mini","openai")
-          ]
+    (
+        "claude-3-haiku-20240307",
+        "anthropic",
+    ),
+    (
+        "claude-3-sonnet-20240229",
+        "anthropic",
+    ),
+    (
+        "claude-3-opus-20240229",
+        "anthropic",
+    ),
+    (
+        "claude-3-5-sonnet-20240620",
+        "anthropic",
+    ),
+    ("gpt-3.5-turbo-0125", "openai"),
+    ("gpt-4o", "openai"),
+    ("gpt-4o-mini", "openai"),
+]
 
-few_shot_methods = ["no-few-shot","few-shot-string","few-shot-messages","few-shot-static-messages","few-shot-dynamic-messages"]
+few_shot_methods = [
+    "no-few-shot",
+    "few-shot-string",
+    "few-shot-messages",
+    "few-shot-static-messages",
+    "few-shot-dynamic-messages",
+]
 
 from tqdm import tqdm
+
 for i in tqdm(range(2)):
-    for model_name, model_provider in models[:-4]:
-        model = init_chat_model(model_name,model_provider=model_provider)
+    for model_name, model_provider in models:
+        model = init_chat_model(model_name, model_provider=model_provider)
         for few_shot_method in few_shot_methods:
             evaluate(
-                predict_for_model(model,EXTRACTION_TASK.instructions,few_shot_method,model_name),
+                predict_for_model(
+                    model, EXTRACTION_TASK.instructions, few_shot_method, model_name
+                ),
                 data=EXTRACTION_TASK.name,
                 evaluators=[evaluate_run],
                 experiment_prefix=f"{model_name}-TEST-{i+2}-{few_shot_method}",
             )
-            

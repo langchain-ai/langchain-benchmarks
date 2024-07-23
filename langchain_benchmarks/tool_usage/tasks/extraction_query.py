@@ -6,6 +6,8 @@ from langchain.tools import BaseTool, tool
 from langchain_core.messages import HumanMessage
 
 from langchain_benchmarks.schema import ToolUsageEnvironment, ToolUsageTask
+
+
 class DocQuery(BaseModel):
     """Query against documentation"""
 
@@ -13,7 +15,7 @@ class DocQuery(BaseModel):
     source: Literal["langchain", "langsmith", "langgraph"] = Field(
         ...,
         description="The documentation source to search against. Should be one of 'langchain', 'langsmith', or "
-        "'langgraph' depending on which one product the user question pertains to"
+        "'langgraph' depending on which one product the user question pertains to",
     )
 
 
@@ -69,7 +71,11 @@ def get_environment() -> ToolUsageEnvironment:
 
 DOC_DATASET = [
     {
-        "question": [HumanMessage("Can I use the send method to map-reduce the values of different branch points?")],
+        "question": [
+            HumanMessage(
+                "Can I use the send method to map-reduce the values of different branch points?"
+            )
+        ],
         "tool_calls": [
             {
                 "name": "DocQuery",
@@ -103,7 +109,7 @@ DOC_DATASET = [
                     "start_date": None,
                     "end_date": None,
                 },
-            }
+            },
         ],
     },
     {
@@ -113,20 +119,24 @@ DOC_DATASET = [
         "tool_calls": [
             {
                 "name": "DocQuery",
-                "args": {"query": "pairwise evals different models", "source": "langsmith"},
+                "args": {
+                    "query": "pairwise evals different models",
+                    "source": "langsmith",
+                },
             }
         ],
     },
     {
         "question": [HumanMessage("Can a user update state during a run?")],
         "tool_calls": [
-            {"name": "DocQuery", "args": {"query": "user update state", "source": "langgraph"}}
+            {
+                "name": "DocQuery",
+                "args": {"query": "user update state", "source": "langgraph"},
+            }
         ],
     },
     {
-        "question": [
-            HumanMessage("Can I change config after each AI response?")
-        ],
+        "question": [HumanMessage("Can I change config after each AI response?")],
         "tool_calls": [
             {
                 "name": "DocQuery",
@@ -135,7 +145,11 @@ DOC_DATASET = [
         ],
     },
     {
-        "question": [HumanMessage("How can I build my own run rules? Can I set up a schedule for them?")],
+        "question": [
+            HumanMessage(
+                "How can I build my own run rules? Can I set up a schedule for them?"
+            )
+        ],
         "tool_calls": [
             {
                 "name": "DocQuery",
@@ -144,7 +158,7 @@ DOC_DATASET = [
             {
                 "name": "DocQuery",
                 "args": {"query": "run rules schedule", "source": "langsmith"},
-            }
+            },
         ],
     },
     {
@@ -176,15 +190,11 @@ DOC_DATASET = [
                     "start_date": None,
                     "end_date": None,
                 },
-            }
+            },
         ],
     },
     {
-        "question": [
-            HumanMessage(
-                "is it possible to prevent exposing personal data?"
-            )
-        ],
+        "question": [HumanMessage("is it possible to prevent exposing personal data?")],
         "tool_calls": [
             {
                 "name": "DocQuery",
@@ -193,11 +203,7 @@ DOC_DATASET = [
         ],
     },
     {
-        "question": [
-            HumanMessage(
-                "How do you use conditional entry?"
-            )
-        ],
+        "question": [HumanMessage("How do you use conditional entry?")],
         "tool_calls": [
             {
                 "name": "DocQuery",
@@ -218,7 +224,10 @@ DOC_DATASET = [
             },
             {
                 "name": "DocQuery",
-                "args": {"query": "combine image and text in a prompt", "source": "langchain"},
+                "args": {
+                    "query": "combine image and text in a prompt",
+                    "source": "langchain",
+                },
             },
         ],
     },
@@ -231,7 +240,10 @@ DOC_DATASET = [
         "tool_calls": [
             {
                 "name": "DocQuery",
-                "args": {"query": "automation rules for chat model app", "source": "langsmith"},
+                "args": {
+                    "query": "automation rules for chat model app",
+                    "source": "langsmith",
+                },
             },
             {
                 "name": "DocQuery",
@@ -241,9 +253,7 @@ DOC_DATASET = [
     },
     {
         "question": [
-            HumanMessage(
-                "where can I read about how use Chroma embeddings locally?"
-            )
+            HumanMessage("where can I read about how use Chroma embeddings locally?")
         ],
         "tool_calls": [
             {
@@ -258,15 +268,11 @@ DOC_DATASET = [
                     "start_date": None,
                     "end_date": None,
                 },
-            }
+            },
         ],
     },
     {
-        "question": [
-            HumanMessage(
-                "how to index documents in a RAG app?"
-            )
-        ],
+        "question": [HumanMessage("how to index documents in a RAG app?")],
         "tool_calls": [
             {
                 "name": "DocQuery",
@@ -277,7 +283,7 @@ DOC_DATASET = [
                 "args": {"query": "index documents RAG app", "source": "langgraph"},
             },
         ],
-    }
+    },
 ]
 
 TWEET_DATASET = [
@@ -347,7 +353,7 @@ TWEET_DATASET = [
                     "start_date": datetime(2023, 1, 1),
                     "end_date": None,
                 },
-            }
+            },
         ],
     },
     {
@@ -372,7 +378,7 @@ TWEET_DATASET = [
                     "start_date": datetime(2023, 4, 1),
                     "end_date": datetime(2023, 6, 30),
                 },
-            }
+            },
         ],
     },
     {
@@ -460,14 +466,12 @@ BLOG_DATASET = [
                     "end_date": datetime(2023, 11, 30),
                     "has_link": False,
                 },
-            }
+            },
         ],
     },
     {
         "question": [
-            HumanMessage(
-                "what has been said about universal configurable models?"
-            )
+            HumanMessage("what has been said about universal configurable models?")
         ],
         "tool_calls": [
             {
@@ -489,7 +493,7 @@ BLOG_DATASET = [
                     "end_date": None,
                     "has_link": False,
                 },
-            }
+            },
         ],
     },
     {
@@ -529,11 +533,7 @@ BLOG_DATASET = [
         ],
     },
     {
-        "question": [
-            HumanMessage(
-                "Why is using fewshot prompting helpful?"
-            )
-        ],
+        "question": [HumanMessage("Why is using fewshot prompting helpful?")],
         "tool_calls": [
             {
                 "name": "BlogQuery",
@@ -568,7 +568,7 @@ BLOG_DATASET = [
             }
         ],
     },
-]# Realease notes/announcements + Case studies + 
+]  # Realease notes/announcements + Case studies +
 
 AMBIGUOUS_DATASET = [
     {
@@ -617,7 +617,10 @@ AMBIGUOUS_DATASET = [
         "tool_calls": [
             {
                 "name": "DocQuery",
-                "args": {"query": "document loader for RAG chain", "source": "langchain"},
+                "args": {
+                    "query": "document loader for RAG chain",
+                    "source": "langchain",
+                },
             },
             {
                 "name": "BlogQuery",
@@ -627,15 +630,11 @@ AMBIGUOUS_DATASET = [
                     "start_date": None,
                     "end_date": None,
                 },
-            }
+            },
         ],
     },
     {
-        "question": [
-            HumanMessage(
-                "case studies using langgraph last week?"
-            )
-        ],
+        "question": [HumanMessage("case studies using langgraph last week?")],
         "tool_calls": [
             {
                 "name": "BlogQuery",
@@ -648,7 +647,6 @@ AMBIGUOUS_DATASET = [
             }
         ],
     },
-    
 ]
 
 DATASET = DOC_DATASET + TWEET_DATASET + BLOG_DATASET + AMBIGUOUS_DATASET
@@ -657,7 +655,8 @@ EXTRACTION_TASK = ToolUsageTask(
     name="Extraction Task",
     dataset_id="https://smith.langchain.com/public/594f9f60-30a0-49bf-b075-f44beabf546a/d",
     create_environment=get_environment,
-    instructions=("""
+    instructions=(
+        """
                     You are requested to generate queries for searching either through tweets, docs, or blog entries. 
                     Inside the docs there are three different sources that you may wish to query for: LangGraph, LangSmith, or LangChain. 
                     LangGraph is a library for building multi-actor applications with LLMs, used to create agent and multi-agent workflows. 
@@ -704,14 +703,12 @@ FEW_SHOT_DATASET = [
                     "start_date": None,
                     "end_date": None,
                 },
-            }
+            },
         ],
     },
     {
         "question": [
-            HumanMessage(
-                "How do you build a RAG chain with a Postgres vectorstore?"
-            )
+            HumanMessage("How do you build a RAG chain with a Postgres vectorstore?")
         ],
         "tool_calls": [
             {
@@ -725,15 +722,16 @@ FEW_SHOT_DATASET = [
             },
             {
                 "name": "DocQuery",
-                "args": {"query": "RAG chain with Postgres vectorstore", "source": "langchain"},
+                "args": {
+                    "query": "RAG chain with Postgres vectorstore",
+                    "source": "langchain",
+                },
             },
         ],
     },
     {
         "question": [
-            HumanMessage(
-                "What case studies have we written about tool usage?"
-            )
+            HumanMessage("What case studies have we written about tool usage?")
         ],
         "tool_calls": [
             {
@@ -748,19 +746,21 @@ FEW_SHOT_DATASET = [
         ],
     },
     {
-        "question": [
-            HumanMessage(
-                "How do I migrate from run_on_dataset to evaluate?"
-            )
-        ],
+        "question": [HumanMessage("How do I migrate from run_on_dataset to evaluate?")],
         "tool_calls": [
             {
                 "name": "DocQuery",
-                "args": {"query": "migrate run_on_dataset to evaluate", "source": "langchain"},
+                "args": {
+                    "query": "migrate run_on_dataset to evaluate",
+                    "source": "langchain",
+                },
             },
             {
                 "name": "DocQuery",
-                "args": {"query": "migrate run_on_dataset to evaluate", "source": "langsmith"},
+                "args": {
+                    "query": "migrate run_on_dataset to evaluate",
+                    "source": "langsmith",
+                },
             },
         ],
     },
@@ -777,7 +777,7 @@ FEW_SHOT_DATASET = [
                     "subject": "Anthropic",
                     "min_likes": None,
                     "max_likes": 100,
-                    "start_date": datetime(2023,11,1),
+                    "start_date": datetime(2023, 11, 1),
                     "end_date": None,
                     "has_link": True,
                 },
@@ -810,7 +810,7 @@ FEW_SHOT_DATASET = [
                     "end_date": None,
                     "has_link": False,
                 },
-            }
+            },
         ],
     },
     {
@@ -826,7 +826,7 @@ FEW_SHOT_DATASET = [
                     "subject": "filtering traces by metadata",
                     "authors": None,
                     "start_date": None,
-                    "end_date": datetime(2023,9,30),
+                    "end_date": datetime(2023, 9, 30),
                 },
             },
             {
@@ -836,14 +836,18 @@ FEW_SHOT_DATASET = [
                     "min_likes": None,
                     "max_likes": None,
                     "start_date": None,
-                    "end_date": datetime(2023,9,30),
+                    "end_date": datetime(2023, 9, 30),
                     "has_link": False,
                 },
-            }
+            },
         ],
     },
     {
-        "question": [HumanMessage("What updates to mistral partner package were posted in the last year?")],
+        "question": [
+            HumanMessage(
+                "What updates to mistral partner package were posted in the last year?"
+            )
+        ],
         "tool_calls": [
             {
                 "name": "TweetQuery",
@@ -851,7 +855,7 @@ FEW_SHOT_DATASET = [
                     "subject": "mistral partner package",
                     "min_likes": None,
                     "max_likes": None,
-                    "start_date": datetime(2023,1,1),
+                    "start_date": datetime(2023, 1, 1),
                     "end_date": None,
                     "has_link": False,
                 },
@@ -871,7 +875,7 @@ FEW_SHOT_DATASET = [
                     "subject": "best practices for initializing chat models",
                     "min_likes": None,
                     "max_likes": None,
-                    "start_date": datetime(2023,12,1),
+                    "start_date": datetime(2023, 12, 1),
                     "end_date": None,
                     "has_link": False,
                 },
@@ -881,31 +885,48 @@ FEW_SHOT_DATASET = [
                 "args": {
                     "subject": "best practices for initializing chat models",
                     "authors": None,
-                    "start_date": datetime(2023,12,1),
+                    "start_date": datetime(2023, 12, 1),
                     "end_date": None,
                 },
-            }
+            },
         ],
     },
     {
-        "question": [HumanMessage("How can I learn about the differences between chat agents and graphs")],
+        "question": [
+            HumanMessage(
+                "How can I learn about the differences between chat agents and graphs"
+            )
+        ],
         "tool_calls": [
             {
                 "name": "DocQuery",
-                "args": {"query": "differences between chat agents and graphs", "source": "langchain"},
+                "args": {
+                    "query": "differences between chat agents and graphs",
+                    "source": "langchain",
+                },
             },
             {
                 "name": "DocQuery",
-                "args": {"query": "differences between chat agents and graphs", "source": "langgraph"},
-            }
+                "args": {
+                    "query": "differences between chat agents and graphs",
+                    "source": "langgraph",
+                },
+            },
         ],
     },
     {
-        "question": [HumanMessage("What are good practices to follow for switching from legacy packages?")],
+        "question": [
+            HumanMessage(
+                "What are good practices to follow for switching from legacy packages?"
+            )
+        ],
         "tool_calls": [
             {
                 "name": "DocQuery",
-                "args": {"query": "switching from legacy packages", "source": "langchain"},
+                "args": {
+                    "query": "switching from legacy packages",
+                    "source": "langchain",
+                },
             },
             {
                 "name": "BlogQuery",
@@ -915,7 +936,7 @@ FEW_SHOT_DATASET = [
                     "start_date": None,
                     "end_date": None,
                 },
-            }
+            },
         ],
     },
     {
@@ -923,7 +944,10 @@ FEW_SHOT_DATASET = [
         "tool_calls": [
             {
                 "name": "DocQuery",
-                "args": {"query": "data exposed running custom evaluation", "source": "langsmith"},
+                "args": {
+                    "query": "data exposed running custom evaluation",
+                    "source": "langsmith",
+                },
             },
         ],
     },
@@ -953,11 +977,10 @@ FEW_SHOT_DATASET = [
                     "start_date": None,
                     "end_date": None,
                 },
-            }
+            },
         ],
     },
 ]
-
 
 
 def _create_dataset() -> None:
@@ -983,4 +1006,3 @@ def _create_dataset() -> None:
             },
             dataset_id=dataset_id,
         )
-
