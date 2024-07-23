@@ -10,7 +10,10 @@ from langchain_openai import OpenAIEmbeddings
 from langsmith.client import Client
 from langchain_benchmarks import __version__, registry
 from langchain_benchmarks.rate_limiting import RateLimiter
-from langchain_benchmarks.tool_usage.tasks.multiverse_math import *
+import sys
+
+sys.path.append("./../langchain_benchmarks")
+from tool_usage.tasks.multiverse_math import *
 from langchain.chat_models import init_chat_model
 from langsmith.evaluation import evaluate
 from langchain.agents import AgentExecutor, create_tool_calling_agent
@@ -149,20 +152,6 @@ def get_prompts(task_name, **kwargs):
                 client.pull_prompt("langchain-ai/multiverse-math-few-shot-3-str"),
                 "few-shot-three-strings",
             ),
-            (
-                ChatPromptTemplate.from_messages(
-                    [
-                        (
-                            "system",
-                            "{instructions} Here are some example conversations of the user interacting with the AI until the correct answer is reached: ",
-                        ),
-                        few_shot_prompt,
-                        ("human", "{question}"),
-                        MessagesPlaceholder("agent_scratchpad"),
-                    ]
-                ),
-                "few-shot-semantic-openai-embeddinga",
-            ),
         ]
 
 
@@ -177,51 +166,45 @@ def predict_from_callable(callable, instructions):
 
 experiment_uuid = uuid.uuid4().hex[:4]
 today = datetime.date.today().isoformat()
-for task in registry.tasks:
-    if task.type != "ToolUsageTask" or task.name != "Multiverse Math":
-        continue
 
-    dataset_name = task.name
+task = MULTIVERSE_MATH
+dataset_name = task.name
+examples, few_shot_messages, few_shot_three_messages = get_few_shot_messages(task.name)
+few_shot_str, few_shot_three_str = get_few_shot_str_from_messages(
+    few_shot_messages, few_shot_three_messages
+)
 
-    examples, few_shot_messages, few_shot_three_messages = get_few_shot_messages(
-        task.name
-    )
-    few_shot_str, few_shot_three_str = get_few_shot_str_from_messages(
-        few_shot_messages, few_shot_three_messages
-    )
+prompts = get_prompts(
+    task.name,
+    examples=examples,
+    few_shot_three_messages=few_shot_three_messages,
+    few_shot_three_str=few_shot_three_str,
+)
 
-    prompts = get_prompts(
-        task.name,
-        examples=examples,
-        few_shot_three_messages=few_shot_three_messages,
-        few_shot_three_str=few_shot_three_str,
-    )
+for model_name, model_provider in tests:
+    model = init_chat_model(model_name, model_provider=model_provider, temperature=0)
 
-    for model_name, model_provider in tests:
-        model = init_chat_model(model_name, model_provider=model_provider)
-        rate_limiter = RateLimiter(requests_per_second=1)
+    print(f"Benchmarking {task.name} with model: {model_name}")
+    eval_config = task.get_eval_config()
 
-        print(f"Benchmarking {task.name} with model: {model_name}")
-        eval_config = task.get_eval_config()
+    for prompt, prompt_name in prompts:
+        tools = task.create_environment().tools
+        agent = create_tool_calling_agent(model, tools, prompt)
+        agent_executor = AgentExecutor(
+            agent=agent, tools=tools, return_intermediate_steps=True
+        )
 
-        for prompt, prompt_name in prompts[:-1]:
-            tools = task.create_environment().tools
-            agent = create_tool_calling_agent(model, tools, prompt)
-            agent_executor = AgentExecutor(
-                agent=agent, tools=tools, return_intermediate_steps=True
-            )
-
-            evaluate(
-                predict_from_callable(agent_executor, task.instructions),
-                data=dataset_name,
-                evaluators=eval_config.custom_evaluators,
-                max_concurrency=5,
-                metadata={
-                    "model": model_name,
-                    "id": experiment_uuid,
-                    "task": task.name,
-                    "date": today,
-                    "langchain_benchmarks_version": __version__,
-                },
-                experiment_prefix=f"{model_name}-{task.name}-{prompt_name}",
-            )
+        evaluate(
+            predict_from_callable(agent_executor, task.instructions),
+            data=dataset_name,
+            evaluators=eval_config.custom_evaluators,
+            max_concurrency=5,
+            metadata={
+                "model": model_name,
+                "id": experiment_uuid,
+                "task": task.name,
+                "date": today,
+                "langchain_benchmarks_version": __version__,
+            },
+            experiment_prefix=f"{model_name}-{task.name}-{prompt_name}",
+        )

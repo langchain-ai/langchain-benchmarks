@@ -22,6 +22,7 @@ from langchain_core.example_selectors import SemanticSimilarityExampleSelector
 from langchain_openai import OpenAIEmbeddings
 from langchain_core.prompts.few_shot import FewShotChatMessagePromptTemplate
 from collections import Counter
+import uuid
 
 
 def calculate_recall(A, B):
@@ -310,9 +311,12 @@ few_shot_methods = [
 
 from tqdm import tqdm
 
-for i in tqdm(range(2)):
+experiment_uuid = uuid.uuid4().hex[:4]
+for i in tqdm(range(3)):
     for model_name, model_provider in models:
-        model = init_chat_model(model_name, model_provider=model_provider)
+        model = init_chat_model(
+            model_name, model_provider=model_provider, temperature=0
+        )
         for few_shot_method in few_shot_methods:
             evaluate(
                 predict_for_model(
@@ -321,4 +325,5 @@ for i in tqdm(range(2)):
                 data=EXTRACTION_TASK.name,
                 evaluators=[evaluate_run],
                 experiment_prefix=f"{model_name}-TEST-{i+2}-{few_shot_method}",
+                metadata={"id": experiment_uuid},
             )
