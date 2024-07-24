@@ -1,0 +1,1042 @@
+
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+    <title>Extracting high-cardinality categoricals &#8212; LangChain Benchmarks 0.0.12</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=5b4479735964841361fd" rel="stylesheet" />
+<link href="../../_static/styles/bootstrap.css?digest=5b4479735964841361fd" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=5b4479735964841361fd" rel="stylesheet" />
+
+  
+  <link href="../../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=5b4479735964841361fd" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+    <link rel="stylesheet" href="../../_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/custom.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=5b4479735964841361fd" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=5b4479735964841361fd" />
+  <script src="../../_static/vendor/fontawesome/6.1.2/js/all.min.js?digest=5b4479735964841361fd"></script>
+
+    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/sphinx_highlight.js"></script>
+    <script src="../../_static/clipboard.min.js"></script>
+    <script src="../../_static/copybutton.js"></script>
+    <script src="../../_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'notebooks/extraction/high_cardinality';</script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Introduction" href="../retrieval/intro.html" />
+    <link rel="prev" title="Chat Extraction" href="chat_extraction.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>
+    Back to top
+  </button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
+    </nav>
+  
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+
+<a class="navbar-brand logo" href="../../index.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">LangChain Benchmarks 0.0.12</p>
+  
+</a></div>
+        <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../../index.html">
+                    🦜💯 LangChain Benchmarks
+                </a>
+            </li>
+        </ul>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Introduction</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../getting_started.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../models.html">Model Registry</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../datasets.html">Datasets</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Tool Usage</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../tool_usage/intro.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tool_usage/relational_data.html">Relational Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tool_usage/multiverse_math.html">Multiverse Math</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tool_usage/typewriter_1.html">Typewriter: Single Tool</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tool_usage/typewriter_26.html">Typewriter: 26 Tools</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tool_usage/benchmark_all_tasks.html">Benchmark All Tasks</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Extraction</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="intro.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="email.html">Email Extraction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="chat_extraction.html">Chat Extraction</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Extracting high-cardinality categoricals</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">RAG</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../retrieval/intro.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../retrieval/langchain_docs_qa.html">Q&amp;A over LangChain Docs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../retrieval/semi_structured_benchmarking/semi_structured.html">Semi-structured RAG</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../retrieval/semi_structured_benchmarking/ss_eval_chunk_sizes.html">Semi-structured eval: Chunk size tuning</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../retrieval/semi_structured_benchmarking/ss_eval_long_context.html">Semi-structured eval: Long-context</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../retrieval/semi_structured_benchmarking/ss_eval_multi_vector.html">Semi-structured eval: Multi vector</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../retrieval/multi_modal_benchmarking/multi_modal_eval_baseline.html">Multi-modal eval: Baseline</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../retrieval/multi_modal_benchmarking/multi_modal_eval.html">Multi-modal eval: GPT-4 w/ multi-modal embeddings and multi-vector retriever</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../retrieval/comparing_techniques.html">Evaluating RAG Architectures on Benchmark Tasks</a></li>
+
+
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Benchmarking Without LangSmith</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../run_without_langsmith.html">Running Locally</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</label></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-launch-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Launch interactive content">
+    <i class="fas fa-rocket"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://colab.research.google.com/github/langchain-ai/langchain-benchmarks/blob/main/docs/source/notebooks/extraction/high_cardinality.ipynb" target="_blank"
+   class="btn btn-sm dropdown-item"
+   title="Launch onColab"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  
+    <img src="../../_static/images/logo_colab.png">
+  </span>
+<span class="btn__text-container">Colab</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/langchain-ai/langchain-benchmarks" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/langchain-ai/langchain-benchmarks/blob/main/docs/source/notebooks/extraction/high_cardinality.ipynb?plain=1" target="_blank"
+   class="btn btn-sm btn-source-file-button dropdown-item"
+   title="Show source"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-code"></i>
+  </span>
+<span class="btn__text-container">Show source</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/langchain-ai/langchain-benchmarks/issues/new?title=Issue%20on%20page%20%2Fnotebooks/extraction/high_cardinality.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../../_sources/notebooks/extraction/high_cardinality.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</label>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Extracting high-cardinality categoricals</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#setup">Setup</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#augmenting-with-more-fake-names">Augmenting with more fake names</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#chain-1-baseline">Chain 1: Baseline</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#chain-2-all-candidates-in-prompt">Chain 2: All candidates in prompt</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#chain-3-top-k-candidates-from-vectorstore-in-prompt">Chain 3: Top k candidates from vectorstore in prompt</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#chain-4-top-k-candidates-by-ngram-overlap-in-prompt">Chain 4: Top k candidates by ngram overlap in prompt</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#chain-5-replace-with-top-candidate-from-vectorstore">Chain 5: Replace with top candidate from vectorstore</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#chain-6-replace-with-top-candidate-by-ngram-overlap">Chain 6: Replace with top candidate by ngram overlap</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#see-all-results-in-langsmith">See all results in LangSmith</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article" role="main">
+                  
+  <section id="extracting-high-cardinality-categoricals">
+<h1>Extracting high-cardinality categoricals<a class="headerlink" href="#extracting-high-cardinality-categoricals" title="Permalink to this heading">#</a></h1>
+<p>Suppose we built a book recommendation chatbot, and as part of it we want to extract and filter on author name if that’s part of the user input. A user might ask a question like:</p>
+<blockquote>
+<div><p>“what are books about aliens by Steven King”</p>
+</div></blockquote>
+<p>If we’re not careful, our extraction system would most likely extract the author name “Steven King” from this input. This might cause us to miss all the most relevant book results, since the user was almost certainly looking for books by <em>Stephen King</em>.</p>
+<p>This is a case of having to extract a <strong>high-cardinality categorical</strong> value. Given a dataset of books and their respective authors, there’s a large but finite number of valid author names, and we need some way of making sure our extraction system outputs valid and relevant author names even if the user input refers to invalid names.</p>
+<p>We’ve built a dataset to help benchmark different approaches for dealing with this challenge. The dataset is simple: it is a collection of 23 mispelled and corrected human names. To use it for high-cardinality categorical testing, we’re going to generate a large set of valid names (~10,000) that includes the correct spellings of all the names in the dataset. Using this, we’ll test the ability of various extraction systems to extract a corrected name from the user question:</p>
+<blockquote>
+<div><p>“what are books about aliens by {mispelled_name}”</p>
+</div></blockquote>
+<p>where for each datapoint in our dataset, we’ll use the mispelled name as the input and expect the corrected name as the extracted output.</p>
+<section id="setup">
+<h2>Setup<a class="headerlink" href="#setup" title="Permalink to this heading">#</a></h2>
+<p>We need to install a few packages and set some env vars first:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="k">pip</span> install -qU langchain-benchmarks langchain-openai faker chromadb numpy scikit-learn
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">getpass</span>
+<span class="kn">import</span> <span class="nn">os</span>
+
+<span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s2">&quot;LANGCHAIN_API_KEY&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">getpass</span><span class="o">.</span><span class="n">getpass</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">operator</span> <span class="kn">import</span> <span class="n">attrgetter</span>
+
+<span class="kn">from</span> <span class="nn">langchain_core.prompts</span> <span class="kn">import</span> <span class="n">ChatPromptTemplate</span>
+<span class="kn">from</span> <span class="nn">langchain_core.pydantic_v1</span> <span class="kn">import</span> <span class="n">BaseModel</span><span class="p">,</span> <span class="n">Field</span>
+<span class="kn">from</span> <span class="nn">langchain_core.runnables</span> <span class="kn">import</span> <span class="n">RunnablePassthrough</span>
+<span class="kn">from</span> <span class="nn">langchain_openai</span> <span class="kn">import</span> <span class="n">ChatOpenAI</span>
+<span class="kn">from</span> <span class="nn">langsmith</span> <span class="kn">import</span> <span class="n">Client</span>
+
+<span class="kn">from</span> <span class="nn">langchain_benchmarks</span> <span class="kn">import</span> <span class="n">registry</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>This is the <code class="docutils literal notranslate"><span class="pre">Name</span> <span class="pre">Correction</span></code> benchmark in langchain-benchmarket:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">client</span> <span class="o">=</span> <span class="n">Client</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">task</span> <span class="o">=</span> <span class="n">registry</span><span class="p">[</span><span class="s2">&quot;Name Correction&quot;</span><span class="p">]</span>
+<span class="n">task</span><span class="o">.</span><span class="n">dataset_url</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&#39;https://smith.langchain.com/public/78df83ee-ba7f-41c6-832c-2b23327d4cf7/d&#39;
+</pre></div>
+</div>
+</div>
+</div>
+<p><strong>NOTE</strong>: If you are running this notebook for the first time, clone the public dataset into your LangSmith organization by uncommenting the below:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># client.clone_public_dataset(task.dataset_url)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">examples</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">client</span><span class="o">.</span><span class="n">list_examples</span><span class="p">(</span><span class="n">dataset_name</span><span class="o">=</span><span class="n">task</span><span class="o">.</span><span class="n">dataset_name</span><span class="p">))</span>
+<span class="k">for</span> <span class="n">example</span> <span class="ow">in</span> <span class="n">examples</span><span class="p">[:</span><span class="mi">5</span><span class="p">]:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">example</span><span class="o">.</span><span class="n">inputs</span><span class="p">,</span> <span class="n">example</span><span class="o">.</span><span class="n">outputs</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>{&#39;name&#39;: &#39;Tracy Cook&#39;} {&#39;name&#39;: &#39;Traci Cook&#39;}
+{&#39;name&#39;: &#39;Dan Klein&#39;} {&#39;name&#39;: &#39;Daniel Klein&#39;}
+{&#39;name&#39;: &#39;Jen Mcintosh&#39;} {&#39;name&#39;: &#39;Jennifer Mcintosh&#39;}
+{&#39;name&#39;: &#39;Cassie Hull&#39;} {&#39;name&#39;: &#39;Cassandra Hull&#39;}
+{&#39;name&#39;: &#39;Andy Williams&#39;} {&#39;name&#39;: &#39;Andrew Williams&#39;}
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">run_on_dataset</span><span class="p">(</span><span class="n">chain</span><span class="p">,</span> <span class="n">run_name</span><span class="p">):</span>
+    <span class="n">client</span><span class="o">.</span><span class="n">run_on_dataset</span><span class="p">(</span>
+        <span class="n">dataset_name</span><span class="o">=</span><span class="n">task</span><span class="o">.</span><span class="n">dataset_name</span><span class="p">,</span>
+        <span class="n">llm_or_chain_factory</span><span class="o">=</span><span class="n">chain</span><span class="p">,</span>
+        <span class="n">evaluation</span><span class="o">=</span><span class="n">task</span><span class="o">.</span><span class="n">eval_config</span><span class="p">,</span>
+        <span class="n">project_name</span><span class="o">=</span><span class="n">run_name</span><span class="p">,</span>
+    <span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="augmenting-with-more-fake-names">
+<h2>Augmenting with more fake names<a class="headerlink" href="#augmenting-with-more-fake-names" title="Permalink to this heading">#</a></h2>
+<p>For our tests we’ll create a list of 10,000 names that represent all the possible values for this category. This will include our target names from the dataset.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">faker</span> <span class="kn">import</span> <span class="n">Faker</span>
+
+<span class="n">Faker</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">42</span><span class="p">)</span>
+<span class="n">fake</span> <span class="o">=</span> <span class="n">Faker</span><span class="p">()</span>
+<span class="n">fake</span><span class="o">.</span><span class="n">seed_instance</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+
+<span class="n">incorrect_names</span> <span class="o">=</span> <span class="p">[</span><span class="n">example</span><span class="o">.</span><span class="n">inputs</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">]</span> <span class="k">for</span> <span class="n">example</span> <span class="ow">in</span> <span class="n">examples</span><span class="p">]</span>
+<span class="n">correct_names</span> <span class="o">=</span> <span class="p">[</span><span class="n">example</span><span class="o">.</span><span class="n">outputs</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">]</span> <span class="k">for</span> <span class="n">example</span> <span class="ow">in</span> <span class="n">examples</span><span class="p">]</span>
+
+<span class="c1"># We&#39;ll make sure that our list of valid names contains the correct spellings</span>
+<span class="c1"># and not the incorrect spellings from our dataset</span>
+<span class="n">valid_names</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span>
+    <span class="nb">set</span><span class="p">([</span><span class="n">fake</span><span class="o">.</span><span class="n">name</span><span class="p">()</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">10_000</span><span class="p">)]</span> <span class="o">+</span> <span class="n">correct_names</span><span class="p">)</span><span class="o">.</span><span class="n">difference</span><span class="p">(</span>
+        <span class="n">incorrect_names</span>
+    <span class="p">)</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">len</span><span class="p">(</span><span class="n">valid_names</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>9382
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">valid_names</span><span class="p">[:</span><span class="mi">3</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&#39;Debra Lee&#39;, &#39;Kevin Harper&#39;, &#39;Donald Anderson&#39;]
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="chain-1-baseline">
+<h2>Chain 1: Baseline<a class="headerlink" href="#chain-1-baseline" title="Permalink to this heading">#</a></h2>
+<p>As a baseline we’ll create a function-calling chain that has no information about the set of valid names.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Search</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
+    <span class="n">query</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">author</span><span class="p">:</span> <span class="nb">str</span>
+
+
+<span class="n">system</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;Generate a relevant search query for a library system&quot;&quot;&quot;</span>
+<span class="n">prompt</span> <span class="o">=</span> <span class="n">ChatPromptTemplate</span><span class="o">.</span><span class="n">from_messages</span><span class="p">(</span>
+    <span class="p">[</span>
+        <span class="p">(</span><span class="s2">&quot;system&quot;</span><span class="p">,</span> <span class="s2">&quot;</span><span class="si">{system}</span><span class="s2">&quot;</span><span class="p">),</span>
+        <span class="p">(</span><span class="s2">&quot;human&quot;</span><span class="p">,</span> <span class="s2">&quot;what are books about aliens by </span><span class="si">{name}</span><span class="s2">&quot;</span><span class="p">),</span>
+    <span class="p">]</span>
+<span class="p">)</span>
+<span class="n">llm</span> <span class="o">=</span> <span class="n">ChatOpenAI</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="s2">&quot;gpt-3.5-turbo-0125&quot;</span><span class="p">,</span> <span class="n">temperature</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">structured_llm</span> <span class="o">=</span> <span class="n">llm</span><span class="o">.</span><span class="n">with_structured_output</span><span class="p">(</span><span class="n">Search</span><span class="p">)</span>
+
+<span class="n">query_analyzer_1</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="n">prompt</span><span class="o">.</span><span class="n">partial</span><span class="p">(</span><span class="n">system</span><span class="o">=</span><span class="n">system</span><span class="p">)</span> <span class="o">|</span> <span class="n">structured_llm</span> <span class="o">|</span> <span class="p">{</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="n">attrgetter</span><span class="p">(</span><span class="s2">&quot;author&quot;</span><span class="p">)}</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">run_on_dataset</span><span class="p">(</span><span class="n">query_analyzer_1</span><span class="p">,</span> <span class="s2">&quot;GPT-3.5&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>View the evaluation results for project &#39;GPT-3.5&#39; at:
+https://smith.langchain.com/o/43ae1439-dbb7-53b8-bef4-155154d3f962/datasets/1765d6b2-aa2e-46ec-9158-9f4ca8f228c6/compare?selectedSessions=f429ec84-b879-4e66-b7fb-ef7be69d1acd
+
+View all tests for Dataset Extracting Corrected Names at:
+https://smith.langchain.com/o/43ae1439-dbb7-53b8-bef4-155154d3f962/datasets/1765d6b2-aa2e-46ec-9158-9f4ca8f228c6
+[-------------------------------------------------&gt;] 23/23
+</pre></div>
+</div>
+</div>
+</div>
+<p>As we might have expected, this gives us a <code class="docutils literal notranslate"><span class="pre">Correct</span> <span class="pre">rate:</span> <span class="pre">0%</span></code>. Let’s see if we can do better :)</p>
+<p>See the test run in LangSmith <a class="reference external" href="https://smith.langchain.com/public/8c0a4c25-426d-4582-96fc-d7def170be76/d/compare?selectedSessions=f429ec84-b879-4e66-b7fb-ef7be69d1acd">here</a>.</p>
+</section>
+<section id="chain-2-all-candidates-in-prompt">
+<h2>Chain 2: All candidates in prompt<a class="headerlink" href="#chain-2-all-candidates-in-prompt" title="Permalink to this heading">#</a></h2>
+<p>Next, let’s dump the full list of valid names in the system prompt. We’ll need a model with a longer context window than the 16k token window of gpt-3.5-turbo-0125 so we’ll use gpt-4-0125-preview.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">valid_names_str</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">valid_names</span><span class="p">)</span>
+
+<span class="n">system_2</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;Generate a relevant search query for a library system.</span>
+
+<span class="s2">`author` attribute MUST be one of:</span>
+
+<span class="si">{valid_names_str}</span>
+
+<span class="s2">Do NOT hallucinate author name!&quot;&quot;&quot;</span>
+
+<span class="n">formatted_system</span> <span class="o">=</span> <span class="n">system_2</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">valid_names_str</span><span class="o">=</span><span class="n">valid_names_str</span><span class="p">)</span>
+<span class="n">structured_llm_2</span> <span class="o">=</span> <span class="n">ChatOpenAI</span><span class="p">(</span>
+    <span class="n">model</span><span class="o">=</span><span class="s2">&quot;gpt-4-0125-preview&quot;</span><span class="p">,</span> <span class="n">temperature</span><span class="o">=</span><span class="mi">0</span>
+<span class="p">)</span><span class="o">.</span><span class="n">with_structured_output</span><span class="p">(</span><span class="n">Search</span><span class="p">)</span>
+<span class="n">query_analyzer_2</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="n">prompt</span><span class="o">.</span><span class="n">partial</span><span class="p">(</span><span class="n">system</span><span class="o">=</span><span class="n">formatted_system</span><span class="p">)</span>
+    <span class="o">|</span> <span class="n">structured_llm_2</span>
+    <span class="o">|</span> <span class="p">{</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="n">attrgetter</span><span class="p">(</span><span class="s2">&quot;author&quot;</span><span class="p">)}</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">run_on_dataset</span><span class="p">(</span><span class="n">query_analyzer_2</span><span class="p">,</span> <span class="s2">&quot;GPT-4, all names in prompt&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>View the evaluation results for project &#39;GPT-4, all names in prompt&#39; at:
+https://smith.langchain.com/o/43ae1439-dbb7-53b8-bef4-155154d3f962/datasets/1765d6b2-aa2e-46ec-9158-9f4ca8f228c6/compare?selectedSessions=8c4cfdfc-3646-438e-be47-43a40d66292a
+
+View all tests for Dataset Extracting Corrected Names at:
+https://smith.langchain.com/o/43ae1439-dbb7-53b8-bef4-155154d3f962/datasets/1765d6b2-aa2e-46ec-9158-9f4ca8f228c6
+[-------------------------------------------------&gt;] 23/23
+</pre></div>
+</div>
+</div>
+</div>
+<p>This gets us up to <code class="docutils literal notranslate"><span class="pre">Correct</span> <span class="pre">rate:</span> <span class="pre">26%</span></code>.</p>
+<p>See the test run in LangSmith <a class="reference external" href="https://smith.langchain.com/public/8c0a4c25-426d-4582-96fc-d7def170be76/d/compare?selectedSessions=8c4cfdfc-3646-438e-be47-43a40d66292a">here</a>.</p>
+</section>
+<section id="chain-3-top-k-candidates-from-vectorstore-in-prompt">
+<h2>Chain 3: Top k candidates from vectorstore in prompt<a class="headerlink" href="#chain-3-top-k-candidates-from-vectorstore-in-prompt" title="Permalink to this heading">#</a></h2>
+<p>10,000 names is a lot to have in the prompt. Perhaps we could get better performance by shortening the list using vector search first to only include names that have the highest similarity to the user question. We can return to using GPT-3.5 as a result:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">langchain_community.vectorstores</span> <span class="kn">import</span> <span class="n">Chroma</span>
+<span class="kn">from</span> <span class="nn">langchain_core.prompts</span> <span class="kn">import</span> <span class="n">PromptTemplate</span>
+<span class="kn">from</span> <span class="nn">langchain_openai</span> <span class="kn">import</span> <span class="n">OpenAIEmbeddings</span>
+
+<span class="n">k</span> <span class="o">=</span> <span class="mi">10</span>
+<span class="n">embeddings</span> <span class="o">=</span> <span class="n">OpenAIEmbeddings</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="s2">&quot;text-embedding-3-small&quot;</span><span class="p">)</span>
+<span class="n">vectorstore</span> <span class="o">=</span> <span class="n">Chroma</span><span class="o">.</span><span class="n">from_texts</span><span class="p">(</span><span class="n">valid_names</span><span class="p">,</span> <span class="n">embeddings</span><span class="p">,</span> <span class="n">collection_name</span><span class="o">=</span><span class="s2">&quot;author_names&quot;</span><span class="p">)</span>
+<span class="n">retriever</span> <span class="o">=</span> <span class="n">vectorstore</span><span class="o">.</span><span class="n">as_retriever</span><span class="p">(</span><span class="n">search_kwargs</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;k&quot;</span><span class="p">:</span> <span class="n">k</span><span class="p">})</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">system_chain</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="p">(</span><span class="k">lambda</span> <span class="n">name</span><span class="p">:</span> <span class="sa">f</span><span class="s2">&quot;what are books about aliens by </span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="o">|</span> <span class="n">retriever</span>
+    <span class="o">|</span> <span class="p">(</span>
+        <span class="k">lambda</span> <span class="n">docs</span><span class="p">:</span> <span class="n">system_2</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+            <span class="n">valid_names_str</span><span class="o">=</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">d</span><span class="o">.</span><span class="n">page_content</span> <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="n">docs</span><span class="p">)</span>
+        <span class="p">)</span>
+    <span class="p">)</span>
+<span class="p">)</span>
+<span class="n">query_analyzer_3</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="n">RunnablePassthrough</span><span class="o">.</span><span class="n">assign</span><span class="p">(</span><span class="n">system</span><span class="o">=</span><span class="n">system_chain</span><span class="p">)</span>
+    <span class="o">|</span> <span class="n">prompt</span>
+    <span class="o">|</span> <span class="n">structured_llm</span>
+    <span class="o">|</span> <span class="p">{</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="n">attrgetter</span><span class="p">(</span><span class="s2">&quot;author&quot;</span><span class="p">)}</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">run_on_dataset</span><span class="p">(</span><span class="n">query_analyzer_3</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;GPT-3.5, top </span><span class="si">{</span><span class="n">k</span><span class="si">}</span><span class="s2"> names in prompt, vecstore&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>View the evaluation results for project &#39;GPT-3.5, top 10 names in prompt, vecstore&#39; at:
+https://smith.langchain.com/o/43ae1439-dbb7-53b8-bef4-155154d3f962/datasets/1765d6b2-aa2e-46ec-9158-9f4ca8f228c6/compare?selectedSessions=af93ec50-ccbb-4b3c-908a-70c75e5516ea
+
+View all tests for Dataset Extracting Corrected Names at:
+https://smith.langchain.com/o/43ae1439-dbb7-53b8-bef4-155154d3f962/datasets/1765d6b2-aa2e-46ec-9158-9f4ca8f228c6
+[-------------------------------------------------&gt;] 23/23
+</pre></div>
+</div>
+</div>
+</div>
+<p>This gets us up to <code class="docutils literal notranslate"><span class="pre">Correct</span> <span class="pre">rate:</span> <span class="pre">57%</span></code></p>
+<p>See the test run in LangSmith <a class="reference external" href="https://smith.langchain.com/public/8c0a4c25-426d-4582-96fc-d7def170be76/d/compare?selectedSessions=af93ec50-ccbb-4b3c-908a-70c75e5516ea">here</a>.</p>
+</section>
+<section id="chain-4-top-k-candidates-by-ngram-overlap-in-prompt">
+<h2>Chain 4: Top k candidates by ngram overlap in prompt<a class="headerlink" href="#chain-4-top-k-candidates-by-ngram-overlap-in-prompt" title="Permalink to this heading">#</a></h2>
+<p>Instead of using vector search, which requires embeddings and vector stores, a cheaper and faster approach would be to compare ngram overlap between the user question and the list of valid names:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">sklearn.feature_extraction.text</span> <span class="kn">import</span> <span class="n">TfidfVectorizer</span>
+<span class="kn">from</span> <span class="nn">sklearn.metrics.pairwise</span> <span class="kn">import</span> <span class="n">cosine_similarity</span>
+
+
+<span class="c1"># Function to generate character n-grams</span>
+<span class="k">def</span> <span class="nf">ngrams</span><span class="p">(</span><span class="n">string</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="mi">3</span><span class="p">):</span>
+    <span class="n">string</span> <span class="o">=</span> <span class="s2">&quot;START&quot;</span> <span class="o">+</span> <span class="n">string</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot; &quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">+</span> <span class="s2">&quot;END&quot;</span>
+    <span class="n">ngrams</span> <span class="o">=</span> <span class="nb">zip</span><span class="p">(</span><span class="o">*</span><span class="p">[</span><span class="n">string</span><span class="p">[</span><span class="n">i</span><span class="p">:]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">)])</span>
+    <span class="k">return</span> <span class="p">[</span><span class="s2">&quot;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">ngram</span><span class="p">)</span> <span class="k">for</span> <span class="n">ngram</span> <span class="ow">in</span> <span class="n">ngrams</span><span class="p">]</span>
+
+
+<span class="c1"># Vectorize documents using TfidfVectorizer with the custom n-grams function</span>
+<span class="n">vectorizer</span> <span class="o">=</span> <span class="n">TfidfVectorizer</span><span class="p">(</span><span class="n">analyzer</span><span class="o">=</span><span class="n">ngrams</span><span class="p">)</span>
+<span class="n">tfidf_matrix</span> <span class="o">=</span> <span class="n">vectorizer</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">valid_names</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">get_names</span><span class="p">(</span><span class="n">query</span><span class="p">):</span>
+    <span class="c1"># Vectorize query</span>
+    <span class="n">query_tfidf</span> <span class="o">=</span> <span class="n">vectorizer</span><span class="o">.</span><span class="n">transform</span><span class="p">([</span><span class="n">query</span><span class="p">])</span>
+
+    <span class="c1"># Compute cosine similarity</span>
+    <span class="n">cosine_similarities</span> <span class="o">=</span> <span class="n">cosine_similarity</span><span class="p">(</span><span class="n">query_tfidf</span><span class="p">,</span> <span class="n">tfidf_matrix</span><span class="p">)</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span>
+
+    <span class="c1"># Find the index of the most similar document</span>
+    <span class="n">most_similar_document_indexes</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argsort</span><span class="p">(</span><span class="o">-</span><span class="n">cosine_similarities</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="n">valid_names</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">most_similar_document_indexes</span><span class="p">[:</span><span class="n">k</span><span class="p">]])</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">get_system_prompt</span><span class="p">(</span><span class="nb">input</span><span class="p">):</span>
+    <span class="n">name</span> <span class="o">=</span> <span class="nb">input</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">]</span>
+    <span class="n">valid_names_str</span> <span class="o">=</span> <span class="n">get_names</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;what are books about aliens by </span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">system_2</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">valid_names_str</span><span class="o">=</span><span class="n">valid_names_str</span><span class="p">)</span>
+
+
+<span class="n">query_analyzer_4</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="n">RunnablePassthrough</span><span class="o">.</span><span class="n">assign</span><span class="p">(</span><span class="n">system</span><span class="o">=</span><span class="n">get_system_prompt</span><span class="p">)</span>
+    <span class="o">|</span> <span class="n">prompt</span>
+    <span class="o">|</span> <span class="n">structured_llm</span>
+    <span class="o">|</span> <span class="p">{</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="n">attrgetter</span><span class="p">(</span><span class="s2">&quot;author&quot;</span><span class="p">)}</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">run_on_dataset</span><span class="p">(</span><span class="n">query_analyzer_4</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;GPT-3.5, top </span><span class="si">{</span><span class="n">k</span><span class="si">}</span><span class="s2"> names in prompt, ngram&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>View the evaluation results for project &#39;GPT-3.5, top 10 names in prompt, ngram&#39; at:
+https://smith.langchain.com/o/43ae1439-dbb7-53b8-bef4-155154d3f962/datasets/1765d6b2-aa2e-46ec-9158-9f4ca8f228c6/compare?selectedSessions=bc28b761-2ac9-4391-8df1-758f0a4d5100
+
+View all tests for Dataset Extracting Corrected Names at:
+https://smith.langchain.com/o/43ae1439-dbb7-53b8-bef4-155154d3f962/datasets/1765d6b2-aa2e-46ec-9158-9f4ca8f228c6
+[-------------------------------------------------&gt;] 23/23
+</pre></div>
+</div>
+</div>
+</div>
+<p>This gets us up to <code class="docutils literal notranslate"><span class="pre">Correct</span> <span class="pre">rate:</span> <span class="pre">65%</span></code></p>
+<p>See the test run in LangSmith <a class="reference external" href="https://smith.langchain.com/public/8c0a4c25-426d-4582-96fc-d7def170be76/d/compare?selectedSessions=bc28b761-2ac9-4391-8df1-758f0a4d5100">here</a>.</p>
+</section>
+<section id="chain-5-replace-with-top-candidate-from-vectorstore">
+<h2>Chain 5: Replace with top candidate from vectorstore<a class="headerlink" href="#chain-5-replace-with-top-candidate-from-vectorstore" title="Permalink to this heading">#</a></h2>
+<p>Instead of (or in addition to) searching for similar candidates before extraction, we can also compare and correct the extracted value after-the-fact a search over the valid names. With Pydantic classes this is easy using a validator:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">langchain_core.pydantic_v1</span> <span class="kn">import</span> <span class="n">validator</span>
+
+
+<span class="k">class</span> <span class="nc">Search</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
+    <span class="n">query</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">author</span><span class="p">:</span> <span class="nb">str</span>
+
+    <span class="nd">@validator</span><span class="p">(</span><span class="s2">&quot;author&quot;</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">double</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">v</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">vectorstore</span><span class="o">.</span><span class="n">similarity_search</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="mi">1</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">page_content</span>
+
+
+<span class="n">structured_llm_3</span> <span class="o">=</span> <span class="n">llm</span><span class="o">.</span><span class="n">with_structured_output</span><span class="p">(</span><span class="n">Search</span><span class="p">)</span>
+<span class="n">query_analyzer_5</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="n">prompt</span><span class="o">.</span><span class="n">partial</span><span class="p">(</span><span class="n">system</span><span class="o">=</span><span class="n">system</span><span class="p">)</span> <span class="o">|</span> <span class="n">structured_llm_3</span> <span class="o">|</span> <span class="p">{</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="n">attrgetter</span><span class="p">(</span><span class="s2">&quot;author&quot;</span><span class="p">)}</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">run_on_dataset</span><span class="p">(</span><span class="n">query_analyzer_5</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;GPT-3.5, correct name, vecstore&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>View the evaluation results for project &#39;GPT-3.5, correct name, vecstore&#39; at:
+https://smith.langchain.com/o/43ae1439-dbb7-53b8-bef4-155154d3f962/datasets/1765d6b2-aa2e-46ec-9158-9f4ca8f228c6/compare?selectedSessions=e3eda1e1-bc25-46e8-a4fb-db324cefd1c9
+
+View all tests for Dataset Extracting Corrected Names at:
+https://smith.langchain.com/o/43ae1439-dbb7-53b8-bef4-155154d3f962/datasets/1765d6b2-aa2e-46ec-9158-9f4ca8f228c6
+[-------------------------------------------------&gt;] 23/23
+</pre></div>
+</div>
+</div>
+</div>
+<p>This gets us up to <code class="docutils literal notranslate"><span class="pre">Correct</span> <span class="pre">rate:</span> <span class="pre">83%</span></code></p>
+<p>See the test run in LangSmith <a class="reference external" href="https://smith.langchain.com/public/8c0a4c25-426d-4582-96fc-d7def170be76/d/compare?selectedSessions=e3eda1e1-bc25-46e8-a4fb-db324cefd1c9">here</a>.</p>
+</section>
+<section id="chain-6-replace-with-top-candidate-by-ngram-overlap">
+<h2>Chain 6: Replace with top candidate by ngram overlap<a class="headerlink" href="#chain-6-replace-with-top-candidate-by-ngram-overlap" title="Permalink to this heading">#</a></h2>
+<p>We can do the same with ngram overlap search instead of vector search:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Search</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
+    <span class="n">query</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">author</span><span class="p">:</span> <span class="nb">str</span>
+
+    <span class="nd">@validator</span><span class="p">(</span><span class="s2">&quot;author&quot;</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">double</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">v</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">get_names</span><span class="p">(</span><span class="n">v</span><span class="p">)</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+
+
+<span class="n">structured_llm_4</span> <span class="o">=</span> <span class="n">llm</span><span class="o">.</span><span class="n">with_structured_output</span><span class="p">(</span><span class="n">Search</span><span class="p">)</span>
+<span class="n">query_analyzer_6</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="n">prompt</span><span class="o">.</span><span class="n">partial</span><span class="p">(</span><span class="n">system</span><span class="o">=</span><span class="n">system</span><span class="p">)</span> <span class="o">|</span> <span class="n">structured_llm_4</span> <span class="o">|</span> <span class="p">{</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="n">attrgetter</span><span class="p">(</span><span class="s2">&quot;author&quot;</span><span class="p">)}</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">run_on_dataset</span><span class="p">(</span><span class="n">query_analyzer_6</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;GPT-3.5, correct name, ngram&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>View the evaluation results for project &#39;GPT-3.5, correct name, ngram&#39; at:
+https://smith.langchain.com/o/43ae1439-dbb7-53b8-bef4-155154d3f962/datasets/1765d6b2-aa2e-46ec-9158-9f4ca8f228c6/compare?selectedSessions=8f8846c8-2ada-41bc-8d2c-e1d56e7c92ce
+
+View all tests for Dataset Extracting Corrected Names at:
+https://smith.langchain.com/o/43ae1439-dbb7-53b8-bef4-155154d3f962/datasets/1765d6b2-aa2e-46ec-9158-9f4ca8f228c6
+[-------------------------------------------------&gt;] 23/23
+</pre></div>
+</div>
+</div>
+</div>
+<p>This gets us up to <code class="docutils literal notranslate"><span class="pre">Correct</span> <span class="pre">rate:</span> <span class="pre">74%</span></code>, slightly worse than Chain 5 (same thing using vector search insteadf of ngram).</p>
+<p>See the test run in LangSmith <a class="reference external" href="https://smith.langchain.com/public/8c0a4c25-426d-4582-96fc-d7def170be76/d/compare?selectedSessions=8f8846c8-2ada-41bc-8d2c-e1d56e7c92ce">here</a>.</p>
+</section>
+<section id="see-all-results-in-langsmith">
+<h2>See all results in LangSmith<a class="headerlink" href="#see-all-results-in-langsmith" title="Permalink to this heading">#</a></h2>
+<p>To see the full dataset and all the test results, head to LangSmith: https://smith.langchain.com/public/8c0a4c25-426d-4582-96fc-d7def170be76/d</p>
+</section>
+</section>
+
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="chat_extraction.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Chat Extraction</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="../retrieval/intro.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Introduction</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#setup">Setup</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#augmenting-with-more-fake-names">Augmenting with more fake names</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#chain-1-baseline">Chain 1: Baseline</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#chain-2-all-candidates-in-prompt">Chain 2: All candidates in prompt</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#chain-3-top-k-candidates-from-vectorstore-in-prompt">Chain 3: Top k candidates from vectorstore in prompt</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#chain-4-top-k-candidates-by-ngram-overlap-in-prompt">Chain 4: Top k candidates by ngram overlap in prompt</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#chain-5-replace-with-top-candidate-from-vectorstore">Chain 5: Replace with top candidate from vectorstore</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#chain-6-replace-with-top-candidate-by-ngram-overlap">Chain 6: Replace with top candidate by ngram overlap</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#see-all-results-in-langsmith">See all results in LangSmith</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Langchain AI
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2023, Langchain AI.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../_static/scripts/bootstrap.js?digest=5b4479735964841361fd"></script>
+<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=5b4479735964841361fd"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

@@ -1,0 +1,886 @@
+
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+    <title>Running Locally &#8212; LangChain Benchmarks 0.0.12</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=5b4479735964841361fd" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=5b4479735964841361fd" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=5b4479735964841361fd" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=5b4479735964841361fd" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" href="../_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/css/custom.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=5b4479735964841361fd" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=5b4479735964841361fd" />
+  <script src="../_static/vendor/fontawesome/6.1.2/js/all.min.js?digest=5b4479735964841361fd"></script>
+
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/sphinx_highlight.js"></script>
+    <script src="../_static/clipboard.min.js"></script>
+    <script src="../_static/copybutton.js"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'notebooks/run_without_langsmith';</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="prev" title="Evaluating RAG Architectures on Benchmark Tasks" href="retrieval/comparing_techniques.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>
+    Back to top
+  </button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
+    </nav>
+  
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+
+<a class="navbar-brand logo" href="../index.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">LangChain Benchmarks 0.0.12</p>
+  
+</a></div>
+        <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../index.html">
+                    🦜💯 LangChain Benchmarks
+                </a>
+            </li>
+        </ul>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Introduction</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="getting_started.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="models.html">Model Registry</a></li>
+<li class="toctree-l1"><a class="reference internal" href="datasets.html">Datasets</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Tool Usage</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="tool_usage/intro.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tool_usage/relational_data.html">Relational Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tool_usage/multiverse_math.html">Multiverse Math</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tool_usage/typewriter_1.html">Typewriter: Single Tool</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tool_usage/typewriter_26.html">Typewriter: 26 Tools</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tool_usage/benchmark_all_tasks.html">Benchmark All Tasks</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Extraction</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="extraction/intro.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="extraction/email.html">Email Extraction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="extraction/chat_extraction.html">Chat Extraction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="extraction/high_cardinality.html">Extracting high-cardinality categoricals</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">RAG</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="retrieval/intro.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="retrieval/langchain_docs_qa.html">Q&amp;A over LangChain Docs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="retrieval/semi_structured_benchmarking/semi_structured.html">Semi-structured RAG</a></li>
+<li class="toctree-l1"><a class="reference internal" href="retrieval/semi_structured_benchmarking/ss_eval_chunk_sizes.html">Semi-structured eval: Chunk size tuning</a></li>
+<li class="toctree-l1"><a class="reference internal" href="retrieval/semi_structured_benchmarking/ss_eval_long_context.html">Semi-structured eval: Long-context</a></li>
+<li class="toctree-l1"><a class="reference internal" href="retrieval/semi_structured_benchmarking/ss_eval_multi_vector.html">Semi-structured eval: Multi vector</a></li>
+<li class="toctree-l1"><a class="reference internal" href="retrieval/multi_modal_benchmarking/multi_modal_eval_baseline.html">Multi-modal eval: Baseline</a></li>
+<li class="toctree-l1"><a class="reference internal" href="retrieval/multi_modal_benchmarking/multi_modal_eval.html">Multi-modal eval: GPT-4 w/ multi-modal embeddings and multi-vector retriever</a></li>
+<li class="toctree-l1"><a class="reference internal" href="retrieval/comparing_techniques.html">Evaluating RAG Architectures on Benchmark Tasks</a></li>
+
+
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Benchmarking Without LangSmith</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Running Locally</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</label></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-launch-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Launch interactive content">
+    <i class="fas fa-rocket"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://colab.research.google.com/github/langchain-ai/langchain-benchmarks/blob/main/docs/source/notebooks/run_without_langsmith.ipynb" target="_blank"
+   class="btn btn-sm dropdown-item"
+   title="Launch onColab"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  
+    <img src="../_static/images/logo_colab.png">
+  </span>
+<span class="btn__text-container">Colab</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/langchain-ai/langchain-benchmarks" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/langchain-ai/langchain-benchmarks/blob/main/docs/source/notebooks/run_without_langsmith.ipynb?plain=1" target="_blank"
+   class="btn btn-sm btn-source-file-button dropdown-item"
+   title="Show source"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-code"></i>
+  </span>
+<span class="btn__text-container">Show source</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/langchain-ai/langchain-benchmarks/issues/new?title=Issue%20on%20page%20%2Fnotebooks/run_without_langsmith.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../_sources/notebooks/run_without_langsmith.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</label>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Running Locally</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#eval">Eval</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article" role="main">
+                  
+  <section id="running-locally">
+<h1>Running Locally<a class="headerlink" href="#running-locally" title="Permalink to this heading">#</a></h1>
+<p>The LangChain benchmarks package is best used with LangSmith. You can create a free account <a class="reference external" href="https://smith.langchain.com/">here</a> and read the <a class="reference external" href="https://docs.smith.langchain.com/">docs here</a>.</p>
+<p>If you are unable to make an account, you can still run these benchmarks locally without an account.</p>
+<p>Below is an example.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Prove that we can run without LangSmith</span>
+<span class="kn">import</span> <span class="nn">os</span>
+
+<span class="n">_</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+    <span class="k">if</span> <span class="n">key</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;LANGCHAIN_&quot;</span><span class="p">)</span>
+<span class="p">]</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">langchain_benchmarks</span> <span class="kn">import</span> <span class="n">registry</span>
+
+<span class="n">task</span> <span class="o">=</span> <span class="n">registry</span><span class="p">[</span><span class="s2">&quot;Multiverse Math&quot;</span><span class="p">]</span>
+<span class="n">task</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><table>
+<tbody>
+<tr><td>Name       </td><td>Multiverse Math                                                                                                                                            </td></tr>
+<tr><td>Type       </td><td>ToolUsageTask                                                                                                                                              </td></tr>
+<tr><td>Dataset ID </td><td><a href="https://smith.langchain.com/public/594f9f60-30a0-49bf-b075-f44beabf546a/d" target="_blank" rel="noopener">594f9f60-30a0-49bf-b075-f44beabf546a</a></td></tr>
+<tr><td>Description</td><td>An environment that contains a few basic math operations, but with altered results.
+
+For example, multiplication of 5*3 will be re-interpreted as 5*3*1.1. The basic operations retain some basic properties, such as commutativity, associativity, and distributivity; however, the results are different than expected.
+
+The objective of this task is to evaluate the ability to use the provided tools to solve simple math questions and ignore any innate knowledge about math.                                                                                                                                                            </td></tr>
+</tbody>
+</table></div></div>
+</div>
+<section id="eval">
+<h2>Eval<a class="headerlink" href="#eval" title="Permalink to this heading">#</a></h2>
+<p>Let’s evaluate an agent now. Nothing will be saved to langsmith, so be sure to save the test results to your file system if you want to use them later.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">uuid</span>
+
+<span class="kn">from</span> <span class="nn">langchain_benchmarks.tool_usage</span> <span class="kn">import</span> <span class="n">agents</span><span class="p">,</span> <span class="n">get_eval_config</span>
+<span class="kn">from</span> <span class="nn">langchain_benchmarks.utils</span> <span class="kn">import</span> <span class="n">run_without_langsmith</span>
+
+<span class="n">experiment_uuid</span> <span class="o">=</span> <span class="n">uuid</span><span class="o">.</span><span class="n">uuid4</span><span class="p">()</span><span class="o">.</span><span class="n">hex</span><span class="p">[:</span><span class="mi">4</span><span class="p">]</span>
+
+
+<span class="n">models</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;gpt-3.5-turbo-1106&quot;</span><span class="p">]</span>
+
+<span class="k">for</span> <span class="n">model</span> <span class="ow">in</span> <span class="n">models</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">()</span>
+    <span class="n">eval_config</span> <span class="o">=</span> <span class="n">get_eval_config</span><span class="p">(</span><span class="n">output_evaluation</span><span class="o">=</span><span class="s2">&quot;qa_math&quot;</span><span class="p">)</span>
+    <span class="n">agent_factory</span> <span class="o">=</span> <span class="n">agents</span><span class="o">.</span><span class="n">OpenAIAgentFactory</span><span class="p">(</span><span class="n">task</span><span class="p">,</span> <span class="n">model</span><span class="o">=</span><span class="n">model</span><span class="p">)</span>
+    <span class="n">test_run</span> <span class="o">=</span> <span class="n">run_without_langsmith</span><span class="p">(</span>
+        <span class="c1"># This will clone the dataset locally if not already there</span>
+        <span class="n">path_or_token_id</span><span class="o">=</span><span class="n">task</span><span class="o">.</span><span class="n">dataset_id</span><span class="p">,</span>
+        <span class="n">llm_or_chain_factory</span><span class="o">=</span><span class="n">agent_factory</span><span class="p">,</span>
+        <span class="n">evaluation</span><span class="o">=</span><span class="n">eval_config</span><span class="p">,</span>
+        <span class="n">verbose</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+<script type="application/vnd.jupyter.widget-view+json">{"model_id": "bb6a27e067fa4887beaa78a28d8d431d", "version_major": 2, "version_minor": 0}</script><div class="output text_html"><h3>Experiment Results:</h3></div><div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>inputs.question</th>
+      <th>outputs.input</th>
+      <th>outputs.output</th>
+      <th>outputs.intermediate_steps</th>
+      <th>feedback.Intermediate steps correctness</th>
+      <th>feedback.# steps / # expected steps</th>
+      <th>feedback.correctness</th>
+      <th>error</th>
+      <th>execution_time</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>count</th>
+      <td>10</td>
+      <td>10</td>
+      <td>10</td>
+      <td>10</td>
+      <td>10.0</td>
+      <td>10.0</td>
+      <td>10.0</td>
+      <td>0</td>
+      <td>10.000000</td>
+    </tr>
+    <tr>
+      <th>unique</th>
+      <td>10</td>
+      <td>10</td>
+      <td>1</td>
+      <td>1</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>0</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>top</th>
+      <td>multiply the result of (log of 100 to base 10)...</td>
+      <td>multiply the result of (log of 100 to base 10)...</td>
+      <td></td>
+      <td>[]</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>freq</th>
+      <td>1</td>
+      <td>1</td>
+      <td>10</td>
+      <td>10</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>mean</th>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>NaN</td>
+      <td>1.453172</td>
+    </tr>
+    <tr>
+      <th>std</th>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>NaN</td>
+      <td>0.496547</td>
+    </tr>
+    <tr>
+      <th>min</th>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>NaN</td>
+      <td>0.763208</td>
+    </tr>
+    <tr>
+      <th>25%</th>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>NaN</td>
+      <td>0.963885</td>
+    </tr>
+    <tr>
+      <th>50%</th>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>NaN</td>
+      <td>1.593439</td>
+    </tr>
+    <tr>
+      <th>75%</th>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>NaN</td>
+      <td>1.870549</td>
+    </tr>
+    <tr>
+      <th>max</th>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>NaN</td>
+      <td>1.957470</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># You can interact with the object directly or as a flattened dataframe</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">test_run</span><span class="o">.</span><span class="n">to_dataframe</span><span class="p">()</span>
+<span class="n">df</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>inputs.question</th>
+      <th>outputs.input</th>
+      <th>outputs.output</th>
+      <th>outputs.intermediate_steps</th>
+      <th>feedback.Intermediate steps correctness</th>
+      <th>feedback.# steps / # expected steps</th>
+      <th>feedback.correctness</th>
+      <th>error</th>
+      <th>execution_time</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>27c44572-6c67-4129-a95a-fe1509c350be</th>
+      <td>multiply the result of (log of 100 to base 10)...</td>
+      <td>multiply the result of (log of 100 to base 10)...</td>
+      <td></td>
+      <td>[]</td>
+      <td>0</td>
+      <td>0.0</td>
+      <td>0</td>
+      <td>None</td>
+      <td>0.763208</td>
+    </tr>
+    <tr>
+      <th>2a20a13d-050e-4a16-84ff-22d9582f1449</th>
+      <td>after calculating the sin of 1.5 radians, divi...</td>
+      <td>after calculating the sin of 1.5 radians, divi...</td>
+      <td></td>
+      <td>[]</td>
+      <td>0</td>
+      <td>0.0</td>
+      <td>0</td>
+      <td>None</td>
+      <td>1.413695</td>
+    </tr>
+    <tr>
+      <th>67867526-791a-452f-b534-ef2c1f5efd20</th>
+      <td>ecoli divides every 20 minutes. How many cells...</td>
+      <td>ecoli divides every 20 minutes. How many cells...</td>
+      <td></td>
+      <td>[]</td>
+      <td>0</td>
+      <td>0.0</td>
+      <td>0</td>
+      <td>None</td>
+      <td>1.773183</td>
+    </tr>
+    <tr>
+      <th>4ac33c1a-62f0-4da4-9455-07b582f6ff52</th>
+      <td>calculate 101 to the power of 0.5 to 4 digits ...</td>
+      <td>calculate 101 to the power of 0.5 to 4 digits ...</td>
+      <td></td>
+      <td>[]</td>
+      <td>0</td>
+      <td>0.0</td>
+      <td>0</td>
+      <td>None</td>
+      <td>1.819677</td>
+    </tr>
+    <tr>
+      <th>2e82a924-8382-425e-8738-daa2d912e9fe</th>
+      <td>convert 15 degrees to radians</td>
+      <td>convert 15 degrees to radians</td>
+      <td></td>
+      <td>[]</td>
+      <td>0</td>
+      <td>0.0</td>
+      <td>0</td>
+      <td>None</td>
+      <td>1.957470</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="s2">&quot;output.csv&quot;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="retrieval/comparing_techniques.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Evaluating RAG Architectures on Benchmark Tasks</p>
+      </div>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#eval">Eval</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Langchain AI
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2023, Langchain AI.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=5b4479735964841361fd"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=5b4479735964841361fd"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

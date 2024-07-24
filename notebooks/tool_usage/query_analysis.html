@@ -1,0 +1,1078 @@
+
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+    <title>Few-Shot Experiments on Query Analysis &#8212; LangChain Benchmarks 0.0.12</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=5b4479735964841361fd" rel="stylesheet" />
+<link href="../../_static/styles/bootstrap.css?digest=5b4479735964841361fd" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=5b4479735964841361fd" rel="stylesheet" />
+
+  
+  <link href="../../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=5b4479735964841361fd" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+    <link rel="stylesheet" href="../../_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/custom.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=5b4479735964841361fd" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=5b4479735964841361fd" />
+  <script src="../../_static/vendor/fontawesome/6.1.2/js/all.min.js?digest=5b4479735964841361fd"></script>
+
+    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/sphinx_highlight.js"></script>
+    <script src="../../_static/clipboard.min.js"></script>
+    <script src="../../_static/copybutton.js"></script>
+    <script src="../../_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'notebooks/tool_usage/query_analysis';</script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>
+    Back to top
+  </button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
+    </nav>
+  
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+
+<a class="navbar-brand logo" href="../../index.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">LangChain Benchmarks 0.0.12</p>
+  
+</a></div>
+        <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../../index.html">
+                    🦜💯 LangChain Benchmarks
+                </a>
+            </li>
+        </ul>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Introduction</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../getting_started.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../models.html">Model Registry</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../datasets.html">Datasets</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Tool Usage</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="intro.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="relational_data.html">Relational Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="multiverse_math.html">Multiverse Math</a></li>
+<li class="toctree-l1"><a class="reference internal" href="typewriter_1.html">Typewriter: Single Tool</a></li>
+<li class="toctree-l1"><a class="reference internal" href="typewriter_26.html">Typewriter: 26 Tools</a></li>
+<li class="toctree-l1"><a class="reference internal" href="benchmark_all_tasks.html">Benchmark All Tasks</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Extraction</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../extraction/intro.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../extraction/email.html">Email Extraction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../extraction/chat_extraction.html">Chat Extraction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../extraction/high_cardinality.html">Extracting high-cardinality categoricals</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">RAG</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../retrieval/intro.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../retrieval/langchain_docs_qa.html">Q&amp;A over LangChain Docs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../retrieval/semi_structured_benchmarking/semi_structured.html">Semi-structured RAG</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../retrieval/semi_structured_benchmarking/ss_eval_chunk_sizes.html">Semi-structured eval: Chunk size tuning</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../retrieval/semi_structured_benchmarking/ss_eval_long_context.html">Semi-structured eval: Long-context</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../retrieval/semi_structured_benchmarking/ss_eval_multi_vector.html">Semi-structured eval: Multi vector</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../retrieval/multi_modal_benchmarking/multi_modal_eval_baseline.html">Multi-modal eval: Baseline</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../retrieval/multi_modal_benchmarking/multi_modal_eval.html">Multi-modal eval: GPT-4 w/ multi-modal embeddings and multi-vector retriever</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../retrieval/comparing_techniques.html">Evaluating RAG Architectures on Benchmark Tasks</a></li>
+
+
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Benchmarking Without LangSmith</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../run_without_langsmith.html">Running Locally</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</label></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-launch-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Launch interactive content">
+    <i class="fas fa-rocket"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://colab.research.google.com/github/langchain-ai/langchain-benchmarks/blob/main/docs/source/notebooks/tool_usage/query_analysis.ipynb" target="_blank"
+   class="btn btn-sm dropdown-item"
+   title="Launch onColab"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  
+    <img src="../../_static/images/logo_colab.png">
+  </span>
+<span class="btn__text-container">Colab</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/langchain-ai/langchain-benchmarks" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/langchain-ai/langchain-benchmarks/blob/main/docs/source/notebooks/tool_usage/query_analysis.ipynb?plain=1" target="_blank"
+   class="btn btn-sm btn-source-file-button dropdown-item"
+   title="Show source"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-code"></i>
+  </span>
+<span class="btn__text-container">Show source</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/langchain-ai/langchain-benchmarks/issues/new?title=Issue%20on%20page%20%2Fnotebooks/tool_usage/query_analysis.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../../_sources/notebooks/tool_usage/query_analysis.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</label>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Few-Shot Experiments on Query Analysis</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#setup">Setup</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#helper-functions">Helper functions</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#define-evaluator-function">Define Evaluator Function</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#few-shot-preparation">Few-Shot preparation</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#prediction-function">Prediction Function</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#running-the-experiment">Running the Experiment</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#visualize-results">Visualize Results</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#comparing-semantic-search">Comparing Semantic Search</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article" role="main">
+                  
+  <section id="few-shot-experiments-on-query-analysis">
+<h1>Few-Shot Experiments on Query Analysis<a class="headerlink" href="#few-shot-experiments-on-query-analysis" title="Permalink to this heading">#</a></h1>
+<p>This notebook, walks through how to run benchmarks on a tool calling model using the Query Analysis dataset.</p>
+<section id="setup">
+<h2>Setup<a class="headerlink" href="#setup" title="Permalink to this heading">#</a></h2>
+<p>First, let’s install our dependencies and import the relevant modules.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="k">pip</span> install -qU langchain-benchmarks langchain-community langchain-openai pandas numpy matplotlib seaborn
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">uuid</span>
+<span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">Counter</span>
+<span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Optional</span>
+
+<span class="kn">from</span> <span class="nn">langchain.chat_models</span> <span class="kn">import</span> <span class="n">init_chat_model</span>
+<span class="kn">from</span> <span class="nn">langchain_community.vectorstores</span> <span class="kn">import</span> <span class="n">FAISS</span>
+<span class="kn">from</span> <span class="nn">langchain_core.example_selectors</span> <span class="kn">import</span> <span class="n">SemanticSimilarityExampleSelector</span>
+<span class="kn">from</span> <span class="nn">langchain_core.messages</span> <span class="kn">import</span> <span class="n">AIMessage</span><span class="p">,</span> <span class="n">HumanMessage</span><span class="p">,</span> <span class="n">ToolMessage</span>
+<span class="kn">from</span> <span class="nn">langchain_core.output_parsers</span> <span class="kn">import</span> <span class="n">StrOutputParser</span>
+<span class="kn">from</span> <span class="nn">langchain_core.prompts</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">ChatPromptTemplate</span><span class="p">,</span>
+    <span class="n">FewShotChatMessagePromptTemplate</span><span class="p">,</span>
+    <span class="n">MessagesPlaceholder</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="kn">from</span> <span class="nn">langchain_openai</span> <span class="kn">import</span> <span class="n">OpenAIEmbeddings</span>
+<span class="kn">from</span> <span class="nn">langsmith.client</span> <span class="kn">import</span> <span class="n">Client</span>
+<span class="kn">from</span> <span class="nn">langsmith.evaluation</span> <span class="kn">import</span> <span class="n">evaluate</span>
+<span class="kn">from</span> <span class="nn">langsmith.evaluation.evaluator</span> <span class="kn">import</span> <span class="n">EvaluationResult</span><span class="p">,</span> <span class="n">EvaluationResults</span>
+<span class="kn">from</span> <span class="nn">langsmith.schemas</span> <span class="kn">import</span> <span class="n">Example</span><span class="p">,</span> <span class="n">Run</span>
+
+<span class="kn">from</span> <span class="nn">langchain_benchmarks.tool_usage.tasks.query_analysis</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">QUERY_ANALYSIS_TASK</span><span class="p">,</span>
+    <span class="n">BlogQuery</span><span class="p">,</span>
+    <span class="n">DocQuery</span><span class="p">,</span>
+    <span class="n">TweetQuery</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="c1"># Define our LangSmith client so we have access to it throughout the rest of the notebook</span>
+<span class="n">client</span> <span class="o">=</span> <span class="n">Client</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="helper-functions">
+<h2>Helper functions<a class="headerlink" href="#helper-functions" title="Permalink to this heading">#</a></h2>
+<p>First, let us set up a few helper functions. The <code class="docutils literal notranslate"><span class="pre">calculate_recall</span></code> helper function is used because we are testing the ability of the model to correctly query all of the expected queries, and we are not punishing it for querying extra information. The <code class="docutils literal notranslate"><span class="pre">is_iso_format</span></code> funciton is used since some of the fields we are testing for accuracy are in <code class="docutils literal notranslate"><span class="pre">datetime</span></code> format. We use LLM-as-a-judge for determining whether the actual search query provided by the model is similar in meaning to the search query we were expecting.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">calculate_recall</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">B</span><span class="p">):</span>
+    <span class="c1"># Count the occurrences of each element in A and B</span>
+    <span class="n">count_A</span> <span class="o">=</span> <span class="n">Counter</span><span class="p">(</span><span class="n">A</span><span class="p">)</span>
+    <span class="n">count_B</span> <span class="o">=</span> <span class="n">Counter</span><span class="p">(</span><span class="n">B</span><span class="p">)</span>
+
+    <span class="c1"># Calculate the number of true positives</span>
+    <span class="n">true_positives</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="nb">min</span><span class="p">(</span><span class="n">count_A</span><span class="p">[</span><span class="n">elem</span><span class="p">],</span> <span class="n">count_B</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">elem</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span> <span class="k">for</span> <span class="n">elem</span> <span class="ow">in</span> <span class="n">count_A</span><span class="p">)</span>
+
+    <span class="c1"># Calculate recall</span>
+    <span class="n">recall</span> <span class="o">=</span> <span class="n">true_positives</span> <span class="o">/</span> <span class="nb">sum</span><span class="p">(</span><span class="n">count_A</span><span class="o">.</span><span class="n">values</span><span class="p">())</span> <span class="k">if</span> <span class="n">count_A</span> <span class="k">else</span> <span class="mi">0</span>
+
+    <span class="k">return</span> <span class="n">recall</span>
+
+
+<span class="k">def</span> <span class="nf">is_iso_format</span><span class="p">(</span><span class="n">date_str</span><span class="p">):</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">date_str</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="k">return</span> <span class="kc">False</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="c1"># Try to parse the string with datetime.fromisoformat</span>
+        <span class="n">datetime</span><span class="o">.</span><span class="n">fromisoformat</span><span class="p">(</span><span class="n">date_str</span><span class="p">)</span>
+        <span class="k">return</span> <span class="kc">True</span>
+    <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">False</span>
+
+
+<span class="n">llm_judge</span> <span class="o">=</span> <span class="n">ChatOpenAI</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="s2">&quot;gpt-4o&quot;</span><span class="p">)</span>
+
+<span class="n">judge_prompt</span> <span class="o">=</span> <span class="n">ChatPromptTemplate</span><span class="o">.</span><span class="n">from_messages</span><span class="p">(</span>
+    <span class="p">[</span>
+        <span class="p">(</span>
+            <span class="s2">&quot;system&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;You are an llm tasked with determining if the subject extracted by another LLM is an accurate &quot;</span>
+            <span class="s2">&quot;representation of the correct answer. You are to check for general semantic similarity since the words might not &quot;</span>
+            <span class="s2">&quot;match up perfectly but the meaning might still be the same. Return YES if the answers match, and NO otherwise. &quot;</span>
+            <span class="s2">&quot;Never return anything other than YES or NO.&quot;</span><span class="p">,</span>
+        <span class="p">),</span>
+        <span class="p">(</span>
+            <span class="s2">&quot;human&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Is this query: </span><span class="si">{run_query}</span><span class="s2"> somewhat similar to this reference query: </span><span class="si">{reference_query}</span><span class="s2">&quot;</span><span class="p">,</span>
+        <span class="p">),</span>
+    <span class="p">]</span>
+<span class="p">)</span>
+
+<span class="n">judge_chain</span> <span class="o">=</span> <span class="n">judge_prompt</span> <span class="o">|</span> <span class="n">llm_judge</span> <span class="o">|</span> <span class="n">StrOutputParser</span><span class="p">()</span>
+
+<span class="c1"># Tools imported from extract_query file</span>
+<span class="n">tools</span> <span class="o">=</span> <span class="p">[</span><span class="n">DocQuery</span><span class="p">,</span> <span class="n">TweetQuery</span><span class="p">,</span> <span class="n">BlogQuery</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+</div>
+<section id="define-evaluator-function">
+<h3>Define Evaluator Function<a class="headerlink" href="#define-evaluator-function" title="Permalink to this heading">#</a></h3>
+<p>Now we are ready to define our evaluator function. Our evaluator function will check that all of the expected tool calls are reproduced by the model with the correct arguments as well. If all the expected tool calls are in the final response with the correct arguments, we assign an overall score of 1. We also give partial credit for calling the correct tools, getting the correct deterministic arguments, and getting the correct undeterministic arguments as well.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">compare_outputs</span><span class="p">(</span><span class="n">run_outputs</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span> <span class="n">example_outputs</span><span class="p">:</span> <span class="nb">dict</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">EvaluationResults</span><span class="p">:</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">run_outputs</span><span class="p">[</span><span class="s2">&quot;response&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">tool_calls</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">correct_tool_score</span><span class="p">,</span> <span class="n">determinstic_score</span><span class="p">,</span> <span class="n">underministic_score</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="c1"># Chose the correct tool</span>
+        <span class="n">reference_tools</span> <span class="o">=</span> <span class="p">[</span><span class="n">tool</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">]</span> <span class="k">for</span> <span class="n">tool</span> <span class="ow">in</span> <span class="n">example_outputs</span><span class="p">[</span><span class="s2">&quot;reference&quot;</span><span class="p">]]</span>
+        <span class="n">outputted_tools</span> <span class="o">=</span> <span class="p">[</span><span class="n">tool</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">]</span> <span class="k">for</span> <span class="n">tool</span> <span class="ow">in</span> <span class="n">run_outputs</span><span class="p">[</span><span class="s2">&quot;response&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">tool_calls</span><span class="p">]</span>
+        <span class="n">correct_tool_score</span> <span class="o">=</span> <span class="n">calculate_recall</span><span class="p">(</span><span class="n">reference_tools</span><span class="p">,</span> <span class="n">outputted_tools</span><span class="p">)</span>
+
+        <span class="c1"># Has the correct determenistic args</span>
+        <span class="n">determinstic_score</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="c1"># Has the correct undetermenistic args</span>
+        <span class="n">underministic_score</span> <span class="o">=</span> <span class="mi">0</span>
+
+        <span class="k">if</span> <span class="n">correct_tool_score</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="n">determinstic_score</span><span class="p">,</span> <span class="n">underministic_score</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span>
+            <span class="k">for</span> <span class="n">tool</span> <span class="ow">in</span> <span class="n">example_outputs</span><span class="p">[</span><span class="s2">&quot;reference&quot;</span><span class="p">]:</span>
+                <span class="n">corresponding_response_tool</span> <span class="o">=</span> <span class="p">[</span>
+                    <span class="n">t</span>
+                    <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">run_outputs</span><span class="p">[</span><span class="s2">&quot;response&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">tool_calls</span>
+                    <span class="k">if</span> <span class="n">t</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="n">tool</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">]</span>
+                <span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="s2">&quot;args&quot;</span><span class="p">]</span>
+                <span class="k">for</span> <span class="n">arg</span> <span class="ow">in</span> <span class="n">tool</span><span class="p">[</span><span class="s2">&quot;args&quot;</span><span class="p">]:</span>
+                    <span class="c1"># Check that outputted search query matches the meaning of expected search query</span>
+                    <span class="k">if</span> <span class="n">arg</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;query&quot;</span><span class="p">,</span> <span class="s2">&quot;subject&quot;</span><span class="p">]:</span>
+                        <span class="n">ans</span> <span class="o">=</span> <span class="n">judge_chain</span><span class="o">.</span><span class="n">invoke</span><span class="p">(</span>
+                            <span class="p">{</span>
+                                <span class="s2">&quot;run_query&quot;</span><span class="p">:</span> <span class="n">corresponding_response_tool</span><span class="p">[</span><span class="n">arg</span><span class="p">],</span>
+                                <span class="s2">&quot;reference_query&quot;</span><span class="p">:</span> <span class="n">tool</span><span class="p">[</span><span class="s2">&quot;args&quot;</span><span class="p">][</span><span class="n">arg</span><span class="p">],</span>
+                            <span class="p">}</span>
+                        <span class="p">)</span>
+                        <span class="n">underministic_score</span> <span class="o">=</span> <span class="mi">1</span> <span class="k">if</span> <span class="n">ans</span> <span class="o">==</span> <span class="s2">&quot;YES&quot;</span> <span class="k">else</span> <span class="mi">0</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="c1"># Check that tool call arguments are correct (being careful with datetime objects)</span>
+                        <span class="k">if</span> <span class="p">(</span>
+                            <span class="n">tool</span><span class="p">[</span><span class="s2">&quot;args&quot;</span><span class="p">][</span><span class="n">arg</span><span class="p">]</span> <span class="ow">and</span> <span class="n">arg</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">corresponding_response_tool</span>
+                        <span class="p">)</span> <span class="ow">or</span> <span class="p">(</span>
+                            <span class="n">tool</span><span class="p">[</span><span class="s2">&quot;args&quot;</span><span class="p">][</span><span class="n">arg</span><span class="p">]</span>
+                            <span class="ow">and</span> <span class="ow">not</span> <span class="p">(</span>
+                                <span class="n">tool</span><span class="p">[</span><span class="s2">&quot;args&quot;</span><span class="p">][</span><span class="n">arg</span><span class="p">]</span> <span class="o">==</span> <span class="n">corresponding_response_tool</span><span class="p">[</span><span class="n">arg</span><span class="p">]</span>
+                            <span class="p">)</span>
+                            <span class="ow">and</span> <span class="ow">not</span> <span class="p">(</span>
+                                <span class="n">is_iso_format</span><span class="p">(</span><span class="n">tool</span><span class="p">[</span><span class="s2">&quot;args&quot;</span><span class="p">][</span><span class="n">arg</span><span class="p">])</span>
+                                <span class="ow">and</span> <span class="n">is_iso_format</span><span class="p">(</span><span class="n">corresponding_response_tool</span><span class="p">[</span><span class="n">arg</span><span class="p">])</span>
+                                <span class="ow">and</span> <span class="n">datetime</span><span class="o">.</span><span class="n">fromisoformat</span><span class="p">(</span>
+                                    <span class="p">(</span><span class="n">corresponding_response_tool</span><span class="p">[</span><span class="n">arg</span><span class="p">])</span>
+                                <span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">tzinfo</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+                                <span class="o">==</span> <span class="n">datetime</span><span class="o">.</span><span class="n">fromisoformat</span><span class="p">(</span><span class="n">tool</span><span class="p">[</span><span class="s2">&quot;args&quot;</span><span class="p">][</span><span class="n">arg</span><span class="p">])</span>
+                            <span class="p">)</span>
+                        <span class="p">):</span>
+                            <span class="n">determinstic_score</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="c1"># Overall correctness</span>
+    <span class="n">overall_score</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span>
+        <span class="n">correct_tool_score</span> <span class="o">==</span> <span class="mi">1</span>
+        <span class="ow">and</span> <span class="nb">bool</span><span class="p">(</span><span class="n">determinstic_score</span><span class="p">)</span>
+        <span class="ow">and</span> <span class="nb">bool</span><span class="p">(</span><span class="n">underministic_score</span><span class="p">)</span>
+    <span class="p">)</span>
+    <span class="n">results</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="n">EvaluationResult</span><span class="p">(</span>
+            <span class="n">key</span><span class="o">=</span><span class="s2">&quot;Correct tool&quot;</span><span class="p">,</span>
+            <span class="n">score</span><span class="o">=</span><span class="n">correct_tool_score</span><span class="p">,</span>
+        <span class="p">),</span>
+        <span class="n">EvaluationResult</span><span class="p">(</span>
+            <span class="n">key</span><span class="o">=</span><span class="s2">&quot;Correct determenistic args&quot;</span><span class="p">,</span>
+            <span class="n">score</span><span class="o">=</span><span class="n">determinstic_score</span><span class="p">,</span>
+        <span class="p">),</span>
+        <span class="n">EvaluationResult</span><span class="p">(</span>
+            <span class="n">key</span><span class="o">=</span><span class="s2">&quot;Correct undermenistic args&quot;</span><span class="p">,</span>
+            <span class="n">score</span><span class="o">=</span><span class="n">underministic_score</span><span class="p">,</span>
+        <span class="p">),</span>
+        <span class="n">EvaluationResult</span><span class="p">(</span>
+            <span class="n">key</span><span class="o">=</span><span class="s2">&quot;Overall correctness&quot;</span><span class="p">,</span>
+            <span class="n">score</span><span class="o">=</span><span class="n">overall_score</span><span class="p">,</span>
+        <span class="p">),</span>
+    <span class="p">]</span>
+
+    <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;results&quot;</span><span class="p">:</span> <span class="n">results</span><span class="p">}</span>
+
+
+<span class="k">def</span> <span class="nf">evaluate_run</span><span class="p">(</span><span class="n">run</span><span class="p">:</span> <span class="n">Run</span><span class="p">,</span> <span class="n">example</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Example</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">EvaluationResults</span><span class="p">:</span>
+    <span class="k">return</span> <span class="n">compare_outputs</span><span class="p">(</span><span class="n">run</span><span class="o">.</span><span class="n">outputs</span><span class="p">,</span> <span class="n">example</span><span class="o">.</span><span class="n">outputs</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="few-shot-preparation">
+<h2>Few-Shot preparation<a class="headerlink" href="#few-shot-preparation" title="Permalink to this heading">#</a></h2>
+<p>We are now ready for preparing for running our evaluation scipt across different few-shot prompting strategies. In this next code cell, we pull the uncleaned few-shot examples from LangSmith and then create a dataset for semantic search, as well as an overall few-shot list of messages and overall string - both of which we will insert into the prompt for few-shot testing.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">uncleaned_examples</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="n">e</span> <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="n">client</span><span class="o">.</span><span class="n">list_examples</span><span class="p">(</span><span class="n">dataset_name</span><span class="o">=</span><span class="s2">&quot;Extraction Task Few Shot&quot;</span><span class="p">)</span>
+<span class="p">]</span>
+<span class="n">few_shot_messages</span><span class="p">,</span> <span class="n">few_shot_str</span> <span class="o">=</span> <span class="p">[],</span> <span class="s2">&quot;&quot;</span>
+<span class="n">few_shot_messages_by_index</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="n">examples_for_semantic_search</span> <span class="o">=</span> <span class="p">[]</span>
+
+<span class="k">for</span> <span class="n">j</span><span class="p">,</span> <span class="n">example</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">uncleaned_examples</span><span class="p">):</span>
+    <span class="n">few_shot_messages_for_example</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">few_shot_messages_for_example</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+        <span class="n">HumanMessage</span><span class="p">(</span>
+            <span class="n">name</span><span class="o">=</span><span class="s2">&quot;example_human&quot;</span><span class="p">,</span> <span class="n">content</span><span class="o">=</span><span class="n">example</span><span class="o">.</span><span class="n">inputs</span><span class="p">[</span><span class="s2">&quot;question&quot;</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="s2">&quot;content&quot;</span><span class="p">]</span>
+        <span class="p">)</span>
+    <span class="p">)</span>
+    <span class="n">few_shot_messages_for_example</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+        <span class="n">AIMessage</span><span class="p">(</span>
+            <span class="n">name</span><span class="o">=</span><span class="s2">&quot;example_assistant&quot;</span><span class="p">,</span>
+            <span class="n">content</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span>
+            <span class="n">tool_calls</span><span class="o">=</span><span class="p">[</span>
+                <span class="p">{</span>
+                    <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="n">tc</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">],</span>
+                    <span class="s2">&quot;args&quot;</span><span class="p">:</span> <span class="n">tc</span><span class="p">[</span><span class="s2">&quot;args&quot;</span><span class="p">],</span>
+                    <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;tool_call&quot;</span><span class="p">,</span>
+                    <span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="mi">10</span><span class="o">*</span><span class="n">j</span><span class="o">+</span><span class="n">i</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+                <span class="p">}</span>
+                <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">tc</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">example</span><span class="o">.</span><span class="n">outputs</span><span class="p">[</span><span class="s2">&quot;reference&quot;</span><span class="p">])</span>
+            <span class="p">],</span>
+        <span class="p">)</span>
+    <span class="p">)</span>
+    <span class="n">few_shot_str</span> <span class="o">+=</span> <span class="p">(</span>
+        <span class="sa">f</span><span class="s2">&quot;&lt;|im_start|&gt;user</span><span class="se">\n</span><span class="si">{</span><span class="n">example</span><span class="o">.</span><span class="n">inputs</span><span class="p">[</span><span class="s1">&#39;question&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="s1">&#39;content&#39;</span><span class="p">]</span><span class="si">}</span><span class="se">\n</span><span class="s2">&lt;|im_end|&gt;&quot;</span>
+    <span class="p">)</span>
+    <span class="n">few_shot_str</span> <span class="o">+=</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&lt;|im_start|&gt;assistant</span><span class="se">\n</span><span class="s2">&quot;</span>
+    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">tool_call</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">example</span><span class="o">.</span><span class="n">outputs</span><span class="p">[</span><span class="s2">&quot;reference&quot;</span><span class="p">]):</span>
+        <span class="n">few_shot_messages_for_example</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+            <span class="n">ToolMessage</span><span class="p">(</span>
+                <span class="s2">&quot;You have correctly called this tool&quot;</span><span class="p">,</span>
+                <span class="n">name</span><span class="o">=</span><span class="n">tool_call</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">],</span>
+                <span class="n">tool_call_id</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="mi">10</span><span class="o">*</span><span class="n">j</span><span class="o">+</span><span class="n">i</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+            <span class="p">)</span>
+        <span class="p">)</span>
+        <span class="n">few_shot_str</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot;Tool Call: Name: </span><span class="si">{</span><span class="n">tool_call</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2"> Args: </span><span class="se">{{</span><span class="si">{</span><span class="s1">&#39;, &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">k</span><span class="si">}</span><span class="s1">: </span><span class="si">{</span><span class="n">v</span><span class="si">}</span><span class="s1">&#39;</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="n">k</span><span class="p">,</span><span class="n">v</span><span class="w"> </span><span class="ow">in</span><span class="w"> </span><span class="n">tool_call</span><span class="p">[</span><span class="s1">&#39;args&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">items</span><span class="p">())</span><span class="si">}</span><span class="se">}}</span><span class="s2">&quot;</span>
+        <span class="n">few_shot_str</span> <span class="o">+=</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span>
+    <span class="n">few_shot_str</span> <span class="o">+=</span> <span class="s2">&quot;&lt;|im_end|&gt;&quot;</span>
+
+    <span class="n">few_shot_messages</span> <span class="o">+=</span> <span class="n">few_shot_messages_for_example</span>
+    <span class="n">few_shot_messages_by_index</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="n">few_shot_messages_for_example</span>
+    <span class="n">examples_for_semantic_search</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+        <span class="p">{</span>
+            <span class="s2">&quot;question&quot;</span><span class="p">:</span> <span class="n">example</span><span class="o">.</span><span class="n">inputs</span><span class="p">[</span><span class="s2">&quot;question&quot;</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="s2">&quot;content&quot;</span><span class="p">],</span>
+            <span class="s2">&quot;messages&quot;</span><span class="p">:</span> <span class="n">few_shot_messages_for_example</span><span class="p">,</span>
+        <span class="p">}</span>
+    <span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="prediction-function">
+<h2>Prediction Function<a class="headerlink" href="#prediction-function" title="Permalink to this heading">#</a></h2>
+<p>Next, we can write our prediction function, which will vary depending on the few-shot method provided. The function is very similar for all of the methods except for the semantic search method. In the semantic search method, we need to add a little extra logic to pull the correct examples before inserting them into the prompt.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># 3 static indices to compare against using semantic search to select 3 few-shot examples</span>
+<span class="n">static_indices</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">5</span><span class="p">]</span>
+
+<span class="c1"># Default prompt format we will use for all examples</span>
+<span class="n">prompt</span> <span class="o">=</span> <span class="n">ChatPromptTemplate</span><span class="o">.</span><span class="n">from_messages</span><span class="p">(</span>
+    <span class="p">[</span>
+        <span class="p">(</span><span class="s2">&quot;system&quot;</span><span class="p">,</span> <span class="s2">&quot;</span><span class="si">{instructions}</span><span class="s2">&quot;</span><span class="p">),</span>
+        <span class="n">MessagesPlaceholder</span><span class="p">(</span><span class="s2">&quot;few_shot_message_list&quot;</span><span class="p">),</span>
+        <span class="p">(</span><span class="s2">&quot;human&quot;</span><span class="p">,</span> <span class="s2">&quot;</span><span class="si">{input}</span><span class="s2">&quot;</span><span class="p">),</span>
+    <span class="p">]</span>
+<span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">predict_for_model</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">instructions</span><span class="p">,</span> <span class="n">few_shot_method</span><span class="p">):</span>
+    <span class="n">few_shot_message_list</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">chain</span> <span class="o">=</span> <span class="n">prompt</span> <span class="o">|</span> <span class="n">model</span><span class="o">.</span><span class="n">bind_tools</span><span class="p">(</span><span class="n">tools</span><span class="p">,</span> <span class="n">tool_choice</span><span class="o">=</span><span class="s2">&quot;any&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">with_retry</span><span class="p">(</span>
+        <span class="n">stop_after_attempt</span><span class="o">=</span><span class="mi">5</span>
+    <span class="p">)</span>
+    <span class="k">if</span> <span class="n">few_shot_method</span> <span class="o">==</span> <span class="s2">&quot;few-shot-string&quot;</span><span class="p">:</span>
+        <span class="n">instructions</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2"> Here are some examples: </span><span class="se">\n</span><span class="s2"> </span><span class="si">{</span><span class="n">few_shot_str</span><span class="si">}</span><span class="s2">&quot;</span>
+    <span class="k">elif</span> <span class="n">few_shot_method</span> <span class="o">==</span> <span class="s2">&quot;few-shot-messages&quot;</span><span class="p">:</span>
+        <span class="n">few_shot_message_list</span> <span class="o">=</span> <span class="n">few_shot_messages</span>
+    <span class="k">elif</span> <span class="n">few_shot_method</span> <span class="o">==</span> <span class="s2">&quot;few-shot-static-messages&quot;</span><span class="p">:</span>
+        <span class="n">few_shot_message_list</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="n">message</span>
+            <span class="k">for</span> <span class="n">index</span> <span class="ow">in</span> <span class="n">static_indices</span>
+            <span class="k">for</span> <span class="n">message</span> <span class="ow">in</span> <span class="n">few_shot_messages_by_index</span><span class="p">[</span><span class="n">index</span><span class="p">]</span>
+        <span class="p">]</span>
+    <span class="k">elif</span> <span class="n">few_shot_method</span> <span class="o">==</span> <span class="s2">&quot;few-shot-dynamic-messages&quot;</span><span class="p">:</span>
+
+        <span class="k">def</span> <span class="nf">predict</span><span class="p">(</span><span class="n">example</span><span class="p">:</span> <span class="nb">dict</span><span class="p">):</span>
+            <span class="n">example_selector</span> <span class="o">=</span> <span class="n">SemanticSimilarityExampleSelector</span><span class="o">.</span><span class="n">from_examples</span><span class="p">(</span>
+                <span class="n">examples_for_semantic_search</span><span class="p">,</span>
+                <span class="n">OpenAIEmbeddings</span><span class="p">(),</span>
+                <span class="n">FAISS</span><span class="p">,</span>
+                <span class="n">k</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
+                <span class="n">input_keys</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;question&quot;</span><span class="p">],</span>
+                <span class="n">example_keys</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;messages&quot;</span><span class="p">],</span>
+            <span class="p">)</span>
+
+            <span class="n">few_shot_prompt</span> <span class="o">=</span> <span class="n">FewShotChatMessagePromptTemplate</span><span class="p">(</span>
+                <span class="n">input_variables</span><span class="o">=</span><span class="p">[],</span>
+                <span class="n">example_selector</span><span class="o">=</span><span class="n">example_selector</span><span class="p">,</span>
+                <span class="n">example_prompt</span><span class="o">=</span><span class="n">MessagesPlaceholder</span><span class="p">(</span><span class="s2">&quot;messages&quot;</span><span class="p">),</span>
+            <span class="p">)</span>
+            <span class="k">return</span> <span class="p">{</span>
+                <span class="s2">&quot;response&quot;</span><span class="p">:</span> <span class="n">chain</span><span class="o">.</span><span class="n">invoke</span><span class="p">(</span>
+                    <span class="p">{</span>
+                        <span class="s2">&quot;input&quot;</span><span class="p">:</span> <span class="n">example</span><span class="p">[</span><span class="s2">&quot;question&quot;</span><span class="p">],</span>
+                        <span class="s2">&quot;instructions&quot;</span><span class="p">:</span> <span class="n">instructions</span><span class="p">,</span>
+                        <span class="s2">&quot;few_shot_message_list&quot;</span><span class="p">:</span> <span class="n">few_shot_prompt</span><span class="o">.</span><span class="n">invoke</span><span class="p">(</span>
+                            <span class="p">{</span><span class="s2">&quot;question&quot;</span><span class="p">:</span> <span class="n">example</span><span class="p">[</span><span class="s2">&quot;question&quot;</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="s2">&quot;content&quot;</span><span class="p">]}</span>
+                        <span class="p">)</span><span class="o">.</span><span class="n">messages</span><span class="p">,</span>
+                    <span class="p">}</span>
+                <span class="p">)</span>
+            <span class="p">}</span>
+
+        <span class="k">return</span> <span class="n">predict</span>
+
+    <span class="k">def</span> <span class="nf">predict</span><span class="p">(</span><span class="n">example</span><span class="p">:</span> <span class="nb">dict</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">{</span>
+            <span class="s2">&quot;response&quot;</span><span class="p">:</span> <span class="n">chain</span><span class="o">.</span><span class="n">invoke</span><span class="p">(</span>
+                <span class="p">{</span>
+                    <span class="s2">&quot;input&quot;</span><span class="p">:</span> <span class="n">example</span><span class="p">[</span><span class="s2">&quot;question&quot;</span><span class="p">],</span>
+                    <span class="s2">&quot;instructions&quot;</span><span class="p">:</span> <span class="n">instructions</span><span class="p">,</span>
+                    <span class="s2">&quot;few_shot_message_list&quot;</span><span class="p">:</span> <span class="n">few_shot_message_list</span><span class="p">,</span>
+                <span class="p">}</span>
+            <span class="p">)</span>
+        <span class="p">}</span>
+
+    <span class="k">return</span> <span class="n">predict</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="running-the-experiment">
+<h2>Running the Experiment<a class="headerlink" href="#running-the-experiment" title="Permalink to this heading">#</a></h2>
+<p>Now that we have defined our evaluation function, we can actually run our evaluation! The code below loops through different models and then calls our evaluator function on all of them.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">models</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="p">(</span>
+        <span class="s2">&quot;claude-3-haiku-20240307&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;anthropic&quot;</span><span class="p">,</span>
+    <span class="p">),</span>
+    <span class="p">(</span>
+        <span class="s2">&quot;claude-3-sonnet-20240229&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;anthropic&quot;</span><span class="p">,</span>
+    <span class="p">),</span>
+    <span class="p">(</span>
+        <span class="s2">&quot;claude-3-opus-20240229&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;anthropic&quot;</span><span class="p">,</span>
+    <span class="p">),</span>
+    <span class="p">(</span>
+        <span class="s2">&quot;claude-3-5-sonnet-20240620&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;anthropic&quot;</span><span class="p">,</span>
+    <span class="p">),</span>
+    <span class="p">(</span><span class="s2">&quot;gpt-3.5-turbo-0125&quot;</span><span class="p">,</span> <span class="s2">&quot;openai&quot;</span><span class="p">),</span>
+    <span class="p">(</span><span class="s2">&quot;gpt-4o&quot;</span><span class="p">,</span> <span class="s2">&quot;openai&quot;</span><span class="p">),</span>
+    <span class="p">(</span><span class="s2">&quot;gpt-4o-mini&quot;</span><span class="p">,</span> <span class="s2">&quot;openai&quot;</span><span class="p">),</span>
+    <span class="p">(</span><span class="s2">&quot;llama3-groq-70b-8192-tool-use-preview&quot;</span><span class="p">,</span> <span class="s2">&quot;groq&quot;</span><span class="p">),</span>
+    <span class="p">(</span><span class="s2">&quot;llama3-groq-8b-8192-tool-use-preview&quot;</span><span class="p">,</span> <span class="s2">&quot;groq&quot;</span><span class="p">),</span>
+<span class="p">]</span>
+<span class="c1"># These are all the currently supported methods</span>
+<span class="n">few_shot_methods</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s2">&quot;no-few-shot&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;few-shot-string&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;few-shot-messages&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;few-shot-static-messages&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;few-shot-dynamic-messages&quot;</span><span class="p">,</span>
+<span class="p">]</span>
+
+<span class="n">experiment_uuid</span> <span class="o">=</span> <span class="n">uuid</span><span class="o">.</span><span class="n">uuid4</span><span class="p">()</span><span class="o">.</span><span class="n">hex</span><span class="p">[:</span><span class="mi">4</span><span class="p">]</span>
+<span class="k">for</span> <span class="n">model_name</span><span class="p">,</span> <span class="n">model_provider</span> <span class="ow">in</span> <span class="n">models</span><span class="p">:</span>
+    <span class="n">model</span> <span class="o">=</span> <span class="n">init_chat_model</span><span class="p">(</span><span class="n">model_name</span><span class="p">,</span> <span class="n">model_provider</span><span class="o">=</span><span class="n">model_provider</span><span class="p">,</span> <span class="n">temperature</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">few_shot_method</span> <span class="ow">in</span> <span class="n">few_shot_methods</span><span class="p">:</span>
+        <span class="n">evaluate</span><span class="p">(</span>
+            <span class="n">predict_for_model</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">QUERY_ANALYSIS_TASK</span><span class="o">.</span><span class="n">instructions</span><span class="p">,</span> <span class="n">few_shot_method</span><span class="p">),</span>
+            <span class="n">data</span><span class="o">=</span><span class="n">QUERY_ANALYSIS_TASK</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
+            <span class="n">evaluators</span><span class="o">=</span><span class="p">[</span><span class="n">evaluate_run</span><span class="p">],</span>
+            <span class="n">experiment_prefix</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;test-</span><span class="si">{</span><span class="n">model_name</span><span class="si">}</span><span class="s2">-</span><span class="si">{</span><span class="n">few_shot_method</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+            <span class="n">metadata</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="n">experiment_uuid</span><span class="p">},</span>
+        <span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="visualize-results">
+<h2>Visualize Results<a class="headerlink" href="#visualize-results" title="Permalink to this heading">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">projects</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="n">p</span>
+    <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">client</span><span class="o">.</span><span class="n">list_projects</span><span class="p">(</span><span class="n">reference_dataset_name</span><span class="o">=</span><span class="s2">&quot;Extraction Task&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="s2">&quot;id&quot;</span> <span class="ow">in</span> <span class="n">p</span><span class="o">.</span><span class="n">metadata</span> <span class="ow">and</span> <span class="n">p</span><span class="o">.</span><span class="n">metadata</span><span class="p">[</span><span class="s2">&quot;id&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;bf61&quot;</span>  <span class="c1"># experiment_uuid</span>
+<span class="p">]</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">models</span> <span class="o">=</span> <span class="nb">set</span><span class="p">([</span><span class="n">p</span><span class="o">.</span><span class="n">name</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;-TEST&quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">projects</span><span class="p">])</span>
+<span class="n">few_shot_type</span> <span class="o">=</span> <span class="nb">set</span><span class="p">([</span><span class="n">p</span><span class="o">.</span><span class="n">name</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;TEST-&quot;</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">projects</span><span class="p">])</span>
+<span class="n">few_shot_type</span> <span class="o">=</span> <span class="nb">set</span><span class="p">([</span><span class="n">t</span><span class="p">[</span><span class="n">t</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="s2">&quot;-&quot;</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span> <span class="p">:</span> <span class="n">t</span><span class="o">.</span><span class="n">rfind</span><span class="p">(</span><span class="s2">&quot;-&quot;</span><span class="p">)]</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">few_shot_type</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">tqdm</span> <span class="kn">import</span> <span class="n">tqdm</span>
+
+<span class="n">results_dic</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="k">for</span> <span class="n">model</span> <span class="ow">in</span> <span class="n">tqdm</span><span class="p">(</span><span class="n">models</span><span class="p">,</span> <span class="n">total</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">models</span><span class="p">))):</span>
+    <span class="n">model_results</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">few_shot</span> <span class="ow">in</span> <span class="n">few_shot_type</span><span class="p">:</span>
+        <span class="n">experiments</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="n">p</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">projects</span> <span class="k">if</span> <span class="n">model</span> <span class="o">+</span> <span class="s2">&quot;-TEST&quot;</span> <span class="ow">in</span> <span class="n">p</span><span class="o">.</span><span class="n">name</span> <span class="ow">and</span> <span class="n">few_shot</span> <span class="ow">in</span> <span class="n">p</span><span class="o">.</span><span class="n">name</span>
+        <span class="p">]</span>
+        <span class="n">experiment_stats</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">get_run_stats</span><span class="p">(</span>
+            <span class="n">project_ids</span><span class="o">=</span><span class="p">[</span><span class="n">experiment</span><span class="o">.</span><span class="n">id</span> <span class="k">for</span> <span class="n">experiment</span> <span class="ow">in</span> <span class="n">experiments</span><span class="p">],</span> <span class="n">is_root</span><span class="o">=</span><span class="kc">True</span>
+        <span class="p">)</span>
+        <span class="n">model_results</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+            <span class="mi">100</span>
+            <span class="o">*</span> <span class="n">experiment_stats</span><span class="p">[</span><span class="s2">&quot;feedback_stats&quot;</span><span class="p">][</span><span class="s2">&quot;overall correctness&quot;</span><span class="p">][</span><span class="s2">&quot;avg&quot;</span><span class="p">]</span>
+            <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">experiment_stats</span><span class="p">[</span><span class="s2">&quot;error_rate&quot;</span><span class="p">])</span>
+        <span class="p">)</span>
+    <span class="n">results_dic</span><span class="p">[</span><span class="n">model</span><span class="p">]</span> <span class="o">=</span> <span class="n">model_results</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">seaborn</span> <span class="k">as</span> <span class="nn">sns</span>
+
+<span class="n">results</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">results_dic</span><span class="p">[</span><span class="n">model</span><span class="p">]</span> <span class="k">for</span> <span class="n">model</span> <span class="ow">in</span> <span class="n">models</span><span class="p">])</span>
+
+<span class="c1"># Create a DataFrame for Seaborn plotting</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">results</span><span class="o">.</span><span class="n">T</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="nb">list</span><span class="p">(</span><span class="n">models</span><span class="p">))</span>
+<span class="n">df</span><span class="p">[</span><span class="s2">&quot;Few Shot Type&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">few_shot_type</span><span class="p">)</span>
+<span class="n">df</span><span class="o">.</span><span class="n">iloc</span><span class="p">[[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">]]</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">iloc</span><span class="p">[[</span><span class="mi">4</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">3</span><span class="p">]]</span><span class="o">.</span><span class="n">to_numpy</span><span class="p">()</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">df</span><span class="o">.</span><span class="n">columns</span><span class="p">[[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">7</span><span class="p">]]]</span>
+<span class="c1"># Melt the DataFrame to long format for Seaborn&#39;s barplot</span>
+<span class="n">df_melted</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">melt</span><span class="p">(</span>
+    <span class="n">id_vars</span><span class="o">=</span><span class="s2">&quot;Few Shot Type&quot;</span><span class="p">,</span> <span class="n">var_name</span><span class="o">=</span><span class="s2">&quot;Model&quot;</span><span class="p">,</span> <span class="n">value_name</span><span class="o">=</span><span class="s2">&quot;Percent Correct&quot;</span>
+<span class="p">)</span>
+
+<span class="c1"># Set up Seaborn parameters</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">set_theme</span><span class="p">(</span><span class="n">style</span><span class="o">=</span><span class="s2">&quot;whitegrid&quot;</span><span class="p">)</span>
+
+<span class="c1"># Plot using Seaborn</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">barplot</span><span class="p">(</span>
+    <span class="n">x</span><span class="o">=</span><span class="s2">&quot;Model&quot;</span><span class="p">,</span>
+    <span class="n">y</span><span class="o">=</span><span class="s2">&quot;Percent Correct&quot;</span><span class="p">,</span>
+    <span class="n">hue</span><span class="o">=</span><span class="s2">&quot;Few Shot Type&quot;</span><span class="p">,</span>
+    <span class="n">data</span><span class="o">=</span><span class="n">df_melted</span><span class="p">,</span>
+    <span class="n">palette</span><span class="o">=</span><span class="s2">&quot;viridis&quot;</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="c1"># Add labels and title</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;Model&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;Percent Correct&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;Query Analysis Results&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xticks</span><span class="p">(</span><span class="n">rotation</span><span class="o">=</span><span class="mi">45</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+
+<span class="n">legend_labels</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;no-few-shot&quot;</span><span class="p">:</span> <span class="s2">&quot;zero-shot&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;few-shot-messages&quot;</span><span class="p">:</span> <span class="s2">&quot;few-shot-msgs, k=13&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;few-shot-string&quot;</span><span class="p">:</span> <span class="s2">&quot;few-shot-str, k=13&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;few-shot-dynamic-messages&quot;</span><span class="p">:</span> <span class="s2">&quot;few-shot-dynamic-msgs, k=3&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;few-shot-static-messages&quot;</span><span class="p">:</span> <span class="s2">&quot;few-shot-static-msgs, k=3&quot;</span><span class="p">,</span>
+<span class="p">}</span>
+<span class="c1"># Get the current handles and labels from the plot</span>
+<span class="n">handles</span><span class="p">,</span> <span class="n">labels</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">gca</span><span class="p">()</span><span class="o">.</span><span class="n">get_legend_handles_labels</span><span class="p">()</span>
+<span class="n">labels</span> <span class="o">=</span> <span class="p">[</span><span class="n">legend_labels</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">label</span><span class="p">,</span> <span class="n">label</span><span class="p">)</span> <span class="k">for</span> <span class="n">label</span> <span class="ow">in</span> <span class="n">labels</span><span class="p">]</span>
+
+<span class="c1"># Update the legend with the new labels</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">handles</span><span class="p">,</span> <span class="n">labels</span><span class="p">,</span> <span class="n">loc</span><span class="o">=</span><span class="s2">&quot;upper left&quot;</span><span class="p">,</span> <span class="n">bbox_to_anchor</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/36a4d56e77a5030e81e4c51124f4ed45e00c43cecd60e51d3005cde6e9ab99c5.png" src="../../_images/36a4d56e77a5030e81e4c51124f4ed45e00c43cecd60e51d3005cde6e9ab99c5.png" />
+</div>
+</div>
+</section>
+<section id="comparing-semantic-search">
+<h2>Comparing Semantic Search<a class="headerlink" href="#comparing-semantic-search" title="Permalink to this heading">#</a></h2>
+<p>We can also calculate the average correctness when using semantic search to generate the few-shot examples v.s. when we just pick a static three examples.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">dynamic_experiments</span> <span class="o">=</span> <span class="p">[</span><span class="n">p</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">projects</span> <span class="k">if</span> <span class="s2">&quot;dynamic&quot;</span> <span class="ow">in</span> <span class="n">p</span><span class="o">.</span><span class="n">name</span><span class="p">]</span>
+<span class="n">static_experiments</span> <span class="o">=</span> <span class="p">[</span><span class="n">p</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">projects</span> <span class="k">if</span> <span class="s2">&quot;static&quot;</span> <span class="ow">in</span> <span class="n">p</span><span class="o">.</span><span class="n">name</span><span class="p">]</span>
+
+<span class="n">dynamic_overall</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="mi">100</span>
+    <span class="o">*</span> <span class="n">client</span><span class="o">.</span><span class="n">get_run_stats</span><span class="p">(</span>
+        <span class="n">project_ids</span><span class="o">=</span><span class="p">[</span><span class="n">experiment</span><span class="o">.</span><span class="n">id</span> <span class="k">for</span> <span class="n">experiment</span> <span class="ow">in</span> <span class="n">dynamic_experiments</span><span class="p">]</span>
+    <span class="p">)[</span><span class="s2">&quot;feedback_stats&quot;</span><span class="p">][</span><span class="s2">&quot;overall correctness&quot;</span><span class="p">][</span><span class="s2">&quot;avg&quot;</span><span class="p">]</span>
+<span class="p">)</span>
+<span class="n">static_overall</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="mi">100</span>
+    <span class="o">*</span> <span class="n">client</span><span class="o">.</span><span class="n">get_run_stats</span><span class="p">(</span>
+        <span class="n">project_ids</span><span class="o">=</span><span class="p">[</span><span class="n">experiment</span><span class="o">.</span><span class="n">id</span> <span class="k">for</span> <span class="n">experiment</span> <span class="ow">in</span> <span class="n">static_experiments</span><span class="p">]</span>
+    <span class="p">)[</span><span class="s2">&quot;feedback_stats&quot;</span><span class="p">][</span><span class="s2">&quot;overall correctness&quot;</span><span class="p">][</span><span class="s2">&quot;avg&quot;</span><span class="p">]</span>
+<span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span>
+    <span class="sa">f</span><span class="s2">&quot;Overall Accuracy with dynamic few shot: </span><span class="si">{</span><span class="n">dynamic_overall</span><span class="si">}</span><span class="s2">, and static: </span><span class="si">{</span><span class="n">static_overall</span><span class="si">}</span><span class="s2">&quot;</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Overall Accuracy with dynamic few shot: 46.54377880184332, and static: 32.25806451612903
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer">
+                  
+<div class="prev-next-area">
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#setup">Setup</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#helper-functions">Helper functions</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#define-evaluator-function">Define Evaluator Function</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#few-shot-preparation">Few-Shot preparation</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#prediction-function">Prediction Function</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#running-the-experiment">Running the Experiment</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#visualize-results">Visualize Results</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#comparing-semantic-search">Comparing Semantic Search</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Langchain AI
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2023, Langchain AI.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../_static/scripts/bootstrap.js?digest=5b4479735964841361fd"></script>
+<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=5b4479735964841361fd"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

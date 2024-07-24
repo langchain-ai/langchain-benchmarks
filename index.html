@@ -1,0 +1,813 @@
+
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+    <title>🦜💯 LangChain Benchmarks &#8212; LangChain Benchmarks 0.0.12</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=5b4479735964841361fd" rel="stylesheet" />
+<link href="_static/styles/bootstrap.css?digest=5b4479735964841361fd" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=5b4479735964841361fd" rel="stylesheet" />
+
+  
+  <link href="_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=5b4479735964841361fd" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" href="_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/css/custom.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=5b4479735964841361fd" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=5b4479735964841361fd" />
+  <script src="_static/vendor/fontawesome/6.1.2/js/all.min.js?digest=5b4479735964841361fd"></script>
+
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/sphinx_highlight.js"></script>
+    <script src="_static/clipboard.min.js"></script>
+    <script src="_static/copybutton.js"></script>
+    <script src="_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'index';</script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Getting Started" href="notebooks/getting_started.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>
+    Back to top
+  </button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
+    </nav>
+  
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+
+<a class="navbar-brand logo" href="#">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">LangChain Benchmarks 0.0.12</p>
+  
+</a></div>
+        <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1 current active">
+                <a class="reference internal" href="#">
+                    🦜💯 LangChain Benchmarks
+                </a>
+            </li>
+        </ul>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Introduction</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="notebooks/getting_started.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/models.html">Model Registry</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/datasets.html">Datasets</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Tool Usage</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="notebooks/tool_usage/intro.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/tool_usage/relational_data.html">Relational Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/tool_usage/multiverse_math.html">Multiverse Math</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/tool_usage/typewriter_1.html">Typewriter: Single Tool</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/tool_usage/typewriter_26.html">Typewriter: 26 Tools</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/tool_usage/benchmark_all_tasks.html">Benchmark All Tasks</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Extraction</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="notebooks/extraction/intro.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/extraction/email.html">Email Extraction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/extraction/chat_extraction.html">Chat Extraction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/extraction/high_cardinality.html">Extracting high-cardinality categoricals</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">RAG</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="notebooks/retrieval/intro.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/retrieval/langchain_docs_qa.html">Q&amp;A over LangChain Docs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/retrieval/semi_structured_benchmarking/semi_structured.html">Semi-structured RAG</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/retrieval/semi_structured_benchmarking/ss_eval_chunk_sizes.html">Semi-structured eval: Chunk size tuning</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/retrieval/semi_structured_benchmarking/ss_eval_long_context.html">Semi-structured eval: Long-context</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/retrieval/semi_structured_benchmarking/ss_eval_multi_vector.html">Semi-structured eval: Multi vector</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/retrieval/multi_modal_benchmarking/multi_modal_eval_baseline.html">Multi-modal eval: Baseline</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/retrieval/multi_modal_benchmarking/multi_modal_eval.html">Multi-modal eval: GPT-4 w/ multi-modal embeddings and multi-vector retriever</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/retrieval/comparing_techniques.html">Evaluating RAG Architectures on Benchmark Tasks</a></li>
+
+
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Benchmarking Without LangSmith</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="notebooks/run_without_langsmith.html">Running Locally</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</label></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/langchain-ai/langchain-benchmarks" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/langchain-ai/langchain-benchmarks/blob/main/docs/source/index.md?plain=1" target="_blank"
+   class="btn btn-sm btn-source-file-button dropdown-item"
+   title="Show source"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-code"></i>
+  </span>
+<span class="btn__text-container">Show source</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/langchain-ai/langchain-benchmarks/issues/new?title=Issue%20on%20page%20%2Findex.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="_sources/index.md" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.md</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</label>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>🦜💯 LangChain Benchmarks</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#benchmarking-results">Benchmarking Results</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tool-usage-2024-04-18">Tool Usage (2024-04-18)</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#installation">Installation</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#repo-structure">Repo Structure</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#archived">Archived</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#related">Related</a><ul class="nav section-nav flex-column">
+</ul>
+</li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article" role="main">
+                  
+  <section id="langchain-benchmarks">
+<h1>🦜💯 LangChain Benchmarks<a class="headerlink" href="#langchain-benchmarks" title="Permalink to this heading">#</a></h1>
+<p><a class="reference external" href="https://github.com/langchain-ai/langchain-benchmarks/releases"><img alt="Release Notes" src="https://img.shields.io/github/release/langchain-ai/langchain-benchmarks" /></a>
+<a class="reference external" href="https://github.com/langchain-ai/langchain-benchmarks/actions/workflows/ci.yml"><img alt="CI" src="https://github.com/langchain-ai/langchain-benchmarks/actions/workflows/ci.yml/badge.svg" /></a>
+<a class="reference external" href="https://opensource.org/licenses/MIT"><img alt="License: MIT" src="https://img.shields.io/badge/License-MIT-yellow.svg" /></a>
+<a class="reference external" href="https://twitter.com/langchainai"><img alt="Twitter" src="https://img.shields.io/twitter/url/https/twitter.com/langchainai.svg?style=social&amp;label=Follow%20%40LangChainAI" /></a>
+<a class="reference external" href="https://discord.gg/6adMQxSpJS"><img alt="" src="https://dcbadge.vercel.app/api/server/6adMQxSpJS?compact=true&amp;style=flat" /></a>
+<a class="reference external" href="https://github.com/langchain-ai/langchain-benchmarks/issues"><img alt="Open Issues" src="https://img.shields.io/github/issues-raw/langchain-ai/langchain-benchmarks" /></a></p>
+<p><a class="reference external" href="https://langchain-ai.github.io/langchain-benchmarks/index.html">📖 Documentation</a></p>
+<p>A package to help benchmark various LLM related tasks.</p>
+<p>The benchmarks are organized by end-to-end use cases, and
+utilize <a class="reference external" href="https://smith.langchain.com/">LangSmith</a> heavily.</p>
+<p>We have several goals in open sourcing this:</p>
+<ul class="simple">
+<li><p>Showing how we collect our benchmark datasets for each task</p></li>
+<li><p>Showing what the benchmark datasets we use for each task is</p></li>
+<li><p>Showing how we evaluate each task</p></li>
+<li><p>Encouraging others to benchmark their solutions on these tasks (we are always looking for better ways of doing things!)</p></li>
+</ul>
+<section id="benchmarking-results">
+<h2>Benchmarking Results<a class="headerlink" href="#benchmarking-results" title="Permalink to this heading">#</a></h2>
+<p>Read some of the articles about benchmarking results on our blog.</p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://blog.langchain.dev/benchmarking-agent-tool-use/">Agent Tool Use</a></p></li>
+<li><p><a class="reference external" href="https://blog.langchain.dev/high-cardinality/">Query Analysis in High Cardinality Situations</a></p></li>
+<li><p><a class="reference external" href="https://blog.langchain.dev/benchmarking-rag-on-tables/">RAG on Tables</a></p></li>
+<li><p><a class="reference external" href="https://blog.langchain.dev/benchmarking-question-answering-over-csv-data/">Q&amp;A over CSV data</a></p></li>
+</ul>
+<section id="tool-usage-2024-04-18">
+<h3>Tool Usage (2024-04-18)<a class="headerlink" href="#tool-usage-2024-04-18" title="Permalink to this heading">#</a></h3>
+<p>See <a class="reference external" href="https://langchain-ai.github.io/langchain-benchmarks/notebooks/tool_usage/benchmark_all_tasks.html">tool usage docs</a> to recreate!</p>
+<p><img alt="download" src="https://github.com/langchain-ai/langchain-benchmarks/assets/3205522/0da33de8-e03f-49cf-bd48-e9ff945828a9" /></p>
+<p>Explore Agent Traces on LangSmith:</p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://smith.langchain.com/public/22721064-dcf6-4e42-be65-e7c46e6835e7/d">Relational Data</a></p></li>
+<li><p><a class="reference external" href="https://smith.langchain.com/public/ac23cb40-e392-471f-b129-a893a77b6f62/d">Tool Usage (1-tool)</a></p></li>
+<li><p><a class="reference external" href="https://smith.langchain.com/public/366bddca-62b3-4b6e-849b-a478abab73db/d">Tool Usage (26-tools)</a></p></li>
+<li><p><a class="reference external" href="https://smith.langchain.com/public/983faff2-54b9-4875-9bf2-c16913e7d489/d">Mutiverse Math</a></p></li>
+</ul>
+</section>
+</section>
+<section id="installation">
+<h2>Installation<a class="headerlink" href="#installation" title="Permalink to this heading">#</a></h2>
+<p>To install the packages, run the following command:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip<span class="w"> </span>install<span class="w"> </span>-U<span class="w"> </span>langchain-benchmarks
+</pre></div>
+</div>
+<p>All the benchmarks come with an associated benchmark dataset stored in <a class="reference external" href="https://smith.langchain.com">LangSmith</a>. To take advantage of the eval and debugging experience, <a class="reference external" href="https://smith.langchain.com">sign up</a>, and set your API key in your environment:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">export</span><span class="w"> </span><span class="nv">LANGCHAIN_API_KEY</span><span class="o">=</span>ls-...
+</pre></div>
+</div>
+</section>
+<section id="repo-structure">
+<h2>Repo Structure<a class="headerlink" href="#repo-structure" title="Permalink to this heading">#</a></h2>
+<p>The package is located within <a class="reference internal" href="#./langchain_benchmarks/"><span class="xref myst">langchain_benchmarks</span></a>. Check out the <a class="reference external" href="https://langchain-ai.github.io/langchain-benchmarks/index.html">docs</a> for information on how to get starte.</p>
+<p>The other directories are legacy and may be moved in the future.</p>
+</section>
+<section id="archived">
+<h2>Archived<a class="headerlink" href="#archived" title="Permalink to this heading">#</a></h2>
+<p>Below are archived benchmarks that require cloning this repo to run.</p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://github.com/langchain-ai/langchain-benchmarks/tree/main/archived/csv-qa">CSV Question Answering</a></p></li>
+<li><p><a class="reference external" href="https://github.com/langchain-ai/langchain-benchmarks/tree/main/archived/extraction">Extraction</a></p></li>
+<li><p><a class="reference external" href="https://github.com/langchain-ai/langchain-benchmarks/tree/main/archived/langchain-docs-benchmarking">Q&amp;A over the LangChain docs</a></p></li>
+<li><p><a class="reference external" href="https://github.com/langchain-ai/langchain-benchmarks/tree/main/archived/meta-evals">Meta-evaluation of ‘correctness’ evaluators</a></p></li>
+</ul>
+</section>
+<section id="related">
+<h2>Related<a class="headerlink" href="#related" title="Permalink to this heading">#</a></h2>
+<ul class="simple">
+<li><p>For cookbooks on other ways to test, debug, monitor, and improve your LLM applications, check out the <a class="reference external" href="https://docs.smith.langchain.com/">LangSmith docs</a></p></li>
+<li><p>For information on building with LangChain, check out the <a class="reference external" href="https://python.langchain.com/docs/get_started/introduction">python documentation</a> or <a class="reference external" href="https://js.langchain.com/docs/get_started/introduction">JS documentation</a></p></li>
+</ul>
+<div class="toctree-wrapper compound">
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Introduction</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/getting_started.html">Getting Started</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="notebooks/getting_started.html#setup">Setup</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notebooks/getting_started.html#installation">Installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notebooks/getting_started.html#select-a-task">Select a task</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notebooks/getting_started.html#download-the-dataset">Download the dataset</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notebooks/getting_started.html#define-architecture-and-evaluate">Define architecture and evaluate</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/models.html">Model Registry</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="notebooks/models.html#indexing">Indexing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notebooks/models.html#use-the-model">Use the model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notebooks/models.html#iteration">Iteration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notebooks/models.html#slicing">Slicing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notebooks/models.html#filtering">Filtering</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/datasets.html">Datasets</a></li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Tool Usage</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/tool_usage/intro.html">Introduction</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="notebooks/tool_usage/intro.html#schema">Schema</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="notebooks/tool_usage/intro.html#dataset">Dataset</a></li>
+<li class="toctree-l3"><a class="reference internal" href="notebooks/tool_usage/intro.html#agent">Agent</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="notebooks/tool_usage/intro.html#tasks">Tasks</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notebooks/tool_usage/intro.html#create-an-agent">Create an Agent!</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notebooks/tool_usage/intro.html#benchmarking">Benchmarking</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notebooks/tool_usage/intro.html#advanced-usage">Advanced Usage</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="notebooks/tool_usage/intro.html#custom-agent-factory">Custom Agent Factory</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/tool_usage/relational_data.html">Relational Data</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="notebooks/tool_usage/relational_data.html#the-environment">The Environment</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notebooks/tool_usage/relational_data.html#explore-the-task">Explore the task</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notebooks/tool_usage/relational_data.html#benchmarking">Benchmarking</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/tool_usage/multiverse_math.html">Multiverse Math</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="notebooks/tool_usage/multiverse_math.html#the-environment">The Environment</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notebooks/tool_usage/multiverse_math.html#agent-factory">Agent Factory</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notebooks/tool_usage/multiverse_math.html#benchmarking">Benchmarking</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/tool_usage/typewriter_1.html">Typewriter: Single Tool</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="notebooks/tool_usage/typewriter_1.html#the-environment">The Environment</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notebooks/tool_usage/typewriter_1.html#explore-the-task">Explore the task</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notebooks/tool_usage/typewriter_1.html#benchmarking">Benchmarking</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/tool_usage/typewriter_26.html">Typewriter: 26 Tools</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="notebooks/tool_usage/typewriter_26.html#the-environment">The Environment</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notebooks/tool_usage/typewriter_26.html#explore-the-task">Explore the task</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notebooks/tool_usage/typewriter_26.html#benchmarking">Benchmarking</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/tool_usage/benchmark_all_tasks.html">Benchmark All Tasks</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="notebooks/tool_usage/benchmark_all_tasks.html#set-up">Set Up</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="notebooks/tool_usage/benchmark_all_tasks.html#credentials">Credentials</a></li>
+<li class="toctree-l3"><a class="reference internal" href="notebooks/tool_usage/benchmark_all_tasks.html#instantiate-models">Instantiate Models</a></li>
+<li class="toctree-l3"><a class="reference internal" href="notebooks/tool_usage/benchmark_all_tasks.html#set-up-the-experiment">Set up the experiment</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="notebooks/tool_usage/benchmark_all_tasks.html#run">Run</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notebooks/tool_usage/benchmark_all_tasks.html#inspect">Inspect</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Extraction</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/extraction/intro.html">Introduction</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="notebooks/extraction/intro.html#task-resources">Task resources</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notebooks/extraction/intro.html#dataset-schema">Dataset schema</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notebooks/extraction/intro.html#evaluation">Evaluation</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/extraction/email.html">Email Extraction</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="notebooks/extraction/email.html#schema">Schema</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notebooks/extraction/email.html#define-an-extraction-chain">Define an extraction chain</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notebooks/extraction/email.html#evaluate">Evaluate</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notebooks/extraction/email.html#compare-to-another-llm">Compare to another LLM</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notebooks/extraction/email.html#inspect">Inspect</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/extraction/chat_extraction.html">Chat Extraction</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="notebooks/extraction/chat_extraction.html#schema">Schema</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notebooks/extraction/chat_extraction.html#define-an-extraction-chain">Define an extraction chain</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notebooks/extraction/chat_extraction.html#evaluate">Evaluate</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notebooks/extraction/chat_extraction.html#compare-to-claude-2">Compare to Claude-2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notebooks/extraction/chat_extraction.html#try-with-xsd-schema-definition">Try with XSD Schema Definition</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notebooks/extraction/chat_extraction.html#try-with-llama-2">Try with Llama 2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notebooks/extraction/chat_extraction.html#compare-results">Compare Results</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="notebooks/extraction/chat_extraction.html#here-we-compare-the-aggregate-metrics-side-by-side">Here, we compare the aggregate metrics side-by-side</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="notebooks/extraction/chat_extraction.html#next-steps">Next Steps</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/extraction/high_cardinality.html">Extracting high-cardinality categoricals</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="notebooks/extraction/high_cardinality.html#setup">Setup</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notebooks/extraction/high_cardinality.html#augmenting-with-more-fake-names">Augmenting with more fake names</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notebooks/extraction/high_cardinality.html#chain-1-baseline">Chain 1: Baseline</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notebooks/extraction/high_cardinality.html#chain-2-all-candidates-in-prompt">Chain 2: All candidates in prompt</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notebooks/extraction/high_cardinality.html#chain-3-top-k-candidates-from-vectorstore-in-prompt">Chain 3: Top k candidates from vectorstore in prompt</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notebooks/extraction/high_cardinality.html#chain-4-top-k-candidates-by-ngram-overlap-in-prompt">Chain 4: Top k candidates by ngram overlap in prompt</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notebooks/extraction/high_cardinality.html#chain-5-replace-with-top-candidate-from-vectorstore">Chain 5: Replace with top candidate from vectorstore</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notebooks/extraction/high_cardinality.html#chain-6-replace-with-top-candidate-by-ngram-overlap">Chain 6: Replace with top candidate by ngram overlap</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notebooks/extraction/high_cardinality.html#see-all-results-in-langsmith">See all results in LangSmith</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">RAG</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/retrieval/intro.html">Introduction</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="notebooks/retrieval/intro.html#task-resources">Task resources</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notebooks/retrieval/intro.html#dataset-schema">Dataset schema</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/retrieval/langchain_docs_qa.html">Q&amp;A over LangChain Docs</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="notebooks/retrieval/langchain_docs_qa.html#pre-requisites">Pre-requisites</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notebooks/retrieval/langchain_docs_qa.html#review-q-a-tasks">Review Q&amp;A Tasks</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notebooks/retrieval/langchain_docs_qa.html#clone-the-dataset">Clone the dataset</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notebooks/retrieval/langchain_docs_qa.html#create-the-index">Create the index</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notebooks/retrieval/langchain_docs_qa.html#define-the-response-generator">Define the response generator</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notebooks/retrieval/langchain_docs_qa.html#evaluate">Evaluate</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/retrieval/semi_structured_benchmarking/semi_structured.html">Semi-structured RAG</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="notebooks/retrieval/semi_structured_benchmarking/semi_structured.html#pre-requisites">Pre-requisites</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notebooks/retrieval/semi_structured_benchmarking/semi_structured.html#review-q-a-tasks">Review Q&amp;A Tasks</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notebooks/retrieval/semi_structured_benchmarking/semi_structured.html#example-processing-the-docs">Example processing the docs</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/retrieval/semi_structured_benchmarking/ss_eval_chunk_sizes.html">Semi-structured eval: Chunk size tuning</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="notebooks/retrieval/semi_structured_benchmarking/ss_eval_chunk_sizes.html#pre-requisites">Pre-requisites</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notebooks/retrieval/semi_structured_benchmarking/ss_eval_chunk_sizes.html#dataset">Dataset</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notebooks/retrieval/semi_structured_benchmarking/ss_eval_chunk_sizes.html#load-and-index">Load and index</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notebooks/retrieval/semi_structured_benchmarking/ss_eval_chunk_sizes.html#eval">Eval</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/retrieval/semi_structured_benchmarking/ss_eval_long_context.html">Semi-structured eval: Long-context</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="notebooks/retrieval/semi_structured_benchmarking/ss_eval_long_context.html#dataset">Dataset</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notebooks/retrieval/semi_structured_benchmarking/ss_eval_long_context.html#load">Load</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notebooks/retrieval/semi_structured_benchmarking/ss_eval_long_context.html#run">Run</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notebooks/retrieval/semi_structured_benchmarking/ss_eval_long_context.html#eval">Eval</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notebooks/retrieval/semi_structured_benchmarking/ss_eval_long_context.html#failure-analysis">Failure Analysis</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/retrieval/semi_structured_benchmarking/ss_eval_multi_vector.html">Semi-structured eval: Multi vector</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="notebooks/retrieval/semi_structured_benchmarking/ss_eval_multi_vector.html#pre-requisites">Pre-requisites</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notebooks/retrieval/semi_structured_benchmarking/ss_eval_multi_vector.html#dataset">Dataset</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notebooks/retrieval/semi_structured_benchmarking/ss_eval_multi_vector.html#load-and-index">Load and index</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notebooks/retrieval/semi_structured_benchmarking/ss_eval_multi_vector.html#eval">Eval</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/retrieval/multi_modal_benchmarking/multi_modal_eval_baseline.html">Multi-modal eval: Baseline</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="notebooks/retrieval/multi_modal_benchmarking/multi_modal_eval_baseline.html#pre-requisites">Pre-requisites</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notebooks/retrieval/multi_modal_benchmarking/multi_modal_eval_baseline.html#dataset">Dataset</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notebooks/retrieval/multi_modal_benchmarking/multi_modal_eval_baseline.html#load">Load</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notebooks/retrieval/multi_modal_benchmarking/multi_modal_eval_baseline.html#index">Index</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notebooks/retrieval/multi_modal_benchmarking/multi_modal_eval_baseline.html#rag">RAG</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notebooks/retrieval/multi_modal_benchmarking/multi_modal_eval_baseline.html#eval">Eval</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/retrieval/multi_modal_benchmarking/multi_modal_eval.html">Multi-modal eval: GPT-4 w/ multi-modal embeddings and multi-vector retriever</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="notebooks/retrieval/multi_modal_benchmarking/multi_modal_eval.html#pre-requisites">Pre-requisites</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notebooks/retrieval/multi_modal_benchmarking/multi_modal_eval.html#dataset">Dataset</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notebooks/retrieval/multi_modal_benchmarking/multi_modal_eval.html#load">Load</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notebooks/retrieval/multi_modal_benchmarking/multi_modal_eval.html#index">Index</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notebooks/retrieval/multi_modal_benchmarking/multi_modal_eval.html#rag">RAG</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notebooks/retrieval/multi_modal_benchmarking/multi_modal_eval.html#eval">Eval</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/retrieval/comparing_techniques.html">Evaluating RAG Architectures on Benchmark Tasks</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="notebooks/retrieval/comparing_techniques.html#introduction">Introduction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notebooks/retrieval/comparing_techniques.html#what-is-rag">What is RAG?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notebooks/retrieval/comparing_techniques.html#benchmark-tasks-and-datasets-as-of-2023-11-21">Benchmark Tasks and Datasets (As of 2023/11/21)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notebooks/retrieval/comparing_techniques.html#pre-requisites">Pre-requisites</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notebooks/retrieval/comparing_techniques.html#review-q-a-tasks">Review Q&amp;A tasks</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notebooks/retrieval/comparing_techniques.html#basic-vector-retrieval">Basic Vector Retrieval</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/retrieval/comparing_techniques.html#comparing-with-other-indexing-strategies">Comparing with other indexing strategies</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="notebooks/retrieval/comparing_techniques.html#customizing-chunking">Customizing Chunking</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notebooks/retrieval/comparing_techniques.html#parent-document-retriever">Parent Document Retriever</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notebooks/retrieval/comparing_techniques.html#hyde">HyDE</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/retrieval/comparing_techniques.html#comparing-embeddings">Comparing Embeddings</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="notebooks/retrieval/comparing_techniques.html#comparing-models">Comparing Models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notebooks/retrieval/comparing_techniques.html#changing-the-prompt-in-the-response-generator">Changing the prompt in the response generator</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notebooks/retrieval/comparing_techniques.html#testing-agents">Testing Agents</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notebooks/retrieval/comparing_techniques.html#assistant">Assistant</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Benchmarking Without LangSmith</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/run_without_langsmith.html">Running Locally</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="notebooks/run_without_langsmith.html#eval">Eval</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</section>
+</section>
+
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer">
+                  
+<div class="prev-next-area">
+    <a class="right-next"
+       href="notebooks/getting_started.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Getting Started</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#benchmarking-results">Benchmarking Results</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tool-usage-2024-04-18">Tool Usage (2024-04-18)</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#installation">Installation</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#repo-structure">Repo Structure</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#archived">Archived</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#related">Related</a><ul class="nav section-nav flex-column">
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Langchain AI
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2023, Langchain AI.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="_static/scripts/bootstrap.js?digest=5b4479735964841361fd"></script>
+<script src="_static/scripts/pydata-sphinx-theme.js?digest=5b4479735964841361fd"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

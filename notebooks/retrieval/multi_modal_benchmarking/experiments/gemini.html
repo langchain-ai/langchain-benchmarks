@@ -1,0 +1,1334 @@
+
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+    <title>Multimodal: Gemini &#8212; LangChain Benchmarks 0.0.12</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../../../_static/styles/theme.css?digest=5b4479735964841361fd" rel="stylesheet" />
+<link href="../../../../_static/styles/bootstrap.css?digest=5b4479735964841361fd" rel="stylesheet" />
+<link href="../../../../_static/styles/pydata-sphinx-theme.css?digest=5b4479735964841361fd" rel="stylesheet" />
+
+  
+  <link href="../../../../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=5b4479735964841361fd" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css" />
+    <link rel="stylesheet" href="../../../../_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/css/custom.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../../../_static/scripts/bootstrap.js?digest=5b4479735964841361fd" />
+<link rel="preload" as="script" href="../../../../_static/scripts/pydata-sphinx-theme.js?digest=5b4479735964841361fd" />
+  <script src="../../../../_static/vendor/fontawesome/6.1.2/js/all.min.js?digest=5b4479735964841361fd"></script>
+
+    <script data-url_root="../../../../" id="documentation_options" src="../../../../_static/documentation_options.js"></script>
+    <script src="../../../../_static/doctools.js"></script>
+    <script src="../../../../_static/sphinx_highlight.js"></script>
+    <script src="../../../../_static/clipboard.min.js"></script>
+    <script src="../../../../_static/copybutton.js"></script>
+    <script src="../../../../_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'notebooks/retrieval/multi_modal_benchmarking/experiments/gemini';</script>
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>
+    Back to top
+  </button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
+    </nav>
+  
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+
+<a class="navbar-brand logo" href="../../../../index.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">LangChain Benchmarks 0.0.12</p>
+  
+</a></div>
+        <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../../../../index.html">
+                    🦜💯 LangChain Benchmarks
+                </a>
+            </li>
+        </ul>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Introduction</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../../getting_started.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../models.html">Model Registry</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../datasets.html">Datasets</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Tool Usage</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../../tool_usage/intro.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../tool_usage/relational_data.html">Relational Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../tool_usage/multiverse_math.html">Multiverse Math</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../tool_usage/typewriter_1.html">Typewriter: Single Tool</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../tool_usage/typewriter_26.html">Typewriter: 26 Tools</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../tool_usage/benchmark_all_tasks.html">Benchmark All Tasks</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Extraction</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../../extraction/intro.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../extraction/email.html">Email Extraction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../extraction/chat_extraction.html">Chat Extraction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../extraction/high_cardinality.html">Extracting high-cardinality categoricals</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">RAG</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../intro.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../langchain_docs_qa.html">Q&amp;A over LangChain Docs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../semi_structured_benchmarking/semi_structured.html">Semi-structured RAG</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../semi_structured_benchmarking/ss_eval_chunk_sizes.html">Semi-structured eval: Chunk size tuning</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../semi_structured_benchmarking/ss_eval_long_context.html">Semi-structured eval: Long-context</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../semi_structured_benchmarking/ss_eval_multi_vector.html">Semi-structured eval: Multi vector</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../multi_modal_eval_baseline.html">Multi-modal eval: Baseline</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../multi_modal_eval.html">Multi-modal eval: GPT-4 w/ multi-modal embeddings and multi-vector retriever</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../comparing_techniques.html">Evaluating RAG Architectures on Benchmark Tasks</a></li>
+
+
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Benchmarking Without LangSmith</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../../run_without_langsmith.html">Running Locally</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</label></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-launch-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Launch interactive content">
+    <i class="fas fa-rocket"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://colab.research.google.com/github/langchain-ai/langchain-benchmarks/blob/main/docs/source/notebooks/retrieval/multi_modal_benchmarking/experiments/gemini.ipynb" target="_blank"
+   class="btn btn-sm dropdown-item"
+   title="Launch onColab"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  
+    <img src="../../../../_static/images/logo_colab.png">
+  </span>
+<span class="btn__text-container">Colab</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/langchain-ai/langchain-benchmarks" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/langchain-ai/langchain-benchmarks/blob/main/docs/source/notebooks/retrieval/multi_modal_benchmarking/experiments/gemini.ipynb?plain=1" target="_blank"
+   class="btn btn-sm btn-source-file-button dropdown-item"
+   title="Show source"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-code"></i>
+  </span>
+<span class="btn__text-container">Show source</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/langchain-ai/langchain-benchmarks/issues/new?title=Issue%20on%20page%20%2Fnotebooks/retrieval/multi_modal_benchmarking/experiments/gemini.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../../../../_sources/notebooks/retrieval/multi_modal_benchmarking/experiments/gemini.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</label>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Multimodal: Gemini</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pre-requisites">Pre-requisites</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#dataset">Dataset</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#load">Load</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#index">Index</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#option-1-vectorstore-with-multimodal-embeddings">Option 1: Vectorstore with multimodal embeddings</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#option-2-multi-vector-retriever">Option 2: Multi-vector retriever</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#rag">RAG</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#eval">Eval</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article" role="main">
+                  
+  <section id="multimodal-gemini">
+<h1>Multimodal: Gemini<a class="headerlink" href="#multimodal-gemini" title="Permalink to this heading">#</a></h1>
+<p>Let’s benchmark Gemini on our <code class="docutils literal notranslate"><span class="pre">Multi-modal</span> <span class="pre">slide</span> <span class="pre">decks</span></code> dataset.</p>
+<p>As before, we will take test the mode using two indexing approaches:</p>
+<p>(1) Vectorstore with multimodal embeddings</p>
+<p>(2) Multi-vector retriever with indexed image summaries</p>
+<section id="pre-requisites">
+<h2>Pre-requisites<a class="headerlink" href="#pre-requisites" title="Permalink to this heading">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="k">pip</span> install -U --quiet langchain langchain-google-genai langchain_benchmarks
+<span class="o">%</span><span class="k">pip</span> install -U --quiet openai chromadb pypdfium2 open-clip-torch pillow
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">getpass</span>
+<span class="kn">import</span> <span class="nn">os</span>
+
+<span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s2">&quot;LANGCHAIN_ENDPOINT&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;https://api.smith.langchain.com&quot;</span>
+<span class="n">env_vars</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;LANGCHAIN_API_KEY&quot;</span><span class="p">,</span> <span class="s2">&quot;GOOGLE_API_KEY&quot;</span><span class="p">]</span>
+<span class="k">for</span> <span class="n">var</span> <span class="ow">in</span> <span class="n">env_vars</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">var</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">:</span>
+        <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="n">var</span><span class="p">]</span> <span class="o">=</span> <span class="n">getpass</span><span class="o">.</span><span class="n">getpass</span><span class="p">(</span><span class="n">prompt</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;Enter your </span><span class="si">{</span><span class="n">var</span><span class="si">}</span><span class="s2">: &quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="dataset">
+<h2>Dataset<a class="headerlink" href="#dataset" title="Permalink to this heading">#</a></h2>
+<p>We can browse the available LangChain benchmark datasets for retrieval, or directly select the <code class="docutils literal notranslate"><span class="pre">Multi-modal</span> <span class="pre">slide</span> <span class="pre">decks</span></code> task.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">langchain_benchmarks</span> <span class="kn">import</span> <span class="n">clone_public_dataset</span><span class="p">,</span> <span class="n">registry</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">task</span> <span class="o">=</span> <span class="n">registry</span><span class="p">[</span><span class="s2">&quot;Multi-modal slide decks&quot;</span><span class="p">]</span>
+<span class="n">task</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><table>
+<tbody>
+<tr><td>Name                  </td><td>Multi-modal slide decks                                                                                                                                    </td></tr>
+<tr><td>Type                  </td><td>RetrievalTask                                                                                                                                              </td></tr>
+<tr><td>Dataset ID            </td><td><a href="https://smith.langchain.com/public/40afc8e7-9d7e-44ed-8971-2cae1eb59731/d" target="_blank" rel="noopener">40afc8e7-9d7e-44ed-8971-2cae1eb59731</a></td></tr>
+<tr><td>Description           </td><td>This public dataset is a work-in-progress and will be extended over time.
+        
+Questions and answers based on slide decks containing visual tables and charts.
+
+Each example is composed of a question and reference answer.
+
+Success is measured based on the accuracy of the answer relative to the reference answer.                                                                                                                                                            </td></tr>
+<tr><td>Retriever Factories   </td><td>                                                                                                                                                           </td></tr>
+<tr><td>Architecture Factories</td><td>                                                                                                                                                           </td></tr>
+<tr><td>get_docs              </td><td>{}                                                                                                                                                         </td></tr>
+</tbody>
+</table></div></div>
+</div>
+<p>Clone the dataset so that it’s available in our LangSmith datasets.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">clone_public_dataset</span><span class="p">(</span><span class="n">task</span><span class="o">.</span><span class="n">dataset_id</span><span class="p">,</span> <span class="n">dataset_name</span><span class="o">=</span><span class="n">task</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Dataset Multi-modal slide decks already exists. Skipping.
+You can access the dataset at https://smith.langchain.com/o/ebbaf2eb-769b-4505-aca2-d11de10372a4/datasets/08a29acb-5ad6-42ce-a482-574c9e2e5306.
+</pre></div>
+</div>
+</div>
+</div>
+<p>Fetch the associated PDFs from remote cache for the dataset so that we can perform ingestion.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">langchain_benchmarks.rag.tasks.multi_modal_slide_decks</span> <span class="kn">import</span> <span class="n">get_file_names</span>
+
+<span class="n">file_names</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">get_file_names</span><span class="p">())</span>  <span class="c1"># PosixPath</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="load">
+<h2>Load<a class="headerlink" href="#load" title="Permalink to this heading">#</a></h2>
+<p>For each presentation, extract an image for each slide.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
+
+<span class="kn">import</span> <span class="nn">pypdfium2</span> <span class="k">as</span> <span class="nn">pdfium</span>
+
+
+<span class="k">def</span> <span class="nf">get_images</span><span class="p">(</span><span class="n">file</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Get PIL images from PDF pages and save them to a specified directory</span>
+<span class="sd">    :param file: Path to file</span>
+<span class="sd">    :return: A list of PIL images</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1"># Get presentation</span>
+    <span class="n">pdf</span> <span class="o">=</span> <span class="n">pdfium</span><span class="o">.</span><span class="n">PdfDocument</span><span class="p">(</span><span class="n">file</span><span class="p">)</span>
+    <span class="n">n_pages</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">pdf</span><span class="p">)</span>
+
+    <span class="c1"># Extracting file name and creating the directory for images</span>
+    <span class="n">file_name</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">file</span><span class="p">)</span><span class="o">.</span><span class="n">stem</span>  <span class="c1"># Gets the file name without extension</span>
+    <span class="n">img_dir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">Path</span><span class="p">(</span><span class="n">file</span><span class="p">)</span><span class="o">.</span><span class="n">parent</span><span class="p">,</span> <span class="s2">&quot;img&quot;</span><span class="p">)</span>
+    <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">img_dir</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+    <span class="c1"># Get images</span>
+    <span class="n">pil_images</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Extracting </span><span class="si">{</span><span class="n">n_pages</span><span class="si">}</span><span class="s2"> images for </span><span class="si">{</span><span class="n">file</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">page_number</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_pages</span><span class="p">):</span>
+        <span class="n">page</span> <span class="o">=</span> <span class="n">pdf</span><span class="o">.</span><span class="n">get_page</span><span class="p">(</span><span class="n">page_number</span><span class="p">)</span>
+        <span class="n">bitmap</span> <span class="o">=</span> <span class="n">page</span><span class="o">.</span><span class="n">render</span><span class="p">(</span><span class="n">scale</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">rotation</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">crop</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
+        <span class="n">pil_image</span> <span class="o">=</span> <span class="n">bitmap</span><span class="o">.</span><span class="n">to_pil</span><span class="p">()</span>
+        <span class="n">pil_images</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">pil_image</span><span class="p">)</span>
+
+        <span class="c1"># Saving the image with the specified naming convention</span>
+        <span class="n">image_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">img_dir</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">file_name</span><span class="si">}</span><span class="s2">_image_</span><span class="si">{</span><span class="n">page_number</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="si">}</span><span class="s2">.jpg&quot;</span><span class="p">)</span>
+        <span class="n">pil_image</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">image_path</span><span class="p">,</span> <span class="nb">format</span><span class="o">=</span><span class="s2">&quot;JPEG&quot;</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">pil_images</span>
+
+
+<span class="n">images</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">fi</span> <span class="ow">in</span> <span class="n">file_names</span><span class="p">:</span>
+    <span class="n">images</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">get_images</span><span class="p">(</span><span class="n">fi</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Extracting 30 images for DDOG_Q3_earnings_deck.pdf
+</pre></div>
+</div>
+</div>
+</div>
+<p>Now, we convert each PIL image to a Base64 encoded string and set the image size.</p>
+<p>Base64 encoded string can be input to GPT-4V.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">base64</span>
+<span class="kn">import</span> <span class="nn">io</span>
+<span class="kn">from</span> <span class="nn">io</span> <span class="kn">import</span> <span class="n">BytesIO</span>
+
+<span class="kn">from</span> <span class="nn">PIL</span> <span class="kn">import</span> <span class="n">Image</span>
+
+
+<span class="k">def</span> <span class="nf">resize_base64_image</span><span class="p">(</span><span class="n">base64_string</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="mi">128</span><span class="p">,</span> <span class="mi">128</span><span class="p">)):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Resize an image encoded as a Base64 string</span>
+
+<span class="sd">    :param base64_string: Base64 string</span>
+<span class="sd">    :param size: Image size</span>
+<span class="sd">    :return: Re-sized Base64 string</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Decode the Base64 string</span>
+    <span class="n">img_data</span> <span class="o">=</span> <span class="n">base64</span><span class="o">.</span><span class="n">b64decode</span><span class="p">(</span><span class="n">base64_string</span><span class="p">)</span>
+    <span class="n">img</span> <span class="o">=</span> <span class="n">Image</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">io</span><span class="o">.</span><span class="n">BytesIO</span><span class="p">(</span><span class="n">img_data</span><span class="p">))</span>
+
+    <span class="c1"># Resize the image</span>
+    <span class="n">resized_img</span> <span class="o">=</span> <span class="n">img</span><span class="o">.</span><span class="n">resize</span><span class="p">(</span><span class="n">size</span><span class="p">,</span> <span class="n">Image</span><span class="o">.</span><span class="n">LANCZOS</span><span class="p">)</span>
+
+    <span class="c1"># Save the resized image to a bytes buffer</span>
+    <span class="n">buffered</span> <span class="o">=</span> <span class="n">io</span><span class="o">.</span><span class="n">BytesIO</span><span class="p">()</span>
+    <span class="n">resized_img</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">buffered</span><span class="p">,</span> <span class="nb">format</span><span class="o">=</span><span class="n">img</span><span class="o">.</span><span class="n">format</span><span class="p">)</span>
+
+    <span class="c1"># Encode the resized image to Base64</span>
+    <span class="k">return</span> <span class="n">base64</span><span class="o">.</span><span class="n">b64encode</span><span class="p">(</span><span class="n">buffered</span><span class="o">.</span><span class="n">getvalue</span><span class="p">())</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s2">&quot;utf-8&quot;</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">convert_to_base64</span><span class="p">(</span><span class="n">pil_image</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Convert PIL images to Base64 encoded strings</span>
+
+<span class="sd">    :param pil_image: PIL image</span>
+<span class="sd">    :return: Re-sized Base64 string</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">buffered</span> <span class="o">=</span> <span class="n">BytesIO</span><span class="p">()</span>
+    <span class="n">pil_image</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">buffered</span><span class="p">,</span> <span class="nb">format</span><span class="o">=</span><span class="s2">&quot;JPEG&quot;</span><span class="p">)</span>  <span class="c1"># You can change the format if needed</span>
+    <span class="n">img_str</span> <span class="o">=</span> <span class="n">base64</span><span class="o">.</span><span class="n">b64encode</span><span class="p">(</span><span class="n">buffered</span><span class="o">.</span><span class="n">getvalue</span><span class="p">())</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s2">&quot;utf-8&quot;</span><span class="p">)</span>
+    <span class="n">img_str</span> <span class="o">=</span> <span class="n">resize_base64_image</span><span class="p">(</span><span class="n">img_str</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="mi">960</span><span class="p">,</span> <span class="mi">540</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">img_str</span>
+
+
+<span class="n">images_base_64</span> <span class="o">=</span> <span class="p">[</span><span class="n">convert_to_base64</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">images</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>If desired, we can plot the images to confirm that they were extracted correctly.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">IPython.display</span> <span class="kn">import</span> <span class="n">HTML</span><span class="p">,</span> <span class="n">display</span>
+
+
+<span class="k">def</span> <span class="nf">plt_img_base64</span><span class="p">(</span><span class="n">img_base64</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Disply base64 encoded string as image</span>
+
+<span class="sd">    :param img_base64:  Base64 string</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Create an HTML img tag with the base64 string as the source</span>
+    <span class="n">image_html</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;&lt;img src=&quot;data:image/jpeg;base64,</span><span class="si">{</span><span class="n">img_base64</span><span class="si">}</span><span class="s1">&quot; /&gt;&#39;</span>
+    <span class="c1"># Display the image by rendering the HTML</span>
+    <span class="n">display</span><span class="p">(</span><span class="n">HTML</span><span class="p">(</span><span class="n">image_html</span><span class="p">))</span>
+
+
+<span class="n">i</span> <span class="o">=</span> <span class="mi">10</span>
+<span class="n">plt_img_base64</span><span class="p">(</span><span class="n">images_base_64</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><img src="data:image/jpeg;base64,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UUAJRS0lABS0lFABRRRQAlFGaKYBWfq+i6Zr1i1lqtlDd25Odkq5wfUHqD7itDFFAHAxfBjwJDc+cNGZsHIje5kKD8N3P413FraW9jax2tpBHBBEu1I41Cqo9ABU1FKwwxSdKWimISijFGKACiiigAooooAMUlLRQAlFGKKYBRRRQAUUUUAFFFFABRRRQAUmKWigBKKWkoASilopgJRRRQAUUUUDCiiigApKWigBKKOlFABRRRQAUUUUAJRS0UDEooooAKKKMUwCjFFFACUUtGKAEooooGJRS0YpgJRRRQBxHiP4V+HPFPiA6zqZvGnZVVo45gqMFGBnjP5GuvsbG202xhsrKBILaFQkcaDAUCrFFSkkAUUUVQxKKWkxQAlFLRTASiiigDj9Y+F3g/W7o3V1pCJcMcu9u7Rbj6kKQM++K0fD/grw94W3NpGmRW8rDDSkl5CPTcxJx7Dit+ipsgEopaSqGFFFFABRRRQMTFFGaKYBRRSUAFJTqMUANopcUlAwoo60UwDFJS0UDEooooA1KKKK5TASlopKYBS0lLQAlFGKKBBRRRQAUlLRQAlFFFABRRRQAUlLRQAlFFFMAooooASilpKACiiigBKKKKYBRRRQAUUUUAFFFFABRRRQAlFLRQAlFBooAKKKKACkpaKAEopaDTASiiigAooooAKKKKACiiigAooooAKSlooASkxTsUlACUUtJimAUUUUDCiiigAooooAKSlooASiilxQAlFFFMApMUtFIBKKWkxQMWkopaYCUUtJQAUlLRQAlFLSUAFFFFMYlFLSYoAKKKKACiiigApKWjNAxKSnUlACUUtJTAKKKKACkpaKBiUUtJQAUlLRQAUlLRTGJRS0lACUYpaKAEpKdSUDEopaSgApKWimBqUlFFcpiFFFFACUUtJTAXNFJRketAwopcj1pOKBBRRketGR60wCkpcj1oyPWgBKKWkoAKKKKACkpaKAEooooAKKKKACkpaKAEooooASiiimAUUUUAFFFFABRRRQAYooooAKDRRQAlFLRQAlFFFABRRRQAUUUUAJRRR2pgFFFFAgooooAKKKKACiiigAooooASilooASkpaKAEopcUlMAooooGFFFFABRRRQAlFLSUDCiiigQUUUUAFJS0UDEopaSgBaSiimAUUUUAFJS0UAJRRRQAUUUUxiUUtJQAUUUUAJ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MjkwjAHr83QfezXQUUAY+meG9J0fUtQ1DT7TybrUZBJdSeY7eYwzzgkgdT0xWPrnh2/XxlpXifRxG9xEps72CRtolt2Ocg/3lPPvXYUUAef618JPDGt+JodXmtFRWZnvLdC4W6Yj5ScMAMHk4HPetTXPhx4S8STW82raQs7W8Igh2zyRhEHRQEYDvXWUUAYfh7wloXhWCSDQ9Njs0kILlSzM2OmWYkn86xp/hb4NuNUa/k0gb3l854hNIIXf+8Yw239MV2tFAHG2vhy9vfiHL4i1RY47exhNrpcCHd8p+/K3oT0A9K7KiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACsj/lpJ/vH+da9ZH/LST/eP860pbgLRRRW4BSUtFAxKKXFJQBpUUUVzmYlFLSUAFFFFABRRRQAUUUUAJRRRTAKKKKACk60tFAhKKKKACiiigAooooAKSlooASiiigAooooAKKKKAExRS0UAJRRRTEFFFFACUUUUAFJS0UDEooopiCiiigAooooAKKKKACiiigYU0/66P8A3hTqaf8AXR/7wpMZeooorIsKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigArJ/wCWj/7x/nWtWV/y0f8A3j/OtKe4BikpaK2ASilxSUwCiiigDRooormICiiimAlFLSUAFFFFAgpKWigYUUlGaACilpKACiiimAUUUUCEopaKAEooooAKKKKACkpaKAEopaSgAooooAKKKTFAC0lLRTASiiigQUUUUDEopaSgQUUUUAJRS0UAJRRRTAKKKKACiiigApp/10f+8KdTT/ro/wDeFJjReooorI0CiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKK89+IvinVNPutM8MaDDF/autCSOK5mlMawADG4Ec7uePp3qPRfHl7pvhHVrrxbp01pdaKRDK6hit0eitGzdST/PNAHo1FcT4N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pKBBRRRQAUlLRQAlFFFMAooooAKKKKACiiigAooooAKKKKBBSUtFAxKKKKACiiigQUUUUAFFFFMAooooASilpKACiiigApKWigBKKKKYBRRRQIKKKKACiiigAooooASilpKACiiigAooooAKKKKACiiigApKWigQlFFFABSUtFACUUtJTAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooASilpKACiiigAooooAKKKKACiiigBKWiigBKKKKYBRRRQAUUUUAFFFFABRRRQMKKKKALdFFFYmgUUUUCCiiigBKKWkoAKKKKYBRRRQAUUUUAFFFFACUUtJQIKKKKACkpaKAEooopgFFFFABRRRQAUUUUAFFFFABRRRQIKSlooGJRRRQAUUUUCCiiigAooopgFFFFACUUtJQAUUUUAFJS0UAJRS0lABRRRTEFFFFABRRRQAUUUUAJRS0lABRRRQAUUUUAFFFFABRRRQAUlLRQISiiigAooooASilooASiiimAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRiiigBKKWkoAKKKKACjiuMuPHzvdaha6VoN7fSafI0dwd6xqCGKjb1LZI4GMn0qlc+MvFRtDOnhqHTkCqd+oTnDFmCqo4XBJPfGOpwKtU5f00VySPQKK5HwF4ruvFGn3ct9FBHcQTBdsKlRtI4yCSc5DV12aUoOMnFicWnZhikpaKQhM0UtJ0oAKKKKACiiigAooooAKKKKALdFFFYmoUUUUAFFFFAgooooASilpKACiiimAUUUUAFFFFABRRRQAlFLSUCCiiigApKWigBKKKKYBRRRQAUUUUAFFFFABRRRQAUUUUCCkpaKBiUUUUAFFFFAgooooAKKKKYBRRRQAlFLSUAFFFFABRRRQAlFLSUAFFFFMQUUUUAFFFFABRRRQAlFLSUAFFFFABRRRQAUUUUAFFFFABSUtFAhKKKKACiiigAoxRRQAlFLSYoAKKKKYBRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAJRS0UAeQNNLZfEzWdBXUBaWeqyASuYwx3MocBSfusdxUHnqOM4x1niSEN4a12O/1OW9hlmUCODy4mthuXahLEA84znkg++axtY8LRav8AFZjJcJH/AKLHeiMg5kKnYF+nyjOOcdOuRR1Lxbp+lXd/ef2DDPqhvJFEksYb7MyRop+fblh5m7GCOPTNdUkpOPJvZGz1asO+D8iw3Or2rP8AM4jePAOHCFgxB9tyfmKtRxa5fx+JNWt/EV7bPp1/dJDCTvi2x/MAQeMc49vQ1Q8BeIdU1nxwJtSn89msWhQoBtTBVicLwCdvPua6abwBcST6gv8AwkV7DYX9zJcT2sCBd288jdk9sDpz6UVZWqNytd28xydpO5z+veM9Sv8ARdIFjeR2F2bRr+7kLhAdmVVVz13MD8v+7VjXLq91IaHq+n67f20GsXMMDW8UnyQZAVsY6kEH8c11GneCNKs7i8knhhvY5xEkcVxCrrCka7VUZzk46nvUEHgWC2gs7eO+l+z2ep/b4Iyudg6+WDnpnnPuaz54LZE80ehzHiPxHqOi6xBbW2qtLb6KkRuxNKFkvHdhlMfxfJz045rY1Q3mveNrewsdcu7OyfSVvEa1fAcmQgH8QR+Va9p4K0tLS9i1CKLUJbueWeSeaFdyl+u0/wAOMdu9Zi+ALuBrKS08RXNvPbWn2TzVhBLR72cDrxjIH/ARQpQ+Yc0TEl8Sa/aNP4cOorJfLqUFmmo+UCRHIDzjpuG0dc9TzkZq/eXer+CtWt45NWm1WzurS6l8u6HzI8Me/Ibrg8DHTk1rp4A00aLJYPc3b3ElwLtr4yfvvOHRwfxP5nvzTtP8FrHqH2/V9TudWuFiaGMTgKiIww3yjqSCRn3puUP6W4c0TndPu7yO40K/1fxTeC81OSN47SCLMBVmGEIHAyDjPbnrjNemVxVv8PhbXVkqa1eNplldLdQ2UgDBXU5GG9Mk8Y7nvzXbVFRpv3SZtPYrX0ssFpJLDs3IC3zgkU15pkvLdPk8qQHPBzkDNWJY1mjaNxlGGCM9RSNEjOjlfmTO056Z4qCB9FFFAFuilNJWJqFFFFABRRRQAUUUUCCiiigBKKWkoAKKKKYBRRRQAUUUUAFFFFACUUGigQUUUUAFJS0UAJRRRTAKKKKACiiigAooooAKKKKACiiigQUlLQaBiUUUUAFFFFAgooooAKKKKYBRRRQAlFLSUAFFFFABRRRQAlFBooAKKKKBBRRRTAKKKKACiiigBKKKKACiiigAooooAKKKKACiiigAoxRRQISilpKACiiigAooooAKSlooASilpKYBRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUARTwrcQtE5cKwwTG7I34MpBH4GqUGgaTalWj0+3Mi5xK6B5Dk5JLtlicknJPetKigBKKWkoAKKKKACiiigAooooAKKKKAENFLSUwCiiAAAAAooA/9k=" /></div></div>
+</div>
+</section>
+<section id="index">
+<h2>Index<a class="headerlink" href="#index" title="Permalink to this heading">#</a></h2>
+<p>We will test two approaches.</p>
+<section id="option-1-vectorstore-with-multimodal-embeddings">
+<h3>Option 1: Vectorstore with multimodal embeddings<a class="headerlink" href="#option-1-vectorstore-with-multimodal-embeddings" title="Permalink to this heading">#</a></h3>
+<p>Here we will use <a class="reference external" href="https://github.com/mlfoundations/open_clip">OpenCLIP multimodal embeddings</a>.</p>
+<p>There are <a class="reference external" href="https://github.com/mlfoundations/open_clip/blob/main/docs/openclip_results.csv">many to choose from</a>.</p>
+<p>By default, it will use <code class="docutils literal notranslate"><span class="pre">model_name=&quot;ViT-H-14&quot;,</span> <span class="pre">checkpoint=&quot;laion2b_s32b_b79k&quot;</span></code>.</p>
+<p>This model favorably balances memory and performance.</p>
+<p>However, you can test different models by passing them to OpenCLIPEmbeddings as <code class="docutils literal notranslate"><span class="pre">model_name=,</span> <span class="pre">checkpoint=</span></code>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">langchain.vectorstores</span> <span class="kn">import</span> <span class="n">Chroma</span>
+<span class="kn">from</span> <span class="nn">langchain_experimental.open_clip</span> <span class="kn">import</span> <span class="n">OpenCLIPEmbeddings</span>
+
+<span class="c1"># Make vectorstore</span>
+<span class="n">vectorstore_mmembd</span> <span class="o">=</span> <span class="n">Chroma</span><span class="p">(</span>
+    <span class="n">collection_name</span><span class="o">=</span><span class="s2">&quot;multi-modal-rag&quot;</span><span class="p">,</span>
+    <span class="n">embedding_function</span><span class="o">=</span><span class="n">OpenCLIPEmbeddings</span><span class="p">(),</span>
+<span class="p">)</span>
+
+<span class="c1"># Read images we extracted above</span>
+<span class="n">img_dir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">Path</span><span class="p">(</span><span class="n">file_names</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span><span class="o">.</span><span class="n">parent</span><span class="p">,</span> <span class="s2">&quot;img&quot;</span><span class="p">)</span>
+<span class="n">image_uris</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span>
+    <span class="p">[</span>
+        <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">img_dir</span><span class="p">,</span> <span class="n">image_name</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">image_name</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="n">img_dir</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">image_name</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s2">&quot;.jpg&quot;</span><span class="p">)</span>
+    <span class="p">]</span>
+<span class="p">)</span>
+
+<span class="c1"># Add images</span>
+<span class="n">vectorstore_mmembd</span><span class="o">.</span><span class="n">add_images</span><span class="p">(</span><span class="n">uris</span><span class="o">=</span><span class="n">image_uris</span><span class="p">)</span>
+
+<span class="c1"># Make retriever</span>
+<span class="n">retriever_mmembd</span> <span class="o">=</span> <span class="n">vectorstore_mmembd</span><span class="o">.</span><span class="n">as_retriever</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="option-2-multi-vector-retriever">
+<h3>Option 2: Multi-vector retriever<a class="headerlink" href="#option-2-multi-vector-retriever" title="Permalink to this heading">#</a></h3>
+<p>This approach will generate and index image summaries. See detail <a class="reference external" href="https://blog.langchain.dev/semi-structured-multi-modal-rag/">here</a>.</p>
+<p>It will then retrieve the raw image to pass to GPT-4V for final synthesis.</p>
+<p>The idea is that retrieval on image summaries:</p>
+<ul class="simple">
+<li><p>Does not rely on multi-modal embeddings</p></li>
+<li><p>Can perform better at retrieval of visually / semantically similar, but quantitatively different slide content</p></li>
+</ul>
+<p>Note: there OpenAI’s GPT-4V API can experince <a class="reference external" href="https://community.openai.com/t/400-errors-on-gpt-vision-api-since-today/534538/16">non-deterministic</a> <code class="docutils literal notranslate"><span class="pre">BadRequestError</span></code>, which we handle. Hopefully this is resolved soon.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">langchain.schema.messages</span> <span class="kn">import</span> <span class="n">HumanMessage</span>
+<span class="kn">from</span> <span class="nn">langchain_google_genai</span> <span class="kn">import</span> <span class="n">ChatGoogleGenerativeAI</span>
+
+
+<span class="k">def</span> <span class="nf">image_summarize</span><span class="p">(</span><span class="n">img_base64</span><span class="p">,</span> <span class="n">prompt</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Make image summary</span>
+
+<span class="sd">    :param img_base64: Base64 encoded string for image</span>
+<span class="sd">    :param prompt: Text prompt for summarizatiomn</span>
+<span class="sd">    :return: Image summarization prompt</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">chat</span> <span class="o">=</span> <span class="n">ChatGoogleGenerativeAI</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="s2">&quot;gemini-pro-vision&quot;</span><span class="p">,</span> <span class="n">temperature</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+
+    <span class="n">msg</span> <span class="o">=</span> <span class="n">chat</span><span class="o">.</span><span class="n">invoke</span><span class="p">(</span>
+        <span class="p">[</span>
+            <span class="n">HumanMessage</span><span class="p">(</span>
+                <span class="n">content</span><span class="o">=</span><span class="p">[</span>
+                    <span class="p">{</span><span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;text&quot;</span><span class="p">,</span> <span class="s2">&quot;text&quot;</span><span class="p">:</span> <span class="n">prompt</span><span class="p">},</span>
+                    <span class="p">{</span>
+                        <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;image_url&quot;</span><span class="p">,</span>
+                        <span class="s2">&quot;image_url&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;url&quot;</span><span class="p">:</span> <span class="sa">f</span><span class="s2">&quot;data:image/jpeg;base64,</span><span class="si">{</span><span class="n">img_base64</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">},</span>
+                    <span class="p">},</span>
+                <span class="p">]</span>
+            <span class="p">)</span>
+        <span class="p">]</span>
+    <span class="p">)</span>
+    <span class="k">return</span> <span class="n">msg</span><span class="o">.</span><span class="n">content</span>
+
+
+<span class="k">def</span> <span class="nf">generate_img_summaries</span><span class="p">(</span><span class="n">img_base64_list</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Generate summaries for images</span>
+
+<span class="sd">    :param img_base64_list: Base64 encoded images</span>
+<span class="sd">    :return: List of image summaries and processed images</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1"># Store image summaries</span>
+    <span class="n">image_summaries</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">processed_images</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="c1"># Prompt</span>
+    <span class="n">prompt</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;You are an assistant tasked with summarizing images for retrieval. </span><span class="se">\</span>
+<span class="s2">    These summaries will be embedded and used to retrieve the raw image. </span><span class="se">\</span>
+<span class="s2">    Give a detailed summary of the image that is well optimized for retrieval.&quot;&quot;&quot;</span>
+
+    <span class="c1"># Apply summarization to images</span>
+    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">base64_image</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">img_base64_list</span><span class="p">):</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">image_summaries</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">image_summarize</span><span class="p">(</span><span class="n">base64_image</span><span class="p">,</span> <span class="n">prompt</span><span class="p">))</span>
+            <span class="n">processed_images</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">base64_image</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;BadRequestError with image </span><span class="si">{</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="si">}</span><span class="s2">. </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">image_summaries</span><span class="p">,</span> <span class="n">processed_images</span>
+
+
+<span class="c1"># Image summaries</span>
+<span class="n">image_summaries</span><span class="p">,</span> <span class="n">images_base_64_processed</span> <span class="o">=</span> <span class="n">generate_img_summaries</span><span class="p">(</span><span class="n">images_base_64</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Add raw docs and doc summaries to <a class="reference external" href="https://python.langchain.com/docs/modules/data_connection/retrievers/multi_vector#summary">Multi Vector Retriever</a>:</p>
+<ul class="simple">
+<li><p>Store the raw images in the <code class="docutils literal notranslate"><span class="pre">docstore</span></code>.</p></li>
+<li><p>Store the image summaries in the <code class="docutils literal notranslate"><span class="pre">vectorstore</span></code> for semantic retrieval.</p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">uuid</span>
+
+<span class="kn">from</span> <span class="nn">langchain.embeddings</span> <span class="kn">import</span> <span class="n">OpenAIEmbeddings</span>
+<span class="kn">from</span> <span class="nn">langchain.retrievers.multi_vector</span> <span class="kn">import</span> <span class="n">MultiVectorRetriever</span>
+<span class="kn">from</span> <span class="nn">langchain.schema.document</span> <span class="kn">import</span> <span class="n">Document</span>
+<span class="kn">from</span> <span class="nn">langchain.schema.output_parser</span> <span class="kn">import</span> <span class="n">StrOutputParser</span>
+<span class="kn">from</span> <span class="nn">langchain.storage</span> <span class="kn">import</span> <span class="n">InMemoryStore</span>
+
+
+<span class="k">def</span> <span class="nf">create_multi_vector_retriever</span><span class="p">(</span><span class="n">vectorstore</span><span class="p">,</span> <span class="n">image_summaries</span><span class="p">,</span> <span class="n">images</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Create retriever that indexes summaries, but returns raw images or texts</span>
+
+<span class="sd">    :param vectorstore: Vectorstore to store embedded image sumamries</span>
+<span class="sd">    :param image_summaries: Image summaries</span>
+<span class="sd">    :param images: Base64 encoded images</span>
+<span class="sd">    :return: Retriever</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1"># Initialize the storage layer</span>
+    <span class="n">store</span> <span class="o">=</span> <span class="n">InMemoryStore</span><span class="p">()</span>
+    <span class="n">id_key</span> <span class="o">=</span> <span class="s2">&quot;doc_id&quot;</span>
+
+    <span class="c1"># Create the multi-vector retriever</span>
+    <span class="n">retriever</span> <span class="o">=</span> <span class="n">MultiVectorRetriever</span><span class="p">(</span>
+        <span class="n">vectorstore</span><span class="o">=</span><span class="n">vectorstore</span><span class="p">,</span>
+        <span class="n">docstore</span><span class="o">=</span><span class="n">store</span><span class="p">,</span>
+        <span class="n">id_key</span><span class="o">=</span><span class="n">id_key</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="c1"># Helper function to add documents to the vectorstore and docstore</span>
+    <span class="k">def</span> <span class="nf">add_documents</span><span class="p">(</span><span class="n">retriever</span><span class="p">,</span> <span class="n">doc_summaries</span><span class="p">,</span> <span class="n">doc_contents</span><span class="p">):</span>
+        <span class="n">doc_ids</span> <span class="o">=</span> <span class="p">[</span><span class="nb">str</span><span class="p">(</span><span class="n">uuid</span><span class="o">.</span><span class="n">uuid4</span><span class="p">())</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="n">doc_contents</span><span class="p">]</span>
+        <span class="n">summary_docs</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="n">Document</span><span class="p">(</span><span class="n">page_content</span><span class="o">=</span><span class="n">s</span><span class="p">,</span> <span class="n">metadata</span><span class="o">=</span><span class="p">{</span><span class="n">id_key</span><span class="p">:</span> <span class="n">doc_ids</span><span class="p">[</span><span class="n">i</span><span class="p">]})</span>
+            <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">s</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">doc_summaries</span><span class="p">)</span>
+        <span class="p">]</span>
+        <span class="n">retriever</span><span class="o">.</span><span class="n">vectorstore</span><span class="o">.</span><span class="n">add_documents</span><span class="p">(</span><span class="n">summary_docs</span><span class="p">)</span>
+        <span class="n">retriever</span><span class="o">.</span><span class="n">docstore</span><span class="o">.</span><span class="n">mset</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">doc_ids</span><span class="p">,</span> <span class="n">doc_contents</span><span class="p">)))</span>
+
+    <span class="n">add_documents</span><span class="p">(</span><span class="n">retriever</span><span class="p">,</span> <span class="n">image_summaries</span><span class="p">,</span> <span class="n">images</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">retriever</span>
+
+
+<span class="c1"># The vectorstore to use to index the summaries</span>
+<span class="n">vectorstore_mvr</span> <span class="o">=</span> <span class="n">Chroma</span><span class="p">(</span>
+    <span class="n">collection_name</span><span class="o">=</span><span class="s2">&quot;multi-modal-rag-mv&quot;</span><span class="p">,</span> <span class="n">embedding_function</span><span class="o">=</span><span class="n">OpenAIEmbeddings</span><span class="p">()</span>
+<span class="p">)</span>
+
+<span class="c1"># Create retriever</span>
+<span class="n">retriever_multi_vector_img</span> <span class="o">=</span> <span class="n">create_multi_vector_retriever</span><span class="p">(</span>
+    <span class="n">vectorstore_mvr</span><span class="p">,</span>
+    <span class="n">image_summaries</span><span class="p">,</span>
+    <span class="n">images_base_64_processed</span><span class="p">,</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="rag">
+<h2>RAG<a class="headerlink" href="#rag" title="Permalink to this heading">#</a></h2>
+<p>Create a pipeline for retrieval of relevant images based on semantic similarity to the input question.</p>
+<p>Pass the images to GPT-4V for answer synthesis.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">langchain.schema.runnable</span> <span class="kn">import</span> <span class="n">RunnableLambda</span><span class="p">,</span> <span class="n">RunnablePassthrough</span>
+
+
+<span class="k">def</span> <span class="nf">prepare_images</span><span class="p">(</span><span class="n">docs</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Prepare images for prompt</span>
+
+<span class="sd">    :param docs: A list of base64-encoded images from retriever.</span>
+<span class="sd">    :return: Dict containing a list of base64-encoded strings.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">b64_images</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">doc</span> <span class="ow">in</span> <span class="n">docs</span><span class="p">:</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">doc</span><span class="p">,</span> <span class="n">Document</span><span class="p">):</span>
+            <span class="n">doc</span> <span class="o">=</span> <span class="n">doc</span><span class="o">.</span><span class="n">page_content</span>
+        <span class="n">b64_images</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">doc</span><span class="p">)</span>
+    <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;images&quot;</span><span class="p">:</span> <span class="n">b64_images</span><span class="p">}</span>
+
+
+<span class="k">def</span> <span class="nf">img_prompt_func</span><span class="p">(</span><span class="n">data_dict</span><span class="p">,</span> <span class="n">num_images</span><span class="o">=</span><span class="mi">2</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Gemni prompt for image analysis.</span>
+
+<span class="sd">    :param data_dict: A dict with images and a user-provided question.</span>
+<span class="sd">    :param num_images: Number of images to include in the prompt.</span>
+<span class="sd">    :return: A list containing message objects for each image and the text prompt.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">messages</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">if</span> <span class="n">data_dict</span><span class="p">[</span><span class="s2">&quot;context&quot;</span><span class="p">][</span><span class="s2">&quot;images&quot;</span><span class="p">]:</span>
+        <span class="k">for</span> <span class="n">image</span> <span class="ow">in</span> <span class="n">data_dict</span><span class="p">[</span><span class="s2">&quot;context&quot;</span><span class="p">][</span><span class="s2">&quot;images&quot;</span><span class="p">][:</span><span class="n">num_images</span><span class="p">]:</span>
+            <span class="n">image_message</span> <span class="o">=</span> <span class="p">{</span>
+                <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;image_url&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;image_url&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;url&quot;</span><span class="p">:</span> <span class="sa">f</span><span class="s2">&quot;data:image/jpeg;base64,</span><span class="si">{</span><span class="n">image</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">},</span>
+            <span class="p">}</span>
+            <span class="n">messages</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">image_message</span><span class="p">)</span>
+    <span class="n">text_message</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;text&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;text&quot;</span><span class="p">:</span> <span class="p">(</span>
+            <span class="s2">&quot;You are an analyst tasked with answering questions about visual content.</span><span class="se">\n</span><span class="s2">&quot;</span>
+            <span class="s2">&quot;You will be give a set of image(s) from a slide deck / presentation.</span><span class="se">\n</span><span class="s2">&quot;</span>
+            <span class="s2">&quot;Use this information to answer the user question. </span><span class="se">\n</span><span class="s2">&quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;User-provided question: </span><span class="si">{</span><span class="n">data_dict</span><span class="p">[</span><span class="s1">&#39;question&#39;</span><span class="p">]</span><span class="si">}</span><span class="se">\n\n</span><span class="s2">&quot;</span>
+        <span class="p">),</span>
+    <span class="p">}</span>
+    <span class="n">messages</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">text_message</span><span class="p">)</span>
+    <span class="k">return</span> <span class="p">[</span><span class="n">HumanMessage</span><span class="p">(</span><span class="n">content</span><span class="o">=</span><span class="n">messages</span><span class="p">)]</span>
+
+
+<span class="k">def</span> <span class="nf">multi_modal_rag_chain</span><span class="p">(</span><span class="n">retriever</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Multi-modal RAG chain</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1"># Multi-modal LLM</span>
+    <span class="n">model</span> <span class="o">=</span> <span class="n">ChatGoogleGenerativeAI</span><span class="p">(</span><span class="n">temperature</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">model</span><span class="o">=</span><span class="s2">&quot;gemini-pro-vision&quot;</span><span class="p">)</span>
+
+    <span class="c1"># RAG pipeline</span>
+    <span class="n">chain</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="p">{</span>
+            <span class="s2">&quot;context&quot;</span><span class="p">:</span> <span class="n">retriever</span> <span class="o">|</span> <span class="n">RunnableLambda</span><span class="p">(</span><span class="n">prepare_images</span><span class="p">),</span>
+            <span class="s2">&quot;question&quot;</span><span class="p">:</span> <span class="n">RunnablePassthrough</span><span class="p">(),</span>
+        <span class="p">}</span>
+        <span class="o">|</span> <span class="n">RunnableLambda</span><span class="p">(</span><span class="n">img_prompt_func</span><span class="p">)</span>
+        <span class="o">|</span> <span class="n">model</span>
+        <span class="o">|</span> <span class="n">StrOutputParser</span><span class="p">()</span>
+    <span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">chain</span>
+
+
+<span class="c1"># Create RAG chain</span>
+<span class="n">chain_multimodal_rag</span> <span class="o">=</span> <span class="n">multi_modal_rag_chain</span><span class="p">(</span><span class="n">retriever_multi_vector_img</span><span class="p">)</span>
+<span class="n">chain_multimodal_rag_mmembd</span> <span class="o">=</span> <span class="n">multi_modal_rag_chain</span><span class="p">(</span><span class="n">retriever_mmembd</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="eval">
+<h2>Eval<a class="headerlink" href="#eval" title="Permalink to this heading">#</a></h2>
+<p>Run evaluation on our dataset:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">task.name</span></code> is the dataset of QA pairs that we cloned</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">eval_config</span></code> specifies the <a class="reference external" href="https://docs.smith.langchain.com/evaluation/evaluator-implementations#correctness-qa-evaluation">LangSmith evaluator</a> for our dataset, which will use GPT-4 as a grader</p></li>
+<li><p>The grader will evaluate the chain-generated answer to each question relative to ground truth</p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">uuid</span>
+
+<span class="kn">from</span> <span class="nn">langchain.smith</span> <span class="kn">import</span> <span class="n">RunEvalConfig</span>
+<span class="kn">from</span> <span class="nn">langsmith.client</span> <span class="kn">import</span> <span class="n">Client</span>
+
+<span class="c1"># Evaluator configuration</span>
+<span class="n">client</span> <span class="o">=</span> <span class="n">Client</span><span class="p">()</span>
+<span class="n">eval_config</span> <span class="o">=</span> <span class="n">RunEvalConfig</span><span class="p">(</span>
+    <span class="n">evaluators</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;cot_qa&quot;</span><span class="p">],</span>
+<span class="p">)</span>
+
+<span class="c1"># Experiments</span>
+<span class="n">chain_map</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;multi_modal_mvretriever_gemini-pro-vision&quot;</span><span class="p">:</span> <span class="n">chain_multimodal_rag</span><span class="p">,</span>
+    <span class="s2">&quot;multi_modal_mmembd_gemini-pro-vision&quot;</span><span class="p">:</span> <span class="n">chain_multimodal_rag_mmembd</span><span class="p">,</span>
+<span class="p">}</span>
+
+<span class="c1"># Run evaluation</span>
+<span class="n">run_id</span> <span class="o">=</span> <span class="n">uuid</span><span class="o">.</span><span class="n">uuid4</span><span class="p">()</span><span class="o">.</span><span class="n">hex</span><span class="p">[:</span><span class="mi">4</span><span class="p">]</span>
+<span class="n">test_runs</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="k">for</span> <span class="n">arch_name</span><span class="p">,</span> <span class="n">chain</span> <span class="ow">in</span> <span class="n">chain_map</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+    <span class="n">test_runs</span><span class="p">[</span><span class="n">arch_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">run_on_dataset</span><span class="p">(</span>
+        <span class="n">dataset_name</span><span class="o">=</span><span class="n">task</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
+        <span class="n">llm_or_chain_factory</span><span class="o">=</span><span class="k">lambda</span><span class="p">:</span> <span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="p">[</span><span class="s2">&quot;Question&quot;</span><span class="p">])</span> <span class="o">|</span> <span class="n">chain</span><span class="p">,</span>
+        <span class="n">evaluation</span><span class="o">=</span><span class="n">eval_config</span><span class="p">,</span>
+        <span class="n">verbose</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+        <span class="n">project_name</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">arch_name</span><span class="si">}</span><span class="s2">-</span><span class="si">{</span><span class="n">run_id</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+        <span class="n">project_metadata</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;arch&quot;</span><span class="p">:</span> <span class="n">arch_name</span><span class="p">,</span> <span class="s2">&quot;model&quot;</span><span class="p">:</span> <span class="s2">&quot;gemini-pro-vision&quot;</span><span class="p">},</span>
+    <span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>View the evaluation results for project &#39;multi_modal_mvretriever_gemini-pro-vision-f276&#39; at:
+https://smith.langchain.com/o/ebbaf2eb-769b-4505-aca2-d11de10372a4/datasets/08a29acb-5ad6-42ce-a482-574c9e2e5306/compare?selectedSessions=e2890853-d80d-432f-a91d-60902f8244c6
+
+View all tests for Dataset Multi-modal slide decks at:
+https://smith.langchain.com/o/ebbaf2eb-769b-4505-aca2-d11de10372a4/datasets/08a29acb-5ad6-42ce-a482-574c9e2e5306
+[-------------------------------------------------&gt;] 10/10
+</pre></div>
+</div>
+<div class="output text_html"><h3>Experiment Results:</h3></div><div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>output</th>
+      <th>feedback.COT Contextual Accuracy</th>
+      <th>error</th>
+      <th>execution_time</th>
+      <th>run_id</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>count</th>
+      <td>10</td>
+      <td>10.000000</td>
+      <td>0</td>
+      <td>10.000000</td>
+      <td>10</td>
+    </tr>
+    <tr>
+      <th>unique</th>
+      <td>10</td>
+      <td>NaN</td>
+      <td>0</td>
+      <td>NaN</td>
+      <td>10</td>
+    </tr>
+    <tr>
+      <th>top</th>
+      <td>~26,800</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>afc9745a-8f9f-4092-8344-4617b1d91a7c</td>
+    </tr>
+    <tr>
+      <th>freq</th>
+      <td>1</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>mean</th>
+      <td>NaN</td>
+      <td>0.800000</td>
+      <td>NaN</td>
+      <td>11.835799</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>std</th>
+      <td>NaN</td>
+      <td>0.421637</td>
+      <td>NaN</td>
+      <td>0.746122</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>min</th>
+      <td>NaN</td>
+      <td>0.000000</td>
+      <td>NaN</td>
+      <td>10.604844</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>25%</th>
+      <td>NaN</td>
+      <td>1.000000</td>
+      <td>NaN</td>
+      <td>11.587839</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>50%</th>
+      <td>NaN</td>
+      <td>1.000000</td>
+      <td>NaN</td>
+      <td>12.004324</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>75%</th>
+      <td>NaN</td>
+      <td>1.000000</td>
+      <td>NaN</td>
+      <td>12.307524</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>max</th>
+      <td>NaN</td>
+      <td>1.000000</td>
+      <td>NaN</td>
+      <td>12.919055</td>
+      <td>NaN</td>
+    </tr>
+  </tbody>
+</table>
+</div></div><div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>View the evaluation results for project &#39;multi_modal_mmembd_gemini-pro-vision-f276&#39; at:
+https://smith.langchain.com/o/ebbaf2eb-769b-4505-aca2-d11de10372a4/datasets/08a29acb-5ad6-42ce-a482-574c9e2e5306/compare?selectedSessions=575112d2-d7a8-472b-bafe-0698ff496606
+
+View all tests for Dataset Multi-modal slide decks at:
+https://smith.langchain.com/o/ebbaf2eb-769b-4505-aca2-d11de10372a4/datasets/08a29acb-5ad6-42ce-a482-574c9e2e5306
+[-------------------------------------------------&gt;] 10/10
+</pre></div>
+</div>
+<div class="output text_html"><h3>Experiment Results:</h3></div><div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>output</th>
+      <th>feedback.COT Contextual Accuracy</th>
+      <th>error</th>
+      <th>execution_time</th>
+      <th>run_id</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>count</th>
+      <td>10</td>
+      <td>10.000000</td>
+      <td>0</td>
+      <td>10.000000</td>
+      <td>10</td>
+    </tr>
+    <tr>
+      <th>unique</th>
+      <td>9</td>
+      <td>NaN</td>
+      <td>0</td>
+      <td>NaN</td>
+      <td>10</td>
+    </tr>
+    <tr>
+      <th>top</th>
+      <td>The answer cannot be found in the image.</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>a17bb468-499b-4663-89a3-eeeb6207763c</td>
+    </tr>
+    <tr>
+      <th>freq</th>
+      <td>2</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>mean</th>
+      <td>NaN</td>
+      <td>0.300000</td>
+      <td>NaN</td>
+      <td>14.063835</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>std</th>
+      <td>NaN</td>
+      <td>0.483046</td>
+      <td>NaN</td>
+      <td>3.145174</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>min</th>
+      <td>NaN</td>
+      <td>0.000000</td>
+      <td>NaN</td>
+      <td>10.307565</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>25%</th>
+      <td>NaN</td>
+      <td>0.000000</td>
+      <td>NaN</td>
+      <td>11.285314</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>50%</th>
+      <td>NaN</td>
+      <td>0.000000</td>
+      <td>NaN</td>
+      <td>14.042789</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>75%</th>
+      <td>NaN</td>
+      <td>0.750000</td>
+      <td>NaN</td>
+      <td>16.025788</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>max</th>
+      <td>NaN</td>
+      <td>1.000000</td>
+      <td>NaN</td>
+      <td>19.055173</td>
+      <td>NaN</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+</section>
+</section>
+
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer">
+                  
+<div class="prev-next-area">
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pre-requisites">Pre-requisites</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#dataset">Dataset</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#load">Load</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#index">Index</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#option-1-vectorstore-with-multimodal-embeddings">Option 1: Vectorstore with multimodal embeddings</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#option-2-multi-vector-retriever">Option 2: Multi-vector retriever</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#rag">RAG</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#eval">Eval</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Langchain AI
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2023, Langchain AI.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../../../_static/scripts/bootstrap.js?digest=5b4479735964841361fd"></script>
+<script src="../../../../_static/scripts/pydata-sphinx-theme.js?digest=5b4479735964841361fd"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

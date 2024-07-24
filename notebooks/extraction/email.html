@@ -1,0 +1,1343 @@
+
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+    <title>Email Extraction &#8212; LangChain Benchmarks 0.0.12</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=5b4479735964841361fd" rel="stylesheet" />
+<link href="../../_static/styles/bootstrap.css?digest=5b4479735964841361fd" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=5b4479735964841361fd" rel="stylesheet" />
+
+  
+  <link href="../../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=5b4479735964841361fd" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+    <link rel="stylesheet" href="../../_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/custom.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=5b4479735964841361fd" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=5b4479735964841361fd" />
+  <script src="../../_static/vendor/fontawesome/6.1.2/js/all.min.js?digest=5b4479735964841361fd"></script>
+
+    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/sphinx_highlight.js"></script>
+    <script src="../../_static/clipboard.min.js"></script>
+    <script src="../../_static/copybutton.js"></script>
+    <script src="../../_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'notebooks/extraction/email';</script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Chat Extraction" href="chat_extraction.html" />
+    <link rel="prev" title="Introduction" href="intro.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>
+    Back to top
+  </button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
+    </nav>
+  
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+
+<a class="navbar-brand logo" href="../../index.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">LangChain Benchmarks 0.0.12</p>
+  
+</a></div>
+        <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../../index.html">
+                    🦜💯 LangChain Benchmarks
+                </a>
+            </li>
+        </ul>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Introduction</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../getting_started.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../models.html">Model Registry</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../datasets.html">Datasets</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Tool Usage</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../tool_usage/intro.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tool_usage/relational_data.html">Relational Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tool_usage/multiverse_math.html">Multiverse Math</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tool_usage/typewriter_1.html">Typewriter: Single Tool</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tool_usage/typewriter_26.html">Typewriter: 26 Tools</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tool_usage/benchmark_all_tasks.html">Benchmark All Tasks</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Extraction</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="intro.html">Introduction</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Email Extraction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="chat_extraction.html">Chat Extraction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="high_cardinality.html">Extracting high-cardinality categoricals</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">RAG</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../retrieval/intro.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../retrieval/langchain_docs_qa.html">Q&amp;A over LangChain Docs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../retrieval/semi_structured_benchmarking/semi_structured.html">Semi-structured RAG</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../retrieval/semi_structured_benchmarking/ss_eval_chunk_sizes.html">Semi-structured eval: Chunk size tuning</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../retrieval/semi_structured_benchmarking/ss_eval_long_context.html">Semi-structured eval: Long-context</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../retrieval/semi_structured_benchmarking/ss_eval_multi_vector.html">Semi-structured eval: Multi vector</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../retrieval/multi_modal_benchmarking/multi_modal_eval_baseline.html">Multi-modal eval: Baseline</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../retrieval/multi_modal_benchmarking/multi_modal_eval.html">Multi-modal eval: GPT-4 w/ multi-modal embeddings and multi-vector retriever</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../retrieval/comparing_techniques.html">Evaluating RAG Architectures on Benchmark Tasks</a></li>
+
+
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Benchmarking Without LangSmith</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../run_without_langsmith.html">Running Locally</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</label></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-launch-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Launch interactive content">
+    <i class="fas fa-rocket"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://colab.research.google.com/github/langchain-ai/langchain-benchmarks/blob/main/docs/source/notebooks/extraction/email.ipynb" target="_blank"
+   class="btn btn-sm dropdown-item"
+   title="Launch onColab"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  
+    <img src="../../_static/images/logo_colab.png">
+  </span>
+<span class="btn__text-container">Colab</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/langchain-ai/langchain-benchmarks" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/langchain-ai/langchain-benchmarks/blob/main/docs/source/notebooks/extraction/email.ipynb?plain=1" target="_blank"
+   class="btn btn-sm btn-source-file-button dropdown-item"
+   title="Show source"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-code"></i>
+  </span>
+<span class="btn__text-container">Show source</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/langchain-ai/langchain-benchmarks/issues/new?title=Issue%20on%20page%20%2Fnotebooks/extraction/email.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../../_sources/notebooks/extraction/email.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</label>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Email Extraction</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#schema">Schema</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#define-an-extraction-chain">Define an extraction chain</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#evaluate">Evaluate</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#compare-to-another-llm">Compare to another LLM</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#inspect">Inspect</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article" role="main">
+                  
+  <section id="email-extraction">
+<h1>Email Extraction<a class="headerlink" href="#email-extraction" title="Permalink to this heading">#</a></h1>
+<p>Let’s evaluate an LLM on its ability to extract structured information from email texts.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="k">pip</span> install -U langchain langchain_benchmarks openai rapidfuzz
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">os</span>
+
+<span class="c1"># Get your API key from https://smith.langchain.com/settings</span>
+<span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s2">&quot;LANGCHAIN_API_KEY&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;sk-...&quot;</span>
+<span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s2">&quot;OPENAI_API_KEY&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;sk-...&quot;</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">langchain_benchmarks</span> <span class="kn">import</span> <span class="n">clone_public_dataset</span><span class="p">,</span> <span class="n">registry</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>For this code to work, please configure LangSmith environment variables with your credentials.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">task</span> <span class="o">=</span> <span class="n">registry</span><span class="p">[</span><span class="s2">&quot;Email Extraction&quot;</span><span class="p">]</span>
+<span class="n">task</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><table>
+<tbody>
+<tr><td>Name       </td><td>Email Extraction                                                                                                                                           </td></tr>
+<tr><td>Type       </td><td>ExtractionTask                                                                                                                                             </td></tr>
+<tr><td>Dataset ID </td><td><a href="https://smith.langchain.com/public/a1742786-bde5-4f51-a1d8-e148e5251ddb/d" target="_blank" rel="noopener">a1742786-bde5-4f51-a1d8-e148e5251ddb</a></td></tr>
+<tr><td>Description</td><td>A dataset of 42 real emails deduped from a spam folder, with semantic HTML tags removed, as well as a script for initial extraction and formatting of other emails from an arbitrary .mbox file like the one exported by Gmail.
+
+Some additional cleanup of the data was done by hand after the initial pass.
+
+See https://github.com/jacoblee93/oss-model-extraction-evals.                                                                                                                                                            </td></tr>
+</tbody>
+</table></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">task</span><span class="o">.</span><span class="n">description</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>A dataset of 42 real emails deduped from a spam folder, with semantic HTML tags removed, as well as a script for initial extraction and formatting of other emails from an arbitrary .mbox file like the one exported by Gmail.
+
+Some additional cleanup of the data was done by hand after the initial pass.
+
+See https://github.com/jacoblee93/oss-model-extraction-evals.
+    
+</pre></div>
+</div>
+</div>
+</div>
+<p>Clone the dataset associated with this task</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">clone_public_dataset</span><span class="p">(</span><span class="n">task</span><span class="o">.</span><span class="n">dataset_id</span><span class="p">,</span> <span class="n">dataset_name</span><span class="o">=</span><span class="n">task</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Dataset Email Extraction already exists. Skipping.
+You can access the dataset at https://smith.langchain.com/o/ebbaf2eb-769b-4505-aca2-d11de10372a4/datasets/309a2fce-ce68-43aa-befb-67f94d0c3570.
+</pre></div>
+</div>
+</div>
+</div>
+<section id="schema">
+<h2>Schema<a class="headerlink" href="#schema" title="Permalink to this heading">#</a></h2>
+<p>Each extraction task has an expected output schema defined in a Pydantic BaseModel object, which we can use to
+get a JSON schema object.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pprint</span>
+
+<span class="n">pprint</span><span class="o">.</span><span class="n">pprint</span><span class="p">(</span><span class="n">task</span><span class="o">.</span><span class="n">schema</span><span class="o">.</span><span class="n">schema</span><span class="p">())</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>{&#39;definitions&#39;: {&#39;ToneEnum&#39;: {&#39;description&#39;: &#39;The tone of the email.&#39;,
+                              &#39;enum&#39;: [&#39;positive&#39;, &#39;negative&#39;],
+                              &#39;title&#39;: &#39;ToneEnum&#39;,
+                              &#39;type&#39;: &#39;string&#39;}},
+ &#39;description&#39;: &#39;Relevant information about an email.&#39;,
+ &#39;properties&#39;: {&#39;action_items&#39;: {&#39;description&#39;: &#39;A list of action items &#39;
+                                                &#39;requested by the email&#39;,
+                                 &#39;items&#39;: {&#39;type&#39;: &#39;string&#39;},
+                                 &#39;title&#39;: &#39;Action Items&#39;,
+                                 &#39;type&#39;: &#39;array&#39;},
+                &#39;sender&#39;: {&#39;description&#39;: &quot;The sender&#39;s name, if available&quot;,
+                           &#39;title&#39;: &#39;Sender&#39;,
+                           &#39;type&#39;: &#39;string&#39;},
+                &#39;sender_address&#39;: {&#39;description&#39;: &quot;The sender&#39;s address, if &quot;
+                                                  &#39;available&#39;,
+                                   &#39;title&#39;: &#39;Sender Address&#39;,
+                                   &#39;type&#39;: &#39;string&#39;},
+                &#39;sender_phone_number&#39;: {&#39;description&#39;: &quot;The sender&#39;s phone &quot;
+                                                       &#39;number, if available&#39;,
+                                        &#39;title&#39;: &#39;Sender Phone Number&#39;,
+                                        &#39;type&#39;: &#39;string&#39;},
+                &#39;tone&#39;: {&#39;allOf&#39;: [{&#39;$ref&#39;: &#39;#/definitions/ToneEnum&#39;}],
+                         &#39;description&#39;: &#39;The tone of the email.&#39;},
+                &#39;topic&#39;: {&#39;description&#39;: &#39;High level description of what the &#39;
+                                         &#39;email is about&#39;,
+                          &#39;title&#39;: &#39;Topic&#39;,
+                          &#39;type&#39;: &#39;string&#39;}},
+ &#39;required&#39;: [&#39;action_items&#39;, &#39;topic&#39;, &#39;tone&#39;],
+ &#39;title&#39;: &#39;Email&#39;,
+ &#39;type&#39;: &#39;object&#39;}
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="define-an-extraction-chain">
+<h2>Define an extraction chain<a class="headerlink" href="#define-an-extraction-chain" title="Permalink to this heading">#</a></h2>
+<p>Let’s build the extraction chain that we can use to get structured information from the emails.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">langchain.chat_models</span> <span class="kn">import</span> <span class="n">ChatOpenAI</span>
+<span class="kn">from</span> <span class="nn">langchain.output_parsers.openai_functions</span> <span class="kn">import</span> <span class="n">JsonOutputFunctionsParser</span>
+
+<span class="n">llm</span> <span class="o">=</span> <span class="n">ChatOpenAI</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="s2">&quot;gpt-3.5-turbo-16k&quot;</span><span class="p">,</span> <span class="n">temperature</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">bind_functions</span><span class="p">(</span>
+    <span class="n">functions</span><span class="o">=</span><span class="p">[</span><span class="n">task</span><span class="o">.</span><span class="n">schema</span><span class="p">],</span>
+    <span class="n">function_call</span><span class="o">=</span><span class="n">task</span><span class="o">.</span><span class="n">schema</span><span class="o">.</span><span class="n">schema</span><span class="p">()[</span><span class="s2">&quot;title&quot;</span><span class="p">],</span>
+<span class="p">)</span>
+
+<span class="n">output_parser</span> <span class="o">=</span> <span class="n">JsonOutputFunctionsParser</span><span class="p">()</span>
+<span class="n">extraction_chain</span> <span class="o">=</span> <span class="n">task</span><span class="o">.</span><span class="n">instructions</span> <span class="o">|</span> <span class="n">llm</span> <span class="o">|</span> <span class="n">output_parser</span> <span class="o">|</span> <span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;output&quot;</span><span class="p">:</span> <span class="n">x</span><span class="p">})</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">extraction_chain</span><span class="o">.</span><span class="n">invoke</span><span class="p">(</span>
+    <span class="p">{</span>
+        <span class="s2">&quot;input&quot;</span><span class="p">:</span> <span class="s2">&quot;Hello Dear MR. I want you to send me gold to get rich.&quot;</span>
+        <span class="s2">&quot; First buy an envelope. Then open it and put some gold inside. &quot;</span>
+        <span class="s2">&quot;Then close it and finally mail it to my address at 12345 My Gold Way.&quot;</span>
+        <span class="s2">&quot; You can call me any time at 000-1212-1111.&quot;</span>
+    <span class="p">}</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>{&#39;output&#39;: {&#39;sender&#39;: &#39;Unknown&#39;,
+  &#39;sender_phone_number&#39;: &#39;000-1212-1111&#39;,
+  &#39;sender_address&#39;: &#39;12345 My Gold Way&#39;,
+  &#39;action_items&#39;: [&#39;Buy an envelope&#39;,
+   &#39;Put gold inside&#39;,
+   &#39;Close the envelope&#39;,
+   &quot;Mail it to sender&#39;s address&quot;],
+  &#39;topic&#39;: &#39;Request to send gold&#39;,
+  &#39;tone&#39;: &#39;positive&#39;}}
+</pre></div>
+</div>
+</div>
+</div>
+<p>Now it’s time to measure our chain’s effectiveness!</p>
+</section>
+<section id="evaluate">
+<h2>Evaluate<a class="headerlink" href="#evaluate" title="Permalink to this heading">#</a></h2>
+<p>Let’s evaluate the chain now.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">langsmith.client</span> <span class="kn">import</span> <span class="n">Client</span>
+
+<span class="kn">from</span> <span class="nn">langchain_benchmarks.extraction</span> <span class="kn">import</span> <span class="n">get_eval_config</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">client</span> <span class="o">=</span> <span class="n">Client</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">eval_llm</span> <span class="o">=</span> <span class="n">ChatOpenAI</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="s2">&quot;gpt-4&quot;</span><span class="p">,</span> <span class="n">model_kwargs</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;seed&quot;</span><span class="p">:</span> <span class="mi">42</span><span class="p">})</span>
+<span class="n">eval_config</span> <span class="o">=</span> <span class="n">get_eval_config</span><span class="p">(</span><span class="n">eval_llm</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">test_run</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">run_on_dataset</span><span class="p">(</span>
+    <span class="n">dataset_name</span><span class="o">=</span><span class="n">task</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
+    <span class="n">llm_or_chain_factory</span><span class="o">=</span><span class="n">extraction_chain</span><span class="p">,</span>
+    <span class="n">evaluation</span><span class="o">=</span><span class="n">eval_config</span><span class="p">,</span>
+    <span class="n">verbose</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="n">project_metadata</span><span class="o">=</span><span class="p">{</span>
+        <span class="s2">&quot;arch&quot;</span><span class="p">:</span> <span class="s2">&quot;openai-functions&quot;</span><span class="p">,</span>
+    <span class="p">},</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>View the evaluation results for project &#39;monthly-look-12&#39; at:
+https://smith.langchain.com/o/ebbaf2eb-769b-4505-aca2-d11de10372a4/projects/p/177d564f-516d-4b65-bae0-37154b529470?eval=true
+
+View all tests for Dataset Email Extraction at:
+https://smith.langchain.com/o/ebbaf2eb-769b-4505-aca2-d11de10372a4/datasets/309a2fce-ce68-43aa-befb-67f94d0c3570
+[-------------------------------------------------&gt;] 42/42
+ Eval quantiles:
+                                             inputs.input  \
+count                                                  42   
+unique                                                 42   
+top     ---  \n|\n\nEvery business faces its set of cu...   
+freq                                                    1   
+mean                                                  NaN   
+std                                                   NaN   
+min                                                   NaN   
+25%                                                   NaN   
+50%                                                   NaN   
+75%                                                   NaN   
+max                                                   NaN   
+
+                                           outputs.output  \
+count                                                  42   
+unique                                                 42   
+top     {&#39;sender&#39;: &#39;EMC Financial&#39;, &#39;sender_address&#39;: ...   
+freq                                                    1   
+mean                                                  NaN   
+std                                                   NaN   
+min                                                   NaN   
+25%                                                   NaN   
+50%                                                   NaN   
+75%                                                   NaN   
+max                                                   NaN   
+
+        feedback.json_edit_distance  feedback.score_string:accuracy error  \
+count                     42.000000                       42.000000     0   
+unique                          NaN                             NaN     0   
+top                             NaN                             NaN   NaN   
+freq                            NaN                             NaN   NaN   
+mean                       0.566434                        0.485714   NaN   
+std                        0.178473                        0.235374   NaN   
+min                        0.190883                        0.100000   NaN   
+25%                        0.441978                        0.300000   NaN   
+50%                        0.581750                        0.300000   NaN   
+75%                        0.687949                        0.700000   NaN   
+max                        0.901852                        0.900000   NaN   
+
+        execution_time  
+count        42.000000  
+unique             NaN  
+top                NaN  
+freq               NaN  
+mean          3.527634  
+std           0.518258  
+min           2.579424  
+25%           3.153659  
+50%           3.525745  
+75%           3.796416  
+max           5.144408  
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="compare-to-another-llm">
+<h2>Compare to another LLM<a class="headerlink" href="#compare-to-another-llm" title="Permalink to this heading">#</a></h2>
+<p>Let’s compare to an Anthropic LLM.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">langchain.chat_models</span> <span class="kn">import</span> <span class="n">ChatAnthropic</span>
+<span class="kn">from</span> <span class="nn">langchain.output_parsers.xml</span> <span class="kn">import</span> <span class="n">XMLOutputParser</span>
+<span class="kn">from</span> <span class="nn">langchain.prompts</span> <span class="kn">import</span> <span class="n">ChatPromptTemplate</span>
+
+<span class="c1"># This is the schema the model will populate</span>
+<span class="n">xsd</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;&lt;xs:schema xmlns:xs=&quot;http://www.w3.org/2001/XMLSchema&quot; elementFormDefault=&quot;qualified&quot;&gt;</span>
+<span class="s2">    &lt;xs:element name=&quot;Email&quot;&gt;</span>
+<span class="s2">        &lt;xs:complexType&gt;</span>
+<span class="s2">            &lt;xs:sequence&gt;</span>
+<span class="s2">                &lt;xs:element name=&quot;sender&quot; type=&quot;xs:string&quot; minOccurs=&quot;0&quot;/&gt;</span>
+<span class="s2">                &lt;xs:element name=&quot;sender_phone_number&quot; type=&quot;xs:string&quot; minOccurs=&quot;0&quot;/&gt;</span>
+<span class="s2">                &lt;xs:element name=&quot;sender_address&quot; type=&quot;xs:string&quot; minOccurs=&quot;0&quot;/&gt;</span>
+<span class="s2">                &lt;xs:element name=&quot;action_items&quot; type=&quot;ActionItemsType&quot; minOccurs=&quot;1&quot;/&gt;</span>
+<span class="s2">                &lt;xs:element name=&quot;topic&quot; type=&quot;xs:string&quot; minOccurs=&quot;1&quot;/&gt;</span>
+<span class="s2">                &lt;xs:element name=&quot;tone&quot; type=&quot;ToneEnumType&quot; minOccurs=&quot;1&quot;/&gt;</span>
+<span class="s2">            &lt;/xs:sequence&gt;</span>
+<span class="s2">        &lt;/xs:complexType&gt;</span>
+<span class="s2">    &lt;/xs:element&gt;</span>
+<span class="s2">    &lt;xs:complexType name=&quot;ActionItemsType&quot;&gt;</span>
+<span class="s2">        &lt;xs:sequence&gt;</span>
+<span class="s2">            &lt;xs:element name=&quot;item&quot; type=&quot;xs:string&quot; minOccurs=&quot;0&quot; maxOccurs=&quot;unbounded&quot;/&gt;</span>
+<span class="s2">        &lt;/xs:sequence&gt;</span>
+<span class="s2">    &lt;/xs:complexType&gt;</span>
+<span class="s2">    &lt;xs:simpleType name=&quot;ToneEnumType&quot;&gt;</span>
+<span class="s2">        &lt;xs:restriction base=&quot;xs:string&quot;&gt;</span>
+<span class="s2">            &lt;xs:enumeration value=&quot;positive&quot;/&gt;</span>
+<span class="s2">            &lt;xs:enumeration value=&quot;negative&quot;/&gt;</span>
+<span class="s2">        &lt;/xs:restriction&gt;</span>
+<span class="s2">    &lt;/xs:simpleType&gt;</span>
+
+<span class="s2">&lt;/xs:schema&gt;&quot;&quot;&quot;</span>
+
+<span class="n">prompt</span> <span class="o">=</span> <span class="n">ChatPromptTemplate</span><span class="o">.</span><span class="n">from_messages</span><span class="p">(</span>
+    <span class="p">[</span>
+        <span class="p">(</span>
+            <span class="s2">&quot;system&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;You are a data extraction bot. Always respond &quot;</span>
+            <span class="s2">&quot;only with XML of the following schema:</span><span class="se">\n</span><span class="si">{xsd}</span><span class="s2">&quot;</span><span class="p">,</span>
+        <span class="p">),</span>
+        <span class="p">(</span>
+            <span class="s2">&quot;user&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Extract Email from the folowing Document:</span><span class="se">\n</span><span class="s2">&quot;</span>
+            <span class="s2">&quot;&lt;Document&gt;</span><span class="se">\n</span><span class="si">{input}</span><span class="se">\n</span><span class="s2">&lt;/Document&gt;</span><span class="se">\n</span><span class="s2">&quot;</span>
+            <span class="s2">&quot;RESPOND ONLY IN XML THEN STOP.&quot;</span><span class="p">,</span>
+        <span class="p">),</span>
+    <span class="p">]</span>
+<span class="p">)</span><span class="o">.</span><span class="n">partial</span><span class="p">(</span><span class="n">xsd</span><span class="o">=</span><span class="n">xsd</span><span class="p">)</span>
+
+<span class="n">claude</span> <span class="o">=</span> <span class="n">ChatAnthropic</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="s2">&quot;claude-2&quot;</span><span class="p">,</span> <span class="n">temperature</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">convert_parsed_email</span><span class="p">(</span><span class="n">email_dict</span><span class="p">:</span> <span class="nb">dict</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Conver the XML-parsed dictionary to a flattened dict.&quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="s2">&quot;Email&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">email_dict</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">email_dict</span>
+    <span class="c1"># Flatten the tags</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="p">{</span><span class="n">k</span><span class="p">:</span> <span class="n">v</span> <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">email_dict</span><span class="p">[</span><span class="s2">&quot;Email&quot;</span><span class="p">]</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">item</span><span class="o">.</span><span class="n">items</span><span class="p">()}</span>
+    <span class="n">result</span><span class="p">[</span><span class="s2">&quot;action_items&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="n">item</span><span class="p">[</span><span class="s2">&quot;item&quot;</span><span class="p">]</span> <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="p">(</span><span class="n">result</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;action_items&quot;</span><span class="p">)</span> <span class="ow">or</span> <span class="p">[])</span>
+    <span class="p">]</span>
+    <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;output&quot;</span><span class="p">:</span> <span class="n">result</span><span class="p">}</span>
+
+
+<span class="n">claude_extraction_chain</span> <span class="o">=</span> <span class="n">prompt</span> <span class="o">|</span> <span class="n">claude</span> <span class="o">|</span> <span class="n">XMLOutputParser</span><span class="p">()</span> <span class="o">|</span> <span class="n">convert_parsed_email</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">result</span> <span class="o">=</span> <span class="n">claude_extraction_chain</span><span class="o">.</span><span class="n">invoke</span><span class="p">(</span>
+    <span class="p">{</span>
+        <span class="s2">&quot;input&quot;</span><span class="p">:</span> <span class="s2">&quot;Hello Dear MR. I want you to send me gold to get rich.&quot;</span>
+        <span class="s2">&quot; First buy an envelope. Then open it and put some gold inside. &quot;</span>
+        <span class="s2">&quot;Then close it and finally mail it to my address at 12345 My Gold Way.&quot;</span>
+        <span class="s2">&quot; You can call me any time at 000-1212-1111.&quot;</span>
+    <span class="p">}</span>
+<span class="p">)</span>
+<span class="n">result</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>{&#39;output&#39;: {&#39;sender&#39;: None,
+  &#39;sender_phone_number&#39;: &#39;000-1212-1111&#39;,
+  &#39;sender_address&#39;: &#39;12345 My Gold Way&#39;,
+  &#39;action_items&#39;: [&#39;buy an envelope&#39;,
+   &#39;open it&#39;,
+   &#39;put some gold inside&#39;,
+   &#39;close it&#39;,
+   &#39;mail it to my address&#39;],
+  &#39;topic&#39;: &#39;sending gold&#39;,
+  &#39;tone&#39;: &#39;negative&#39;}}
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">claude_test_run</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">run_on_dataset</span><span class="p">(</span>
+    <span class="n">dataset_name</span><span class="o">=</span><span class="n">task</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
+    <span class="n">llm_or_chain_factory</span><span class="o">=</span><span class="n">claude_extraction_chain</span><span class="p">,</span>
+    <span class="n">evaluation</span><span class="o">=</span><span class="n">eval_config</span><span class="p">,</span>
+    <span class="n">verbose</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="n">project_metadata</span><span class="o">=</span><span class="p">{</span>
+        <span class="s2">&quot;arch&quot;</span><span class="p">:</span> <span class="s2">&quot;claude-xml&quot;</span><span class="p">,</span>
+    <span class="p">},</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>View the evaluation results for project &#39;frosty-moon-4&#39; at:
+https://smith.langchain.com/o/ebbaf2eb-769b-4505-aca2-d11de10372a4/projects/p/81d41017-bcda-450d-8991-9bf744c7ebb8?eval=true
+
+View all tests for Dataset Email Extraction at:
+https://smith.langchain.com/o/ebbaf2eb-769b-4505-aca2-d11de10372a4/datasets/309a2fce-ce68-43aa-befb-67f94d0c3570
+[--------------------------------------&gt;           ] 33/42
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Chain failed for example 9a707fca-4ba7-4f7d-8912-b9fd71e9901e with inputs {&#39;input&#39;: &quot;---|---|---|---  \n  \nBook with Fall Sale Extras Through November 21! Savings! OBC! Visa Gift Card\n+ More  \n  \n---  \n|\n\n|  |  |  |  |  |  |  \n---  \n|  |  \n---  \n|  | SHOP THE FALL CRUISE SALE  \n---  \n|  |  \n---  \n  \n**Celebrity Cruises** Celebrity Cruises receive **Exclusive Pricing** with\nup to **$450 BONUS Savings per Stateroom** based on double\noccupancyand even more for extra guests! Enjoy **Exclusive Tips**\non 2024 sailings, up to**$2150 Onboard Credit** , and up to a **$1700 Visa\nGiftCard** on Galapagos sailings or up to a **$650 Visa Gift Card** on\nother departures. **Drinks** and **Wi-Fi** are All Included, too!   **See=\nThis Offer =E2=96=B8**  \n  \n|  |  \n---  \n  \n**Viking** Enjoy your favorite Viking voyages with up to=C2=A0 **$1200\nShipboard Credit** from Online Vacation Center when you book by Nov 21!\nPlus, select sailings get **Airfare** , **Stateroom Upgrades** , **Special\nFares** =C2=A0and only **$25 Deposits** on the world&#39;s #1 Cruise Line for\nOceans, Rivers &amp; Expeditions! Guided Tours, Wi-Fi, Select Beverages, Meals &amp;\nMore Included.   **SeeThis Offer =E2=96=B8**  \n  \n|  |  \n---  \n  \n**Royal Caribbean** Sail Away on Royal Caribbean withup to **$1000 BONUS\nOnboard Credit** and **Specialty Dining** exclusively from Online Vacation\nCenter!=C2=A0Plus, up to **30% SAVINGS** on all Cruises, **Kids Sail =\nFree** on select sailings and up to **$500 Savings on Airfare** on select\nAlaska and Europe sailings. **SeeThis Offer =E2=96=B8**  \n  \n|  |  \n---  \n  \n**Oceania Cruises** Choose Your Offer! Receive **Prepaid Gratuities** on\nselect sailings OR receive up to **$1000 Onboard Credit** on 30 Europe\nvoyages. Enjoy _simply_ MORE™ with **2 for 1** Cruise Fares, **Roundtrip\nAirfare** , Transfers &amp; Taxes, **Unlimited Wi-Fi** , up to **$1600 Shore\nExcursion Credit** , Specialty Dining, Champagne, Wine, and more. Plus,\nreceive up to a **$1500 Visa Gift Card** from Online Vacation Center!\n**SeeThis Offer =E2=96=B8**  \n  \n|  |  \n---  \n  \n**Regent Seven Seas Cruises** Book your luxury cruise on Regent Seven Seas\nby Nov 21 and receive up to **$2000** in **Exclusive Savings** per Suite on\nall sailings through June 2026! Plus, enjoy **Bonus Savings =** worth up to\n**30%** on select 2024 sailings when you book by Nov 12. Receive up to a\n**$1400 Visa Gift Card** from us, and enjoy Regent standard inclusions like\n**Business Class Airfare** on intercontinental flights and **Airfare** on\ndomestic flights, **Shore Excursions** , **Gratuities** and More. **See This\nOffer =E2=96=B8**  \n  \n|  |  \n---  \n  \n**Azamara** Enjoy up to **$1500 Onboard Credit** , up to an=C2=A0 **$800\nVisa Gift Card** , **Stateroom Upgrades** and **20% Off Suites** onselect\nsailings, and More on Azamara during our Fall Sale! Plus up to a **$200\nBONUS Visa Gift Card** on our Exclusive Cruise Packages. Receive Azamara\nstandard inclusions like select **Beverages , **Gratuities** and More.   **See\nThis Offer =E2=96=B8**  \n  \n|  |  \n---  \n  \n**Norwegian Cruise Line** Enjoy up to **$1000 Onboard Credit** and\n**Gratuities** on 7+ night Balconies or higher during our Fall Sale! Plus\n**50% OFF** Cruise Fares and **Free at Sea:** Open Bar, Specialty Dining, =\nWi-Fi, Shore Excursion Credits and extra guests on select sailings. **See=\nThis Offer =E2=96=B8**  \n  \n|  |  \n---  \n  \n**Luxury Hotels** Whether your personal definition ofluxury is an urban\noasis or an opulent villa, a wine-country cottage or a Caribbean hammock,\nOnline Vacation Center has the perfect accommodations for your next\nvacation. Book now for **Exclusive Offers**  **Discounts** ,\n**Extra Nights** , **Resort Credits** , **Complimentary Amenities** and\nMore! **SeeThis Offer =E2=96=B8**  \n  \n|  |  \n---  \n  \n**Enrichment Journeys** Book an **Enrichment Journey** on Celebrity Cruises\nfor up to **$2150 Onboard Credit** , up to **$450 Off** per stateroom and up\nto a **$650 Visa Gift Card** with **Exclusive Tips** on 2024 sailings +\n**Drinks** and **Wi-Fi** All Included. Journeys include **Airfare**\n, 4-star+ **Hotel** Stays, **Transfers** , **Taxes** , select **Meals**\nand More. **SeeThis Offer =E2=96=B8**  \n  \n|  |  \n---  \n  \n**Princess Cruises** Enjoy up to **$1200 Onboard Credit** , up to **50% Off\nCruise Fares =** &amp; **50% Off Deposits** during our Fall Sale! Choose =\nPrincess Plus to receive Included **Drinks, Crew Appreciation** &amp; **Wi-Fi**\n_(over $950 in added value!)_ OR skip the frills for the lowest rate. **See\nThis Offer =E2=96=B8**  \n  \n|  |  \n---  \n  \n**Holland America Line** Get more on your Holland America cruise with up to\n**$1450 Onboard Credit** and **Gratuities** on select sailings, exclusively\nfrom us! Plus, **Have It All** with **Wi-Fi, Beverages, Specialty Dining**\nand **Shore Excursions** or skip the frills for a lower cruise fare. For a\nlimited time, enjoy **BONUS Shore Excursion** &amp; **Air Credits** , $99\nDeposits and **Kids Sail Free** on select 2024 sailings. **SeeThis Offer\n=E2=96=B8**  \n  \n|  |  \n---  \n|  |  \n---  \n|  |  \n---  \n|\n\n### Hours of Operation\n\n**Monday=E2=80=93Friday** 9 am=E2=80=936 pm ET **Saturday** 10 am=E2=80=934\npm ET **Sunday** Closed  \n  \n---  \n|  |  \n---  \n  \n**Terms and Conditions** : New Bookings Only. Select Sailings Apply.\nRates, itinerary and any available amenities are by sail date and are\nsubject to change. **Repricing an existing reservation or requesting a\ncancel/rebook is not permitted for this promotion. This promotion is not\napplicable for reservations that used FCCs or utilized Lift &amp; Shift program.\nCall to see what you qualify for (please note that any modifications may\nresult in a $100 per person change fee). Fall Sale**: Offer expires\n11/21/23. Airfare is included on select sailings from select gateways.\nAdditional gateways may be available for lowadd-ons. The identity of the air\ncarrier, which may include the carrier&#39;s code-share partner, will be\nassigned and disclosed at a later date. Purchases made onboard plane or in\nterminal not included. Onboard Credit isper stateroom on select sailings.\nPrices are per person, double occupancy.Prices and itineraries are based on\navailability and are subject to changewithout notice. Offer can be withdrawn\nat any time. All fares may be subject to fuel surcharges if imposed by\ncruise lines and airlines. Government taxes, air taxes, transfers, service\nfees and other ancillary charges are additional unless otherwise noted.\nAdditional terms, conditionsand restrictions apply; view individual offers\nfor more information. Online Vacation Center reserves the right to cancel\nthe Offer at any time, correct any errors, inaccuracies or omissions, and\nchange or update fares, fees and surcharges at any time without prior\nnotice. Online Vacation Center is a registered Seller of Travel with the\nStates of Florida (ST-32947), California (CST-2064227-40) and Washington (WA\nSOT 602250083). 110823CB  \n  \n|  |  \n---  \n  \n* * *\n\nThis message was sent to address: jacob@gmail.com  \n  \nMore Travel Deals \\- Sign Up \\- Forward to Friend \\- Unsubscribe \\- Privacy \\-\nDisclaimers  \n  \n(C) 2023 Dunhill Vacations Inc. - 2307 W. Broward Blvd, Ste 402 - Fort\nLauderdale, FL 33312  \n  \n---  \n\\----_NmP-64d90535a0e2740e-Part_1--\n\n&quot;}
+Error Type: ValueError, Message: Could not parse output: &lt;Email&gt;
+  &lt;sender&gt;&lt;/sender&gt;
+  &lt;sender_phone_number&gt;&lt;/sender_phone_number&gt;
+  &lt;sender_address&gt;&lt;/sender_address&gt;
+  &lt;action_items&gt;
+    &lt;item&gt;Book Celebrity Cruises by Nov 21 for exclusive pricing, bonuses, and gifts&lt;/item&gt;
+    &lt;item&gt;Book Viking by Nov 21 for bonuses and special offers&lt;/item&gt;
+    &lt;item&gt;Book Royal Caribbean by Nov 21 for onboard credits, dining, and savings&lt;/item&gt;
+    &lt;item&gt;Book Oceania Cruises by Nov 21 for prepaid gratuities or onboard credits&lt;/item&gt;
+    &lt;item&gt;Book Regent Seven Seas by Nov 21 for exclusive savings and gift cards&lt;/item&gt;
+    &lt;item&gt;Book Azamara by Nov 21 for onboard credits, upgrades, and savings&lt;/item&gt;
+    &lt;item&gt;Book Norwegian Cruise Line for discounts, amenities, and savings&lt;/item&gt;
+    &lt;item&gt;Book luxury hotels for exclusive offers and discounts&lt;/item&gt;
+    &lt;item&gt;Book an Enrichment Journey on Celebrity Cruises for bonuses and inclusions&lt;/item&gt;
+    &lt;item&gt;Book Princess Cruises for discounts, amenities, and onboard credits&lt;/item&gt;
+    &lt;item&gt;Book Holland America Line for bonuses,
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[-------------------------------------------------&gt;] 42/42
+ Eval quantiles:
+                                             inputs.input  \
+count                                                  42   
+unique                                                 42   
+top     ---  \n|\n\nEvery business faces its set of cu...   
+freq                                                    1   
+mean                                                  NaN   
+std                                                   NaN   
+min                                                   NaN   
+25%                                                   NaN   
+50%                                                   NaN   
+75%                                                   NaN   
+max                                                   NaN   
+
+                                           outputs.output  \
+count                                                  41   
+unique                                                 41   
+top     {&#39;sender&#39;: &#39;Sam&#39;, &#39;sender_phone_number&#39;: &#39;800....   
+freq                                                    1   
+mean                                                  NaN   
+std                                                   NaN   
+min                                                   NaN   
+25%                                                   NaN   
+50%                                                   NaN   
+75%                                                   NaN   
+max                                                   NaN   
+
+        feedback.json_edit_distance  feedback.score_string:accuracy  \
+count                     41.000000                       41.000000   
+unique                          NaN                             NaN   
+top                             NaN                             NaN   
+freq                            NaN                             NaN   
+mean                       0.382352                        0.565854   
+std                        0.164442                        0.238338   
+min                        0.107011                        0.100000   
+25%                        0.252252                        0.300000   
+50%                        0.375427                        0.700000   
+75%                        0.532982                        0.700000   
+max                        0.753704                        1.000000   
+
+                                                    error  execution_time  
+count                                                   1       42.000000  
+unique                                                  1             NaN  
+top     Could not parse output: &lt;Email&gt;\n  &lt;sender&gt;&lt;/s...             NaN  
+freq                                                    1             NaN  
+mean                                                  NaN        9.082149  
+std                                                   NaN        2.192165  
+min                                                   NaN        6.203642  
+25%                                                   NaN        7.807354  
+50%                                                   NaN        8.497452  
+75%                                                   NaN        9.632442  
+max                                                   NaN       19.564479  
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="inspect">
+<h2>Inspect<a class="headerlink" href="#inspect" title="Permalink to this heading">#</a></h2>
+<p>Here, we’ll take a look at the underlying results a little bit.</p>
+<p>A few things to note:</p>
+<ul class="simple">
+<li><p>For this run, Anthropic is doing better on average</p></li>
+<li><p>The correctness is low - getting the exact information right can be difficult</p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span> <span class="o">=</span> <span class="n">test_run</span><span class="o">.</span><span class="n">to_dataframe</span><span class="p">()</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">claude_test_run</span><span class="o">.</span><span class="n">to_dataframe</span><span class="p">(),</span> <span class="n">rsuffix</span><span class="o">=</span><span class="s2">&quot;_claude&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>inputs.input</th>
+      <th>outputs.output</th>
+      <th>reference</th>
+      <th>feedback.json_edit_distance</th>
+      <th>feedback.score_string:accuracy</th>
+      <th>error</th>
+      <th>execution_time</th>
+      <th>inputs.input_claude</th>
+      <th>outputs.output_claude</th>
+      <th>reference_claude</th>
+      <th>feedback.json_edit_distance_claude</th>
+      <th>feedback.score_string:accuracy_claude</th>
+      <th>error_claude</th>
+      <th>execution_time_claude</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>61c40266-b994-49a2-8768-d54704cee079</th>
+      <td>---  \n|\n\nEvery business faces its set of cu...</td>
+      <td>{'sender': 'EMC Financial', 'sender_address': ...</td>
+      <td>{'output': {'tone': 'positive', 'topic': 'Busi...</td>
+      <td>0.562112</td>
+      <td>0.7</td>
+      <td>None</td>
+      <td>4.358837</td>
+      <td>---  \n|\n\nEvery business faces its set of cu...</td>
+      <td>{'sender': 'Sam', 'sender_phone_number': '800....</td>
+      <td>{'output': {'tone': 'positive', 'topic': 'Busi...</td>
+      <td>0.301242</td>
+      <td>0.7</td>
+      <td>None</td>
+      <td>10.501042</td>
+    </tr>
+    <tr>
+      <th>2dcfadff-51dc-458c-8af0-f47a795d0c9b</th>
+      <td>Hello Jacob!\n\n  \n\nHave you noticed thesurg...</td>
+      <td>{'sender': 'Sam at EMC', 'action_items': ['Fil...</td>
+      <td>{'output': {'tone': 'positive', 'topic': 'Gree...</td>
+      <td>0.505338</td>
+      <td>0.7</td>
+      <td>None</td>
+      <td>3.946547</td>
+      <td>Hello Jacob!\n\n  \n\nHave you noticed thesurg...</td>
+      <td>{'sender': 'Sam at EMC', 'sender_phone_number'...</td>
+      <td>{'output': {'tone': 'positive', 'topic': 'Gree...</td>
+      <td>0.113879</td>
+      <td>0.7</td>
+      <td>None</td>
+      <td>8.511848</td>
+    </tr>
+    <tr>
+      <th>a9c481ba-9ca5-408c-8c9c-f29127a70f7b</th>
+      <td>Hi there,\n\n |  \n---  \n  \nWe've updated ou...</td>
+      <td>{'sender': 'Crunchbase Team', 'action_items': ...</td>
+      <td>{'output': {'tone': 'positive', 'topic': 'Upda...</td>
+      <td>0.245283</td>
+      <td>0.9</td>
+      <td>None</td>
+      <td>3.972396</td>
+      <td>Hi there,\n\n |  \n---  \n  \nWe've updated ou...</td>
+      <td>{'sender': None, 'sender_phone_number': None, ...</td>
+      <td>{'output': {'tone': 'positive', 'topic': 'Upda...</td>
+      <td>0.343434</td>
+      <td>0.7</td>
+      <td>None</td>
+      <td>9.739630</td>
+    </tr>
+    <tr>
+      <th>98358188-6e36-42ef-9298-83acf8d9dd12</th>
+      <td>Consider all ways to give to  \nSave the Redwo...</td>
+      <td>{'sender': 'Tim Whalen', 'sender_address': 'Sa...</td>
+      <td>{'output': {'tone': 'positive', 'topic': 'Dona...</td>
+      <td>0.280556</td>
+      <td>0.7</td>
+      <td>None</td>
+      <td>3.890567</td>
+      <td>Consider all ways to give to  \nSave the Redwo...</td>
+      <td>{'sender': None, 'sender_phone_number': None, ...</td>
+      <td>{'output': {'tone': 'positive', 'topic': 'Dona...</td>
+      <td>0.255556</td>
+      <td>0.3</td>
+      <td>None</td>
+      <td>9.640687</td>
+    </tr>
+    <tr>
+      <th>0f29e857-fc08-45dd-b1ea-dde1e00c4a62</th>
+      <td>Some travelers plan ahead; others prefer a bit...</td>
+      <td>{'sender': 'Dunhill Vacations Inc.', 'sender_a...</td>
+      <td>{'output': {'tone': 'positive', 'topic': 'Trav...</td>
+      <td>0.552463</td>
+      <td>0.7</td>
+      <td>None</td>
+      <td>4.252478</td>
+      <td>Some travelers plan ahead; others prefer a bit...</td>
+      <td>{'sender': 'Dunhill Vacations Inc.', 'sender_p...</td>
+      <td>{'output': {'tone': 'positive', 'topic': 'Trav...</td>
+      <td>0.584582</td>
+      <td>0.3</td>
+      <td>None</td>
+      <td>6.803259</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="p">(</span>
+    <span class="n">df</span><span class="p">[</span><span class="s2">&quot;feedback.json_edit_distance&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">mean</span><span class="p">(),</span>
+    <span class="n">df</span><span class="p">[</span><span class="s2">&quot;feedback.json_edit_distance_claude&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">mean</span><span class="p">(),</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(0.5664337704936568, 0.382351925386955)
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="p">(</span>
+    <span class="n">df</span><span class="p">[</span><span class="s2">&quot;feedback.score_string:accuracy&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">mean</span><span class="p">(),</span>
+    <span class="n">df</span><span class="p">[</span><span class="s2">&quot;feedback.score_string:accuracy_claude&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">mean</span><span class="p">(),</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(0.48571428571428565, 0.5658536585365853)
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Rows for which OAI &gt; Claude by at least 30%, according to the LLM-based evaluator</span>
+<span class="n">oai_beats_claude</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span>
+    <span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s2">&quot;feedback.score_string:accuracy&quot;</span><span class="p">]</span> <span class="o">-</span> <span class="n">df</span><span class="p">[</span><span class="s2">&quot;feedback.score_string:accuracy_claude&quot;</span><span class="p">])</span>
+    <span class="o">&gt;=</span> <span class="mf">0.3</span>
+<span class="p">]</span>
+
+<span class="n">oai_beats_claude</span><span class="p">[[</span><span class="s2">&quot;inputs.input&quot;</span><span class="p">,</span> <span class="s2">&quot;outputs.output&quot;</span><span class="p">,</span> <span class="s2">&quot;outputs.output_claude&quot;</span><span class="p">]]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>inputs.input</th>
+      <th>outputs.output</th>
+      <th>outputs.output_claude</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>98358188-6e36-42ef-9298-83acf8d9dd12</th>
+      <td>Consider all ways to give to  \nSave the Redwo...</td>
+      <td>{'sender': 'Tim Whalen', 'sender_address': 'Sa...</td>
+      <td>{'sender': None, 'sender_phone_number': None, ...</td>
+    </tr>
+    <tr>
+      <th>0f29e857-fc08-45dd-b1ea-dde1e00c4a62</th>
+      <td>Some travelers plan ahead; others prefer a bit...</td>
+      <td>{'sender': 'Dunhill Vacations Inc.', 'sender_a...</td>
+      <td>{'sender': 'Dunhill Vacations Inc.', 'sender_p...</td>
+    </tr>
+    <tr>
+      <th>35414bbc-4d38-41ed-876f-2a6a067e66d5</th>
+      <td>---  \n  \n|\n\nWe Passed the Stop Dangerous P...</td>
+      <td>{'sender': 'Matt Haney', 'sender_address': '10...</td>
+      <td>{'sender': 'Matt Haney', 'sender_phone_number'...</td>
+    </tr>
+    <tr>
+      <th>ff1b2ed6-26a7-4501-96aa-6e3e10eadc72</th>
+      <td>---  \n|\n\n# We Provide Unique Financing Opti...</td>
+      <td>{'sender': 'info@championadvance.com', 'sender...</td>
+      <td>{'sender': None, 'sender_phone_number': None, ...</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Rows for which Claude &gt; OAI by at least 50%, according to the LLM-based evaluator</span>
+<span class="n">oai_beats_claude</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span>
+    <span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s2">&quot;feedback.score_string:accuracy_claude&quot;</span><span class="p">]</span> <span class="o">-</span> <span class="n">df</span><span class="p">[</span><span class="s2">&quot;feedback.score_string:accuracy&quot;</span><span class="p">])</span>
+    <span class="o">&gt;=</span> <span class="mf">0.5</span>
+<span class="p">]</span>
+
+<span class="n">oai_beats_claude</span><span class="p">[[</span><span class="s2">&quot;inputs.input&quot;</span><span class="p">,</span> <span class="s2">&quot;outputs.output&quot;</span><span class="p">,</span> <span class="s2">&quot;outputs.output_claude&quot;</span><span class="p">]]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>inputs.input</th>
+      <th>outputs.output</th>
+      <th>outputs.output_claude</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>02cfdfc4-c3dc-47e6-ad44-8e437ebf2dce</th>
+      <td>---|---|---|---  \n  \n|  \n---  \n **Limited ...</td>
+      <td>{'action_items': [], 'topic': 'Limited Time Up...</td>
+      <td>{'sender': 'Dunhill Vacations Inc.', 'sender_p...</td>
+    </tr>
+    <tr>
+      <th>198dc232-8f98-484a-a65e-048cfb517282</th>
+      <td>Hello Jacob,\n\n  \n\nFor many small businesse...</td>
+      <td>{'sender': 'Sam at EMC', 'action_items': ['Kic...</td>
+      <td>{'sender': 'Sam at EMC', 'sender_phone_number'...</td>
+    </tr>
+    <tr>
+      <th>c222957f-cc7e-46af-9cca-1270f3fa5621</th>
+      <td>Hello Jacob,\n\n  \n\nDo you know what Fortune...</td>
+      <td>{'sender': 'Sam at EMC', 'action_items': ['qua...</td>
+      <td>{'sender': 'Sam at EMC', 'sender_phone_number'...</td>
+    </tr>
+    <tr>
+      <th>119ef037-8744-4eb9-93df-64458278e4f8</th>
+      <td>---  \n|  |  QUALIFY NOW  \n---  \n \n  \nHell...</td>
+      <td>{'sender': 'Sam at EMC', 'action_items': ['Che...</td>
+      <td>{'sender': 'Sam at EMC id:2023-09-19-20:17:53:...</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+</section>
+</section>
+
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="intro.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Introduction</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="chat_extraction.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Chat Extraction</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#schema">Schema</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#define-an-extraction-chain">Define an extraction chain</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#evaluate">Evaluate</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#compare-to-another-llm">Compare to another LLM</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#inspect">Inspect</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Langchain AI
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2023, Langchain AI.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../_static/scripts/bootstrap.js?digest=5b4479735964841361fd"></script>
+<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=5b4479735964841361fd"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

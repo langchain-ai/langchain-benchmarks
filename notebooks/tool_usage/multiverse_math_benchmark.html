@@ -1,0 +1,881 @@
+
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+    <title>Few-Shot Experiments on Multiverse Math &#8212; LangChain Benchmarks 0.0.12</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=5b4479735964841361fd" rel="stylesheet" />
+<link href="../../_static/styles/bootstrap.css?digest=5b4479735964841361fd" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=5b4479735964841361fd" rel="stylesheet" />
+
+  
+  <link href="../../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=5b4479735964841361fd" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+    <link rel="stylesheet" href="../../_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/custom.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=5b4479735964841361fd" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=5b4479735964841361fd" />
+  <script src="../../_static/vendor/fontawesome/6.1.2/js/all.min.js?digest=5b4479735964841361fd"></script>
+
+    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/sphinx_highlight.js"></script>
+    <script src="../../_static/clipboard.min.js"></script>
+    <script src="../../_static/copybutton.js"></script>
+    <script src="../../_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'notebooks/tool_usage/multiverse_math_benchmark';</script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>
+    Back to top
+  </button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
+    </nav>
+  
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+
+<a class="navbar-brand logo" href="../../index.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">LangChain Benchmarks 0.0.12</p>
+  
+</a></div>
+        <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../../index.html">
+                    🦜💯 LangChain Benchmarks
+                </a>
+            </li>
+        </ul>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Introduction</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../getting_started.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../models.html">Model Registry</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../datasets.html">Datasets</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Tool Usage</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="intro.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="relational_data.html">Relational Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="multiverse_math.html">Multiverse Math</a></li>
+<li class="toctree-l1"><a class="reference internal" href="typewriter_1.html">Typewriter: Single Tool</a></li>
+<li class="toctree-l1"><a class="reference internal" href="typewriter_26.html">Typewriter: 26 Tools</a></li>
+<li class="toctree-l1"><a class="reference internal" href="benchmark_all_tasks.html">Benchmark All Tasks</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Extraction</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../extraction/intro.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../extraction/email.html">Email Extraction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../extraction/chat_extraction.html">Chat Extraction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../extraction/high_cardinality.html">Extracting high-cardinality categoricals</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">RAG</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../retrieval/intro.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../retrieval/langchain_docs_qa.html">Q&amp;A over LangChain Docs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../retrieval/semi_structured_benchmarking/semi_structured.html">Semi-structured RAG</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../retrieval/semi_structured_benchmarking/ss_eval_chunk_sizes.html">Semi-structured eval: Chunk size tuning</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../retrieval/semi_structured_benchmarking/ss_eval_long_context.html">Semi-structured eval: Long-context</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../retrieval/semi_structured_benchmarking/ss_eval_multi_vector.html">Semi-structured eval: Multi vector</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../retrieval/multi_modal_benchmarking/multi_modal_eval_baseline.html">Multi-modal eval: Baseline</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../retrieval/multi_modal_benchmarking/multi_modal_eval.html">Multi-modal eval: GPT-4 w/ multi-modal embeddings and multi-vector retriever</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../retrieval/comparing_techniques.html">Evaluating RAG Architectures on Benchmark Tasks</a></li>
+
+
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Benchmarking Without LangSmith</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../run_without_langsmith.html">Running Locally</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</label></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-launch-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Launch interactive content">
+    <i class="fas fa-rocket"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://colab.research.google.com/github/langchain-ai/langchain-benchmarks/blob/main/docs/source/notebooks/tool_usage/multiverse_math_benchmark.ipynb" target="_blank"
+   class="btn btn-sm dropdown-item"
+   title="Launch onColab"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  
+    <img src="../../_static/images/logo_colab.png">
+  </span>
+<span class="btn__text-container">Colab</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/langchain-ai/langchain-benchmarks" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/langchain-ai/langchain-benchmarks/blob/main/docs/source/notebooks/tool_usage/multiverse_math_benchmark.ipynb?plain=1" target="_blank"
+   class="btn btn-sm btn-source-file-button dropdown-item"
+   title="Show source"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-code"></i>
+  </span>
+<span class="btn__text-container">Show source</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/langchain-ai/langchain-benchmarks/issues/new?title=Issue%20on%20page%20%2Fnotebooks/tool_usage/multiverse_math_benchmark.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../../_sources/notebooks/tool_usage/multiverse_math_benchmark.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</label>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Few-Shot Experiments on Multiverse Math</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#setup">Setup</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#list-tests">List tests</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#defining-helper-functions">Defining Helper Functions</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#extracting-few-shot-examples-from-our-dataset">Extracting few-shot examples from our dataset</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#running-experiment">Running Experiment</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#visualize-results">Visualize Results</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article" role="main">
+                  
+  <section id="few-shot-experiments-on-multiverse-math">
+<h1>Few-Shot Experiments on Multiverse Math<a class="headerlink" href="#few-shot-experiments-on-multiverse-math" title="Permalink to this heading">#</a></h1>
+<p>This notebook walks through how to run few-shot experiments on the multiverse math dataset, which you can find <a class="reference external" href="https://smith.langchain.com/o/ebbaf2eb-769b-4505-aca2-d11de10372a4/datasets/b9b6d6e9-1b80-4d6d-8344-fc1de3a269c8">here</a>.</p>
+<section id="setup">
+<h2>Setup<a class="headerlink" href="#setup" title="Permalink to this heading">#</a></h2>
+<p>First, let’s set up our notebook by collecting the correct imports</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">datetime</span>
+<span class="kn">import</span> <span class="nn">uuid</span>
+
+<span class="kn">from</span> <span class="nn">langchain.agents</span> <span class="kn">import</span> <span class="n">AgentExecutor</span><span class="p">,</span> <span class="n">create_tool_calling_agent</span>
+<span class="kn">from</span> <span class="nn">langchain.chat_models</span> <span class="kn">import</span> <span class="n">init_chat_model</span>
+<span class="kn">from</span> <span class="nn">langchain_core.messages</span> <span class="kn">import</span> <span class="n">HumanMessage</span><span class="p">,</span> <span class="n">SystemMessage</span><span class="p">,</span> <span class="n">ToolMessage</span>
+<span class="kn">from</span> <span class="nn">langchain_core.messages.utils</span> <span class="kn">import</span> <span class="n">convert_to_messages</span>
+<span class="kn">from</span> <span class="nn">langsmith.client</span> <span class="kn">import</span> <span class="n">Client</span>
+<span class="kn">from</span> <span class="nn">langsmith.evaluation</span> <span class="kn">import</span> <span class="n">evaluate</span>
+
+<span class="kn">from</span> <span class="nn">langchain_benchmarks</span> <span class="kn">import</span> <span class="n">__version__</span><span class="p">,</span> <span class="n">registry</span>
+<span class="kn">from</span> <span class="nn">langchain_benchmarks.tool_usage.tasks.multiverse_math</span> <span class="kn">import</span> <span class="o">*</span>
+
+<span class="c1"># Define our LangSmith client so we have access to it throughout the rest of the notebook</span>
+<span class="n">client</span> <span class="o">=</span> <span class="n">Client</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="list-tests">
+<h2>List tests<a class="headerlink" href="#list-tests" title="Permalink to this heading">#</a></h2>
+<p>Next, we can list the models that we will be running experiments over. Due to the new universal configurable model, this is easier than ever. All we need to do is save a list of model names and providers, like so:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">models</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="p">(</span>
+        <span class="s2">&quot;claude-3-haiku-20240307&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;anthropic&quot;</span><span class="p">,</span>
+    <span class="p">),</span>
+    <span class="p">(</span>
+        <span class="s2">&quot;claude-3-sonnet-20240229&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;anthropic&quot;</span><span class="p">,</span>
+    <span class="p">),</span>
+    <span class="p">(</span>
+        <span class="s2">&quot;claude-3-opus-20240229&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;anthropic&quot;</span><span class="p">,</span>
+    <span class="p">),</span>
+    <span class="p">(</span>
+        <span class="s2">&quot;claude-3-5-sonnet-20240620&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;anthropic&quot;</span><span class="p">,</span>
+    <span class="p">),</span>
+    <span class="p">(</span><span class="s2">&quot;gpt-3.5-turbo-0125&quot;</span><span class="p">,</span> <span class="s2">&quot;openai&quot;</span><span class="p">),</span>
+    <span class="p">(</span>
+        <span class="s2">&quot;gpt-4o&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;openai&quot;</span><span class="p">,</span>
+    <span class="p">),</span>
+    <span class="p">(</span><span class="s2">&quot;gpt-4o-mini&quot;</span><span class="p">,</span> <span class="s2">&quot;openai&quot;</span><span class="p">),</span>
+<span class="p">]</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Feel free to add/remove any models that you personally want to test.</p>
+<p>IMPORTANT: Make sure you have installed the correct packages (i.e <code class="docutils literal notranslate"><span class="pre">langchain_openai</span></code> if using “openai” provided models) and set the correct environment keys (i.e <code class="docutils literal notranslate"><span class="pre">OPENAI_API_KEY</span></code> if using “opneai” provided models). If you do not do so - the code will not work!</p>
+</section>
+<section id="defining-helper-functions">
+<h2>Defining Helper Functions<a class="headerlink" href="#defining-helper-functions" title="Permalink to this heading">#</a></h2>
+<section id="extracting-few-shot-examples-from-our-dataset">
+<h3>Extracting few-shot examples from our dataset<a class="headerlink" href="#extracting-few-shot-examples-from-our-dataset" title="Permalink to this heading">#</a></h3>
+<p>First, we need to define a function that takes the examples from the dataset <code class="docutils literal notranslate"><span class="pre">multiverse-math-examples-for-few-shot</span></code> and turns them into something we can use for our model. In our example we are going to compare how passing in all 9 few-shot examples differs from just passing in the first 3.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">get_few_shot_messages</span><span class="p">():</span>
+    <span class="n">uncleaned_examples</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="n">e</span>
+        <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="n">client</span><span class="o">.</span><span class="n">list_examples</span><span class="p">(</span>
+            <span class="n">dataset_name</span><span class="o">=</span><span class="s2">&quot;multiverse-math-examples-for-few-shot&quot;</span>
+        <span class="p">)</span>
+    <span class="p">]</span>
+    <span class="n">few_shot_messages</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">few_shot_first_three_messages</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">examples</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">uncleaned_examples</span><span class="p">)):</span>
+        <span class="n">converted_messages</span> <span class="o">=</span> <span class="n">convert_to_messages</span><span class="p">(</span>
+            <span class="n">uncleaned_examples</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">outputs</span><span class="p">[</span><span class="s2">&quot;output&quot;</span><span class="p">]</span>
+        <span class="p">)</span>
+        <span class="n">examples</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+            <span class="c1"># The message at index 1 is the human message asking the actual math question (0th message is system prompt)</span>
+            <span class="p">{</span>
+                <span class="s2">&quot;question&quot;</span><span class="p">:</span> <span class="n">converted_messages</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">content</span><span class="p">,</span>
+                <span class="s2">&quot;messages&quot;</span><span class="p">:</span> <span class="p">[</span>
+                    <span class="n">m</span>
+                    <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="n">converted_messages</span>
+                    <span class="c1"># The system prompt should only appear once at the beginning, so we remove it from few-shot examples</span>
+                    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">SystemMessage</span><span class="p">)</span> <span class="o">==</span> <span class="kc">False</span>
+                <span class="p">],</span>
+            <span class="p">}</span>
+        <span class="p">)</span>
+        <span class="n">few_shot_messages</span> <span class="o">+=</span> <span class="n">converted_messages</span>
+        <span class="k">if</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="mi">3</span><span class="p">:</span>
+            <span class="n">few_shot_first_three_messages</span> <span class="o">+=</span> <span class="n">converted_messages</span>
+
+    <span class="k">return</span> <span class="p">(</span>
+        <span class="n">examples</span><span class="p">,</span>
+        <span class="p">[</span><span class="n">m</span> <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="n">few_shot_messages</span> <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">SystemMessage</span><span class="p">)],</span>
+        <span class="p">[</span><span class="n">m</span> <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="n">few_shot_first_three_messages</span> <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">SystemMessage</span><span class="p">)],</span>
+    <span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>In this experiment we are also comparing passing in the few-shot examples as strings instead of passing them in as a list of messages, so we define a few more helper functions to allow us to do this:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">turn_messages_to_str</span><span class="p">(</span><span class="n">few_shot_messages</span><span class="p">):</span>
+    <span class="n">few_shot_str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+    <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="n">few_shot_messages</span><span class="p">:</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">content</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+            <span class="n">few_shot_str</span> <span class="o">+=</span> <span class="s2">&quot;&lt;|im_start|&gt;assistant&quot;</span>
+            <span class="k">for</span> <span class="n">tool_use</span> <span class="ow">in</span> <span class="n">m</span><span class="o">.</span><span class="n">content</span><span class="p">:</span>
+                <span class="k">if</span> <span class="s2">&quot;name&quot;</span> <span class="ow">in</span> <span class="n">tool_use</span><span class="p">:</span>
+                    <span class="n">few_shot_str</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot;Use tool </span><span class="si">{</span><span class="n">tool_use</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">, input: </span><span class="si">{</span><span class="s1">&#39;, &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">k</span><span class="si">}</span><span class="s1">:</span><span class="si">{</span><span class="n">v</span><span class="si">}</span><span class="s1">&#39;</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="n">k</span><span class="p">,</span><span class="n">v</span><span class="w"> </span><span class="ow">in</span><span class="w"> </span><span class="n">tool_use</span><span class="p">[</span><span class="s1">&#39;input&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">items</span><span class="p">())</span><span class="si">}</span><span class="s2">&quot;</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">few_shot_str</span> <span class="o">+=</span> <span class="n">tool_use</span><span class="p">[</span><span class="s2">&quot;text&quot;</span><span class="p">]</span>
+                <span class="n">few_shot_str</span> <span class="o">+=</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span>
+            <span class="n">few_shot_str</span> <span class="o">+=</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&lt;|im_end|&gt;&quot;</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">HumanMessage</span><span class="p">):</span>
+                <span class="n">few_shot_str</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot;&lt;|im_start|&gt;user</span><span class="se">\n</span><span class="si">{</span><span class="n">m</span><span class="o">.</span><span class="n">content</span><span class="si">}</span><span class="se">\n</span><span class="s2">&lt;|im_end|&gt;&quot;</span>
+            <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">ToolMessage</span><span class="p">):</span>
+                <span class="n">few_shot_str</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot;&lt;|im_start|&gt;tool</span><span class="se">\n</span><span class="si">{</span><span class="n">m</span><span class="o">.</span><span class="n">content</span><span class="si">}</span><span class="se">\n</span><span class="s2">&lt;|im_end|&gt;&quot;</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">few_shot_str</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot;&lt;|im_start|&gt;assistant</span><span class="se">\n</span><span class="si">{</span><span class="n">m</span><span class="o">.</span><span class="n">content</span><span class="si">}</span><span class="se">\n</span><span class="s2">&lt;|im_end|&gt;&quot;</span>
+
+        <span class="n">few_shot_str</span> <span class="o">+=</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span>
+    <span class="k">return</span> <span class="n">few_shot_str</span>
+
+
+<span class="k">def</span> <span class="nf">get_few_shot_str_from_messages</span><span class="p">(</span><span class="n">few_shot_messages</span><span class="p">,</span> <span class="n">few_shot_first_three_messages</span><span class="p">):</span>
+    <span class="n">few_shot_str</span> <span class="o">=</span> <span class="n">turn_messages_to_str</span><span class="p">(</span><span class="n">few_shot_messages</span><span class="p">)</span>
+    <span class="n">few_shot_first_three_str</span> <span class="o">=</span> <span class="n">turn_messages_to_str</span><span class="p">(</span><span class="n">few_shot_first_three_messages</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">few_shot_str</span><span class="p">,</span> <span class="n">few_shot_first_three_str</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Lastly, we will define a function to return the different few-shot prompts we are going to use:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">get_prompts</span><span class="p">():</span>
+    <span class="k">return</span> <span class="p">[</span>
+        <span class="p">(</span>
+            <span class="n">client</span><span class="o">.</span><span class="n">pull_prompt</span><span class="p">(</span><span class="s2">&quot;langchain-ai/multiverse-math-no-few-shot&quot;</span><span class="p">),</span>
+            <span class="s2">&quot;no-few-shot&quot;</span><span class="p">,</span>
+        <span class="p">),</span>
+        <span class="p">(</span>
+            <span class="n">client</span><span class="o">.</span><span class="n">pull_prompt</span><span class="p">(</span><span class="s2">&quot;langchain-ai/multiverse-math-few-shot-messages&quot;</span><span class="p">),</span>
+            <span class="s2">&quot;few-shot-messages&quot;</span><span class="p">,</span>
+        <span class="p">),</span>
+        <span class="p">(</span>
+            <span class="n">client</span><span class="o">.</span><span class="n">pull_prompt</span><span class="p">(</span><span class="s2">&quot;langchain-ai/multiverse-math-few-shot-str&quot;</span><span class="p">),</span>
+            <span class="s2">&quot;few-shot-string&quot;</span><span class="p">,</span>
+        <span class="p">),</span>
+        <span class="p">(</span>
+            <span class="n">client</span><span class="o">.</span><span class="n">pull_prompt</span><span class="p">(</span><span class="s2">&quot;langchain-ai/multiverse-math-few-shot-3-messages&quot;</span><span class="p">),</span>
+            <span class="s2">&quot;few-shot-three-messages&quot;</span><span class="p">,</span>
+        <span class="p">),</span>
+        <span class="p">(</span>
+            <span class="n">client</span><span class="o">.</span><span class="n">pull_prompt</span><span class="p">(</span><span class="s2">&quot;langchain-ai/multiverse-math-few-shot-3-str&quot;</span><span class="p">),</span>
+            <span class="s2">&quot;few-shot-three-strings&quot;</span><span class="p">,</span>
+        <span class="p">),</span>
+    <span class="p">]</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Now we are ready to actually run our experiment!</p>
+</section>
+</section>
+<section id="running-experiment">
+<h2>Running Experiment<a class="headerlink" href="#running-experiment" title="Permalink to this heading">#</a></h2>
+<p>To run our experiment, we can iterate over our models and prompts and use the <code class="docutils literal notranslate"><span class="pre">evaluate</span></code> function to send our results to LangSmith.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">predict_from_callable</span><span class="p">(</span><span class="nb">callable</span><span class="p">,</span> <span class="n">instructions</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">predict</span><span class="p">(</span><span class="n">run</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">callable</span><span class="o">.</span><span class="n">invoke</span><span class="p">(</span>
+            <span class="p">{</span><span class="s2">&quot;question&quot;</span><span class="p">:</span> <span class="n">run</span><span class="p">[</span><span class="s2">&quot;question&quot;</span><span class="p">],</span> <span class="s2">&quot;instructions&quot;</span><span class="p">:</span> <span class="n">instructions</span><span class="p">}</span>
+        <span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">predict</span>
+
+
+<span class="n">experiment_uuid</span> <span class="o">=</span> <span class="n">uuid</span><span class="o">.</span><span class="n">uuid4</span><span class="p">()</span><span class="o">.</span><span class="n">hex</span><span class="p">[:</span><span class="mi">4</span><span class="p">]</span>
+<span class="n">today</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">date</span><span class="o">.</span><span class="n">today</span><span class="p">()</span><span class="o">.</span><span class="n">isoformat</span><span class="p">()</span>
+<span class="n">task</span> <span class="o">=</span> <span class="n">MULTIVERSE_MATH</span>
+<span class="n">dataset_name</span> <span class="o">=</span> <span class="n">task</span><span class="o">.</span><span class="n">name</span>
+<span class="n">examples</span><span class="p">,</span> <span class="n">few_shot_messages</span><span class="p">,</span> <span class="n">few_shot_three_messages</span> <span class="o">=</span> <span class="n">get_few_shot_messages</span><span class="p">()</span>
+<span class="n">few_shot_str</span><span class="p">,</span> <span class="n">few_shot_three_str</span> <span class="o">=</span> <span class="n">get_few_shot_str_from_messages</span><span class="p">(</span>
+    <span class="n">few_shot_messages</span><span class="p">,</span> <span class="n">few_shot_three_messages</span>
+<span class="p">)</span>
+<span class="n">prompts</span> <span class="o">=</span> <span class="n">get_prompts</span><span class="p">()</span>
+
+<span class="k">for</span> <span class="n">model_name</span><span class="p">,</span> <span class="n">model_provider</span> <span class="ow">in</span> <span class="n">models</span><span class="p">:</span>
+    <span class="n">model</span> <span class="o">=</span> <span class="n">init_chat_model</span><span class="p">(</span><span class="n">model_name</span><span class="p">,</span> <span class="n">model_provider</span><span class="o">=</span><span class="n">model_provider</span><span class="p">,</span> <span class="n">temperature</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Benchmarking </span><span class="si">{</span><span class="n">task</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2"> with model: </span><span class="si">{</span><span class="n">model_name</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="n">eval_config</span> <span class="o">=</span> <span class="n">task</span><span class="o">.</span><span class="n">get_eval_config</span><span class="p">()</span>
+
+    <span class="k">for</span> <span class="n">prompt</span><span class="p">,</span> <span class="n">prompt_name</span> <span class="ow">in</span> <span class="n">prompts</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]:</span>
+        <span class="n">tools</span> <span class="o">=</span> <span class="n">task</span><span class="o">.</span><span class="n">create_environment</span><span class="p">()</span><span class="o">.</span><span class="n">tools</span>
+        <span class="n">agent</span> <span class="o">=</span> <span class="n">create_tool_calling_agent</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">tools</span><span class="p">,</span> <span class="n">prompt</span><span class="p">)</span>
+        <span class="n">agent_executor</span> <span class="o">=</span> <span class="n">AgentExecutor</span><span class="p">(</span>
+            <span class="n">agent</span><span class="o">=</span><span class="n">agent</span><span class="p">,</span> <span class="n">tools</span><span class="o">=</span><span class="n">tools</span><span class="p">,</span> <span class="n">return_intermediate_steps</span><span class="o">=</span><span class="kc">True</span>
+        <span class="p">)</span>
+
+        <span class="n">evaluate</span><span class="p">(</span>
+            <span class="n">predict_from_callable</span><span class="p">(</span><span class="n">agent_executor</span><span class="p">,</span> <span class="n">task</span><span class="o">.</span><span class="n">instructions</span><span class="p">),</span>
+            <span class="n">data</span><span class="o">=</span><span class="n">dataset_name</span><span class="p">,</span>
+            <span class="n">evaluators</span><span class="o">=</span><span class="n">eval_config</span><span class="o">.</span><span class="n">custom_evaluators</span><span class="p">,</span>
+            <span class="n">max_concurrency</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span>
+            <span class="n">metadata</span><span class="o">=</span><span class="p">{</span>
+                <span class="s2">&quot;model&quot;</span><span class="p">:</span> <span class="n">model_name</span><span class="p">,</span>
+                <span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="n">experiment_uuid</span><span class="p">,</span>
+                <span class="s2">&quot;task&quot;</span><span class="p">:</span> <span class="n">task</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
+                <span class="s2">&quot;date&quot;</span><span class="p">:</span> <span class="n">today</span><span class="p">,</span>
+                <span class="s2">&quot;langchain_benchmarks_version&quot;</span><span class="p">:</span> <span class="n">__version__</span><span class="p">,</span>
+            <span class="p">},</span>
+            <span class="n">experiment_prefix</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">model_name</span><span class="si">}</span><span class="s2">-</span><span class="si">{</span><span class="n">task</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">-</span><span class="si">{</span><span class="n">prompt_name</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+        <span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="visualize-results">
+<h2>Visualize Results<a class="headerlink" href="#visualize-results" title="Permalink to this heading">#</a></h2>
+<p>Now that we have run the evaluation, we can visualize our results.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">projects</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="n">p</span>
+    <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">client</span><span class="o">.</span><span class="n">list_projects</span><span class="p">(</span><span class="n">reference_dataset_name</span><span class="o">=</span><span class="s2">&quot;Multiverse Math&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">p</span><span class="o">.</span><span class="n">metadata</span><span class="p">[</span><span class="s2">&quot;id&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="n">experiment_uuid</span>
+<span class="p">]</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">models</span> <span class="o">=</span> <span class="nb">set</span><span class="p">([</span><span class="n">p</span><span class="o">.</span><span class="n">name</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;-Multiverse&quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">projects</span><span class="p">])</span>
+<span class="n">few_shot_type</span> <span class="o">=</span> <span class="nb">set</span><span class="p">([</span><span class="n">p</span><span class="o">.</span><span class="n">name</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;Math-&quot;</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">projects</span><span class="p">])</span>
+<span class="n">few_shot_type</span> <span class="o">=</span> <span class="nb">set</span><span class="p">([</span><span class="n">t</span><span class="p">[:</span> <span class="n">t</span><span class="o">.</span><span class="n">rfind</span><span class="p">(</span><span class="s2">&quot;-&quot;</span><span class="p">)]</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">few_shot_type</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">results_dic</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="k">for</span> <span class="n">model</span> <span class="ow">in</span> <span class="n">models</span><span class="p">:</span>
+    <span class="n">model_results</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">few_shot</span> <span class="ow">in</span> <span class="n">few_shot_type</span><span class="p">:</span>
+        <span class="n">experiment</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="n">p</span>
+            <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">projects</span>
+            <span class="k">if</span> <span class="n">model</span> <span class="o">+</span> <span class="s2">&quot;-Multiverse&quot;</span> <span class="ow">in</span> <span class="n">p</span><span class="o">.</span><span class="n">name</span> <span class="ow">and</span> <span class="n">few_shot</span> <span class="ow">in</span> <span class="n">p</span><span class="o">.</span><span class="n">name</span>
+        <span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">experiment_stats</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">get_run_stats</span><span class="p">(</span>
+            <span class="n">project_ids</span><span class="o">=</span><span class="p">[</span><span class="n">experiment</span><span class="o">.</span><span class="n">id</span><span class="p">],</span> <span class="n">is_root</span><span class="o">=</span><span class="kc">True</span>
+        <span class="p">)</span>
+        <span class="n">model_results</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+            <span class="mi">100</span>
+            <span class="o">*</span> <span class="n">experiment_stats</span><span class="p">[</span><span class="s2">&quot;feedback_stats&quot;</span><span class="p">][</span><span class="s2">&quot;correctness&quot;</span><span class="p">][</span><span class="s2">&quot;avg&quot;</span><span class="p">]</span>
+            <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">experiment_stats</span><span class="p">[</span><span class="s2">&quot;error_rate&quot;</span><span class="p">])</span>
+        <span class="p">)</span>
+    <span class="n">results_dic</span><span class="p">[</span><span class="n">model</span><span class="p">]</span> <span class="o">=</span> <span class="n">model_results</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">seaborn</span> <span class="k">as</span> <span class="nn">sns</span>
+
+<span class="n">results</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">results_dic</span><span class="p">[</span><span class="n">model</span><span class="p">]</span> <span class="k">for</span> <span class="n">model</span> <span class="ow">in</span> <span class="n">models</span><span class="p">])</span>
+
+<span class="c1"># Create a DataFrame for Seaborn plotting</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">results</span><span class="o">.</span><span class="n">T</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="nb">list</span><span class="p">(</span><span class="n">models</span><span class="p">))</span>
+<span class="n">df</span><span class="p">[</span><span class="s2">&quot;Few Shot Type&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">few_shot_type</span><span class="p">)</span>
+<span class="n">df</span><span class="o">.</span><span class="n">iloc</span><span class="p">[[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">]]</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">iloc</span><span class="p">[[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">]]</span><span class="o">.</span><span class="n">to_numpy</span><span class="p">()</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">df</span><span class="o">.</span><span class="n">columns</span><span class="p">[[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">7</span><span class="p">]]]</span>
+
+<span class="c1"># Melt the DataFrame to long format for Seaborn&#39;s barplot</span>
+<span class="n">df_melted</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">melt</span><span class="p">(</span>
+    <span class="n">id_vars</span><span class="o">=</span><span class="s2">&quot;Few Shot Type&quot;</span><span class="p">,</span> <span class="n">var_name</span><span class="o">=</span><span class="s2">&quot;Model&quot;</span><span class="p">,</span> <span class="n">value_name</span><span class="o">=</span><span class="s2">&quot;Percent Correct&quot;</span>
+<span class="p">)</span>
+
+<span class="c1"># Set up Seaborn parameters</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">set_theme</span><span class="p">(</span><span class="n">style</span><span class="o">=</span><span class="s2">&quot;whitegrid&quot;</span><span class="p">)</span>
+
+<span class="c1"># Plot using Seaborn</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">barplot</span><span class="p">(</span>
+    <span class="n">x</span><span class="o">=</span><span class="s2">&quot;Model&quot;</span><span class="p">,</span>
+    <span class="n">y</span><span class="o">=</span><span class="s2">&quot;Percent Correct&quot;</span><span class="p">,</span>
+    <span class="n">hue</span><span class="o">=</span><span class="s2">&quot;Few Shot Type&quot;</span><span class="p">,</span>
+    <span class="n">data</span><span class="o">=</span><span class="n">df_melted</span><span class="p">,</span>
+    <span class="n">palette</span><span class="o">=</span><span class="s2">&quot;viridis&quot;</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="c1"># Add labels and title</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;Model&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;Percent Correct&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;Multiverse Math Performance&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xticks</span><span class="p">(</span><span class="n">rotation</span><span class="o">=</span><span class="mi">45</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+
+<span class="n">legend_labels</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;no-few-shot&quot;</span><span class="p">:</span> <span class="s2">&quot;zero-shot&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;few-shot-messages&quot;</span><span class="p">:</span> <span class="s2">&quot;few-shot-msgs, k=9&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;few-shot-string&quot;</span><span class="p">:</span> <span class="s2">&quot;few-shot-str, k=9&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;few-shot-three-messages&quot;</span><span class="p">:</span> <span class="s2">&quot;few-shot-msgs, k=3&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;few-shot-three-strings&quot;</span><span class="p">:</span> <span class="s2">&quot;few-shot-str, k=3&quot;</span><span class="p">,</span>
+<span class="p">}</span>
+<span class="c1"># Get the current handles and labels from the plot</span>
+<span class="n">handles</span><span class="p">,</span> <span class="n">labels</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">gca</span><span class="p">()</span><span class="o">.</span><span class="n">get_legend_handles_labels</span><span class="p">()</span>
+<span class="n">labels</span> <span class="o">=</span> <span class="p">[</span><span class="n">legend_labels</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">label</span><span class="p">,</span> <span class="n">label</span><span class="p">)</span> <span class="k">for</span> <span class="n">label</span> <span class="ow">in</span> <span class="n">labels</span><span class="p">]</span>
+
+<span class="c1"># Update the legend with the new labels</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">handles</span><span class="p">,</span> <span class="n">labels</span><span class="p">,</span> <span class="n">loc</span><span class="o">=</span><span class="s2">&quot;upper left&quot;</span><span class="p">,</span> <span class="n">bbox_to_anchor</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/92aa3f71455f53e5603928220fb2746703407dca11dc9c89d657ee673ed75826.png" src="../../_images/92aa3f71455f53e5603928220fb2746703407dca11dc9c89d657ee673ed75826.png" />
+</div>
+</div>
+</section>
+</section>
+
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer">
+                  
+<div class="prev-next-area">
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#setup">Setup</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#list-tests">List tests</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#defining-helper-functions">Defining Helper Functions</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#extracting-few-shot-examples-from-our-dataset">Extracting few-shot examples from our dataset</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#running-experiment">Running Experiment</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#visualize-results">Visualize Results</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Langchain AI
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2023, Langchain AI.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../_static/scripts/bootstrap.js?digest=5b4479735964841361fd"></script>
+<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=5b4479735964841361fd"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

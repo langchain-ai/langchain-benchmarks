@@ -1,0 +1,987 @@
+
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+    <title>Semi-structured RAG &#8212; LangChain Benchmarks 0.0.12</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../../_static/styles/theme.css?digest=5b4479735964841361fd" rel="stylesheet" />
+<link href="../../../_static/styles/bootstrap.css?digest=5b4479735964841361fd" rel="stylesheet" />
+<link href="../../../_static/styles/pydata-sphinx-theme.css?digest=5b4479735964841361fd" rel="stylesheet" />
+
+  
+  <link href="../../../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=5b4479735964841361fd" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css" />
+    <link rel="stylesheet" href="../../../_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/css/custom.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=5b4479735964841361fd" />
+<link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=5b4479735964841361fd" />
+  <script src="../../../_static/vendor/fontawesome/6.1.2/js/all.min.js?digest=5b4479735964841361fd"></script>
+
+    <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
+    <script src="../../../_static/doctools.js"></script>
+    <script src="../../../_static/sphinx_highlight.js"></script>
+    <script src="../../../_static/clipboard.min.js"></script>
+    <script src="../../../_static/copybutton.js"></script>
+    <script src="../../../_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'notebooks/retrieval/semi_structured_benchmarking/semi_structured';</script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+    <link rel="next" title="Semi-structured eval: Chunk size tuning" href="ss_eval_chunk_sizes.html" />
+    <link rel="prev" title="Q&amp;A over LangChain Docs" href="../langchain_docs_qa.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>
+    Back to top
+  </button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
+    </nav>
+  
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+
+<a class="navbar-brand logo" href="../../../index.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">LangChain Benchmarks 0.0.12</p>
+  
+</a></div>
+        <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../../../index.html">
+                    🦜💯 LangChain Benchmarks
+                </a>
+            </li>
+        </ul>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Introduction</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../getting_started.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../models.html">Model Registry</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../datasets.html">Datasets</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Tool Usage</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../tool_usage/intro.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../tool_usage/relational_data.html">Relational Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../tool_usage/multiverse_math.html">Multiverse Math</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../tool_usage/typewriter_1.html">Typewriter: Single Tool</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../tool_usage/typewriter_26.html">Typewriter: 26 Tools</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../tool_usage/benchmark_all_tasks.html">Benchmark All Tasks</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Extraction</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../extraction/intro.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../extraction/email.html">Email Extraction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../extraction/chat_extraction.html">Chat Extraction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../extraction/high_cardinality.html">Extracting high-cardinality categoricals</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">RAG</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../intro.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../langchain_docs_qa.html">Q&amp;A over LangChain Docs</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Semi-structured RAG</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ss_eval_chunk_sizes.html">Semi-structured eval: Chunk size tuning</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ss_eval_long_context.html">Semi-structured eval: Long-context</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ss_eval_multi_vector.html">Semi-structured eval: Multi vector</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../multi_modal_benchmarking/multi_modal_eval_baseline.html">Multi-modal eval: Baseline</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../multi_modal_benchmarking/multi_modal_eval.html">Multi-modal eval: GPT-4 w/ multi-modal embeddings and multi-vector retriever</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../comparing_techniques.html">Evaluating RAG Architectures on Benchmark Tasks</a></li>
+
+
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Benchmarking Without LangSmith</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../run_without_langsmith.html">Running Locally</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</label></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-launch-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Launch interactive content">
+    <i class="fas fa-rocket"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://colab.research.google.com/github/langchain-ai/langchain-benchmarks/blob/main/docs/source/notebooks/retrieval/semi_structured_benchmarking/semi_structured.ipynb" target="_blank"
+   class="btn btn-sm dropdown-item"
+   title="Launch onColab"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  
+    <img src="../../../_static/images/logo_colab.png">
+  </span>
+<span class="btn__text-container">Colab</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/langchain-ai/langchain-benchmarks" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/langchain-ai/langchain-benchmarks/blob/main/docs/source/notebooks/retrieval/semi_structured_benchmarking/semi_structured.ipynb?plain=1" target="_blank"
+   class="btn btn-sm btn-source-file-button dropdown-item"
+   title="Show source"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-code"></i>
+  </span>
+<span class="btn__text-container">Show source</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/langchain-ai/langchain-benchmarks/issues/new?title=Issue%20on%20page%20%2Fnotebooks/retrieval/semi_structured_benchmarking/semi_structured.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../../../_sources/notebooks/retrieval/semi_structured_benchmarking/semi_structured.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</label>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Semi-structured RAG</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pre-requisites">Pre-requisites</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#review-q-a-tasks">Review Q&amp;A Tasks</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#now-index-the-documents">Now, index the documents</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#time-to-evaluate">Time to evaluate</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#example-processing-the-docs">Example processing the docs</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#evaluate">Evaluate</a></li>
+</ul>
+</li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article" role="main">
+                  
+  <section id="semi-structured-rag">
+<h1>Semi-structured RAG<a class="headerlink" href="#semi-structured-rag" title="Permalink to this heading">#</a></h1>
+<p>Let’s evaluate your architecture on a small semi-structured Q&amp;A dataset. This dataset is composed of QA pairs over pdfs that contain tables.</p>
+<section id="pre-requisites">
+<h2>Pre-requisites<a class="headerlink" href="#pre-requisites" title="Permalink to this heading">#</a></h2>
+<p>We will install quite a few prerequisites for this example since we are comparing various techinques and models.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="k">pip</span> install -U langchain langsmith langchainhub  langchain_benchmarks langchain_experimental
+<span class="o">%</span><span class="k">pip</span> install --quiet chromadb openai huggingface pandas &quot;unstructured[all-docs]&quot;
+</pre></div>
+</div>
+</div>
+</div>
+<p>For this code to work, please configure LangSmith environment variables with your credentials.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">os</span>
+
+<span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s2">&quot;LANGCHAIN_ENDPOINT&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;https://api.smith.langchain.com&quot;</span>
+<span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s2">&quot;LANGCHAIN_API_KEY&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;sk-...&quot;</span>  <span class="c1"># Your API key</span>
+
+<span class="c1"># Silence warnings from HuggingFace</span>
+<span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s2">&quot;TOKENIZERS_PARALLELISM&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;false&quot;</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="review-q-a-tasks">
+<h2>Review Q&amp;A Tasks<a class="headerlink" href="#review-q-a-tasks" title="Permalink to this heading">#</a></h2>
+<p>The registry provides configurations to test out common architectures on curated datasets.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">langchain_benchmarks</span> <span class="kn">import</span> <span class="n">clone_public_dataset</span><span class="p">,</span> <span class="n">registry</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">registry</span> <span class="o">=</span> <span class="n">registry</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">Type</span><span class="o">=</span><span class="s2">&quot;RetrievalTask&quot;</span><span class="p">)</span>
+<span class="n">registry</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><table>
+<thead>
+<tr><th>Name                   </th><th>Type         </th><th>Dataset ID                                                                                                                                                 </th><th>Description  </th></tr>
+</thead>
+<tbody>
+<tr><td>LangChain Docs Q&A     </td><td>RetrievalTask</td><td><a href="https://smith.langchain.com/public/452ccafc-18e1-4314-885b-edd735f17b9d/d" target="_blank" rel="noopener">452ccafc-18e1-4314-885b-edd735f17b9d</a></td><td>Questions and answers based on a snapshot of the LangChain python docs.
+
+The environment provides the documents and the retriever information.
+
+Each example is composed of a question and reference answer.
+
+Success is measured based on the accuracy of the answer relative to the reference answer.
+We also measure the faithfulness of the model's response relative to the retrieved documents (if any).              </td></tr>
+<tr><td>Semi-structured Reports</td><td>RetrievalTask</td><td><a href="https://smith.langchain.com/public/c47d9617-ab99-4d6e-a6e6-92b8daf85a7d/d" target="_blank" rel="noopener">c47d9617-ab99-4d6e-a6e6-92b8daf85a7d</a></td><td>Questions and answers based on PDFs containing tables and charts.
+
+The task provides the raw documents as well as factory methods to easily index them
+and create a retriever.
+
+Each example is composed of a question and reference answer.
+
+Success is measured based on the accuracy of the answer relative to the reference answer.
+We also measure the faithfulness of the model's response relative to the retrieved documents (if any).              </td></tr>
+</tbody>
+</table></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">task</span> <span class="o">=</span> <span class="n">registry</span><span class="p">[</span><span class="s2">&quot;Semi-structured Reports&quot;</span><span class="p">]</span>
+<span class="n">task</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><table>
+<tbody>
+<tr><td>Name                  </td><td>Semi-structured Reports                                                                                                                                    </td></tr>
+<tr><td>Type                  </td><td>RetrievalTask                                                                                                                                              </td></tr>
+<tr><td>Dataset ID            </td><td><a href="https://smith.langchain.com/public/c47d9617-ab99-4d6e-a6e6-92b8daf85a7d/d" target="_blank" rel="noopener">c47d9617-ab99-4d6e-a6e6-92b8daf85a7d</a></td></tr>
+<tr><td>Description           </td><td>Questions and answers based on PDFs containing tables and charts.
+
+The task provides the raw documents as well as factory methods to easily index them
+and create a retriever.
+
+Each example is composed of a question and reference answer.
+
+Success is measured based on the accuracy of the answer relative to the reference answer.
+We also measure the faithfulness of the model's response relative to the retrieved documents (if any).                                                                                                                                                            </td></tr>
+<tr><td>Retriever Factories   </td><td>basic, parent-doc, hyde                                                                                                                                    </td></tr>
+<tr><td>Architecture Factories</td><td>                                                                                                                                                           </td></tr>
+<tr><td>get_docs              </td><td><function load_docs at 0x122c7cc20>                                                                                                                        </td></tr>
+</tbody>
+</table></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">clone_public_dataset</span><span class="p">(</span><span class="n">task</span><span class="o">.</span><span class="n">dataset_id</span><span class="p">,</span> <span class="n">dataset_name</span><span class="o">=</span><span class="n">task</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Dataset Semi-structured Reports already exists. Skipping.
+You can access the dataset at https://smith.langchain.com/o/ebbaf2eb-769b-4505-aca2-d11de10372a4/datasets/f8f24935-cf57-4cb3-a30f-8df303a46962.
+</pre></div>
+</div>
+</div>
+</div>
+<section id="now-index-the-documents">
+<h3>Now, index the documents<a class="headerlink" href="#now-index-the-documents" title="Permalink to this heading">#</a></h3>
+<p>You can see the raw filepaths, or use unstructured to process the pdfs.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">langchain_benchmarks.rag.tasks.semi_structured_reports</span> <span class="kn">import</span> <span class="n">get_file_names</span>
+
+<span class="c1"># If you want to completely customize the document processing, you can use the files directly</span>
+<span class="n">file_names</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">get_file_names</span><span class="p">())</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">langchain.embeddings</span> <span class="kn">import</span> <span class="n">HuggingFaceEmbeddings</span>
+
+<span class="n">embeddings</span> <span class="o">=</span> <span class="n">HuggingFaceEmbeddings</span><span class="p">(</span>
+    <span class="n">model_name</span><span class="o">=</span><span class="s2">&quot;thenlper/gte-base&quot;</span><span class="p">,</span>
+    <span class="n">model_kwargs</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;device&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">},</span>  <span class="c1"># Comment out to use CPU</span>
+<span class="p">)</span>
+
+<span class="c1"># Arguments to pass to partition_pdf</span>
+<span class="n">unstructured_config</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="c1"># Unstructured first finds embedded image blocks</span>
+    <span class="s2">&quot;extract_images_in_pdf&quot;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="c1"># Use layout model (YOLOX) to get bounding boxes (for tables) and find titles</span>
+    <span class="c1"># Titles are any sub-section of the document</span>
+    <span class="s2">&quot;infer_table_structure&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+    <span class="c1"># Post processing to aggregate text once we have the title</span>
+    <span class="s2">&quot;chunking_strategy&quot;</span><span class="p">:</span> <span class="s2">&quot;by_title&quot;</span><span class="p">,</span>
+    <span class="c1"># Chunking params to aggregate text blocks</span>
+    <span class="c1"># Attempt to create a new chunk 3800 chars</span>
+    <span class="c1"># Attempt to keep chunks &gt; 2000 chars</span>
+    <span class="s2">&quot;max_characters&quot;</span><span class="p">:</span> <span class="mi">4000</span><span class="p">,</span>
+    <span class="s2">&quot;new_after_n_chars&quot;</span><span class="p">:</span> <span class="mi">3800</span><span class="p">,</span>
+    <span class="s2">&quot;combine_text_under_n_chars&quot;</span><span class="p">:</span> <span class="mi">2000</span><span class="p">,</span>
+<span class="p">}</span>
+<span class="n">docs</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">task</span><span class="o">.</span><span class="n">get_docs</span><span class="p">(</span><span class="n">unstructured_config</span><span class="o">=</span><span class="n">unstructured_config</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Some weights of the model checkpoint at microsoft/table-transformer-structure-recognition were not used when initializing TableTransformerForObjectDetection: [&#39;model.backbone.conv_encoder.model.layer2.0.downsample.1.num_batches_tracked&#39;, &#39;model.backbone.conv_encoder.model.layer3.0.downsample.1.num_batches_tracked&#39;, &#39;model.backbone.conv_encoder.model.layer4.0.downsample.1.num_batches_tracked&#39;]
+- This IS expected if you are initializing TableTransformerForObjectDetection from the checkpoint of a model trained on another task or with another architecture (e.g. initializing a BertForSequenceClassification model from a BertForPreTraining model).
+- This IS NOT expected if you are initializing TableTransformerForObjectDetection from the checkpoint of a model that you expect to be exactly identical (initializing a BertForSequenceClassification model from a BertForSequenceClassification model).
+</pre></div>
+</div>
+<script type="application/vnd.jupyter.widget-view+json">{"model_id": "b8a52c9983274c21a713ac8742e9c99b", "version_major": 2, "version_minor": 0}</script></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">retriever_factory</span> <span class="o">=</span> <span class="n">task</span><span class="o">.</span><span class="n">retriever_factories</span><span class="p">[</span><span class="s2">&quot;basic&quot;</span><span class="p">]</span>
+<span class="c1"># Indexes the documents with the specified embeddings</span>
+<span class="n">retriever</span> <span class="o">=</span> <span class="n">retriever_factory</span><span class="p">(</span><span class="n">embeddings</span><span class="p">,</span> <span class="n">docs</span><span class="o">=</span><span class="n">docs</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Chroma/semi-structured-earnings-b_Chroma_HuggingFaceEmbeddings_raw
+[]
+</pre></div>
+</div>
+<script type="application/vnd.jupyter.widget-view+json">{"model_id": "06a11e1a4d50416596d9dd953fdabafa", "version_major": 2, "version_minor": 0}</script></div>
+</div>
+</section>
+<section id="time-to-evaluate">
+<h3>Time to evaluate<a class="headerlink" href="#time-to-evaluate" title="Permalink to this heading">#</a></h3>
+<p>We will compose our retriever with a simple Llama based LLM.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">langchain.chat_models</span> <span class="kn">import</span> <span class="n">ChatAnthropic</span>
+<span class="kn">from</span> <span class="nn">langchain.prompts</span> <span class="kn">import</span> <span class="n">ChatPromptTemplate</span>
+<span class="kn">from</span> <span class="nn">langchain.schema.output_parser</span> <span class="kn">import</span> <span class="n">StrOutputParser</span>
+<span class="kn">from</span> <span class="nn">langchain.schema.runnable.passthrough</span> <span class="kn">import</span> <span class="n">RunnableAssign</span>
+
+
+<span class="k">def</span> <span class="nf">create_chain</span><span class="p">(</span><span class="n">retriever</span><span class="p">):</span>
+    <span class="n">prompt</span> <span class="o">=</span> <span class="n">ChatPromptTemplate</span><span class="o">.</span><span class="n">from_messages</span><span class="p">(</span>
+        <span class="p">[</span>
+            <span class="p">(</span>
+                <span class="s2">&quot;system&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;Answer based solely on the retrieved documents below:</span><span class="se">\n\n</span><span class="s2">&lt;Documents&gt;</span><span class="se">\n</span><span class="si">{docs}</span><span class="s2">&lt;/Documents&gt;&quot;</span><span class="p">,</span>
+            <span class="p">),</span>
+            <span class="p">(</span><span class="s2">&quot;user&quot;</span><span class="p">,</span> <span class="s2">&quot;</span><span class="si">{question}</span><span class="s2">&quot;</span><span class="p">),</span>
+        <span class="p">]</span>
+    <span class="p">)</span>
+    <span class="n">llm</span> <span class="o">=</span> <span class="n">ChatAnthropic</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="s2">&quot;claude-2&quot;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="p">(</span>
+        <span class="n">RunnableAssign</span><span class="p">({</span><span class="s2">&quot;docs&quot;</span><span class="p">:</span> <span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="nb">next</span><span class="p">(</span><span class="nb">iter</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">values</span><span class="p">())))</span> <span class="o">|</span> <span class="n">retriever</span><span class="p">})</span>
+        <span class="o">|</span> <span class="n">prompt</span>
+        <span class="o">|</span> <span class="n">llm</span>
+        <span class="o">|</span> <span class="n">StrOutputParser</span><span class="p">()</span>
+    <span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">langsmith.client</span> <span class="kn">import</span> <span class="n">Client</span>
+
+<span class="kn">from</span> <span class="nn">langchain_benchmarks.rag</span> <span class="kn">import</span> <span class="n">get_eval_config</span>
+
+<span class="n">client</span> <span class="o">=</span> <span class="n">Client</span><span class="p">()</span>
+<span class="n">RAG_EVALUATION</span> <span class="o">=</span> <span class="n">get_eval_config</span><span class="p">()</span>
+<span class="n">chain</span> <span class="o">=</span> <span class="n">create_chain</span><span class="p">(</span><span class="n">retriever</span><span class="p">)</span>
+<span class="n">test_run</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">run_on_dataset</span><span class="p">(</span>
+    <span class="n">dataset_name</span><span class="o">=</span><span class="n">task</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
+    <span class="n">llm_or_chain_factory</span><span class="o">=</span><span class="n">chain</span><span class="p">,</span>
+    <span class="n">evaluation</span><span class="o">=</span><span class="n">RAG_EVALUATION</span><span class="p">,</span>
+    <span class="n">verbose</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>View the evaluation results for project &#39;cold-attachment-88&#39; at:
+https://smith.langchain.com/o/ebbaf2eb-769b-4505-aca2-d11de10372a4/projects/p/d8e512b7-b63d-4eb5-8d73-d95f7fa7ffc2?eval=true
+
+View all tests for Dataset Semi-structured Reports at:
+https://smith.langchain.com/o/ebbaf2eb-769b-4505-aca2-d11de10372a4/datasets/f8f24935-cf57-4cb3-a30f-8df303a46962
+[-------------------------------------------------&gt;] 5/5
+ Eval quantiles:
+                                          inputs.question  \
+count                                                   5   
+unique                                                  5   
+top     Analyzing the operating expenses for Q3 2023, ...   
+freq                                                    1   
+mean                                                  NaN   
+std                                                   NaN   
+min                                                   NaN   
+25%                                                   NaN   
+50%                                                   NaN   
+75%                                                   NaN   
+max                                                   NaN   
+
+        feedback.embedding_cosine_distance  feedback.faithfulness  \
+count                             5.000000                    5.0   
+unique                                 NaN                    NaN   
+top                                    NaN                    NaN   
+freq                                   NaN                    NaN   
+mean                              0.137066                    1.0   
+std                               0.011379                    0.0   
+min                               0.123112                    1.0   
+25%                               0.129089                    1.0   
+50%                               0.137871                    1.0   
+75%                               0.143398                    1.0   
+max                               0.151860                    1.0   
+
+        feedback.score_string:accuracy error  execution_time  
+count                              5.0     0        5.000000  
+unique                             NaN     0             NaN  
+top                                NaN   NaN             NaN  
+freq                               NaN   NaN             NaN  
+mean                               0.1   NaN        7.940625  
+std                                0.0   NaN        1.380190  
+min                                0.1   NaN        6.416387  
+25%                                0.1   NaN        7.272528  
+50%                                0.1   NaN        7.324673  
+75%                                0.1   NaN        8.831243  
+max                                0.1   NaN        9.858293  
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="example-processing-the-docs">
+<h2>Example processing the docs<a class="headerlink" href="#example-processing-the-docs" title="Permalink to this heading">#</a></h2>
+<p>RAG apps are as good as the information they are able to retrieve. Let’s try indexing the tables’ summaries to
+improve the likelihood that they are retrieved whenever a user asks a relevant question.</p>
+<p>We will use unstructured’s <code class="docutils literal notranslate"><span class="pre">partition_pdf</span></code> functionality and generate summaries using an LLM.</p>
+<p>You can define your own indexing pipeline to see how it impacts the downstream performance.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">operator</span> <span class="kn">import</span> <span class="n">itemgetter</span>
+
+<span class="kn">from</span> <span class="nn">langchain.chat_models</span> <span class="kn">import</span> <span class="n">ChatOpenAI</span>
+<span class="kn">from</span> <span class="nn">langchain.prompts</span> <span class="kn">import</span> <span class="n">ChatPromptTemplate</span>
+<span class="kn">from</span> <span class="nn">langchain.schema.document</span> <span class="kn">import</span> <span class="n">Document</span>
+<span class="kn">from</span> <span class="nn">langchain.schema.output_parser</span> <span class="kn">import</span> <span class="n">StrOutputParser</span>
+<span class="kn">from</span> <span class="nn">langchain.schema.runnable.passthrough</span> <span class="kn">import</span> <span class="n">RunnableAssign</span>
+
+<span class="c1"># Prompt</span>
+<span class="n">prompt</span> <span class="o">=</span> <span class="n">ChatPromptTemplate</span><span class="o">.</span><span class="n">from_messages</span><span class="p">(</span>
+    <span class="p">[</span>
+        <span class="p">(</span>
+            <span class="s2">&quot;system&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;You are summarizing semi-structured tables or text in a pdf.</span><span class="se">\n\n</span><span class="s2">```document</span><span class="se">\n</span><span class="si">{doc}</span><span class="se">\n</span><span class="s2">```&quot;</span><span class="p">,</span>
+        <span class="p">),</span>
+        <span class="p">(</span><span class="s2">&quot;user&quot;</span><span class="p">,</span> <span class="s2">&quot;Write a concise summary.&quot;</span><span class="p">),</span>
+    <span class="p">]</span>
+<span class="p">)</span>
+
+<span class="c1"># Summary chain</span>
+<span class="n">model</span> <span class="o">=</span> <span class="n">ChatOpenAI</span><span class="p">(</span><span class="n">temperature</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">model</span><span class="o">=</span><span class="s2">&quot;gpt-3.5-turbo-16k&quot;</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">create_doc</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Document</span><span class="p">:</span>
+    <span class="k">return</span> <span class="n">Document</span><span class="p">(</span>
+        <span class="n">page_content</span><span class="o">=</span><span class="n">x</span><span class="p">[</span><span class="s2">&quot;output&quot;</span><span class="p">],</span>
+        <span class="n">metadata</span><span class="o">=</span><span class="n">x</span><span class="p">[</span><span class="s2">&quot;doc&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">metadata</span><span class="p">,</span>
+    <span class="p">)</span>
+
+
+<span class="n">summarize_chain</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="p">{</span><span class="s2">&quot;doc&quot;</span><span class="p">:</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="p">}</span>
+    <span class="o">|</span> <span class="n">RunnableAssign</span><span class="p">({</span><span class="s2">&quot;prompt&quot;</span><span class="p">:</span> <span class="n">prompt</span><span class="p">})</span>
+    <span class="o">|</span> <span class="p">{</span>
+        <span class="s2">&quot;output&quot;</span><span class="p">:</span> <span class="n">itemgetter</span><span class="p">(</span><span class="s2">&quot;prompt&quot;</span><span class="p">)</span> <span class="o">|</span> <span class="n">model</span> <span class="o">|</span> <span class="n">StrOutputParser</span><span class="p">(),</span>
+        <span class="s2">&quot;doc&quot;</span><span class="p">:</span> <span class="n">itemgetter</span><span class="p">(</span><span class="s2">&quot;doc&quot;</span><span class="p">),</span>
+    <span class="p">}</span>
+    <span class="o">|</span> <span class="n">create_doc</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">summaries</span> <span class="o">=</span> <span class="n">summarize_chain</span><span class="o">.</span><span class="n">batch</span><span class="p">(</span>
+    <span class="p">[</span><span class="n">doc</span> <span class="k">for</span> <span class="n">doc</span> <span class="ow">in</span> <span class="n">docs</span> <span class="k">if</span> <span class="n">doc</span><span class="o">.</span><span class="n">metadata</span><span class="p">[</span><span class="s2">&quot;element_type&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;table&quot;</span><span class="p">]</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Index the documents and create the retriever. We will re</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Indexes the documents with the specified embeddings</span>
+<span class="n">retriever_with_summaries</span> <span class="o">=</span> <span class="n">retriever_factory</span><span class="p">(</span>
+    <span class="n">embeddings</span><span class="p">,</span>
+    <span class="n">docs</span><span class="o">=</span><span class="n">docs</span> <span class="o">+</span> <span class="n">summaries</span><span class="p">,</span>
+    <span class="c1"># Specify a unique transformation name to avoid local cache collisions with other indices.</span>
+    <span class="n">transformation_name</span><span class="o">=</span><span class="s2">&quot;docs-with_summaries&quot;</span><span class="p">,</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<script type="application/vnd.jupyter.widget-view+json">{"model_id": "029921ed3d7c4f389c666583a7192144", "version_major": 2, "version_minor": 0}</script></div>
+</div>
+<section id="evaluate">
+<h3>Evaluate<a class="headerlink" href="#evaluate" title="Permalink to this heading">#</a></h3>
+<p>We’ll evaluate the new chain on the same dataset.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">chain_2</span> <span class="o">=</span> <span class="n">create_chain</span><span class="p">(</span><span class="n">retriever_with_summaries</span><span class="p">)</span>
+
+<span class="n">test_run_with_summaries</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">run_on_dataset</span><span class="p">(</span>
+    <span class="n">dataset_name</span><span class="o">=</span><span class="n">task</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
+    <span class="n">llm_or_chain_factory</span><span class="o">=</span><span class="n">chain_2</span><span class="p">,</span>
+    <span class="n">evaluation</span><span class="o">=</span><span class="n">RAG_EVALUATION</span><span class="p">,</span>
+    <span class="n">verbose</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>View the evaluation results for project &#39;crazy-harmony-39&#39; at:
+https://smith.langchain.com/o/ebbaf2eb-769b-4505-aca2-d11de10372a4/projects/p/b69d796f-6ba4-4cde-822f-db363cf81f8f?eval=true
+
+View all tests for Dataset Semi-structured Reports at:
+https://smith.langchain.com/o/ebbaf2eb-769b-4505-aca2-d11de10372a4/datasets/f8f24935-cf57-4cb3-a30f-8df303a46962
+[-------------------------------------------------&gt;] 5/5
+ Eval quantiles:
+                                          inputs.question  \
+count                                                   5   
+unique                                                  5   
+top     Analyzing the operating expenses for Q3 2023, ...   
+freq                                                    1   
+mean                                                  NaN   
+std                                                   NaN   
+min                                                   NaN   
+25%                                                   NaN   
+50%                                                   NaN   
+75%                                                   NaN   
+max                                                   NaN   
+
+        feedback.score_string:accuracy  feedback.faithfulness  \
+count                         5.000000                    5.0   
+unique                             NaN                    NaN   
+top                                NaN                    NaN   
+freq                               NaN                    NaN   
+mean                          0.720000                    1.0   
+std                           0.408656                    0.0   
+min                           0.100000                    1.0   
+25%                           0.500000                    1.0   
+50%                           1.000000                    1.0   
+75%                           1.000000                    1.0   
+max                           1.000000                    1.0   
+
+        feedback.embedding_cosine_distance error  execution_time  
+count                             5.000000     0        5.000000  
+unique                                 NaN     0             NaN  
+top                                    NaN   NaN             NaN  
+freq                                   NaN   NaN             NaN  
+mean                              0.069363   NaN        8.659120  
+std                               0.023270   NaN        2.611724  
+min                               0.039593   NaN        6.283505  
+25%                               0.050176   NaN        6.723136  
+50%                               0.078912   NaN        7.441743  
+75%                               0.084389   NaN       10.673265  
+max                               0.093747   NaN       12.173952  
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+</section>
+
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="../langchain_docs_qa.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Q&amp;A over LangChain Docs</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="ss_eval_chunk_sizes.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Semi-structured eval: Chunk size tuning</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pre-requisites">Pre-requisites</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#review-q-a-tasks">Review Q&amp;A Tasks</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#now-index-the-documents">Now, index the documents</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#time-to-evaluate">Time to evaluate</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#example-processing-the-docs">Example processing the docs</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#evaluate">Evaluate</a></li>
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Langchain AI
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2023, Langchain AI.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../../_static/scripts/bootstrap.js?digest=5b4479735964841361fd"></script>
+<script src="../../../_static/scripts/pydata-sphinx-theme.js?digest=5b4479735964841361fd"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

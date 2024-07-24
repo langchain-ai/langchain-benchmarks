@@ -1,0 +1,1126 @@
+
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+    <title>Introduction &#8212; LangChain Benchmarks 0.0.12</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=5b4479735964841361fd" rel="stylesheet" />
+<link href="../../_static/styles/bootstrap.css?digest=5b4479735964841361fd" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=5b4479735964841361fd" rel="stylesheet" />
+
+  
+  <link href="../../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=5b4479735964841361fd" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+    <link rel="stylesheet" href="../../_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/custom.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=5b4479735964841361fd" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=5b4479735964841361fd" />
+  <script src="../../_static/vendor/fontawesome/6.1.2/js/all.min.js?digest=5b4479735964841361fd"></script>
+
+    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/sphinx_highlight.js"></script>
+    <script src="../../_static/clipboard.min.js"></script>
+    <script src="../../_static/copybutton.js"></script>
+    <script src="../../_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'notebooks/tool_usage/intro';</script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Relational Data" href="relational_data.html" />
+    <link rel="prev" title="Datasets" href="../datasets.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>
+    Back to top
+  </button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
+    </nav>
+  
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+
+<a class="navbar-brand logo" href="../../index.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">LangChain Benchmarks 0.0.12</p>
+  
+</a></div>
+        <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../../index.html">
+                    🦜💯 LangChain Benchmarks
+                </a>
+            </li>
+        </ul>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Introduction</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../getting_started.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../models.html">Model Registry</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../datasets.html">Datasets</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Tool Usage</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="relational_data.html">Relational Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="multiverse_math.html">Multiverse Math</a></li>
+<li class="toctree-l1"><a class="reference internal" href="typewriter_1.html">Typewriter: Single Tool</a></li>
+<li class="toctree-l1"><a class="reference internal" href="typewriter_26.html">Typewriter: 26 Tools</a></li>
+<li class="toctree-l1"><a class="reference internal" href="benchmark_all_tasks.html">Benchmark All Tasks</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Extraction</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../extraction/intro.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../extraction/email.html">Email Extraction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../extraction/chat_extraction.html">Chat Extraction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../extraction/high_cardinality.html">Extracting high-cardinality categoricals</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">RAG</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../retrieval/intro.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../retrieval/langchain_docs_qa.html">Q&amp;A over LangChain Docs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../retrieval/semi_structured_benchmarking/semi_structured.html">Semi-structured RAG</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../retrieval/semi_structured_benchmarking/ss_eval_chunk_sizes.html">Semi-structured eval: Chunk size tuning</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../retrieval/semi_structured_benchmarking/ss_eval_long_context.html">Semi-structured eval: Long-context</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../retrieval/semi_structured_benchmarking/ss_eval_multi_vector.html">Semi-structured eval: Multi vector</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../retrieval/multi_modal_benchmarking/multi_modal_eval_baseline.html">Multi-modal eval: Baseline</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../retrieval/multi_modal_benchmarking/multi_modal_eval.html">Multi-modal eval: GPT-4 w/ multi-modal embeddings and multi-vector retriever</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../retrieval/comparing_techniques.html">Evaluating RAG Architectures on Benchmark Tasks</a></li>
+
+
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Benchmarking Without LangSmith</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../run_without_langsmith.html">Running Locally</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</label></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-launch-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Launch interactive content">
+    <i class="fas fa-rocket"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://colab.research.google.com/github/langchain-ai/langchain-benchmarks/blob/main/docs/source/notebooks/tool_usage/intro.ipynb" target="_blank"
+   class="btn btn-sm dropdown-item"
+   title="Launch onColab"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  
+    <img src="../../_static/images/logo_colab.png">
+  </span>
+<span class="btn__text-container">Colab</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/langchain-ai/langchain-benchmarks" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/langchain-ai/langchain-benchmarks/blob/main/docs/source/notebooks/tool_usage/intro.ipynb?plain=1" target="_blank"
+   class="btn btn-sm btn-source-file-button dropdown-item"
+   title="Show source"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-code"></i>
+  </span>
+<span class="btn__text-container">Show source</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/langchain-ai/langchain-benchmarks/issues/new?title=Issue%20on%20page%20%2Fnotebooks/tool_usage/intro.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../../_sources/notebooks/tool_usage/intro.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</label>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Introduction</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#schema">Schema</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#dataset">Dataset</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#agent">Agent</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#tasks">Tasks</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#create-an-agent">Create an Agent!</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#benchmarking">Benchmarking</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#advanced-usage">Advanced Usage</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#custom-agent-factory">Custom Agent Factory</a></li>
+</ul>
+</li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article" role="main">
+                  
+  <section id="introduction">
+<h1>Introduction<a class="headerlink" href="#introduction" title="Permalink to this heading">#</a></h1>
+<p>Tool Usage tasks are designed to evaluate how well an agent can use tools to accomplish an objective.</p>
+<p>Each task defines an environment in which the agent operates. The environment consists of a set of tools and a way to read the state of the environment (more on that below).</p>
+<p>The tasks allow you to stress test the agent in different ways:</p>
+<ul class="simple">
+<li><p>Can the agent use a single tool effectively?</p></li>
+<li><p>Can the agent use more than 10 tools effectively?</p></li>
+<li><p>Can the agent correctly incorporate information returned by the tool (and ignore internal knowledge)?</p></li>
+</ul>
+<p>To help in this evaluation, each task is associated with a LangSmith dataset that includes input/output examples of varying difficulties.</p>
+<section id="schema">
+<h2>Schema<a class="headerlink" href="#schema" title="Permalink to this heading">#</a></h2>
+<p>To make it possible to evaluate different agent implementations, we’re using a standardized schema, we’ll illustrate it with the following example taken from tool usage.</p>
+<section id="dataset">
+<h3>Dataset<a class="headerlink" href="#dataset" title="Permalink to this heading">#</a></h3>
+<p>Each task corresponds to a LangSmith dataset with the following schema:</p>
+<p>Inputs:</p>
+<table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>name</p></th>
+<th class="head"><p>type</p></th>
+<th class="head"><p>meaning</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>question</p></td>
+<td><p>str</p></td>
+<td><p>the user question</p></td>
+</tr>
+</tbody>
+</table>
+<p>Outputs:</p>
+<table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>name</p></th>
+<th class="head"><p>type</p></th>
+<th class="head"><p>meaning</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>reference</p></td>
+<td><p>str</p></td>
+<td><p>the expected answer</p></td>
+</tr>
+<tr class="row-odd"><td><p>expected_steps</p></td>
+<td><p>List[str]</p></td>
+<td><p>the list of tools that should be invoked</p></td>
+</tr>
+<tr class="row-even"><td><p>order_matters</p></td>
+<td><p>bool</p></td>
+<td><p>whether the tools should be invoked in the specific order</p></td>
+</tr>
+<tr class="row-odd"><td><p>state</p></td>
+<td><p>Optional[Any]</p></td>
+<td><p>the state of the system after the agent has taken its actions</p></td>
+</tr>
+</tbody>
+</table>
+<p>Here’s an <a class="reference external" href="https://smith.langchain.com/public/1d89f4b3-5f73-48cf-a127-2fdeb22f6d84/d/e82a0faf-00b9-40a5-a0e3-9723d923e58e/e">example</a> contains the following keys/values:</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;input&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="nt">&quot;question&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;weather in LA right now?&quot;</span><span class="p">},</span>
+<span class="w">  </span><span class="nt">&quot;output&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="nt">&quot;reference&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Sunny, Temperature: 75°F&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;order_matters&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;expected_steps&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">        </span><span class="s2">&quot;find_locations_by_name&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="s2">&quot;get_current_weather_for_location&quot;</span>
+<span class="w">      </span><span class="p">],</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="agent">
+<h3>Agent<a class="headerlink" href="#agent" title="Permalink to this heading">#</a></h3>
+<p>To work with the evaluators provided by LangChain Benchmarks (of course you’re free to write your own evaluators!).</p>
+<p>An agent must accept <code class="docutils literal notranslate"><span class="pre">question</span></code> as an input and return:</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span>{
+    &quot;output&quot;: &quot;It&#39;s super sunny. Like 75F&quot;, // the output from the agent
+    &quot;intermediate_steps&quot;: [... &quot;find_locations_by_name&quot; ...], // list of the intermediate steps taken by the agent (see format in LangChain)
+    &quot;state&quot;: .., // Can be anything, this is the state fo the environment after the agent has taken all of its actions (optional key)
+}
+</pre></div>
+</div>
+</section>
+</section>
+<section id="tasks">
+<h2>Tasks<a class="headerlink" href="#tasks" title="Permalink to this heading">#</a></h2>
+<p>You can check an up-to-date list of tool usage tasks in the registry:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">langchain_benchmarks</span> <span class="kn">import</span> <span class="n">registry</span>
+
+<span class="n">registry</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">Type</span><span class="o">=</span><span class="s2">&quot;ToolUsageTask&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><table>
+<thead>
+<tr><th>Name                              </th><th>Type         </th><th>Dataset ID                                                                                                                                                 </th><th>Description  </th></tr>
+</thead>
+<tbody>
+<tr><td>Tool Usage - Typewriter (1 tool)  </td><td>ToolUsageTask</td><td><a href="https://smith.langchain.com/public/59577193-8938-4ccf-92a7-e8a96bcf4f86/d" target="_blank" rel="noopener">59577193-8938-4ccf-92a7-e8a96bcf4f86</a></td><td>Environment with a single tool that accepts a single letter as input, and prints it on a piece of virtual paper.
+
+The objective of this task is to evaluate the ability of the model to use the provided tools to repeat a given input string.
+
+For example, if the string is 'abc', the tools 'a', 'b', and 'c' must be invoked in that order.
+
+The dataset includes examples of varying difficulty. The difficulty is measured by the length of the string.              </td></tr>
+<tr><td>Tool Usage - Typewriter (26 tools)</td><td>ToolUsageTask</td><td><a href="https://smith.langchain.com/public/128af05e-aa00-4e3b-a958-d166dd450581/d" target="_blank" rel="noopener">128af05e-aa00-4e3b-a958-d166dd450581</a></td><td>Environment with 26 tools each tool represents a letter of the alphabet.
+
+The objective of this task is to evaluate the model's ability the use tools
+for a simple repetition task.
+
+For example, if the string is 'abc', the tools 'a', 'b', and 'c' must be invoked in that order.
+
+The dataset includes examples of varying difficulty. The difficulty is measured by the length of the string.
+
+This is a variation of the typer writer task, where 26 parameterless tools are
+given instead of a single tool that takes a letter as an argument.              </td></tr>
+<tr><td>Tool Usage - Relational Data      </td><td>ToolUsageTask</td><td><a href="https://smith.langchain.com/public/1d89f4b3-5f73-48cf-a127-2fdeb22f6d84/d" target="_blank" rel="noopener">1d89f4b3-5f73-48cf-a127-2fdeb22f6d84</a></td><td>Environment with fake data about users and their locations and favorite foods.
+
+The environment provides a set of tools that can be used to query the data.
+
+The objective of this task is to evaluate the ability to use the provided tools to answer questions about relational data.
+
+The dataset contains 21 examples of varying difficulty. The difficulty is measured by the number of tools that need to be used to answer the question.
+
+Each example is composed of a question, a reference answer, and information about the sequence in which tools should be used to answer the question.
+
+Success is measured by the ability to answer the question correctly, and efficiently.              </td></tr>
+<tr><td>Multiverse Math                   </td><td>ToolUsageTask</td><td><a href="https://smith.langchain.com/public/47ed57bc-e852-4f84-a23e-cce4793864e9/d" target="_blank" rel="noopener">47ed57bc-e852-4f84-a23e-cce4793864e9</a></td><td>An environment that contains a few basic math operations, but with altered results.
+
+For example, multiplication of 5*3 will be re-interpreted as 5*3*1.1. The basic operations retain some basic properties, such as commutativity, associativity, and distributivity; however, the results are different than expected.
+
+The objective of this task is to evaluate the ability to use the provided tools to solve simple math questions and ignore any innate knowledge about math.
+
+This task is associated with 20 test examples.              </td></tr>
+</tbody>
+</table></div></div>
+</div>
+<p>Let’s understand what a tool usage task is in a bit more detail</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">task</span> <span class="o">=</span> <span class="n">registry</span><span class="p">[</span><span class="s2">&quot;Tool Usage - Typewriter (26 tools)&quot;</span><span class="p">]</span>
+<span class="n">task</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><table>
+<tbody>
+<tr><td>Name       </td><td>Tool Usage - Typewriter (26 tools)                                                                                                                         </td></tr>
+<tr><td>Type       </td><td>ToolUsageTask                                                                                                                                              </td></tr>
+<tr><td>Dataset ID </td><td><a href="https://smith.langchain.com/public/128af05e-aa00-4e3b-a958-d166dd450581/d" target="_blank" rel="noopener">128af05e-aa00-4e3b-a958-d166dd450581</a></td></tr>
+<tr><td>Description</td><td>Environment with 26 tools each tool represents a letter of the alphabet.
+
+The objective of this task is to evaluate the model's ability the use tools
+for a simple repetition task.
+
+For example, if the string is 'abc', the tools 'a', 'b', and 'c' must be invoked in that order.
+
+The dataset includes examples of varying difficulty. The difficulty is measured by the length of the string.
+
+This is a variation of the typer writer task, where 26 parameterless tools are
+given instead of a single tool that takes a letter as an argument.                                                                                                                                                            </td></tr>
+</tbody>
+</table></div></div>
+</div>
+<p>Tool usage tasks are associated with an environment</p>
+<hr class="docutils" />
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span>
+<span class="nd">@dataclasses</span><span class="o">.</span><span class="n">dataclass</span><span class="p">(</span><span class="n">frozen</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="k">class</span> <span class="nc">ToolUsageEnvironment</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;An instance of an environment for tool usage.&quot;&quot;&quot;</span>
+
+    <span class="n">tools</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">BaseTool</span><span class="p">]</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;The tools that can be used in the environment.&quot;&quot;&quot;</span>
+
+    <span class="n">read_state</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Callable</span><span class="p">[[],</span> <span class="n">Any</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;A function that returns the current state of the environment.&quot;&quot;&quot;</span>
+
+</pre></div>
+</div>
+<hr class="docutils" />
+<p>Here, we’ll dig into the typewriter task a bit to explain what the environment state represents.</p>
+<p>The typewrite task has 26 tools each of which prints a letter on a piece of virtual paper</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">env</span> <span class="o">=</span> <span class="n">task</span><span class="o">.</span><span class="n">create_environment</span><span class="p">()</span>
+<span class="n">env</span><span class="o">.</span><span class="n">tools</span><span class="p">[:</span><span class="mi">4</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[StructuredTool(name=&#39;a&#39;, description=&#39;a() -&gt; str - Run to Type the letter &quot;a&quot;.&#39;, args_schema=&lt;class &#39;pydantic.v1.main.aSchema&#39;&gt;, func=&lt;function _create_typing_func.&lt;locals&gt;.func at 0x7b3a9f62c9a0&gt;),
+ StructuredTool(name=&#39;b&#39;, description=&#39;b() -&gt; str - Run to Type the letter &quot;b&quot;.&#39;, args_schema=&lt;class &#39;pydantic.v1.main.bSchema&#39;&gt;, func=&lt;function _create_typing_func.&lt;locals&gt;.func at 0x7b3a9f62c5e0&gt;),
+ StructuredTool(name=&#39;c&#39;, description=&#39;c() -&gt; str - Run to Type the letter &quot;c&quot;.&#39;, args_schema=&lt;class &#39;pydantic.v1.main.cSchema&#39;&gt;, func=&lt;function _create_typing_func.&lt;locals&gt;.func at 0x7b3a9f62cae0&gt;),
+ StructuredTool(name=&#39;d&#39;, description=&#39;d() -&gt; str - Run to Type the letter &quot;d&quot;.&#39;, args_schema=&lt;class &#39;pydantic.v1.main.dSchema&#39;&gt;, func=&lt;function _create_typing_func.&lt;locals&gt;.func at 0x7b3a9f62cb80&gt;)]
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">env</span><span class="o">.</span><span class="n">tools</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">invoke</span><span class="p">({})</span>  <span class="c1"># Invoke a()</span>
+<span class="n">env</span><span class="o">.</span><span class="n">tools</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">invoke</span><span class="p">({})</span>  <span class="c1"># invoke a()</span>
+<span class="n">env</span><span class="o">.</span><span class="n">tools</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">invoke</span><span class="p">({})</span>  <span class="c1"># invoke c()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&#39;OK&#39;
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">env</span><span class="o">.</span><span class="n">read_state</span><span class="p">()</span>  <span class="c1"># Shows the content of the virtual paper</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&#39;aac&#39;
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="create-an-agent">
+<h2>Create an Agent!<a class="headerlink" href="#create-an-agent" title="Permalink to this heading">#</a></h2>
+<p>Now that you know how the test environment works, let’s create an agent that we can test!</p>
+<p>Because an agent interacts with the environment via tools and can change the state of the environment during the course of an agent run, what we actually want is the ability to create a fresh agent and a fresh environment for each test run.</p>
+<p>We’ll do this using a factory. A factory is just a fancy name in computer science for an object that can create other objects. In this case, we’ll have an Agent Factory that we can call and it’ll create a fresh agent for us on each call.</p>
+<p>We’ll use the StandardAgentFactory which under the hood creates a standard LangChain <a class="reference external" href="https://python.langchain.com/docs/modules/agents/agent_types/tool_calling/">tool calling agent</a>. It can be used with any <a class="reference external" href="https://python.langchain.com/docs/integrations/chat/">Chat Model that support tool calling</a>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">langchain_anthropic.chat_models</span> <span class="kn">import</span> <span class="n">ChatAnthropic</span>
+<span class="kn">from</span> <span class="nn">langchain_core.prompts</span> <span class="kn">import</span> <span class="n">ChatPromptTemplate</span>
+
+<span class="kn">from</span> <span class="nn">langchain_benchmarks.tool_usage.agents</span> <span class="kn">import</span> <span class="n">StandardAgentFactory</span>
+
+<span class="n">model</span> <span class="o">=</span> <span class="n">ChatAnthropic</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="s2">&quot;claude-3-opus-20240229&quot;</span><span class="p">,</span> <span class="n">temperature</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">prompt</span> <span class="o">=</span> <span class="n">ChatPromptTemplate</span><span class="o">.</span><span class="n">from_messages</span><span class="p">(</span>
+    <span class="p">[</span>
+        <span class="p">(</span><span class="s2">&quot;system&quot;</span><span class="p">,</span> <span class="s2">&quot;</span><span class="si">{instructions}</span><span class="s2">&quot;</span><span class="p">),</span>  <span class="c1"># Populated from task.instructions automatically</span>
+        <span class="p">(</span>
+            <span class="s2">&quot;human&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;</span><span class="si">{question}</span><span class="s2">&quot;</span><span class="p">,</span>
+        <span class="p">),</span>  <span class="c1"># Each evaluation example is associated with a question</span>
+        <span class="p">(</span><span class="s2">&quot;placeholder&quot;</span><span class="p">,</span> <span class="s2">&quot;</span><span class="si">{agent_scratchpad}</span><span class="s2">&quot;</span><span class="p">),</span>  <span class="c1"># Space for the agent to do work</span>
+    <span class="p">]</span>
+<span class="p">)</span>
+
+<span class="n">agent_factory</span> <span class="o">=</span> <span class="n">StandardAgentFactory</span><span class="p">(</span><span class="n">task</span><span class="p">,</span> <span class="n">model</span><span class="p">,</span> <span class="n">prompt</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Here, were the instructions for the task</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">task</span><span class="o">.</span><span class="n">instructions</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&quot;Repeat the given string by using the provided tools. Do not write anything else or provide any explanations. For example, if the string is &#39;abc&#39;, you must invoke the tools &#39;a&#39;, &#39;b&#39;, and &#39;c&#39; in that order. Please invoke the functions without any arguments.&quot;
+</pre></div>
+</div>
+</div>
+</div>
+<p>Let’s test it out</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">langchain</span> <span class="kn">import</span> <span class="nb">globals</span>
+
+<span class="nb">globals</span><span class="o">.</span><span class="n">set_verbose</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">agent</span> <span class="o">=</span> <span class="n">agent_factory</span><span class="p">()</span>
+<span class="n">agent</span><span class="o">.</span><span class="n">invoke</span><span class="p">({</span><span class="s2">&quot;question&quot;</span><span class="p">:</span> <span class="s2">&quot;abc&quot;</span><span class="p">})</span>
+<span class="nb">globals</span><span class="o">.</span><span class="n">set_verbose</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Bold">&gt; Entering new AgentExecutor chain...</span>
+
+<span class=" -Color -Color-Bold -Color-Bold-Green">Invoking: `a` with `{}`</span>
+<span class=" -Color -Color-Bold -Color-Bold-Green">responded: [{&#39;text&#39;: &#39;&lt;thinking&gt;\nTo repeat the string &quot;abc&quot;, I need to call the a(), b(), and c() functions in that order. No parameters are required for these functions.\n&lt;/thinking&gt;&#39;, &#39;type&#39;: &#39;text&#39;}, {&#39;id&#39;: &#39;toolu_01MQ6oTx2j2uNGCR5LBVeKui&#39;, &#39;input&#39;: {}, &#39;name&#39;: &#39;a&#39;, &#39;type&#39;: &#39;tool_use&#39;}, {&#39;id&#39;: &#39;toolu_01AytT1jvNNR67VodMkhbq7r&#39;, &#39;input&#39;: {}, &#39;name&#39;: &#39;b&#39;, &#39;type&#39;: &#39;tool_use&#39;}, {&#39;id&#39;: &#39;toolu_015VkTYUV5hWcobtduqssi9k&#39;, &#39;input&#39;: {}, &#39;name&#39;: &#39;c&#39;, &#39;type&#39;: &#39;tool_use&#39;}]</span>
+
+<span class=" -Color -Color-Bold -Color-Bold-Cyan">OK</span>
+<span class=" -Color -Color-Bold -Color-Bold-Green">Invoking: `b` with `{}`</span>
+<span class=" -Color -Color-Bold -Color-Bold-Green">responded: [{&#39;text&#39;: &#39;&lt;thinking&gt;\nTo repeat the string &quot;abc&quot;, I need to call the a(), b(), and c() functions in that order. No parameters are required for these functions.\n&lt;/thinking&gt;&#39;, &#39;type&#39;: &#39;text&#39;}, {&#39;id&#39;: &#39;toolu_01MQ6oTx2j2uNGCR5LBVeKui&#39;, &#39;input&#39;: {}, &#39;name&#39;: &#39;a&#39;, &#39;type&#39;: &#39;tool_use&#39;}, {&#39;id&#39;: &#39;toolu_01AytT1jvNNR67VodMkhbq7r&#39;, &#39;input&#39;: {}, &#39;name&#39;: &#39;b&#39;, &#39;type&#39;: &#39;tool_use&#39;}, {&#39;id&#39;: &#39;toolu_015VkTYUV5hWcobtduqssi9k&#39;, &#39;input&#39;: {}, &#39;name&#39;: &#39;c&#39;, &#39;type&#39;: &#39;tool_use&#39;}]</span>
+
+<span class=" -Color -Color-Bold -Color-Bold-Yellow">OK</span>
+<span class=" -Color -Color-Bold -Color-Bold-Green">Invoking: `c` with `{}`</span>
+<span class=" -Color -Color-Bold -Color-Bold-Green">responded: [{&#39;text&#39;: &#39;&lt;thinking&gt;\nTo repeat the string &quot;abc&quot;, I need to call the a(), b(), and c() functions in that order. No parameters are required for these functions.\n&lt;/thinking&gt;&#39;, &#39;type&#39;: &#39;text&#39;}, {&#39;id&#39;: &#39;toolu_01MQ6oTx2j2uNGCR5LBVeKui&#39;, &#39;input&#39;: {}, &#39;name&#39;: &#39;a&#39;, &#39;type&#39;: &#39;tool_use&#39;}, {&#39;id&#39;: &#39;toolu_01AytT1jvNNR67VodMkhbq7r&#39;, &#39;input&#39;: {}, &#39;name&#39;: &#39;b&#39;, &#39;type&#39;: &#39;tool_use&#39;}, {&#39;id&#39;: &#39;toolu_015VkTYUV5hWcobtduqssi9k&#39;, &#39;input&#39;: {}, &#39;name&#39;: &#39;c&#39;, &#39;type&#39;: &#39;tool_use&#39;}]</span>
+
+<span class=" -Color -Color-Bold -Color-Bold-C200">OK</span><span class=" -Color -Color-Bold -Color-Bold-Green">[]</span>
+
+<span class=" -Color -Color-Bold">&gt; Finished chain.</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="benchmarking">
+<h2>Benchmarking<a class="headerlink" href="#benchmarking" title="Permalink to this heading">#</a></h2>
+<p>How does one evaluate an agent? Given a particular task and input, an agent uses tools to produce an output AND/OR change the state of the environment.</p>
+<p>To evaluate an agent, we can check the following:</p>
+<ol class="arabic simple">
+<li><p>Did the agent use the expected tools?</p></li>
+<li><p>Did the agent use the tools in the most effective way; e.g., was the order of tool invocation correct?</p></li>
+<li><p>Did the environment end up in the correct final state after the agent used the tools? (e.g., does my calendar contain all the scheduled meetings?)</p></li>
+<li><p>Did the agent output match the expected reference output?</p></li>
+</ol>
+<p>Each task is associated with a standard evaluator that does evaluation that’s appropriate for the task; for example,</p>
+<ol class="arabic simple">
+<li><p>Use an LLM to grade Compare output to reference using an LLM that grades the response.</p></li>
+<li><p>Compare equality of expected_steps to the list of tools in intermediate_steps – simple list equality</p></li>
+<li><p>Compare the state of the environment against expected state (if present in the dataset and in the agent)</p></li>
+</ol>
+<p>Each task is associated with its own task specific evaluator!</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">eval_config</span> <span class="o">=</span> <span class="n">task</span><span class="o">.</span><span class="n">get_eval_config</span><span class="p">()</span>
+<span class="n">eval_config</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>RunEvalConfig(evaluators=[], custom_evaluators=[&lt;langchain_benchmarks.tool_usage.evaluators.AgentTrajectoryEvaluator object at 0x7b3a9ea5b110&gt;], batch_evaluators=None, reference_key=None, prediction_key=None, input_key=None, eval_llm=None)
+</pre></div>
+</div>
+</div>
+</div>
+<p>Set up code to run against all tasks</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">datetime</span>
+<span class="kn">import</span> <span class="nn">uuid</span>
+
+<span class="kn">from</span> <span class="nn">langsmith.client</span> <span class="kn">import</span> <span class="n">Client</span>
+
+<span class="kn">from</span> <span class="nn">langchain_benchmarks</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">__version__</span><span class="p">,</span>
+    <span class="n">clone_public_dataset</span><span class="p">,</span>
+    <span class="n">model_registry</span><span class="p">,</span>
+    <span class="n">registry</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="kn">from</span> <span class="nn">langchain_benchmarks.rate_limiting</span> <span class="kn">import</span> <span class="n">RateLimiter</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Create an experiment ID. we’ll use it to tag our runs, which we can later use to retrieve run data from LangSmith.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">experiment_id</span> <span class="o">=</span> <span class="n">uuid</span><span class="o">.</span><span class="n">uuid4</span><span class="p">()</span><span class="o">.</span><span class="n">hex</span><span class="p">[:]</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Run evaluation against all tasks.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">client</span> <span class="o">=</span> <span class="n">Client</span><span class="p">()</span>  <span class="c1"># Launch langsmith client for cloning datasets</span>
+<span class="n">today</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">date</span><span class="o">.</span><span class="n">today</span><span class="p">()</span><span class="o">.</span><span class="n">isoformat</span><span class="p">()</span>
+
+<span class="c1"># You can use an optional rate limiter to rate limit your requests!</span>
+<span class="n">rate_limiter</span> <span class="o">=</span> <span class="n">RateLimiter</span><span class="p">(</span><span class="n">requests_per_second</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
+
+<span class="c1"># Set up 2-tuples of (model name, model instance)</span>
+<span class="c1"># You can update this list with any model that supports tool calling.</span>
+<span class="c1"># See list here: https://python.langchain.com/docs/integrations/chat/</span>
+<span class="n">tests</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="p">(</span>
+        <span class="s2">&quot;claude-3-haiku-20240307&quot;</span><span class="p">,</span>
+        <span class="n">ChatAnthropic</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="s2">&quot;claude-3-haiku-20240307&quot;</span><span class="p">,</span> <span class="n">temperature</span><span class="o">=</span><span class="mi">0</span><span class="p">),</span>
+    <span class="p">)</span>
+<span class="p">]</span>
+
+
+<span class="k">for</span> <span class="n">task</span> <span class="ow">in</span> <span class="n">registry</span><span class="o">.</span><span class="n">tasks</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">task</span><span class="o">.</span><span class="n">type</span> <span class="o">!=</span> <span class="s2">&quot;ToolUsageTask&quot;</span><span class="p">:</span>
+        <span class="k">continue</span>
+
+    <span class="n">dataset_name</span> <span class="o">=</span> <span class="n">task</span><span class="o">.</span><span class="n">name</span> <span class="o">+</span> <span class="sa">f</span><span class="s2">&quot; (</span><span class="si">{</span><span class="n">today</span><span class="si">}</span><span class="s2">)&quot;</span>
+    <span class="n">clone_public_dataset</span><span class="p">(</span><span class="n">task</span><span class="o">.</span><span class="n">dataset_id</span><span class="p">,</span> <span class="n">dataset_name</span><span class="o">=</span><span class="n">dataset_name</span><span class="p">)</span>
+
+    <span class="k">for</span> <span class="n">model_name</span><span class="p">,</span> <span class="n">model</span> <span class="ow">in</span> <span class="n">tests</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">()</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Benchmarking </span><span class="si">{</span><span class="n">task</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2"> with model: </span><span class="si">{</span><span class="n">model_name</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="n">eval_config</span> <span class="o">=</span> <span class="n">task</span><span class="o">.</span><span class="n">get_eval_config</span><span class="p">()</span>
+
+        <span class="n">agent_factory</span> <span class="o">=</span> <span class="n">StandardAgentFactory</span><span class="p">(</span>
+            <span class="n">task</span><span class="p">,</span> <span class="n">model</span><span class="p">,</span> <span class="n">prompt</span><span class="p">,</span> <span class="n">rate_limiter</span><span class="o">=</span><span class="n">rate_limiter</span>
+        <span class="p">)</span>
+
+        <span class="n">client</span><span class="o">.</span><span class="n">run_on_dataset</span><span class="p">(</span>
+            <span class="n">dataset_name</span><span class="o">=</span><span class="n">dataset_name</span><span class="p">,</span>
+            <span class="n">llm_or_chain_factory</span><span class="o">=</span><span class="n">agent_factory</span><span class="p">,</span>
+            <span class="n">evaluation</span><span class="o">=</span><span class="n">eval_config</span><span class="p">,</span>
+            <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+            <span class="n">project_name</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">model_name</span><span class="si">}</span><span class="s2">-</span><span class="si">{</span><span class="n">task</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">-</span><span class="si">{</span><span class="n">today</span><span class="si">}</span><span class="s2">-</span><span class="si">{</span><span class="n">experiment_id</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+            <span class="n">concurrency_level</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span>
+            <span class="n">project_metadata</span><span class="o">=</span><span class="p">{</span>
+                <span class="s2">&quot;model&quot;</span><span class="p">:</span> <span class="n">model_name</span><span class="p">,</span>
+                <span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="n">experiment_uuid</span><span class="p">,</span>
+                <span class="s2">&quot;task&quot;</span><span class="p">:</span> <span class="n">task</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
+                <span class="s2">&quot;date&quot;</span><span class="p">:</span> <span class="n">today</span><span class="p">,</span>
+                <span class="s2">&quot;langchain_benchmarks_version&quot;</span><span class="p">:</span> <span class="n">__version__</span><span class="p">,</span>
+            <span class="p">},</span>
+        <span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="advanced-usage">
+<h2>Advanced Usage<a class="headerlink" href="#advanced-usage" title="Permalink to this heading">#</a></h2>
+<p>The following sections demonstrate slightly more “advanced” usage if you want to completely customize the agent runtime in a way that is compatible with our test runner.</p>
+<p>We’ll also apply an adapter to the agent which will will capture its inputs and outputs (e.g, add information the agent’s environment at the end of the run) so that it we can evaluate it.</p>
+<section id="custom-agent-factory">
+<h3>Custom Agent Factory<a class="headerlink" href="#custom-agent-factory" title="Permalink to this heading">#</a></h3>
+<p>If you want even more configurability beyond what the <code class="docutils literal notranslate"><span class="pre">CustomRunnableAgentFactory</span></code> provides, you can create your owne <code class="docutils literal notranslate"><span class="pre">AgentFactory</span></code> using the following pattern.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">AgentExecutor</span></code> should accept <code class="docutils literal notranslate"><span class="pre">question</span></code> as an input and include the fields <code class="docutils literal notranslate"><span class="pre">output</span></code>, <code class="docutils literal notranslate"><span class="pre">intermediate_steps</span></code> and potentially <code class="docutils literal notranslate"><span class="pre">state</span></code> in its response – for this we
+will wrap the agent executor in an adapter (<code class="docutils literal notranslate"><span class="pre">apply_agent_executor_adapter</span></code>) that will help match the expected schema.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Optional</span>
+
+<span class="kn">from</span> <span class="nn">langchain.agents</span> <span class="kn">import</span> <span class="n">AgentExecutor</span><span class="p">,</span> <span class="n">create_tool_calling_agent</span>
+<span class="kn">from</span> <span class="nn">langchain_anthropic</span> <span class="kn">import</span> <span class="n">ChatAnthropic</span>
+<span class="kn">from</span> <span class="nn">langchain_core.prompts</span> <span class="kn">import</span> <span class="n">ChatPromptTemplate</span>
+
+<span class="kn">from</span> <span class="nn">langchain_benchmarks.schema</span> <span class="kn">import</span> <span class="n">ExtractionTask</span>
+<span class="kn">from</span> <span class="nn">langchain_benchmarks.tool_usage.agents</span> <span class="kn">import</span> <span class="n">apply_agent_executor_adapter</span>
+
+
+<span class="k">class</span> <span class="nc">CustomAgentFactory</span><span class="p">:</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">task</span><span class="p">:</span> <span class="n">ExtractionTask</span><span class="p">,</span>
+        <span class="o">*</span><span class="p">,</span>
+        <span class="c1"># It can be useful to add a rate-limiter</span>
+        <span class="c1"># which will limit ther number of requests per second</span>
+        <span class="c1"># when running evaluation.</span>
+        <span class="n">rate_limiter</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">RateLimiter</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">task</span> <span class="o">=</span> <span class="n">task</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">rate_limiter</span> <span class="o">=</span> <span class="n">rate_limiter</span>
+
+    <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># This factory creates a new environment for every agent run.</span>
+        <span class="c1"># The reason is that the environment may be associated with an environment state (e.g., typewriter)</span>
+        <span class="c1"># which is changed by the actions of the agent.</span>
+        <span class="c1"># At the end of the run, the environment state will be read.</span>
+        <span class="n">env</span> <span class="o">=</span> <span class="n">task</span><span class="o">.</span><span class="n">create_environment</span><span class="p">()</span>  <span class="c1"># Create a new environment for every agent run!</span>
+        <span class="n">tools</span> <span class="o">=</span> <span class="n">env</span><span class="o">.</span><span class="n">tools</span>
+        <span class="n">model</span> <span class="o">=</span> <span class="n">ChatAnthropic</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="s2">&quot;claude-3-opus-20240229&quot;</span><span class="p">,</span> <span class="n">temperature</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+        <span class="n">prompt</span> <span class="o">=</span> <span class="n">ChatPromptTemplate</span><span class="o">.</span><span class="n">from_messages</span><span class="p">(</span>
+            <span class="p">[</span>
+                <span class="p">(</span><span class="s2">&quot;system&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">task</span><span class="o">.</span><span class="n">instructions</span><span class="p">),</span>
+                <span class="p">(</span>
+                    <span class="s2">&quot;human&quot;</span><span class="p">,</span>
+                    <span class="s2">&quot;</span><span class="si">{question}</span><span class="s2">&quot;</span><span class="p">,</span>
+                <span class="p">),</span>  <span class="c1"># Populated from task.instructions automatically</span>
+                <span class="p">(</span><span class="s2">&quot;placeholder&quot;</span><span class="p">,</span> <span class="s2">&quot;</span><span class="si">{agent_scratchpad}</span><span class="s2">&quot;</span><span class="p">),</span>
+            <span class="p">]</span>
+        <span class="p">)</span>
+
+        <span class="c1"># This is the standard tool calling agent implementation</span>
+        <span class="c1"># Feel free to replace it with any other implementation you want!</span>
+        <span class="c1"># https://python.langchain.com/docs/modules/agents/how_to/custom_agent/</span>
+        <span class="n">agent</span> <span class="o">=</span> <span class="n">create_tool_calling_agent</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">env</span><span class="o">.</span><span class="n">tools</span><span class="p">,</span> <span class="n">prompt</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">rate_limiter</span><span class="p">:</span>
+            <span class="n">agent</span> <span class="o">=</span> <span class="n">with_rate_limit</span><span class="p">(</span><span class="n">agent</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">rate_limiter</span><span class="p">)</span>
+
+        <span class="n">executor</span> <span class="o">=</span> <span class="n">AgentExecutor</span><span class="p">(</span>
+            <span class="n">agent</span><span class="o">=</span><span class="n">agent</span><span class="p">,</span>
+            <span class="n">tools</span><span class="o">=</span><span class="n">env</span><span class="o">.</span><span class="n">tools</span><span class="p">,</span>
+            <span class="n">handle_parsing_errors</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+            <span class="n">return_intermediate_steps</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+        <span class="p">)</span>
+
+        <span class="c1"># Apply the adapters so that inputs and outputs match dataset schema</span>
+        <span class="c1"># state_reader automatically adds the state of the environment at the end of the run.</span>
+        <span class="k">return</span> <span class="n">apply_agent_executor_adapter</span><span class="p">(</span><span class="n">executor</span><span class="p">,</span> <span class="n">state_reader</span><span class="o">=</span><span class="n">env</span><span class="o">.</span><span class="n">read_state</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">task</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><table>
+<tbody>
+<tr><td>Name       </td><td>Tool Usage - Typewriter (26 tools)                                                                                                                         </td></tr>
+<tr><td>Type       </td><td>ToolUsageTask                                                                                                                                              </td></tr>
+<tr><td>Dataset ID </td><td><a href="https://smith.langchain.com/public/128af05e-aa00-4e3b-a958-d166dd450581/d" target="_blank" rel="noopener">128af05e-aa00-4e3b-a958-d166dd450581</a></td></tr>
+<tr><td>Description</td><td>Environment with 26 tools each tool represents a letter of the alphabet.
+
+The objective of this task is to evaluate the model's ability the use tools
+for a simple repetition task.
+
+For example, if the string is 'abc', the tools 'a', 'b', and 'c' must be invoked in that order.
+
+The dataset includes examples of varying difficulty. The difficulty is measured by the length of the string.
+
+This is a variation of the typer writer task, where 26 parameterless tools are
+given instead of a single tool that takes a letter as an argument.                                                                                                                                                            </td></tr>
+</tbody>
+</table></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">custom_agent_factory</span> <span class="o">=</span> <span class="n">CustomAgentFactory</span><span class="p">(</span><span class="n">task</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">agent</span> <span class="o">=</span> <span class="n">custom_agent_factory</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">agent</span><span class="o">.</span><span class="n">invoke</span><span class="p">({</span><span class="s2">&quot;question&quot;</span><span class="p">:</span> <span class="s2">&quot;abc&quot;</span><span class="p">})</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>{&#39;question&#39;: &#39;abc&#39;,
+ &#39;output&#39;: [],
+ &#39;intermediate_steps&#39;: [(ToolAgentAction(tool=&#39;a&#39;, tool_input={}, log=&#39;\nInvoking: `a` with `{}`\nresponded: [{\&#39;text\&#39;: \&#39;&lt;thinking&gt;\\nTo repeat the string &quot;abc&quot;, I need to call the a(), b(), and c() functions in that order. No parameters are required for these functions.\\n&lt;/thinking&gt;\&#39;, \&#39;type\&#39;: \&#39;text\&#39;}, {\&#39;id\&#39;: \&#39;toolu_016f6CZwwFmdz2h8KbdGRVjj\&#39;, \&#39;input\&#39;: {}, \&#39;name\&#39;: \&#39;a\&#39;, \&#39;type\&#39;: \&#39;tool_use\&#39;}, {\&#39;id\&#39;: \&#39;toolu_01JvfeTpU3hEuS7PknFk5a8S\&#39;, \&#39;input\&#39;: {}, \&#39;name\&#39;: \&#39;b\&#39;, \&#39;type\&#39;: \&#39;tool_use\&#39;}, {\&#39;id\&#39;: \&#39;toolu_01NbBCY5Fg62RsyAAUd4n2g1\&#39;, \&#39;input\&#39;: {}, \&#39;name\&#39;: \&#39;c\&#39;, \&#39;type\&#39;: \&#39;tool_use\&#39;}]\n\n&#39;, message_log=[AIMessageChunk(content=[{&#39;text&#39;: &#39;&lt;thinking&gt;\nTo repeat the string &quot;abc&quot;, I need to call the a(), b(), and c() functions in that order. No parameters are required for these functions.\n&lt;/thinking&gt;&#39;, &#39;type&#39;: &#39;text&#39;}, {&#39;id&#39;: &#39;toolu_016f6CZwwFmdz2h8KbdGRVjj&#39;, &#39;input&#39;: {}, &#39;name&#39;: &#39;a&#39;, &#39;type&#39;: &#39;tool_use&#39;}, {&#39;id&#39;: &#39;toolu_01JvfeTpU3hEuS7PknFk5a8S&#39;, &#39;input&#39;: {}, &#39;name&#39;: &#39;b&#39;, &#39;type&#39;: &#39;tool_use&#39;}, {&#39;id&#39;: &#39;toolu_01NbBCY5Fg62RsyAAUd4n2g1&#39;, &#39;input&#39;: {}, &#39;name&#39;: &#39;c&#39;, &#39;type&#39;: &#39;tool_use&#39;}], id=&#39;run-42ea263e-e52a-4fc7-8aa3-71e16a9db42b&#39;, tool_calls=[{&#39;name&#39;: &#39;a&#39;, &#39;args&#39;: {}, &#39;id&#39;: &#39;toolu_016f6CZwwFmdz2h8KbdGRVjj&#39;}, {&#39;name&#39;: &#39;b&#39;, &#39;args&#39;: {}, &#39;id&#39;: &#39;toolu_01JvfeTpU3hEuS7PknFk5a8S&#39;}, {&#39;name&#39;: &#39;c&#39;, &#39;args&#39;: {}, &#39;id&#39;: &#39;toolu_01NbBCY5Fg62RsyAAUd4n2g1&#39;}], tool_call_chunks=[{&#39;name&#39;: &#39;a&#39;, &#39;args&#39;: &#39;{}&#39;, &#39;id&#39;: &#39;toolu_016f6CZwwFmdz2h8KbdGRVjj&#39;, &#39;index&#39;: 0}, {&#39;name&#39;: &#39;b&#39;, &#39;args&#39;: &#39;{}&#39;, &#39;id&#39;: &#39;toolu_01JvfeTpU3hEuS7PknFk5a8S&#39;, &#39;index&#39;: 1}, {&#39;name&#39;: &#39;c&#39;, &#39;args&#39;: &#39;{}&#39;, &#39;id&#39;: &#39;toolu_01NbBCY5Fg62RsyAAUd4n2g1&#39;, &#39;index&#39;: 2}])], tool_call_id=&#39;toolu_016f6CZwwFmdz2h8KbdGRVjj&#39;),
+   &#39;OK&#39;),
+  (ToolAgentAction(tool=&#39;b&#39;, tool_input={}, log=&#39;\nInvoking: `b` with `{}`\nresponded: [{\&#39;text\&#39;: \&#39;&lt;thinking&gt;\\nTo repeat the string &quot;abc&quot;, I need to call the a(), b(), and c() functions in that order. No parameters are required for these functions.\\n&lt;/thinking&gt;\&#39;, \&#39;type\&#39;: \&#39;text\&#39;}, {\&#39;id\&#39;: \&#39;toolu_016f6CZwwFmdz2h8KbdGRVjj\&#39;, \&#39;input\&#39;: {}, \&#39;name\&#39;: \&#39;a\&#39;, \&#39;type\&#39;: \&#39;tool_use\&#39;}, {\&#39;id\&#39;: \&#39;toolu_01JvfeTpU3hEuS7PknFk5a8S\&#39;, \&#39;input\&#39;: {}, \&#39;name\&#39;: \&#39;b\&#39;, \&#39;type\&#39;: \&#39;tool_use\&#39;}, {\&#39;id\&#39;: \&#39;toolu_01NbBCY5Fg62RsyAAUd4n2g1\&#39;, \&#39;input\&#39;: {}, \&#39;name\&#39;: \&#39;c\&#39;, \&#39;type\&#39;: \&#39;tool_use\&#39;}]\n\n&#39;, message_log=[AIMessageChunk(content=[{&#39;text&#39;: &#39;&lt;thinking&gt;\nTo repeat the string &quot;abc&quot;, I need to call the a(), b(), and c() functions in that order. No parameters are required for these functions.\n&lt;/thinking&gt;&#39;, &#39;type&#39;: &#39;text&#39;}, {&#39;id&#39;: &#39;toolu_016f6CZwwFmdz2h8KbdGRVjj&#39;, &#39;input&#39;: {}, &#39;name&#39;: &#39;a&#39;, &#39;type&#39;: &#39;tool_use&#39;}, {&#39;id&#39;: &#39;toolu_01JvfeTpU3hEuS7PknFk5a8S&#39;, &#39;input&#39;: {}, &#39;name&#39;: &#39;b&#39;, &#39;type&#39;: &#39;tool_use&#39;}, {&#39;id&#39;: &#39;toolu_01NbBCY5Fg62RsyAAUd4n2g1&#39;, &#39;input&#39;: {}, &#39;name&#39;: &#39;c&#39;, &#39;type&#39;: &#39;tool_use&#39;}], id=&#39;run-42ea263e-e52a-4fc7-8aa3-71e16a9db42b&#39;, tool_calls=[{&#39;name&#39;: &#39;a&#39;, &#39;args&#39;: {}, &#39;id&#39;: &#39;toolu_016f6CZwwFmdz2h8KbdGRVjj&#39;}, {&#39;name&#39;: &#39;b&#39;, &#39;args&#39;: {}, &#39;id&#39;: &#39;toolu_01JvfeTpU3hEuS7PknFk5a8S&#39;}, {&#39;name&#39;: &#39;c&#39;, &#39;args&#39;: {}, &#39;id&#39;: &#39;toolu_01NbBCY5Fg62RsyAAUd4n2g1&#39;}], tool_call_chunks=[{&#39;name&#39;: &#39;a&#39;, &#39;args&#39;: &#39;{}&#39;, &#39;id&#39;: &#39;toolu_016f6CZwwFmdz2h8KbdGRVjj&#39;, &#39;index&#39;: 0}, {&#39;name&#39;: &#39;b&#39;, &#39;args&#39;: &#39;{}&#39;, &#39;id&#39;: &#39;toolu_01JvfeTpU3hEuS7PknFk5a8S&#39;, &#39;index&#39;: 1}, {&#39;name&#39;: &#39;c&#39;, &#39;args&#39;: &#39;{}&#39;, &#39;id&#39;: &#39;toolu_01NbBCY5Fg62RsyAAUd4n2g1&#39;, &#39;index&#39;: 2}])], tool_call_id=&#39;toolu_01JvfeTpU3hEuS7PknFk5a8S&#39;),
+   &#39;OK&#39;),
+  (ToolAgentAction(tool=&#39;c&#39;, tool_input={}, log=&#39;\nInvoking: `c` with `{}`\nresponded: [{\&#39;text\&#39;: \&#39;&lt;thinking&gt;\\nTo repeat the string &quot;abc&quot;, I need to call the a(), b(), and c() functions in that order. No parameters are required for these functions.\\n&lt;/thinking&gt;\&#39;, \&#39;type\&#39;: \&#39;text\&#39;}, {\&#39;id\&#39;: \&#39;toolu_016f6CZwwFmdz2h8KbdGRVjj\&#39;, \&#39;input\&#39;: {}, \&#39;name\&#39;: \&#39;a\&#39;, \&#39;type\&#39;: \&#39;tool_use\&#39;}, {\&#39;id\&#39;: \&#39;toolu_01JvfeTpU3hEuS7PknFk5a8S\&#39;, \&#39;input\&#39;: {}, \&#39;name\&#39;: \&#39;b\&#39;, \&#39;type\&#39;: \&#39;tool_use\&#39;}, {\&#39;id\&#39;: \&#39;toolu_01NbBCY5Fg62RsyAAUd4n2g1\&#39;, \&#39;input\&#39;: {}, \&#39;name\&#39;: \&#39;c\&#39;, \&#39;type\&#39;: \&#39;tool_use\&#39;}]\n\n&#39;, message_log=[AIMessageChunk(content=[{&#39;text&#39;: &#39;&lt;thinking&gt;\nTo repeat the string &quot;abc&quot;, I need to call the a(), b(), and c() functions in that order. No parameters are required for these functions.\n&lt;/thinking&gt;&#39;, &#39;type&#39;: &#39;text&#39;}, {&#39;id&#39;: &#39;toolu_016f6CZwwFmdz2h8KbdGRVjj&#39;, &#39;input&#39;: {}, &#39;name&#39;: &#39;a&#39;, &#39;type&#39;: &#39;tool_use&#39;}, {&#39;id&#39;: &#39;toolu_01JvfeTpU3hEuS7PknFk5a8S&#39;, &#39;input&#39;: {}, &#39;name&#39;: &#39;b&#39;, &#39;type&#39;: &#39;tool_use&#39;}, {&#39;id&#39;: &#39;toolu_01NbBCY5Fg62RsyAAUd4n2g1&#39;, &#39;input&#39;: {}, &#39;name&#39;: &#39;c&#39;, &#39;type&#39;: &#39;tool_use&#39;}], id=&#39;run-42ea263e-e52a-4fc7-8aa3-71e16a9db42b&#39;, tool_calls=[{&#39;name&#39;: &#39;a&#39;, &#39;args&#39;: {}, &#39;id&#39;: &#39;toolu_016f6CZwwFmdz2h8KbdGRVjj&#39;}, {&#39;name&#39;: &#39;b&#39;, &#39;args&#39;: {}, &#39;id&#39;: &#39;toolu_01JvfeTpU3hEuS7PknFk5a8S&#39;}, {&#39;name&#39;: &#39;c&#39;, &#39;args&#39;: {}, &#39;id&#39;: &#39;toolu_01NbBCY5Fg62RsyAAUd4n2g1&#39;}], tool_call_chunks=[{&#39;name&#39;: &#39;a&#39;, &#39;args&#39;: &#39;{}&#39;, &#39;id&#39;: &#39;toolu_016f6CZwwFmdz2h8KbdGRVjj&#39;, &#39;index&#39;: 0}, {&#39;name&#39;: &#39;b&#39;, &#39;args&#39;: &#39;{}&#39;, &#39;id&#39;: &#39;toolu_01JvfeTpU3hEuS7PknFk5a8S&#39;, &#39;index&#39;: 1}, {&#39;name&#39;: &#39;c&#39;, &#39;args&#39;: &#39;{}&#39;, &#39;id&#39;: &#39;toolu_01NbBCY5Fg62RsyAAUd4n2g1&#39;, &#39;index&#39;: 2}])], tool_call_id=&#39;toolu_01NbBCY5Fg62RsyAAUd4n2g1&#39;),
+   &#39;OK&#39;)],
+ &#39;state&#39;: &#39;abc&#39;}
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+</section>
+
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="../datasets.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Datasets</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="relational_data.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Relational Data</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#schema">Schema</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#dataset">Dataset</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#agent">Agent</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#tasks">Tasks</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#create-an-agent">Create an Agent!</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#benchmarking">Benchmarking</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#advanced-usage">Advanced Usage</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#custom-agent-factory">Custom Agent Factory</a></li>
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Langchain AI
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2023, Langchain AI.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../_static/scripts/bootstrap.js?digest=5b4479735964841361fd"></script>
+<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=5b4479735964841361fd"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

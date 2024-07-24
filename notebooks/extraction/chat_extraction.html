@@ -1,0 +1,2708 @@
+
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+    <title>Chat Extraction &#8212; LangChain Benchmarks 0.0.12</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=5b4479735964841361fd" rel="stylesheet" />
+<link href="../../_static/styles/bootstrap.css?digest=5b4479735964841361fd" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=5b4479735964841361fd" rel="stylesheet" />
+
+  
+  <link href="../../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=5b4479735964841361fd" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+    <link rel="stylesheet" href="../../_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/custom.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=5b4479735964841361fd" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=5b4479735964841361fd" />
+  <script src="../../_static/vendor/fontawesome/6.1.2/js/all.min.js?digest=5b4479735964841361fd"></script>
+
+    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/sphinx_highlight.js"></script>
+    <script src="../../_static/clipboard.min.js"></script>
+    <script src="../../_static/copybutton.js"></script>
+    <script src="../../_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'notebooks/extraction/chat_extraction';</script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Extracting high-cardinality categoricals" href="high_cardinality.html" />
+    <link rel="prev" title="Email Extraction" href="email.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>
+    Back to top
+  </button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
+    </nav>
+  
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+
+<a class="navbar-brand logo" href="../../index.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">LangChain Benchmarks 0.0.12</p>
+  
+</a></div>
+        <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../../index.html">
+                    🦜💯 LangChain Benchmarks
+                </a>
+            </li>
+        </ul>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Introduction</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../getting_started.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../models.html">Model Registry</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../datasets.html">Datasets</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Tool Usage</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../tool_usage/intro.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tool_usage/relational_data.html">Relational Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tool_usage/multiverse_math.html">Multiverse Math</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tool_usage/typewriter_1.html">Typewriter: Single Tool</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tool_usage/typewriter_26.html">Typewriter: 26 Tools</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tool_usage/benchmark_all_tasks.html">Benchmark All Tasks</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Extraction</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="intro.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="email.html">Email Extraction</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Chat Extraction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="high_cardinality.html">Extracting high-cardinality categoricals</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">RAG</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../retrieval/intro.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../retrieval/langchain_docs_qa.html">Q&amp;A over LangChain Docs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../retrieval/semi_structured_benchmarking/semi_structured.html">Semi-structured RAG</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../retrieval/semi_structured_benchmarking/ss_eval_chunk_sizes.html">Semi-structured eval: Chunk size tuning</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../retrieval/semi_structured_benchmarking/ss_eval_long_context.html">Semi-structured eval: Long-context</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../retrieval/semi_structured_benchmarking/ss_eval_multi_vector.html">Semi-structured eval: Multi vector</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../retrieval/multi_modal_benchmarking/multi_modal_eval_baseline.html">Multi-modal eval: Baseline</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../retrieval/multi_modal_benchmarking/multi_modal_eval.html">Multi-modal eval: GPT-4 w/ multi-modal embeddings and multi-vector retriever</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../retrieval/comparing_techniques.html">Evaluating RAG Architectures on Benchmark Tasks</a></li>
+
+
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Benchmarking Without LangSmith</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../run_without_langsmith.html">Running Locally</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</label></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-launch-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Launch interactive content">
+    <i class="fas fa-rocket"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://colab.research.google.com/github/langchain-ai/langchain-benchmarks/blob/main/docs/source/notebooks/extraction/chat_extraction.ipynb" target="_blank"
+   class="btn btn-sm dropdown-item"
+   title="Launch onColab"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  
+    <img src="../../_static/images/logo_colab.png">
+  </span>
+<span class="btn__text-container">Colab</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/langchain-ai/langchain-benchmarks" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/langchain-ai/langchain-benchmarks/blob/main/docs/source/notebooks/extraction/chat_extraction.ipynb?plain=1" target="_blank"
+   class="btn btn-sm btn-source-file-button dropdown-item"
+   title="Show source"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-code"></i>
+  </span>
+<span class="btn__text-container">Show source</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/langchain-ai/langchain-benchmarks/issues/new?title=Issue%20on%20page%20%2Fnotebooks/extraction/chat_extraction.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../../_sources/notebooks/extraction/chat_extraction.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</label>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Chat Extraction</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#schema">Schema</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#define-an-extraction-chain">Define an extraction chain</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#evaluate">Evaluate</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#compare-to-claude-2">Compare to Claude-2</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#try-with-xsd-schema-definition">Try with XSD Schema Definition</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#try-with-llama-2">Try with Llama 2</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#compare-results">Compare Results</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#here-we-compare-the-aggregate-metrics-side-by-side">Here, we compare the aggregate metrics side-by-side</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#next-steps">Next Steps</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article" role="main">
+                  
+  <section id="chat-extraction">
+<h1>Chat Extraction<a class="headerlink" href="#chat-extraction" title="Permalink to this heading">#</a></h1>
+<p>This benchmark combines classification, summarization, and extraction in one a combined task. The model is
+expected to output formatted json in the expected schema.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># %pip install -U --quiet langchain langchain_benchmarks</span>
+<span class="c1"># %pip install -U openai rapidfuzz fireworks-ai anthropic</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>For this code to work, please configure LangSmith environment variables with your credentials,
+in addition to your LLM providers’ API keys.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">getpass</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">uuid</span>
+
+<span class="n">uid</span> <span class="o">=</span> <span class="n">uuid</span><span class="o">.</span><span class="n">uuid4</span><span class="p">()</span><span class="o">.</span><span class="n">hex</span><span class="p">[:</span><span class="mi">4</span><span class="p">]</span>  <span class="c1"># Avoid conflicts in project names</span>
+
+<span class="c1"># Get your API key from https://smith.langchain.com/settings</span>
+<span class="n">api_keys</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s2">&quot;LANGCHAIN_API_KEY&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;OPENAI_API_KEY&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;ANTHROPIC_API_KEY&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;FIREWORKS_API_KEY&quot;</span><span class="p">,</span>
+<span class="p">]</span>
+<span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">api_keys</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">key</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">:</span>
+        <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">getpass</span><span class="o">.</span><span class="n">getpass</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Enter your </span><span class="si">{</span><span class="n">key</span><span class="si">}</span><span class="s2">: &quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">langchain_benchmarks</span> <span class="kn">import</span> <span class="n">clone_public_dataset</span><span class="p">,</span> <span class="n">registry</span>
+
+<span class="n">task</span> <span class="o">=</span> <span class="n">registry</span><span class="p">[</span><span class="s2">&quot;Chat Extraction&quot;</span><span class="p">]</span>
+
+<span class="c1"># Clone the dataset to your tenant</span>
+<span class="n">clone_public_dataset</span><span class="p">(</span><span class="n">task</span><span class="o">.</span><span class="n">dataset_id</span><span class="p">,</span> <span class="n">dataset_name</span><span class="o">=</span><span class="n">task</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+
+
+<span class="n">task</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Dataset Chat Extraction already exists. Skipping.
+You can access the dataset at https://smith.langchain.com/o/ebbaf2eb-769b-4505-aca2-d11de10372a4/datasets/08042749-504d-4509-9549-5f5c579115f6.
+</pre></div>
+</div>
+<div class="output text_html"><table>
+<tbody>
+<tr><td>Name       </td><td>Chat Extraction                                                                                                                                            </td></tr>
+<tr><td>Type       </td><td>ExtractionTask                                                                                                                                             </td></tr>
+<tr><td>Dataset ID </td><td><a href="https://smith.langchain.com/public/00f4444c-9460-4a82-b87a-f50096f1cfef/d" target="_blank" rel="noopener">00f4444c-9460-4a82-b87a-f50096f1cfef</a></td></tr>
+<tr><td>Description</td><td>A dataset meant to test the ability of an LLM to extract and infer
+structured information from a dialogue. The dialogue is between a user and a support
+engineer. Outputs should be structured as a JSON object and test both the ability
+of the LLM to correctly structure the information and its ability to perform simple 
+classification tasks.                                                                                                                                                            </td></tr>
+</tbody>
+</table></div></div>
+</div>
+<section id="schema">
+<h2>Schema<a class="headerlink" href="#schema" title="Permalink to this heading">#</a></h2>
+<p>Each extraction task has an expected output schema defined in a Pydantic BaseModel object, which we can use to
+get a JSON schema object.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">task</span><span class="o">.</span><span class="n">schema</span><span class="o">.</span><span class="n">schema</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>{&#39;title&#39;: &#39;GenerateTicket&#39;,
+ &#39;description&#39;: &#39;Generate a ticket containing all the extracted information.&#39;,
+ &#39;type&#39;: &#39;object&#39;,
+ &#39;properties&#39;: {&#39;issue_summary&#39;: {&#39;title&#39;: &#39;Issue Summary&#39;,
+   &#39;description&#39;: &#39;short (&lt;10 word) summary of the issue or question&#39;,
+   &#39;type&#39;: &#39;string&#39;},
+  &#39;question&#39;: {&#39;title&#39;: &#39;Question&#39;,
+   &#39;description&#39;: &#39;Information inferred from the the question.&#39;,
+   &#39;allOf&#39;: [{&#39;$ref&#39;: &#39;#/definitions/QuestionCategorization&#39;}]},
+  &#39;response&#39;: {&#39;title&#39;: &#39;Response&#39;,
+   &#39;description&#39;: &#39;Information inferred from the the response.&#39;,
+   &#39;allOf&#39;: [{&#39;$ref&#39;: &#39;#/definitions/ResponseCategorization&#39;}]}},
+ &#39;required&#39;: [&#39;issue_summary&#39;, &#39;question&#39;, &#39;response&#39;],
+ &#39;definitions&#39;: {&#39;QuestionCategory&#39;: {&#39;title&#39;: &#39;QuestionCategory&#39;,
+   &#39;description&#39;: &#39;An enumeration.&#39;,
+   &#39;enum&#39;: [&#39;Implementation Issues&#39;,
+    &#39;Feature Requests&#39;,
+    &#39;Concept Explanations&#39;,
+    &#39;Code Optimization&#39;,
+    &#39;Security and Privacy Concerns&#39;,
+    &#39;Model Training and Fine-tuning&#39;,
+    &#39;Data Handling and Manipulation&#39;,
+    &#39;User Interaction Flow&#39;,
+    &#39;Technical Integration&#39;,
+    &#39;Error Handling and Logging&#39;,
+    &#39;Customization and Configuration&#39;,
+    &#39;External API and Data Source Integration&#39;,
+    &#39;Language and Localization&#39;,
+    &#39;Streaming and Real-time Processing&#39;,
+    &#39;Tool Development&#39;,
+    &#39;Function Calling&#39;,
+    &#39;LLM Integrations&#39;,
+    &#39;General Agent Question&#39;,
+    &#39;General Chit Chat&#39;,
+    &#39;Memory&#39;,
+    &#39;Debugging Help&#39;,
+    &#39;Application Design&#39;,
+    &#39;Prompt Templates&#39;,
+    &#39;Cost Tracking&#39;,
+    &#39;Other&#39;],
+   &#39;type&#39;: &#39;string&#39;},
+  &#39;Sentiment&#39;: {&#39;title&#39;: &#39;Sentiment&#39;,
+   &#39;description&#39;: &#39;An enumeration.&#39;,
+   &#39;enum&#39;: [&#39;Negative&#39;, &#39;Neutral&#39;, &#39;Positive&#39;],
+   &#39;type&#39;: &#39;string&#39;},
+  &#39;ProgrammingLanguage&#39;: {&#39;title&#39;: &#39;ProgrammingLanguage&#39;,
+   &#39;description&#39;: &#39;An enumeration.&#39;,
+   &#39;enum&#39;: [&#39;python&#39;, &#39;javascript&#39;, &#39;typescript&#39;, &#39;unknown&#39;, &#39;other&#39;],
+   &#39;type&#39;: &#39;string&#39;},
+  &#39;QuestionCategorization&#39;: {&#39;title&#39;: &#39;QuestionCategorization&#39;,
+   &#39;type&#39;: &#39;object&#39;,
+   &#39;properties&#39;: {&#39;question_category&#39;: {&#39;$ref&#39;: &#39;#/definitions/QuestionCategory&#39;},
+    &#39;category_if_other&#39;: {&#39;title&#39;: &#39;Category If Other&#39;,
+     &#39;description&#39;: &quot;question category if the category above is &#39;other&#39;&quot;,
+     &#39;type&#39;: &#39;string&#39;},
+    &#39;is_off_topic&#39;: {&#39;title&#39;: &#39;Is Off Topic&#39;,
+     &#39;description&#39;: &#39;If the input is general chit chat or does not pertain to technical inqueries about LangChain or building/debugging applications with LLMs/AI, it is off topic. For context, LangChain is a library and framework designed to assist in building applications with LLMs. Questions may also be about similar packages like LangServe, LangSmith, OpenAI, Anthropic, vectorstores, agents, etc.&#39;,
+     &#39;type&#39;: &#39;boolean&#39;},
+    &#39;toxicity&#39;: {&#39;title&#39;: &#39;Toxicity&#39;,
+     &#39;description&#39;: &#39;Whether or not the input question is toxic&#39;,
+     &#39;default&#39;: 0,
+     &#39;exclusiveMaximum&#39;: 6,
+     &#39;minimum&#39;: 0,
+     &#39;type&#39;: &#39;integer&#39;},
+    &#39;sentiment&#39;: {&#39;$ref&#39;: &#39;#/definitions/Sentiment&#39;},
+    &#39;programming_language&#39;: {&#39;$ref&#39;: &#39;#/definitions/ProgrammingLanguage&#39;}},
+   &#39;required&#39;: [&#39;question_category&#39;,
+    &#39;is_off_topic&#39;,
+    &#39;sentiment&#39;,
+    &#39;programming_language&#39;]},
+  &#39;ResponseType&#39;: {&#39;title&#39;: &#39;ResponseType&#39;,
+   &#39;description&#39;: &#39;An enumeration.&#39;,
+   &#39;enum&#39;: [&#39;resolve issue&#39;,
+    &#39;provide guidance&#39;,
+    &#39;request information&#39;,
+    &#39;give up&#39;,
+    &#39;none&#39;,
+    &#39;other&#39;],
+   &#39;type&#39;: &#39;string&#39;},
+  &#39;ResponseCategorization&#39;: {&#39;title&#39;: &#39;ResponseCategorization&#39;,
+   &#39;type&#39;: &#39;object&#39;,
+   &#39;properties&#39;: {&#39;response_type&#39;: {&#39;$ref&#39;: &#39;#/definitions/ResponseType&#39;},
+    &#39;response_type_if_other&#39;: {&#39;title&#39;: &#39;Response Type If Other&#39;,
+     &#39;type&#39;: &#39;string&#39;},
+    &#39;confidence_level&#39;: {&#39;title&#39;: &#39;Confidence Level&#39;,
+     &#39;description&#39;: &#39;The confidence of the assistant in its answer.&#39;,
+     &#39;exclusiveMaximum&#39;: 6,
+     &#39;minimum&#39;: 0,
+     &#39;type&#39;: &#39;integer&#39;},
+    &#39;followup_actions&#39;: {&#39;title&#39;: &#39;Followup Actions&#39;,
+     &#39;description&#39;: &#39;Actions the assistant recommended the user take.&#39;,
+     &#39;type&#39;: &#39;array&#39;,
+     &#39;items&#39;: {&#39;type&#39;: &#39;string&#39;}}},
+   &#39;required&#39;: [&#39;response_type&#39;, &#39;confidence_level&#39;]}}}
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="define-an-extraction-chain">
+<h2>Define an extraction chain<a class="headerlink" href="#define-an-extraction-chain" title="Permalink to this heading">#</a></h2>
+<p>Let’s build the extraction chain that we can use to get structured information from the emails.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">langchain.chat_models</span> <span class="kn">import</span> <span class="n">ChatOpenAI</span>
+<span class="kn">from</span> <span class="nn">langchain.output_parsers.openai_functions</span> <span class="kn">import</span> <span class="n">JsonOutputFunctionsParser</span>
+
+<span class="n">llm</span> <span class="o">=</span> <span class="n">ChatOpenAI</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="s2">&quot;gpt-4-1106-preview&quot;</span><span class="p">,</span> <span class="n">temperature</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">bind_functions</span><span class="p">(</span>
+    <span class="n">functions</span><span class="o">=</span><span class="p">[</span><span class="n">task</span><span class="o">.</span><span class="n">schema</span><span class="p">],</span>
+    <span class="n">function_call</span><span class="o">=</span><span class="n">task</span><span class="o">.</span><span class="n">schema</span><span class="o">.</span><span class="n">schema</span><span class="p">()[</span><span class="s2">&quot;title&quot;</span><span class="p">],</span>
+<span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">format_run</span><span class="p">(</span><span class="n">dialogue_input</span><span class="p">:</span> <span class="nb">dict</span><span class="p">):</span>
+    <span class="n">question</span> <span class="o">=</span> <span class="n">dialogue_input</span><span class="p">[</span><span class="s2">&quot;question&quot;</span><span class="p">]</span>
+    <span class="n">answer</span> <span class="o">=</span> <span class="n">dialogue_input</span><span class="p">[</span><span class="s2">&quot;answer&quot;</span><span class="p">]</span>
+    <span class="k">return</span> <span class="p">{</span>
+        <span class="s2">&quot;dialogue&quot;</span><span class="p">:</span> <span class="sa">f</span><span class="s2">&quot;&lt;question&gt;</span><span class="se">\n</span><span class="si">{</span><span class="n">question</span><span class="si">}</span><span class="se">\n</span><span class="s2">&lt;/question&gt;</span><span class="se">\n</span><span class="s2">&quot;</span>
+        <span class="sa">f</span><span class="s2">&quot;&lt;assistant-response&gt;</span><span class="se">\n</span><span class="si">{</span><span class="n">answer</span><span class="si">}</span><span class="se">\n</span><span class="s2">&lt;/assistant-response&gt;&quot;</span>
+    <span class="p">}</span>
+
+
+<span class="n">output_parser</span> <span class="o">=</span> <span class="n">JsonOutputFunctionsParser</span><span class="p">()</span>
+<span class="n">extraction_chain</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="n">format_run</span>
+    <span class="o">|</span> <span class="n">task</span><span class="o">.</span><span class="n">instructions</span>
+    <span class="o">|</span> <span class="n">llm</span>
+    <span class="o">|</span> <span class="n">output_parser</span>
+    <span class="c1"># Wrap as &#39;output&#39; so to be unified for the evaluators</span>
+    <span class="o">|</span> <span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;output&quot;</span><span class="p">:</span> <span class="n">x</span><span class="p">})</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">extraction_chain</span><span class="o">.</span><span class="n">invoke</span><span class="p">(</span>
+    <span class="p">{</span><span class="s2">&quot;question&quot;</span><span class="p">:</span> <span class="s2">&quot;how do i run llama 2 locally?&quot;</span><span class="p">,</span> <span class="s2">&quot;answer&quot;</span><span class="p">:</span> <span class="s2">&quot;Llama.cpp of course.&quot;</span><span class="p">}</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>{&#39;output&#39;: {&#39;issue_summary&#39;: &#39;Running Llama 2 Locally&#39;,
+  &#39;question&#39;: {&#39;question_category&#39;: &#39;Implementation Issues&#39;,
+   &#39;is_off_topic&#39;: False,
+   &#39;sentiment&#39;: &#39;Neutral&#39;,
+   &#39;programming_language&#39;: &#39;unknown&#39;},
+  &#39;response&#39;: {&#39;response_type&#39;: &#39;provide guidance&#39;, &#39;confidence_level&#39;: 1}}}
+</pre></div>
+</div>
+</div>
+</div>
+<p>Now it’s time to measure our chain’s effectiveness!</p>
+</section>
+<section id="evaluate">
+<h2>Evaluate<a class="headerlink" href="#evaluate" title="Permalink to this heading">#</a></h2>
+<p>Let’s evaluate the chain now.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">langsmith.client</span> <span class="kn">import</span> <span class="n">Client</span>
+
+<span class="kn">from</span> <span class="nn">langchain_benchmarks.extraction.tasks.chat_extraction</span> <span class="kn">import</span> <span class="n">get_eval_config</span>
+
+<span class="n">client</span> <span class="o">=</span> <span class="n">Client</span><span class="p">()</span>
+
+<span class="n">eval_config</span> <span class="o">=</span> <span class="n">get_eval_config</span><span class="p">()</span>
+
+<span class="n">test_run</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">run_on_dataset</span><span class="p">(</span>
+    <span class="n">dataset_name</span><span class="o">=</span><span class="n">task</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
+    <span class="n">llm_or_chain_factory</span><span class="o">=</span><span class="n">extraction_chain</span><span class="p">,</span>
+    <span class="n">evaluation</span><span class="o">=</span><span class="n">eval_config</span><span class="p">,</span>
+    <span class="n">verbose</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="n">project_name</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;gpt-4-1106-preview-</span><span class="si">{</span><span class="n">uid</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+    <span class="n">project_metadata</span><span class="o">=</span><span class="p">{</span>
+        <span class="s2">&quot;arch&quot;</span><span class="p">:</span> <span class="s2">&quot;openai-functions&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;model&quot;</span><span class="p">:</span> <span class="s2">&quot;gpt-4-1106-preview&quot;</span><span class="p">,</span>
+    <span class="p">},</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>View the evaluation results for project &#39;gpt-4-1106-preview-5689&#39; at:
+https://smith.langchain.com/o/ebbaf2eb-769b-4505-aca2-d11de10372a4/datasets/08042749-504d-4509-9549-5f5c579115f6/compare?selectedSessions=0c022691-a7ac-4545-b2bc-58aab2d476e8
+
+View all tests for Dataset Chat Extraction at:
+https://smith.langchain.com/o/ebbaf2eb-769b-4505-aca2-d11de10372a4/datasets/08042749-504d-4509-9549-5f5c579115f6
+[-------------------------------------------------&gt;] 27/27
+</pre></div>
+</div>
+<div class="output text_html"><h3>Experiment Results:</h3></div><div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>feedback.json_edit_distance</th>
+      <th>feedback.json_schema</th>
+      <th>feedback.toxicity_similarity</th>
+      <th>feedback.sentiment_similarity</th>
+      <th>feedback.confidence_level_similarity</th>
+      <th>feedback.question_category</th>
+      <th>feedback.off_topic_similarity</th>
+      <th>feedback.programming_language_similarity</th>
+      <th>error</th>
+      <th>execution_time</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>count</th>
+      <td>27.000000</td>
+      <td>27.0</td>
+      <td>27.0</td>
+      <td>27.0</td>
+      <td>27.000000</td>
+      <td>27.000000</td>
+      <td>27.000000</td>
+      <td>27.000000</td>
+      <td>0</td>
+      <td>27.000000</td>
+    </tr>
+    <tr>
+      <th>unique</th>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>0</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>top</th>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>freq</th>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>mean</th>
+      <td>0.283000</td>
+      <td>1.0</td>
+      <td>0.0</td>
+      <td>1.0</td>
+      <td>0.940741</td>
+      <td>0.555556</td>
+      <td>0.888889</td>
+      <td>0.592593</td>
+      <td>NaN</td>
+      <td>6.949585</td>
+    </tr>
+    <tr>
+      <th>std</th>
+      <td>0.181282</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.093064</td>
+      <td>0.506370</td>
+      <td>0.320256</td>
+      <td>0.500712</td>
+      <td>NaN</td>
+      <td>1.639494</td>
+    </tr>
+    <tr>
+      <th>min</th>
+      <td>0.049430</td>
+      <td>1.0</td>
+      <td>0.0</td>
+      <td>1.0</td>
+      <td>0.800000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>NaN</td>
+      <td>4.248728</td>
+    </tr>
+    <tr>
+      <th>25%</th>
+      <td>0.104149</td>
+      <td>1.0</td>
+      <td>0.0</td>
+      <td>1.0</td>
+      <td>0.800000</td>
+      <td>0.000000</td>
+      <td>1.000000</td>
+      <td>0.000000</td>
+      <td>NaN</td>
+      <td>5.679244</td>
+    </tr>
+    <tr>
+      <th>50%</th>
+      <td>0.336343</td>
+      <td>1.0</td>
+      <td>0.0</td>
+      <td>1.0</td>
+      <td>1.000000</td>
+      <td>1.000000</td>
+      <td>1.000000</td>
+      <td>1.000000</td>
+      <td>NaN</td>
+      <td>6.558088</td>
+    </tr>
+    <tr>
+      <th>75%</th>
+      <td>0.378270</td>
+      <td>1.0</td>
+      <td>0.0</td>
+      <td>1.0</td>
+      <td>1.000000</td>
+      <td>1.000000</td>
+      <td>1.000000</td>
+      <td>1.000000</td>
+      <td>NaN</td>
+      <td>8.300396</td>
+    </tr>
+    <tr>
+      <th>max</th>
+      <td>0.594255</td>
+      <td>1.0</td>
+      <td>0.0</td>
+      <td>1.0</td>
+      <td>1.000000</td>
+      <td>1.000000</td>
+      <td>1.000000</td>
+      <td>1.000000</td>
+      <td>NaN</td>
+      <td>10.123084</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+</section>
+<section id="compare-to-claude-2">
+<h2>Compare to Claude-2<a class="headerlink" href="#compare-to-claude-2" title="Permalink to this heading">#</a></h2>
+<p>Let’s compare our results to Anthropic’s Claude-2. We will mimic the function calling interface.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">Type</span>
+
+<span class="kn">from</span> <span class="nn">langchain.chat_models</span> <span class="kn">import</span> <span class="n">ChatAnthropic</span>
+<span class="kn">from</span> <span class="nn">langchain.output_parsers.xml</span> <span class="kn">import</span> <span class="n">XMLOutputParser</span>
+<span class="kn">from</span> <span class="nn">langchain.prompts</span> <span class="kn">import</span> <span class="n">ChatPromptTemplate</span>
+<span class="kn">from</span> <span class="nn">langchain.pydantic_v1</span> <span class="kn">import</span> <span class="n">BaseModel</span>
+
+<span class="n">claude_prompt</span> <span class="o">=</span> <span class="n">ChatPromptTemplate</span><span class="o">.</span><span class="n">from_messages</span><span class="p">(</span>
+    <span class="p">[</span>
+        <span class="p">(</span>
+            <span class="s2">&quot;system&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;You are a data extraction bot tasked with extracting and inferring information from dialogues and generating tickets. Always respond &quot;</span>
+            <span class="s2">&quot;only with XML based on the following JSON schema:</span><span class="se">\n</span><span class="si">{schema}</span><span class="s2">&quot;</span><span class="p">,</span>
+        <span class="p">),</span>
+        <span class="p">(</span>
+            <span class="s2">&quot;user&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Generate a ticket from the following question-response pair:</span><span class="se">\n</span><span class="s2">&quot;</span>
+            <span class="s2">&quot;&lt;Dialogue&gt;</span><span class="se">\n</span><span class="si">{dialogue}</span><span class="se">\n</span><span class="s2">&lt;/Dialogue&gt;</span><span class="se">\n</span><span class="s2">&quot;</span>
+            <span class="s2">&quot;Remember, respond directly with this format:</span><span class="se">\n</span><span class="s2">&quot;</span>
+            <span class="s2">&quot;&lt;</span><span class="si">{function_call}</span><span class="s2">&gt;</span><span class="se">\n</span><span class="s2">...</span><span class="se">\n</span><span class="s2">&lt;/</span><span class="si">{function_call}</span><span class="s2">&gt;&quot;</span>
+            <span class="s2">&quot;RESPOND ONLY IN XML THEN STOP.&quot;</span><span class="p">,</span>
+        <span class="p">),</span>
+    <span class="p">]</span>
+<span class="p">)</span>
+<span class="n">prompt</span> <span class="o">=</span> <span class="n">claude_prompt</span><span class="o">.</span><span class="n">partial</span><span class="p">(</span>
+    <span class="n">schema</span><span class="o">=</span><span class="n">task</span><span class="o">.</span><span class="n">schema</span><span class="o">.</span><span class="n">schema_json</span><span class="p">(),</span> <span class="n">function_call</span><span class="o">=</span><span class="n">task</span><span class="o">.</span><span class="n">schema</span><span class="o">.</span><span class="n">schema</span><span class="p">()[</span><span class="s2">&quot;title&quot;</span><span class="p">]</span>
+<span class="p">)</span>
+
+<span class="n">claude</span> <span class="o">=</span> <span class="n">ChatAnthropic</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="s2">&quot;claude-2&quot;</span><span class="p">,</span> <span class="n">temperature</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">max_tokens_to_sample</span><span class="o">=</span><span class="mi">2048</span><span class="p">)</span>
+
+
+<span class="k">class</span> <span class="nc">MergeSchema</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Merge the XML Output Parser schema into the output.&quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">schema</span><span class="p">:</span> <span class="n">Type</span><span class="p">[</span><span class="n">BaseModel</span><span class="p">]):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">schema</span> <span class="o">=</span> <span class="n">schema</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">_func_name</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">schema</span><span class="o">.</span><span class="vm">__name__</span>
+
+    <span class="k">def</span> <span class="nf">_merge_schema</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parsed_output</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span> <span class="n">schema</span><span class="p">:</span> <span class="n">Type</span><span class="p">[</span><span class="n">BaseModel</span><span class="p">]):</span>
+        <span class="n">merged_output</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">parsed_output</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
+            <span class="n">items</span> <span class="o">=</span> <span class="n">parsed_output</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">parsed_output</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+            <span class="n">items</span> <span class="o">=</span> <span class="p">[(</span><span class="n">k</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span> <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">parsed_output</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">item</span><span class="o">.</span><span class="n">items</span><span class="p">()]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">parsed_output</span>
+
+        <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">items</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">schema</span><span class="o">.</span><span class="n">__fields__</span><span class="p">:</span>
+                <span class="n">field_info</span> <span class="o">=</span> <span class="n">schema</span><span class="o">.</span><span class="n">__fields__</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
+                <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+                    <span class="k">if</span> <span class="nb">issubclass</span><span class="p">(</span><span class="n">field_info</span><span class="o">.</span><span class="n">type_</span><span class="p">,</span> <span class="p">(</span><span class="n">BaseModel</span><span class="p">,</span> <span class="nb">dict</span><span class="p">)):</span>
+                        <span class="n">result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_merge_schema</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">field_info</span><span class="o">.</span><span class="n">type_</span><span class="p">)</span>
+                    <span class="k">elif</span> <span class="nb">all</span><span class="p">(</span>
+                        <span class="nb">isinstance</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="nb">dict</span><span class="p">)</span> <span class="ow">and</span> <span class="n">item</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span> <span class="o">==</span> <span class="p">{</span><span class="s2">&quot;item&quot;</span><span class="p">}</span>
+                        <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">value</span>
+                    <span class="p">):</span>
+                        <span class="n">result</span> <span class="o">=</span> <span class="p">[</span><span class="nb">next</span><span class="p">(</span><span class="nb">iter</span><span class="p">(</span><span class="n">item</span><span class="o">.</span><span class="n">values</span><span class="p">()))</span> <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">value</span><span class="p">]</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="n">result</span> <span class="o">=</span> <span class="n">value</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">result</span> <span class="o">=</span> <span class="n">value</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">result</span> <span class="o">=</span> <span class="n">value</span>
+            <span class="k">if</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">merged_output</span><span class="p">:</span>
+                <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">merged_output</span><span class="p">[</span><span class="n">key</span><span class="p">],</span> <span class="nb">list</span><span class="p">):</span>
+                    <span class="n">merged_output</span><span class="p">[</span><span class="n">key</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">merged_output</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">merged_output</span><span class="p">[</span><span class="n">key</span><span class="p">],</span> <span class="n">result</span><span class="p">]</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">merged_output</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">result</span>
+
+        <span class="k">return</span> <span class="n">merged_output</span>
+
+    <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parsed_output</span><span class="p">:</span> <span class="nb">dict</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
+        <span class="n">merged_output</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_func_name</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">parsed_output</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">parsed_output</span>
+        <span class="k">return</span> <span class="p">{</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_func_name</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_merge_schema</span><span class="p">(</span>
+                <span class="n">parsed_output</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_func_name</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">schema</span>
+            <span class="p">)</span>
+        <span class="p">}</span>
+
+
+<span class="k">def</span> <span class="nf">try_parse</span><span class="p">(</span><span class="n">llm_output</span><span class="p">,</span> <span class="n">config</span><span class="p">):</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">output_chain</span> <span class="o">=</span> <span class="n">XMLOutputParser</span><span class="p">()</span> <span class="o">|</span> <span class="n">MergeSchema</span><span class="p">(</span><span class="n">task</span><span class="o">.</span><span class="n">schema</span><span class="p">)</span>
+        <span class="n">parsed</span> <span class="o">=</span> <span class="n">output_chain</span><span class="o">.</span><span class="n">invoke</span><span class="p">(</span><span class="n">llm_output</span><span class="p">,</span> <span class="n">config</span><span class="p">)</span>
+        <span class="c1"># Wrap as &#39;output&#39; so to be unified for the evaluators</span>
+        <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;output&quot;</span><span class="p">:</span> <span class="n">parsed</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;GenerateTicket&quot;</span><span class="p">)}</span>
+    <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;output&quot;</span><span class="p">:</span> <span class="n">llm_output</span><span class="p">,</span> <span class="s2">&quot;error&quot;</span><span class="p">:</span> <span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">)}</span>
+
+
+<span class="n">claude_extraction_chain</span> <span class="o">=</span> <span class="n">format_run</span> <span class="o">|</span> <span class="n">prompt</span> <span class="o">|</span> <span class="n">claude</span> <span class="o">|</span> <span class="n">try_parse</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">result</span> <span class="o">=</span> <span class="n">claude_extraction_chain</span><span class="o">.</span><span class="n">invoke</span><span class="p">(</span>
+    <span class="p">{</span><span class="s2">&quot;question&quot;</span><span class="p">:</span> <span class="s2">&quot;how do i run llama 2 locally?&quot;</span><span class="p">,</span> <span class="s2">&quot;answer&quot;</span><span class="p">:</span> <span class="s2">&quot;Llama.cpp of course.&quot;</span><span class="p">}</span>
+<span class="p">)</span>
+<span class="n">result</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>{&#39;output&#39;: {&#39;issue_summary&#39;: &#39;How to run Llama locally&#39;,
+  &#39;question&#39;: {&#39;question_category&#39;: &#39;Implementation Issues&#39;,
+   &#39;is_off_topic&#39;: &#39;false&#39;,
+   &#39;toxicity&#39;: &#39;0&#39;,
+   &#39;sentiment&#39;: &#39;Neutral&#39;,
+   &#39;programming_language&#39;: &#39;unknown&#39;},
+  &#39;response&#39;: {&#39;response_type&#39;: &#39;provide guidance&#39;,
+   &#39;confidence_level&#39;: &#39;3&#39;,
+   &#39;followup_actions&#39;: [&#39;Ask clarifying questions about the specific issue&#39;,
+    &#39;Provide documentation or examples for running Llama locally&#39;]}}}
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">claude_test_run</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">run_on_dataset</span><span class="p">(</span>
+    <span class="n">dataset_name</span><span class="o">=</span><span class="n">task</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
+    <span class="n">llm_or_chain_factory</span><span class="o">=</span><span class="n">claude_extraction_chain</span><span class="p">,</span>
+    <span class="n">evaluation</span><span class="o">=</span><span class="n">eval_config</span><span class="p">,</span>
+    <span class="n">verbose</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="n">project_name</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;claude-2-json-schema-to-xml-</span><span class="si">{</span><span class="n">uid</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+    <span class="n">project_metadata</span><span class="o">=</span><span class="p">{</span>
+        <span class="s2">&quot;arch&quot;</span><span class="p">:</span> <span class="s2">&quot;claude-json-schema-xml-output&quot;</span><span class="p">,</span>
+    <span class="p">},</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>View the evaluation results for project &#39;claude-2-json-schema-to-xml-5689&#39; at:
+https://smith.langchain.com/o/ebbaf2eb-769b-4505-aca2-d11de10372a4/datasets/08042749-504d-4509-9549-5f5c579115f6/compare?selectedSessions=3f590999-a9d1-48be-83dd-e84acb99a195
+
+View all tests for Dataset Chat Extraction at:
+https://smith.langchain.com/o/ebbaf2eb-769b-4505-aca2-d11de10372a4/datasets/08042749-504d-4509-9549-5f5c579115f6
+[-------------------------------------------------&gt;] 27/27
+</pre></div>
+</div>
+<div class="output text_html"><h3>Experiment Results:</h3></div><div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>feedback.json_edit_distance</th>
+      <th>feedback.json_schema</th>
+      <th>feedback.toxicity_similarity</th>
+      <th>feedback.sentiment_similarity</th>
+      <th>feedback.confidence_level_similarity</th>
+      <th>feedback.question_category</th>
+      <th>feedback.off_topic_similarity</th>
+      <th>feedback.programming_language_similarity</th>
+      <th>error</th>
+      <th>execution_time</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>count</th>
+      <td>27.000000</td>
+      <td>27.000000</td>
+      <td>27.0</td>
+      <td>27.000000</td>
+      <td>27.000000</td>
+      <td>27.000000</td>
+      <td>27.0</td>
+      <td>27.000000</td>
+      <td>0</td>
+      <td>27.000000</td>
+    </tr>
+    <tr>
+      <th>unique</th>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>0</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>top</th>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>freq</th>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>mean</th>
+      <td>0.371950</td>
+      <td>0.777778</td>
+      <td>1.0</td>
+      <td>0.925926</td>
+      <td>0.970370</td>
+      <td>0.481481</td>
+      <td>0.0</td>
+      <td>0.444444</td>
+      <td>NaN</td>
+      <td>10.556105</td>
+    </tr>
+    <tr>
+      <th>std</th>
+      <td>0.108628</td>
+      <td>0.423659</td>
+      <td>0.0</td>
+      <td>0.181007</td>
+      <td>0.072403</td>
+      <td>0.509175</td>
+      <td>0.0</td>
+      <td>0.506370</td>
+      <td>NaN</td>
+      <td>1.790352</td>
+    </tr>
+    <tr>
+      <th>min</th>
+      <td>0.105033</td>
+      <td>0.000000</td>
+      <td>1.0</td>
+      <td>0.500000</td>
+      <td>0.800000</td>
+      <td>0.000000</td>
+      <td>0.0</td>
+      <td>0.000000</td>
+      <td>NaN</td>
+      <td>8.435542</td>
+    </tr>
+    <tr>
+      <th>25%</th>
+      <td>0.312445</td>
+      <td>1.000000</td>
+      <td>1.0</td>
+      <td>1.000000</td>
+      <td>1.000000</td>
+      <td>0.000000</td>
+      <td>0.0</td>
+      <td>0.000000</td>
+      <td>NaN</td>
+      <td>9.077631</td>
+    </tr>
+    <tr>
+      <th>50%</th>
+      <td>0.390000</td>
+      <td>1.000000</td>
+      <td>1.0</td>
+      <td>1.000000</td>
+      <td>1.000000</td>
+      <td>0.000000</td>
+      <td>0.0</td>
+      <td>0.000000</td>
+      <td>NaN</td>
+      <td>10.059124</td>
+    </tr>
+    <tr>
+      <th>75%</th>
+      <td>0.462694</td>
+      <td>1.000000</td>
+      <td>1.0</td>
+      <td>1.000000</td>
+      <td>1.000000</td>
+      <td>1.000000</td>
+      <td>0.0</td>
+      <td>1.000000</td>
+      <td>NaN</td>
+      <td>11.795210</td>
+    </tr>
+    <tr>
+      <th>max</th>
+      <td>0.537678</td>
+      <td>1.000000</td>
+      <td>1.0</td>
+      <td>1.000000</td>
+      <td>1.000000</td>
+      <td>1.000000</td>
+      <td>0.0</td>
+      <td>1.000000</td>
+      <td>NaN</td>
+      <td>15.072743</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<p>So it looks like edit distance is pretty good, but the schema validation leaves something to be desired.</p>
+<p>We’re defining the schema in JSON then requesting XML. Let’s try keeping it unified.</p>
+</section>
+<section id="try-with-xsd-schema-definition">
+<h2>Try with XSD Schema Definition<a class="headerlink" href="#try-with-xsd-schema-definition" title="Permalink to this heading">#</a></h2>
+<p>In this variant, let’s see if Claude performs better if we keep our structure consistent.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">Type</span>
+
+<span class="kn">from</span> <span class="nn">langchain.chat_models</span> <span class="kn">import</span> <span class="n">ChatAnthropic</span>
+<span class="kn">from</span> <span class="nn">langchain.output_parsers.xml</span> <span class="kn">import</span> <span class="n">XMLOutputParser</span>
+<span class="kn">from</span> <span class="nn">langchain.prompts</span> <span class="kn">import</span> <span class="n">ChatPromptTemplate</span>
+<span class="kn">from</span> <span class="nn">langchain.pydantic_v1</span> <span class="kn">import</span> <span class="n">BaseModel</span>
+
+<span class="c1"># This is the schema the model will populate</span>
+<span class="n">xsd</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;&lt;xs:schema xmlns:xs=&quot;http://www.w3.org/2001/XMLSchema&quot;&gt;</span>
+
+<span class="s2">    &lt;xs:simpleType name=&quot;QuestionCategory&quot;&gt;</span>
+<span class="s2">        &lt;xs:restriction base=&quot;xs:string&quot;&gt;</span>
+<span class="s2">            &lt;xs:enumeration value=&quot;Implementation Issues&quot;/&gt;</span>
+<span class="s2">            &lt;xs:enumeration value=&quot;Feature Requests&quot;/&gt;</span>
+<span class="s2">            &lt;xs:enumeration value=&quot;Concept Explanations&quot;/&gt;</span>
+<span class="s2">            &lt;xs:enumeration value=&quot;Code Optimization&quot;/&gt;</span>
+<span class="s2">            &lt;xs:enumeration value=&quot;Security and Privacy Concerns&quot;/&gt;</span>
+<span class="s2">            &lt;xs:enumeration value=&quot;Model Training and Fine-tuning&quot;/&gt;</span>
+<span class="s2">            &lt;xs:enumeration value=&quot;Data Handling and Manipulation&quot;/&gt;</span>
+<span class="s2">            &lt;xs:enumeration value=&quot;User Interaction Flow&quot;/&gt;</span>
+<span class="s2">            &lt;xs:enumeration value=&quot;Technical Integration&quot;/&gt;</span>
+<span class="s2">            &lt;xs:enumeration value=&quot;Error Handling and Logging&quot;/&gt;</span>
+<span class="s2">            &lt;xs:enumeration value=&quot;Customization and Configuration&quot;/&gt;</span>
+<span class="s2">            &lt;xs:enumeration value=&quot;External API and Data Source Integration&quot;/&gt;</span>
+<span class="s2">            &lt;xs:enumeration value=&quot;Language and Localization&quot;/&gt;</span>
+<span class="s2">            &lt;xs:enumeration value=&quot;Streaming and Real-time Processing&quot;/&gt;</span>
+<span class="s2">            &lt;xs:enumeration value=&quot;Tool Development&quot;/&gt;</span>
+<span class="s2">            &lt;xs:enumeration value=&quot;Function Calling&quot;/&gt;</span>
+<span class="s2">            &lt;xs:enumeration value=&quot;LLM Integrations&quot;/&gt;</span>
+<span class="s2">            &lt;xs:enumeration value=&quot;General Agent Questions&quot;/&gt;</span>
+<span class="s2">            &lt;xs:enumeration value=&quot;General Chit Chat&quot;/&gt;</span>
+<span class="s2">            &lt;xs:enumeration value=&quot;Memory&quot;/&gt;</span>
+<span class="s2">            &lt;xs:enumeration value=&quot;Debugging Help&quot;/&gt;</span>
+<span class="s2">            &lt;xs:enumeration value=&quot;Application Design&quot;/&gt;</span>
+<span class="s2">            &lt;xs:enumeration value=&quot;Prompt Templates&quot;/&gt;</span>
+<span class="s2">            &lt;xs:enumeration value=&quot;Cost Tracking&quot;/&gt;</span>
+<span class="s2">            &lt;xs:enumeration value=&quot;Other&quot;/&gt;</span>
+<span class="s2">        &lt;/xs:restriction&gt;</span>
+<span class="s2">    &lt;/xs:simpleType&gt;</span>
+
+<span class="s2">    &lt;xs:simpleType name=&quot;Sentiment&quot;&gt;</span>
+<span class="s2">        &lt;xs:restriction base=&quot;xs:string&quot;&gt;</span>
+<span class="s2">            &lt;xs:enumeration value=&quot;Negative&quot;/&gt;</span>
+<span class="s2">            &lt;xs:enumeration value=&quot;Neutral&quot;/&gt;</span>
+<span class="s2">            &lt;xs:enumeration value=&quot;Positive&quot;/&gt;</span>
+<span class="s2">        &lt;/xs:restriction&gt;</span>
+<span class="s2">    &lt;/xs:simpleType&gt;</span>
+
+<span class="s2">    &lt;xs:simpleType name=&quot;ProgrammingLanguage&quot;&gt;</span>
+<span class="s2">        &lt;xs:restriction base=&quot;xs:string&quot;&gt;</span>
+<span class="s2">            &lt;xs:enumeration value=&quot;python&quot;/&gt;</span>
+<span class="s2">            &lt;xs:enumeration value=&quot;javascript&quot;/&gt;</span>
+<span class="s2">            &lt;xs:enumeration value=&quot;typescript&quot;/&gt;</span>
+<span class="s2">            &lt;xs:enumeration value=&quot;unknown&quot;/&gt;</span>
+<span class="s2">            &lt;xs:enumeration value=&quot;other&quot;/&gt;</span>
+<span class="s2">        &lt;/xs:restriction&gt;</span>
+<span class="s2">    &lt;/xs:simpleType&gt;</span>
+
+<span class="s2">    &lt;xs:complexType name=&quot;QuestionCategorization&quot;&gt;</span>
+<span class="s2">        &lt;xs:sequence&gt;</span>
+<span class="s2">            &lt;xs:element name=&quot;question_category&quot; type=&quot;QuestionCategory&quot;/&gt;</span>
+<span class="s2">            &lt;xs:element name=&quot;category_if_other&quot; type=&quot;xs:string&quot; minOccurs=&quot;0&quot;/&gt;</span>
+<span class="s2">            &lt;xs:element name=&quot;is_off_topic&quot; type=&quot;xs:boolean&quot;/&gt;</span>
+<span class="s2">            &lt;xs:element name=&quot;toxicity&quot; type=&quot;xs:int&quot;&gt;</span>
+<span class="s2">                &lt;xs:minInclusive value=&quot;0&quot;/&gt;</span>
+<span class="s2">                &lt;xs:maxInclusive value=&quot;5&quot;/&gt;</span>
+<span class="s2">            &lt;/xs:element&gt;</span>
+<span class="s2">            &lt;xs:element name=&quot;sentiment&quot; type=&quot;Sentiment&quot;/&gt;</span>
+<span class="s2">            &lt;xs:element name=&quot;programming_language&quot; type=&quot;ProgrammingLanguage&quot;/&gt;</span>
+<span class="s2">        &lt;/xs:sequence&gt;</span>
+<span class="s2">    &lt;/xs:complexType&gt;</span>
+
+<span class="s2">    &lt;xs:simpleType name=&quot;ResponseType&quot;&gt;</span>
+<span class="s2">        &lt;xs:restriction base=&quot;xs:string&quot;&gt;</span>
+<span class="s2">            &lt;xs:enumeration value=&quot;resolve issue&quot;/&gt;</span>
+<span class="s2">            &lt;xs:enumeration value=&quot;provide guidance&quot;/&gt;</span>
+<span class="s2">            &lt;xs:enumeration value=&quot;request information&quot;/&gt;</span>
+<span class="s2">            &lt;xs:enumeration value=&quot;give up&quot;/&gt;</span>
+<span class="s2">            &lt;xs:enumeration value=&quot;none&quot;/&gt;</span>
+<span class="s2">            &lt;xs:enumeration value=&quot;other&quot;/&gt;</span>
+<span class="s2">        &lt;/xs:restriction&gt;</span>
+<span class="s2">    &lt;/xs:simpleType&gt;</span>
+
+<span class="s2">    &lt;xs:complexType name=&quot;ResponseCategorization&quot;&gt;</span>
+<span class="s2">        &lt;xs:sequence&gt;</span>
+<span class="s2">            &lt;xs:element name=&quot;response_type&quot; type=&quot;ResponseType&quot;/&gt;</span>
+<span class="s2">            &lt;xs:element name=&quot;response_type_if_other&quot; type=&quot;xs:string&quot; minOccurs=&quot;0&quot;/&gt;</span>
+<span class="s2">            &lt;xs:element name=&quot;confidence_level&quot; type=&quot;xs:int&quot;&gt;</span>
+<span class="s2">                &lt;xs:minInclusive value=&quot;0&quot;/&gt;</span>
+<span class="s2">                &lt;xs:maxInclusive value=&quot;5&quot;/&gt;</span>
+<span class="s2">            &lt;/xs:element&gt;</span>
+<span class="s2">            &lt;xs:element name=&quot;followup_actions&quot; type=&quot;xs:string&quot; minOccurs=&quot;0&quot; maxOccurs=&quot;unbounded&quot;/&gt;</span>
+<span class="s2">        &lt;/xs:sequence&gt;</span>
+<span class="s2">    &lt;/xs:complexType&gt;</span>
+
+<span class="s2">    &lt;xs:complexType name=&quot;GenerateTicket&quot;&gt;</span>
+<span class="s2">        &lt;xs:sequence&gt;</span>
+<span class="s2">            &lt;xs:element name=&quot;issue_summary&quot; type=&quot;xs:string&quot;/&gt;</span>
+<span class="s2">            &lt;xs:element name=&quot;question&quot; type=&quot;QuestionCategorization&quot;/&gt;</span>
+<span class="s2">            &lt;xs:element name=&quot;response&quot; type=&quot;ResponseCategorization&quot;/&gt;</span>
+<span class="s2">        &lt;/xs:sequence&gt;</span>
+<span class="s2">    &lt;/xs:complexType&gt;</span>
+
+<span class="s2">&lt;/xs:schema&gt;&quot;&quot;&quot;</span>
+
+<span class="n">prompt</span> <span class="o">=</span> <span class="n">claude_prompt</span><span class="o">.</span><span class="n">partial</span><span class="p">(</span><span class="n">schema</span><span class="o">=</span><span class="n">xsd</span><span class="p">,</span> <span class="n">function_call</span><span class="o">=</span><span class="n">task</span><span class="o">.</span><span class="n">schema</span><span class="o">.</span><span class="n">schema</span><span class="p">()[</span><span class="s2">&quot;title&quot;</span><span class="p">])</span>
+
+<span class="n">claude_extraction_chain</span> <span class="o">=</span> <span class="n">format_run</span> <span class="o">|</span> <span class="n">prompt</span> <span class="o">|</span> <span class="n">claude</span> <span class="o">|</span> <span class="n">try_parse</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">result</span> <span class="o">=</span> <span class="n">claude_extraction_chain</span><span class="o">.</span><span class="n">invoke</span><span class="p">(</span>
+    <span class="p">{</span>
+        <span class="s2">&quot;question&quot;</span><span class="p">:</span> <span class="s2">&quot;how do i run llama 2 locally?&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;answer&quot;</span><span class="p">:</span> <span class="s2">&quot;Llama.cpp of course. Afterwords remember to install it, then add it to your path!&quot;</span><span class="p">,</span>
+    <span class="p">}</span>
+<span class="p">)</span>
+<span class="n">result</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>{&#39;output&#39;: {&#39;issue_summary&#39;: &#39;How to run Llama locally&#39;,
+  &#39;question&#39;: {&#39;question_category&#39;: &#39;LLM Integrations&#39;,
+   &#39;is_off_topic&#39;: &#39;false&#39;,
+   &#39;toxicity&#39;: &#39;0&#39;,
+   &#39;sentiment&#39;: &#39;Neutral&#39;,
+   &#39;programming_language&#39;: &#39;unknown&#39;},
+  &#39;response&#39;: {&#39;response_type&#39;: &#39;provide guidance&#39;,
+   &#39;confidence_level&#39;: &#39;3&#39;,
+   &#39;followup_actions&#39;: [&#39;Install Llama locally&#39;, &#39;Add Llama to path&#39;]}}}
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">claude_xsd_test_run</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">run_on_dataset</span><span class="p">(</span>
+    <span class="n">dataset_name</span><span class="o">=</span><span class="n">task</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
+    <span class="n">llm_or_chain_factory</span><span class="o">=</span><span class="n">claude_extraction_chain</span><span class="p">,</span>
+    <span class="n">evaluation</span><span class="o">=</span><span class="n">eval_config</span><span class="p">,</span>
+    <span class="n">verbose</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="n">project_name</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;claude-2-xsd-to-xml-</span><span class="si">{</span><span class="n">uid</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+    <span class="n">project_metadata</span><span class="o">=</span><span class="p">{</span>
+        <span class="s2">&quot;arch&quot;</span><span class="p">:</span> <span class="s2">&quot;claude-xml&quot;</span><span class="p">,</span>
+    <span class="p">},</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>View the evaluation results for project &#39;claude-2-xsd-to-xml-5689&#39; at:
+https://smith.langchain.com/o/ebbaf2eb-769b-4505-aca2-d11de10372a4/datasets/08042749-504d-4509-9549-5f5c579115f6/compare?selectedSessions=dc7656d8-00ef-4048-9ce5-38ef72af593c
+
+View all tests for Dataset Chat Extraction at:
+https://smith.langchain.com/o/ebbaf2eb-769b-4505-aca2-d11de10372a4/datasets/08042749-504d-4509-9549-5f5c579115f6
+[-------------------------------------------------&gt;] 27/27
+</pre></div>
+</div>
+<div class="output text_html"><h3>Experiment Results:</h3></div><div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>feedback.json_edit_distance</th>
+      <th>feedback.json_schema</th>
+      <th>feedback.toxicity_similarity</th>
+      <th>feedback.sentiment_similarity</th>
+      <th>feedback.confidence_level_similarity</th>
+      <th>feedback.question_category</th>
+      <th>feedback.off_topic_similarity</th>
+      <th>feedback.programming_language_similarity</th>
+      <th>error</th>
+      <th>execution_time</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>count</th>
+      <td>27.000000</td>
+      <td>27.000000</td>
+      <td>27.0</td>
+      <td>27.000000</td>
+      <td>27.000000</td>
+      <td>27.000000</td>
+      <td>27.0</td>
+      <td>27.000000</td>
+      <td>0</td>
+      <td>27.000000</td>
+    </tr>
+    <tr>
+      <th>unique</th>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>0</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>top</th>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>freq</th>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>mean</th>
+      <td>0.394232</td>
+      <td>0.518519</td>
+      <td>1.0</td>
+      <td>0.907407</td>
+      <td>0.970370</td>
+      <td>0.370370</td>
+      <td>0.0</td>
+      <td>0.518519</td>
+      <td>NaN</td>
+      <td>11.128319</td>
+    </tr>
+    <tr>
+      <th>std</th>
+      <td>0.117880</td>
+      <td>0.509175</td>
+      <td>0.0</td>
+      <td>0.197924</td>
+      <td>0.072403</td>
+      <td>0.492103</td>
+      <td>0.0</td>
+      <td>0.509175</td>
+      <td>NaN</td>
+      <td>4.845637</td>
+    </tr>
+    <tr>
+      <th>min</th>
+      <td>0.116608</td>
+      <td>0.000000</td>
+      <td>1.0</td>
+      <td>0.500000</td>
+      <td>0.800000</td>
+      <td>0.000000</td>
+      <td>0.0</td>
+      <td>0.000000</td>
+      <td>NaN</td>
+      <td>7.833285</td>
+    </tr>
+    <tr>
+      <th>25%</th>
+      <td>0.332400</td>
+      <td>0.000000</td>
+      <td>1.0</td>
+      <td>1.000000</td>
+      <td>1.000000</td>
+      <td>0.000000</td>
+      <td>0.0</td>
+      <td>0.000000</td>
+      <td>NaN</td>
+      <td>8.888438</td>
+    </tr>
+    <tr>
+      <th>50%</th>
+      <td>0.380435</td>
+      <td>1.000000</td>
+      <td>1.0</td>
+      <td>1.000000</td>
+      <td>1.000000</td>
+      <td>0.000000</td>
+      <td>0.0</td>
+      <td>1.000000</td>
+      <td>NaN</td>
+      <td>9.629613</td>
+    </tr>
+    <tr>
+      <th>75%</th>
+      <td>0.456592</td>
+      <td>1.000000</td>
+      <td>1.0</td>
+      <td>1.000000</td>
+      <td>1.000000</td>
+      <td>1.000000</td>
+      <td>0.0</td>
+      <td>1.000000</td>
+      <td>NaN</td>
+      <td>11.143679</td>
+    </tr>
+    <tr>
+      <th>max</th>
+      <td>0.644007</td>
+      <td>1.000000</td>
+      <td>1.0</td>
+      <td>1.000000</td>
+      <td>1.000000</td>
+      <td>1.000000</td>
+      <td>0.0</td>
+      <td>1.000000</td>
+      <td>NaN</td>
+      <td>32.068304</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<p>The json schema metric went down, meaning that the output counter-intuitively is less friendly to our parser than before.</p>
+<p>Let’s try with an open source model: <code class="docutils literal notranslate"><span class="pre">llama-v2-34b-code-instruct</span></code>.</p>
+</section>
+<section id="try-with-llama-2">
+<h2>Try with Llama 2<a class="headerlink" href="#try-with-llama-2" title="Permalink to this heading">#</a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">llama-v2-34b-code-instruct</span></code> is an open source model that is meant to be good at both code-gen and other tasks.
+Let’s benchmark it.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">json</span>
+
+<span class="kn">from</span> <span class="nn">langchain.chat_models</span> <span class="kn">import</span> <span class="n">ChatFireworks</span>
+<span class="kn">from</span> <span class="nn">langchain.output_parsers.json</span> <span class="kn">import</span> <span class="n">parse_json_markdown</span>
+
+<span class="n">llama_prompt</span> <span class="o">=</span> <span class="n">ChatPromptTemplate</span><span class="o">.</span><span class="n">from_messages</span><span class="p">(</span>
+    <span class="p">[</span>
+        <span class="p">(</span>
+            <span class="s2">&quot;system&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;You are a data extraction bot tasked with extracting and inferring information from dialogues and generating tickets. Always respond &quot;</span>
+            <span class="s2">&quot;only with json based on the following JSON schema:</span><span class="se">\n</span><span class="si">{schema}</span><span class="s2">&quot;</span><span class="p">,</span>
+        <span class="p">),</span>
+        <span class="p">(</span>
+            <span class="s2">&quot;user&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Generate a ticket from the following question-response pair:</span><span class="se">\n</span><span class="s2">&quot;</span>
+            <span class="s2">&quot;&lt;Dialogue&gt;</span><span class="se">\n</span><span class="si">{dialogue}</span><span class="se">\n</span><span class="s2">&lt;/Dialogue&gt;</span><span class="se">\n</span><span class="s2">&quot;</span>
+            <span class="s2">&quot;Remember, respond directly with this format:</span><span class="se">\n</span><span class="s2">&quot;</span>
+            <span class="s1">&#39;{{&quot;</span><span class="si">{function_call}</span><span class="s1">&quot;: ...}}</span><span class="se">\n</span><span class="s1">&#39;</span>
+            <span class="s2">&quot;RESPOND ONLY IN JSON THEN STOP.&quot;</span><span class="p">,</span>
+        <span class="p">),</span>
+    <span class="p">]</span>
+<span class="p">)</span>
+
+<span class="n">prompt</span> <span class="o">=</span> <span class="n">llama_prompt</span><span class="o">.</span><span class="n">partial</span><span class="p">(</span>
+    <span class="n">schema</span><span class="o">=</span><span class="n">task</span><span class="o">.</span><span class="n">schema</span><span class="o">.</span><span class="n">schema_json</span><span class="p">(),</span> <span class="n">function_call</span><span class="o">=</span><span class="n">task</span><span class="o">.</span><span class="n">schema</span><span class="o">.</span><span class="n">schema</span><span class="p">()[</span><span class="s2">&quot;title&quot;</span><span class="p">]</span>
+<span class="p">)</span>
+
+<span class="n">llm</span> <span class="o">=</span> <span class="n">ChatFireworks</span><span class="p">(</span>
+    <span class="n">model</span><span class="o">=</span><span class="s2">&quot;accounts/fireworks/models/llama-v2-34b-code-instruct&quot;</span><span class="p">,</span>
+    <span class="n">temperature</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+    <span class="n">model_kwargs</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;max_tokens&quot;</span><span class="p">:</span> <span class="mi">4000</span><span class="p">},</span>
+<span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">parse_output</span><span class="p">(</span><span class="n">ai_message</span><span class="p">):</span>
+    <span class="n">content</span> <span class="o">=</span> <span class="n">ai_message</span><span class="o">.</span><span class="n">content</span>
+    <span class="n">parser</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">strict</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">parsed</span> <span class="o">=</span> <span class="n">parse_json_markdown</span><span class="p">(</span><span class="n">content</span><span class="p">,</span> <span class="n">parser</span><span class="o">=</span><span class="n">parser</span><span class="p">)</span>
+        <span class="k">if</span> <span class="s2">&quot;GenerateTicket&quot;</span> <span class="ow">in</span> <span class="n">parsed</span><span class="p">:</span>
+            <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;output&quot;</span><span class="p">:</span> <span class="n">parsed</span><span class="p">[</span><span class="s2">&quot;GenerateTicket&quot;</span><span class="p">]}</span>
+        <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;output&quot;</span><span class="p">:</span> <span class="n">parsed</span><span class="p">}</span>
+    <span class="k">except</span> <span class="n">json</span><span class="o">.</span><span class="n">JSONDecodeError</span><span class="p">:</span>
+        <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;output&quot;</span><span class="p">:</span> <span class="n">content</span><span class="p">}</span>
+
+
+<span class="n">fireworks_extraction_chain</span> <span class="o">=</span> <span class="n">format_run</span> <span class="o">|</span> <span class="n">prompt</span> <span class="o">|</span> <span class="n">llm</span> <span class="o">|</span> <span class="n">parse_output</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">result</span> <span class="o">=</span> <span class="n">fireworks_extraction_chain</span><span class="o">.</span><span class="n">invoke</span><span class="p">(</span>
+    <span class="p">{</span><span class="s2">&quot;question&quot;</span><span class="p">:</span> <span class="s2">&quot;how do i run llama 2 locally?&quot;</span><span class="p">,</span> <span class="s2">&quot;answer&quot;</span><span class="p">:</span> <span class="s2">&quot;Llama.cpp of course.&quot;</span><span class="p">}</span>
+<span class="p">)</span>
+<span class="n">result</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>{&#39;output&#39;: {&#39;issue_summary&#39;: &#39;How to run Llama 2 locally&#39;,
+  &#39;question&#39;: {&#39;question_category&#39;: &#39;Implementation Issues&#39;,
+   &#39;is_off_topic&#39;: False,
+   &#39;toxicity&#39;: 0,
+   &#39;sentiment&#39;: &#39;Neutral&#39;,
+   &#39;programming_language&#39;: &#39;cpp&#39;},
+  &#39;response&#39;: {&#39;response_type&#39;: &#39;Resolve Issue&#39;,
+   &#39;confidence_level&#39;: 5,
+   &#39;followup_actions&#39;: [&#39;Please provide more information about the environment (OS, versions, etc.) and the specific issue you are experiencing.&#39;]}}}
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">llama_v2_test_run</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">run_on_dataset</span><span class="p">(</span>
+    <span class="n">dataset_name</span><span class="o">=</span><span class="n">task</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
+    <span class="n">llm_or_chain_factory</span><span class="o">=</span><span class="n">fireworks_extraction_chain</span><span class="p">,</span>
+    <span class="n">evaluation</span><span class="o">=</span><span class="n">eval_config</span><span class="p">,</span>
+    <span class="n">verbose</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="n">project_name</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;llama-v2-34b-code-instruct-</span><span class="si">{</span><span class="n">uid</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+    <span class="n">project_metadata</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;arch&quot;</span><span class="p">:</span> <span class="s2">&quot;claude-xml&quot;</span><span class="p">,</span> <span class="s2">&quot;model&quot;</span><span class="p">:</span> <span class="s2">&quot;llama-v2-34b-code-instruct&quot;</span><span class="p">},</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>View the evaluation results for project &#39;llama-v2-34b-code-instruct-5689&#39; at:
+https://smith.langchain.com/o/ebbaf2eb-769b-4505-aca2-d11de10372a4/datasets/08042749-504d-4509-9549-5f5c579115f6/compare?selectedSessions=dc2e0648-7e65-4d60-a149-15c24bca943b
+
+View all tests for Dataset Chat Extraction at:
+https://smith.langchain.com/o/ebbaf2eb-769b-4505-aca2-d11de10372a4/datasets/08042749-504d-4509-9549-5f5c579115f6
+[-------------------------------------------------&gt;] 27/27
+</pre></div>
+</div>
+<div class="output text_html"><h3>Experiment Results:</h3></div><div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>feedback.json_edit_distance</th>
+      <th>feedback.json_schema</th>
+      <th>feedback.toxicity_similarity</th>
+      <th>feedback.sentiment_similarity</th>
+      <th>feedback.confidence_level_similarity</th>
+      <th>feedback.question_category</th>
+      <th>feedback.off_topic_similarity</th>
+      <th>feedback.programming_language_similarity</th>
+      <th>error</th>
+      <th>execution_time</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>count</th>
+      <td>17.000000</td>
+      <td>27.000000</td>
+      <td>27.000000</td>
+      <td>27.000000</td>
+      <td>27.000000</td>
+      <td>27.000000</td>
+      <td>27.000000</td>
+      <td>27.000000</td>
+      <td>0</td>
+      <td>27.000000</td>
+    </tr>
+    <tr>
+      <th>unique</th>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>0</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>top</th>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>freq</th>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>mean</th>
+      <td>0.399687</td>
+      <td>0.333333</td>
+      <td>0.444444</td>
+      <td>0.444444</td>
+      <td>0.540741</td>
+      <td>0.074074</td>
+      <td>0.518519</td>
+      <td>0.222222</td>
+      <td>NaN</td>
+      <td>4.738518</td>
+    </tr>
+    <tr>
+      <th>std</th>
+      <td>0.097771</td>
+      <td>0.480384</td>
+      <td>0.506370</td>
+      <td>0.423659</td>
+      <td>0.439632</td>
+      <td>0.266880</td>
+      <td>0.509175</td>
+      <td>0.423659</td>
+      <td>NaN</td>
+      <td>3.162978</td>
+    </tr>
+    <tr>
+      <th>min</th>
+      <td>0.197279</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>NaN</td>
+      <td>3.224190</td>
+    </tr>
+    <tr>
+      <th>25%</th>
+      <td>0.325069</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>NaN</td>
+      <td>3.595067</td>
+    </tr>
+    <tr>
+      <th>50%</th>
+      <td>0.413203</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.500000</td>
+      <td>0.800000</td>
+      <td>0.000000</td>
+      <td>1.000000</td>
+      <td>0.000000</td>
+      <td>NaN</td>
+      <td>3.744033</td>
+    </tr>
+    <tr>
+      <th>75%</th>
+      <td>0.471366</td>
+      <td>1.000000</td>
+      <td>1.000000</td>
+      <td>1.000000</td>
+      <td>1.000000</td>
+      <td>0.000000</td>
+      <td>1.000000</td>
+      <td>0.000000</td>
+      <td>NaN</td>
+      <td>4.211040</td>
+    </tr>
+    <tr>
+      <th>max</th>
+      <td>0.552430</td>
+      <td>1.000000</td>
+      <td>1.000000</td>
+      <td>1.000000</td>
+      <td>1.000000</td>
+      <td>1.000000</td>
+      <td>1.000000</td>
+      <td>1.000000</td>
+      <td>NaN</td>
+      <td>18.660901</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+</section>
+<section id="compare-results">
+<h2>Compare Results<a class="headerlink" href="#compare-results" title="Permalink to this heading">#</a></h2>
+<p>Here, we’ll take a look at the underlying results a little bit. You can review the results to see relative performance in aggregate and on a per-example basis.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="n">test_run</span><span class="o">.</span><span class="n">to_dataframe</span><span class="p">()</span>
+    <span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">claude_test_run</span><span class="o">.</span><span class="n">to_dataframe</span><span class="p">(),</span> <span class="n">rsuffix</span><span class="o">=</span><span class="s2">&quot;_claude&quot;</span><span class="p">)</span>
+    <span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">claude_xsd_test_run</span><span class="o">.</span><span class="n">to_dataframe</span><span class="p">(),</span> <span class="n">rsuffix</span><span class="o">=</span><span class="s2">&quot;_claude_xsd&quot;</span><span class="p">)</span>
+    <span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">llama_v2_test_run</span><span class="o">.</span><span class="n">to_dataframe</span><span class="p">(),</span> <span class="n">rsuffix</span><span class="o">=</span><span class="s2">&quot;_llama_v2&quot;</span><span class="p">)</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>inputs.answer</th>
+      <th>inputs.question</th>
+      <th>outputs.output</th>
+      <th>reference.output</th>
+      <th>feedback.json_edit_distance</th>
+      <th>feedback.json_schema</th>
+      <th>feedback.toxicity_similarity</th>
+      <th>feedback.sentiment_similarity</th>
+      <th>feedback.confidence_level_similarity</th>
+      <th>feedback.question_category</th>
+      <th>...</th>
+      <th>feedback.json_edit_distance_llama_v2</th>
+      <th>feedback.json_schema_llama_v2</th>
+      <th>feedback.toxicity_similarity_llama_v2</th>
+      <th>feedback.sentiment_similarity_llama_v2</th>
+      <th>feedback.confidence_level_similarity_llama_v2</th>
+      <th>feedback.question_category_llama_v2</th>
+      <th>feedback.off_topic_similarity_llama_v2</th>
+      <th>feedback.programming_language_similarity_llama_v2</th>
+      <th>error_llama_v2</th>
+      <th>execution_time_llama_v2</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>23a81130-2ad9-46cf-ad27-46589bcea94a</th>
+      <td>Pour joindre les deux outputs, vous pouvez uti...</td>
+      <td>je travail sur python. je souhaite joindre ces...</td>
+      <td>{'issue_summary': 'Joining two outputs in Pyth...</td>
+      <td>{'question': {'toxicity': 0, 'sentiment': 'Neu...</td>
+      <td>0.089219</td>
+      <td>1</td>
+      <td>0</td>
+      <td>1.0</td>
+      <td>1.0</td>
+      <td>1</td>
+      <td>...</td>
+      <td>0.552239</td>
+      <td>1</td>
+      <td>0.0</td>
+      <td>0.5</td>
+      <td>0.8</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>None</td>
+      <td>3.981128</td>
+    </tr>
+    <tr>
+      <th>598316ec-f5e2-4b4d-83a8-36adb18e12fe</th>
+      <td>Hmm, I'm not sure.</td>
+      <td>example for dalle agent</td>
+      <td>{'issue_summary': 'Example for DALL-E Agent', ...</td>
+      <td>{'question': {'toxicity': 0, 'sentiment': 'Neu...</td>
+      <td>0.171103</td>
+      <td>1</td>
+      <td>0</td>
+      <td>1.0</td>
+      <td>0.8</td>
+      <td>0</td>
+      <td>...</td>
+      <td>NaN</td>
+      <td>0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>None</td>
+      <td>10.942758</td>
+    </tr>
+    <tr>
+      <th>d1a1a2e8-6f4c-4325-8aaa-ea20e2449268</th>
+      <td>To run Llama2 using pandas, you can follow the...</td>
+      <td>how do I run llama2 using pandas</td>
+      <td>{'issue_summary': 'Running Llama2 with Pandas'...</td>
+      <td>{'question': {'toxicity': 0, 'sentiment': 'Neu...</td>
+      <td>0.594255</td>
+      <td>1</td>
+      <td>0</td>
+      <td>1.0</td>
+      <td>1.0</td>
+      <td>0</td>
+      <td>...</td>
+      <td>NaN</td>
+      <td>0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>None</td>
+      <td>3.628600</td>
+    </tr>
+    <tr>
+      <th>140a4819-0046-469d-b4df-8e747ddae112</th>
+      <td>To clear the conversation in ConversationalRet...</td>
+      <td>if Im useing ConversationalRetrievalChain how ...</td>
+      <td>{'issue_summary': 'Clearing Conversation in Co...</td>
+      <td>{'question': {'toxicity': 0, 'sentiment': 'Neu...</td>
+      <td>0.353261</td>
+      <td>1</td>
+      <td>0</td>
+      <td>1.0</td>
+      <td>1.0</td>
+      <td>0</td>
+      <td>...</td>
+      <td>0.393643</td>
+      <td>0</td>
+      <td>1.0</td>
+      <td>0.5</td>
+      <td>0.8</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>None</td>
+      <td>3.711707</td>
+    </tr>
+    <tr>
+      <th>7b0a9dd9-68ce-41a1-9f9d-067d93175477</th>
+      <td>To perform the task of creating an app that in...</td>
+      <td>I want to create an app which:\n- chats with u...</td>
+      <td>{'issue_summary': 'Building an app with Langch...</td>
+      <td>{'question': {'toxicity': 0, 'sentiment': 'Neu...</td>
+      <td>0.562950</td>
+      <td>1</td>
+      <td>0</td>
+      <td>1.0</td>
+      <td>0.8</td>
+      <td>1</td>
+      <td>...</td>
+      <td>0.436747</td>
+      <td>1</td>
+      <td>1.0</td>
+      <td>0.5</td>
+      <td>1.0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>1</td>
+      <td>None</td>
+      <td>4.410890</td>
+    </tr>
+  </tbody>
+</table>
+<p>5 rows × 56 columns</p>
+</div></div></div>
+</div>
+<section id="here-we-compare-the-aggregate-metrics-side-by-side">
+<h3>Here, we compare the aggregate metrics side-by-side<a class="headerlink" href="#here-we-compare-the-aggregate-metrics-side-by-side" title="Permalink to this heading">#</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="n">test_run</span><span class="o">.</span><span class="n">get_aggregate_feedback</span><span class="p">()</span>
+    <span class="o">.</span><span class="n">add_suffix</span><span class="p">(</span><span class="s2">&quot;.gpt-4&quot;</span><span class="p">)</span>
+    <span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">claude_test_run</span><span class="o">.</span><span class="n">get_aggregate_feedback</span><span class="p">(),</span> <span class="n">rsuffix</span><span class="o">=</span><span class="s2">&quot;.claude&quot;</span><span class="p">)</span>
+    <span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">claude_xsd_test_run</span><span class="o">.</span><span class="n">get_aggregate_feedback</span><span class="p">(),</span> <span class="n">rsuffix</span><span class="o">=</span><span class="s2">&quot;.claude_xsd&quot;</span><span class="p">)</span>
+    <span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">llama_v2_test_run</span><span class="o">.</span><span class="n">get_aggregate_feedback</span><span class="p">(),</span> <span class="n">rsuffix</span><span class="o">=</span><span class="s2">&quot;.llama_v2&quot;</span><span class="p">)</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">IPython.display</span> <span class="kn">import</span> <span class="n">HTML</span><span class="p">,</span> <span class="n">display</span>
+
+<span class="n">feedback_columns</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span>
+    <span class="p">{</span><span class="n">col</span><span class="o">.</span><span class="n">rsplit</span><span class="p">(</span><span class="s2">&quot;.&quot;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">df</span><span class="o">.</span><span class="n">columns</span> <span class="k">if</span> <span class="n">col</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;feedback.&quot;</span><span class="p">)}</span>
+<span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">render_metric</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">metric</span><span class="p">):</span>
+    <span class="n">sub_cols</span> <span class="o">=</span> <span class="p">[</span><span class="n">col</span> <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">df</span><span class="o">.</span><span class="n">columns</span> <span class="k">if</span> <span class="n">col</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="n">metric</span><span class="p">)]</span>
+    <span class="n">display</span><span class="p">(</span><span class="n">HTML</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;&lt;h3&gt;</span><span class="si">{</span><span class="n">metric</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="si">}</span><span class="s2">&lt;/h3&gt;&quot;</span><span class="p">))</span>
+    <span class="n">display</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="n">sub_cols</span><span class="p">][</span><span class="n">df</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">isin</span><span class="p">([</span><span class="s2">&quot;mean&quot;</span><span class="p">,</span> <span class="s2">&quot;std&quot;</span><span class="p">])])</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">feedback_columns</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&#39;feedback&#39;,
+ &#39;feedback.confidence_level_similarity&#39;,
+ &#39;feedback.json_edit_distance&#39;,
+ &#39;feedback.json_schema&#39;,
+ &#39;feedback.off_topic_similarity&#39;,
+ &#39;feedback.programming_language_similarity&#39;,
+ &#39;feedback.question_category&#39;,
+ &#39;feedback.sentiment_similarity&#39;,
+ &#39;feedback.toxicity_similarity&#39;]
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">render_metric</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="s2">&quot;execution_time&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><h3>execution_time</h3></div><div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>execution_time.gpt-4</th>
+      <th>execution_time</th>
+      <th>execution_time.claude_xsd</th>
+      <th>execution_time.llama_v2</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>mean</th>
+      <td>6.949585</td>
+      <td>10.556105</td>
+      <td>11.128319</td>
+      <td>4.738518</td>
+    </tr>
+    <tr>
+      <th>std</th>
+      <td>1.639494</td>
+      <td>1.790352</td>
+      <td>4.845637</td>
+      <td>3.162978</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">metric</span> <span class="ow">in</span> <span class="n">feedback_columns</span><span class="p">:</span>
+    <span class="n">render_metric</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">metric</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><h3>feedback</h3></div><div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>feedback.json_edit_distance.gpt-4</th>
+      <th>feedback.json_schema.gpt-4</th>
+      <th>feedback.toxicity_similarity.gpt-4</th>
+      <th>feedback.sentiment_similarity.gpt-4</th>
+      <th>feedback.confidence_level_similarity.gpt-4</th>
+      <th>feedback.question_category.gpt-4</th>
+      <th>feedback.off_topic_similarity.gpt-4</th>
+      <th>feedback.programming_language_similarity.gpt-4</th>
+      <th>feedback.json_edit_distance</th>
+      <th>feedback.json_schema</th>
+      <th>...</th>
+      <th>feedback.off_topic_similarity.claude_xsd</th>
+      <th>feedback.programming_language_similarity.claude_xsd</th>
+      <th>feedback.json_edit_distance.llama_v2</th>
+      <th>feedback.json_schema.llama_v2</th>
+      <th>feedback.toxicity_similarity.llama_v2</th>
+      <th>feedback.sentiment_similarity.llama_v2</th>
+      <th>feedback.confidence_level_similarity.llama_v2</th>
+      <th>feedback.question_category.llama_v2</th>
+      <th>feedback.off_topic_similarity.llama_v2</th>
+      <th>feedback.programming_language_similarity.llama_v2</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>mean</th>
+      <td>0.283000</td>
+      <td>1.0</td>
+      <td>0.0</td>
+      <td>1.0</td>
+      <td>0.940741</td>
+      <td>0.555556</td>
+      <td>0.888889</td>
+      <td>0.592593</td>
+      <td>0.371950</td>
+      <td>0.777778</td>
+      <td>...</td>
+      <td>0.0</td>
+      <td>0.518519</td>
+      <td>0.399687</td>
+      <td>0.333333</td>
+      <td>0.444444</td>
+      <td>0.444444</td>
+      <td>0.540741</td>
+      <td>0.074074</td>
+      <td>0.518519</td>
+      <td>0.222222</td>
+    </tr>
+    <tr>
+      <th>std</th>
+      <td>0.181282</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.093064</td>
+      <td>0.506370</td>
+      <td>0.320256</td>
+      <td>0.500712</td>
+      <td>0.108628</td>
+      <td>0.423659</td>
+      <td>...</td>
+      <td>0.0</td>
+      <td>0.509175</td>
+      <td>0.097771</td>
+      <td>0.480384</td>
+      <td>0.506370</td>
+      <td>0.423659</td>
+      <td>0.439632</td>
+      <td>0.266880</td>
+      <td>0.509175</td>
+      <td>0.423659</td>
+    </tr>
+  </tbody>
+</table>
+<p>2 rows × 32 columns</p>
+</div></div><div class="output text_html"><h3>confidence_level_similarity</h3></div><div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>feedback.confidence_level_similarity.gpt-4</th>
+      <th>feedback.confidence_level_similarity</th>
+      <th>feedback.confidence_level_similarity.claude_xsd</th>
+      <th>feedback.confidence_level_similarity.llama_v2</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>mean</th>
+      <td>0.940741</td>
+      <td>0.970370</td>
+      <td>0.970370</td>
+      <td>0.540741</td>
+    </tr>
+    <tr>
+      <th>std</th>
+      <td>0.093064</td>
+      <td>0.072403</td>
+      <td>0.072403</td>
+      <td>0.439632</td>
+    </tr>
+  </tbody>
+</table>
+</div></div><div class="output text_html"><h3>json_edit_distance</h3></div><div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>feedback.json_edit_distance.gpt-4</th>
+      <th>feedback.json_edit_distance</th>
+      <th>feedback.json_edit_distance.claude_xsd</th>
+      <th>feedback.json_edit_distance.llama_v2</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>mean</th>
+      <td>0.283000</td>
+      <td>0.371950</td>
+      <td>0.394232</td>
+      <td>0.399687</td>
+    </tr>
+    <tr>
+      <th>std</th>
+      <td>0.181282</td>
+      <td>0.108628</td>
+      <td>0.117880</td>
+      <td>0.097771</td>
+    </tr>
+  </tbody>
+</table>
+</div></div><div class="output text_html"><h3>json_schema</h3></div><div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>feedback.json_schema.gpt-4</th>
+      <th>feedback.json_schema</th>
+      <th>feedback.json_schema.claude_xsd</th>
+      <th>feedback.json_schema.llama_v2</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>mean</th>
+      <td>1.0</td>
+      <td>0.777778</td>
+      <td>0.518519</td>
+      <td>0.333333</td>
+    </tr>
+    <tr>
+      <th>std</th>
+      <td>0.0</td>
+      <td>0.423659</td>
+      <td>0.509175</td>
+      <td>0.480384</td>
+    </tr>
+  </tbody>
+</table>
+</div></div><div class="output text_html"><h3>off_topic_similarity</h3></div><div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>feedback.off_topic_similarity.gpt-4</th>
+      <th>feedback.off_topic_similarity</th>
+      <th>feedback.off_topic_similarity.claude_xsd</th>
+      <th>feedback.off_topic_similarity.llama_v2</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>mean</th>
+      <td>0.888889</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.518519</td>
+    </tr>
+    <tr>
+      <th>std</th>
+      <td>0.320256</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.509175</td>
+    </tr>
+  </tbody>
+</table>
+</div></div><div class="output text_html"><h3>programming_language_similarity</h3></div><div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>feedback.programming_language_similarity.gpt-4</th>
+      <th>feedback.programming_language_similarity</th>
+      <th>feedback.programming_language_similarity.claude_xsd</th>
+      <th>feedback.programming_language_similarity.llama_v2</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>mean</th>
+      <td>0.592593</td>
+      <td>0.444444</td>
+      <td>0.518519</td>
+      <td>0.222222</td>
+    </tr>
+    <tr>
+      <th>std</th>
+      <td>0.500712</td>
+      <td>0.506370</td>
+      <td>0.509175</td>
+      <td>0.423659</td>
+    </tr>
+  </tbody>
+</table>
+</div></div><div class="output text_html"><h3>question_category</h3></div><div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>feedback.question_category.gpt-4</th>
+      <th>feedback.question_category</th>
+      <th>feedback.question_category.claude_xsd</th>
+      <th>feedback.question_category.llama_v2</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>mean</th>
+      <td>0.555556</td>
+      <td>0.481481</td>
+      <td>0.370370</td>
+      <td>0.074074</td>
+    </tr>
+    <tr>
+      <th>std</th>
+      <td>0.506370</td>
+      <td>0.509175</td>
+      <td>0.492103</td>
+      <td>0.266880</td>
+    </tr>
+  </tbody>
+</table>
+</div></div><div class="output text_html"><h3>sentiment_similarity</h3></div><div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>feedback.sentiment_similarity.gpt-4</th>
+      <th>feedback.sentiment_similarity</th>
+      <th>feedback.sentiment_similarity.claude_xsd</th>
+      <th>feedback.sentiment_similarity.llama_v2</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>mean</th>
+      <td>1.0</td>
+      <td>0.925926</td>
+      <td>0.907407</td>
+      <td>0.444444</td>
+    </tr>
+    <tr>
+      <th>std</th>
+      <td>0.0</td>
+      <td>0.181007</td>
+      <td>0.197924</td>
+      <td>0.423659</td>
+    </tr>
+  </tbody>
+</table>
+</div></div><div class="output text_html"><h3>toxicity_similarity</h3></div><div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>feedback.toxicity_similarity.gpt-4</th>
+      <th>feedback.toxicity_similarity</th>
+      <th>feedback.toxicity_similarity.claude_xsd</th>
+      <th>feedback.toxicity_similarity.llama_v2</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>mean</th>
+      <td>0.0</td>
+      <td>1.0</td>
+      <td>1.0</td>
+      <td>0.444444</td>
+    </tr>
+    <tr>
+      <th>std</th>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.506370</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+</section>
+</section>
+<section id="next-steps">
+<h2>Next Steps<a class="headerlink" href="#next-steps" title="Permalink to this heading">#</a></h2>
+<p>Try it out yourself! You can see some additional experiments on Open Source models in <a class="reference external" href="https://github.com/hinthornw/llama-extraction">this repo</a>.</p>
+</section>
+</section>
+
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="email.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Email Extraction</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="high_cardinality.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Extracting high-cardinality categoricals</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#schema">Schema</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#define-an-extraction-chain">Define an extraction chain</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#evaluate">Evaluate</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#compare-to-claude-2">Compare to Claude-2</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#try-with-xsd-schema-definition">Try with XSD Schema Definition</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#try-with-llama-2">Try with Llama 2</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#compare-results">Compare Results</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#here-we-compare-the-aggregate-metrics-side-by-side">Here, we compare the aggregate metrics side-by-side</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#next-steps">Next Steps</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Langchain AI
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2023, Langchain AI.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../_static/scripts/bootstrap.js?digest=5b4479735964841361fd"></script>
+<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=5b4479735964841361fd"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>
