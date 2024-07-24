@@ -1,6 +1,6 @@
 import streamlit as st
 from langchain.chains import create_extraction_chain
-from langchain.chat_models import ChatOpenAI
+from langchain_openai import ChatOpenAI
 from langsmith import Client
 
 st.set_page_config(page_title="🦜🔗 Text-to-graph extraction")

@@ -3,7 +3,6 @@ import os
 from functools import partial
 from typing import Callable, Iterable, List, Optional
 
-from langchain.chat_models import ChatOpenAI
 from langchain.indexes import SQLRecordManager, index
 from langchain.output_parsers.openai_functions import JsonKeyOutputFunctionsParser
 from langchain.prompts import ChatPromptTemplate
@@ -18,6 +17,7 @@ from langchain.schema.storage import BaseStore
 from langchain.schema.vectorstore import VectorStore
 from langchain.storage import InMemoryStore
 from langchain.text_splitter import RecursiveCharacterTextSplitter, TextSplitter
+from langchain_openai import ChatOpenAI
 from tqdm.auto import tqdm
 
 logger = logging.getLogger(__name__)

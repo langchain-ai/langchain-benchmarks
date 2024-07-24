@@ -3,12 +3,12 @@ from langchain.agents import AgentExecutor, OpenAIFunctionsAgent
 from langchain.agents.agent_toolkits.conversational_retrieval.tool import (
     create_retriever_tool,
 )
-from langchain.chat_models import ChatOpenAI
 from langchain.embeddings import OpenAIEmbeddings
 from langchain.prompts import ChatPromptTemplate, MessagesPlaceholder
 from langchain.smith import RunEvalConfig, run_on_dataset
 from langchain.tools import PythonAstREPLTool
 from langchain.vectorstores import FAISS
+from langchain_openai import ChatOpenAI
 from langsmith import Client
 from pydantic import BaseModel, Field
 

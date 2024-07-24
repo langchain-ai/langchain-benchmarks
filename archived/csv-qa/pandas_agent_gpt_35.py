@@ -1,8 +1,8 @@
 import pandas as pd
 from langchain.agents.agent_toolkits import create_pandas_dataframe_agent
 from langchain.agents.agent_types import AgentType
-from langchain.chat_models import ChatOpenAI
 from langchain.smith import RunEvalConfig, run_on_dataset
+from langchain_openai import ChatOpenAI
 from langsmith import Client
 
 if __name__ == "__main__":
