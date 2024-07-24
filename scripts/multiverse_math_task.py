@@ -1,15 +1,9 @@
 import datetime
 import uuid
-from langchain_community.vectorstores import FAISS
-from langchain_core.example_selectors import SemanticSimilarityExampleSelector
 from langchain_core.messages import HumanMessage, SystemMessage, ToolMessage
 from langchain_core.messages.utils import convert_to_messages
-from langchain_core.prompts import ChatPromptTemplate, MessagesPlaceholder
-from langchain_core.prompts.few_shot import FewShotChatMessagePromptTemplate
-from langchain_openai import OpenAIEmbeddings
 from langsmith.client import Client
-from langchain_benchmarks import __version__, registry
-from langchain_benchmarks.rate_limiting import RateLimiter
+from langchain_benchmarks import __version__
 import sys
 
 sys.path.append("./../langchain_benchmarks")
@@ -35,12 +29,16 @@ tests = [
         "claude-3-5-sonnet-20240620",
         "anthropic",
     ),
-    ("gpt-3.5-turbo-0125", "openai"),
+    (
+        "gpt-3.5-turbo-0125",
+        "openai"),
     (
         "gpt-4o",
         "openai",
     ),
-    ("gpt-4o-mini", "openai"),
+    (
+        "gpt-4o-mini",
+        "openai"),
 ]
 
 client = Client()  # Launch langsmith client for cloning datasets
@@ -117,20 +115,6 @@ def get_few_shot_str_from_messages(few_shot_messages, few_shot_three_messages):
 
 def get_prompts(task_name, **kwargs):
     if task_name == "Multiverse Math":
-        example_selector = SemanticSimilarityExampleSelector.from_examples(
-            kwargs["examples"],
-            OpenAIEmbeddings(),
-            FAISS,
-            k=3,
-            input_keys=["question"],
-            example_keys=["messages"],
-        )
-
-        few_shot_prompt = FewShotChatMessagePromptTemplate(
-            input_variables=[],
-            example_selector=example_selector,
-            example_prompt=MessagesPlaceholder("messages"),
-        )
         return [
             (
                 client.pull_prompt("langchain-ai/multiverse-math-no-few-shot"),
