@@ -1,0 +1,33 @@
+name: Weekly Tool Benchmarks
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '0 0 * * 0'  # Runs at midnight (00:00) every Sunday (UTC time)
+
+jobs:
+  run_tool_benchmarks:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python 3.12 + Poetry ${{ env.POETRY_VERSION }}
+        uses: "./.github/actions/poetry_setup"
+        with:
+          python-version: '3.12'
+          poetry-version: ${{ env.POETRY_VERSION }}
+          working-directory: .
+          cache-key: benchmarks-all
+      
+      - name: Install dependencies
+        shell: bash
+        run: |
+          echo "Running tests, installing dependencies with poetry..."
+          poetry install --with test,lint,typing,docs
+
+      - name: Multiverse math benchmark
+        run: python scripts/multiverse_math_benchmark.py
+      
+      - name: Query analysis benchmark
+        run: python scripts/query_analysis_benchmark.py

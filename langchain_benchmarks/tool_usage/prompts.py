@@ -33,7 +33,9 @@ INPUT_A: input_a here
 INPUT_B: input_b here
 COMPARISON: CORRECT or INCORRECT here
 
-Ignore differences in punctuation and phrasing between the student answer and true answer. 
+Ignore differences in punctuation and phrasing between the student answer and true answer, please only compare the first 4 decimal digits.
+
+For instance if INPUT_A = 123.6751345 and INPUT_B = 123.6751456 you should return CORRECT, since the first 4 decimal points match.
 
 Begin!
 
