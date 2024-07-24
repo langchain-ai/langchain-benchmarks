@@ -8,6 +8,7 @@ jobs:
   release:
     uses:
       ./.github/workflows/_release.yml
+    permissions: write-all
     with:
       working-directory: .
     secrets: inherit
