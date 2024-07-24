@@ -1,16 +1,18 @@
 import datetime
+import sys
 import uuid
+
 from langchain_core.messages import HumanMessage, SystemMessage, ToolMessage
 from langchain_core.messages.utils import convert_to_messages
 from langsmith.client import Client
+
 from langchain_benchmarks import __version__
-import sys
 
 sys.path.append("./../langchain_benchmarks")
-from tool_usage.tasks.multiverse_math import *
+from langchain.agents import AgentExecutor, create_tool_calling_agent
 from langchain.chat_models import init_chat_model
 from langsmith.evaluation import evaluate
-from langchain.agents import AgentExecutor, create_tool_calling_agent
+from tool_usage.tasks.multiverse_math import *
 
 tests = [
     (
@@ -29,16 +31,12 @@ tests = [
         "claude-3-5-sonnet-20240620",
         "anthropic",
     ),
-    (
-        "gpt-3.5-turbo-0125",
-        "openai"),
+    ("gpt-3.5-turbo-0125", "openai"),
     (
         "gpt-4o",
         "openai",
     ),
-    (
-        "gpt-4o-mini",
-        "openai"),
+    ("gpt-4o-mini", "openai"),
 ]
 
 client = Client()  # Launch langsmith client for cloning datasets
