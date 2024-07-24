@@ -8,42 +8,25 @@ readme = "README.md"
 
 [tool.poetry.dependencies]
 python = "^3.8.1"
-langchain = "^0.1.15"
+langchain = "^0.2.7"
+langchain-community = "^0.2"
 langsmith = ">=0.0.70"
 tqdm = "^4"
 ipywidgets = "^8"
 tabulate = ">=0.8.0"
+langchain-openai = "^0.1.14"
 
 [tool.poetry.group.dev]
 optional = true
 
 [tool.poetry.group.dev.dependencies]
 jupyter = "^1.0.0"
-langchain-core = {git = "https://github.com/langchain-ai/langchain.git", subdirectory = "libs/core"}
-langchain = {git = "https://github.com/langchain-ai/langchain.git", subdirectory = "libs/langchain"}
-langchain-anthropic = {git = "https://github.com/langchain-ai/langchain.git", subdirectory = "libs/partners/anthropic"}
-langchain-google-vertexai= {git = "https://github.com/langchain-ai/langchain-google.git", subdirectory = "libs/vertexai/"}
-langchain-fireworks = {git = "https://github.com/langchain-ai/langchain.git", subdirectory = "libs/partners/fireworks"}
-langchain-mistralai = {git = "https://github.com/langchain-ai/langchain.git", subdirectory = "libs/partners/mistralai"}
-langchain-cohere = {git = "https://github.com/langchain-ai/langchain-cohere.git", subdirectory="libs/cohere"}
-langchain-groq = {git = "https://github.com/langchain-ai/langchain.git", subdirectory = "libs/partners/groq"}
-langchain-openai = {git = "https://github.com/langchain-ai/langchain.git", subdirectory = "libs/partners/openai"}
-
 
 [tool.poetry.group.typing]
 optional = true
 
 [tool.poetry.group.typing.dependencies]
 mypy = "^1.7.0"
-langchain-core = {git = "https://github.com/langchain-ai/langchain.git", subdirectory = "libs/core"}
-langchain = {git = "https://github.com/langchain-ai/langchain.git", subdirectory = "libs/langchain"}
-langchain-anthropic = {git = "https://github.com/langchain-ai/langchain.git", subdirectory = "libs/partners/anthropic"}
-langchain-fireworks = {git = "https://github.com/langchain-ai/langchain.git", subdirectory = "libs/partners/fireworks"}
-langchain-mistralai = {git = "https://github.com/langchain-ai/langchain.git", subdirectory = "libs/partners/mistralai"}
-langchain-cohere = {git = "https://github.com/langchain-ai/langchain-cohere.git", subdirectory="libs/cohere"}
-langchain-groq = {git = "https://github.com/langchain-ai/langchain.git", subdirectory = "libs/partners/groq"}
-langchain-openai = {git = "https://github.com/langchain-ai/langchain.git", subdirectory = "libs/partners/openai"}
-
 [tool.poetry.group.lint]
 optional = true
 
@@ -74,14 +57,10 @@ pytest-socket = "^0.6.0"
 pytest-watch = "^4.2.0"
 pytest-timeout = "^2.2.0"
 freezegun = "^1.3.1"
-langchain-core = {git = "https://github.com/langchain-ai/langchain.git", subdirectory = "libs/core"}
-langchain = {git = "https://github.com/langchain-ai/langchain.git", subdirectory = "libs/langchain"}
-langchain-anthropic = {git = "https://github.com/langchain-ai/langchain.git", subdirectory = "libs/partners/anthropic"}
-langchain-fireworks = {git = "https://github.com/langchain-ai/langchain.git", subdirectory = "libs/partners/fireworks"}
-langchain-mistralai = {git = "https://github.com/langchain-ai/langchain.git", subdirectory = "libs/partners/mistralai"}
-langchain-cohere = {git = "https://github.com/langchain-ai/langchain-cohere.git", subdirectory="libs/cohere"}
-langchain-groq = {git = "https://github.com/langchain-ai/langchain.git", subdirectory = "libs/partners/groq"}
-langchain-openai = {git = "https://github.com/langchain-ai/langchain.git", subdirectory = "libs/partners/openai"}
+langchain-anthropic = "^0.1.19"
+langchain-fireworks = "^0.1.4"
+langchain-mistralai = "^0.1.9"
+langchain-groq = "^0.1.6"
 
 [tool.ruff]
 select = [
