@@ -4,6 +4,7 @@ from typing import List, Literal, Union, cast
 from langchain.pydantic_v1 import BaseModel, Field
 from langchain.tools import BaseTool, tool
 from langchain_core.messages import HumanMessage
+from langsmith.client import Client
 
 from langchain_benchmarks.schema import ToolUsageEnvironment, ToolUsageTask
 
@@ -983,26 +984,13 @@ FEW_SHOT_DATASET = [
 ]
 
 
-def _create_dataset() -> None:
+def _create_dataset(examples: list, dataset_id: str) -> None:
     """Create a dataset with the langsmith client."""
-    from langsmith.client import Client
 
     client = Client()
-
-    # Test dataset
-    dataset_id = "e3101cae-af77-476f-a331-eb2e92e809e6"
-    dataset = DATASET
-    # Few shot dataset
-    dataset_id = "d833a66e-4074-413b-9c6d-313b15e307c8"
-    dataset = FEW_SHOT_DATASET
-
-    for example in dataset:
+    for example in examples:
         client.create_example(
-            inputs={
-                "question": example["question"],
-            },
-            outputs={
-                "reference": example["tool_calls"],
-            },
+            inputs={"question": example["question"]},
+            outputs={"reference": example["tool_calls"]},
             dataset_id=dataset_id,
         )
