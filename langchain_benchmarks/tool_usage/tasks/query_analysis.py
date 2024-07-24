@@ -651,7 +651,7 @@ AMBIGUOUS_DATASET = [
 
 DATASET = DOC_DATASET + TWEET_DATASET + BLOG_DATASET + AMBIGUOUS_DATASET
 
-EXTRACTION_TASK = ToolUsageTask(
+QUERY_ANALYSIS_TASK = ToolUsageTask(
     name="Extraction Task",
     dataset_id="https://smith.langchain.com/public/594f9f60-30a0-49bf-b075-f44beabf546a/d",
     create_environment=get_environment,
@@ -674,7 +674,7 @@ An environment that contains three different mock query tools for searching thro
 The three tools are for querying LangChain documentation, tweets, and blogs respectively.
 
 The objective of the task it to measure how well the agent can select the correct tool and \
-select the right parameterse for the query. It is not a test of the actual querying process, \
+select the right parameters for the query. It is not a test of the actual querying process, \
 merely the process of constructing the query.
 """
     ),

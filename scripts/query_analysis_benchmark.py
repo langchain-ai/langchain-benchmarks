@@ -1,7 +1,3 @@
-import json
-import sys
-
-sys.path.append("../langchain_benchmarks")
 import uuid
 from collections import Counter
 from datetime import datetime
@@ -12,17 +8,23 @@ from langchain_community.vectorstores import FAISS
 from langchain_core.example_selectors import SemanticSimilarityExampleSelector
 from langchain_core.messages import AIMessage, HumanMessage, ToolMessage
 from langchain_core.output_parsers import StrOutputParser
-from langchain_core.prompts import ChatPromptTemplate, MessagesPlaceholder
-from langchain_core.prompts.few_shot import FewShotChatMessagePromptTemplate
-from langchain_openai import ChatOpenAI, OpenAIEmbeddings
+from langchain_core.prompts import (
+    ChatPromptTemplate,
+    FewShotChatMessagePromptTemplate,
+    MessagesPlaceholder,
+)
+from langchain_openai import OpenAIEmbeddings
 from langsmith.client import Client
 from langsmith.evaluation import evaluate
-from langsmith.evaluation.evaluator import (
-    EvaluationResult,
-    EvaluationResults,
-)
+from langsmith.evaluation.evaluator import EvaluationResult, EvaluationResults
 from langsmith.schemas import Example, Run
-from tool_usage.tasks.extraction_query import *
+
+from langchain_benchmarks.tool_usage.tasks.query_analysis import (
+    QUERY_ANALYSIS_TASK,
+    BlogQuery,
+    DocQuery,
+    TweetQuery,
+)
 
 
 def calculate_recall(A, B):
@@ -53,7 +55,7 @@ def is_iso_format(date_str):
         return False
 
 
-llm_judge = ChatOpenAI(model="gpt-4o")
+llm_judge = init_chat_model("gpt-4o")
 
 judge_prompt = ChatPromptTemplate.from_messages(
     [
@@ -78,20 +80,20 @@ tools = [DocQuery, TweetQuery, BlogQuery]
 
 def compare_outputs(run_outputs: dict, example_outputs: dict) -> EvaluationResults:
     if len(run_outputs["response"].tool_calls) == 0:
-        correct_tool_score, determinstic_score, underministic_score = 0, 0, 0
+        correct_tool_score, deterministic_score, nondeterministic_score = 0, 0, 0
     else:
         # Chose the correct tool
         reference_tools = [tool["name"] for tool in example_outputs["reference"]]
         outputted_tools = [tool["name"] for tool in run_outputs["response"].tool_calls]
         correct_tool_score = calculate_recall(reference_tools, outputted_tools)
 
-        # Has the correct determenistic args
-        determinstic_score = 0
-        # Has the correct undetermenistic args
-        underministic_score = 0
+        # Has the correct deterministic args
+        deterministic_score = 0
+        # Has the correct in-deterministic args
+        nondeterministic_score = 0
 
         if correct_tool_score == 1:
-            determinstic_score, underministic_score = 1, 1
+            deterministic_score, nondeterministic_score = 1, 1
             for tool in example_outputs["reference"]:
                 corresponding_response_tool = [
                     t
@@ -106,7 +108,7 @@ def compare_outputs(run_outputs: dict, example_outputs: dict) -> EvaluationResul
                                 "reference_query": tool["args"][arg],
                             }
                         )
-                        underministic_score = 1 if ans == "YES" else 0
+                        nondeterministic_score = 1 if ans == "YES" else 0
                     else:
                         if (
                             tool["args"][arg] and arg not in corresponding_response_tool
@@ -124,12 +126,12 @@ def compare_outputs(run_outputs: dict, example_outputs: dict) -> EvaluationResul
                                 == datetime.fromisoformat(tool["args"][arg])
                             )
                         ):
-                            determinstic_score = 0
+                            deterministic_score = 0
     # Overall correctness
     overall_score = int(
         correct_tool_score == 1
-        and bool(determinstic_score)
-        and bool(underministic_score)
+        and bool(deterministic_score)
+        and bool(nondeterministic_score)
     )
     results = [
         EvaluationResult(
@@ -137,12 +139,12 @@ def compare_outputs(run_outputs: dict, example_outputs: dict) -> EvaluationResul
             score=correct_tool_score,
         ),
         EvaluationResult(
-            key="Correct determenistic args",
-            score=determinstic_score,
+            key="Correct deterministic args",
+            score=deterministic_score,
         ),
         EvaluationResult(
-            key="Correct undermenistic args",
-            score=underministic_score,
+            key="Correct nondeterministic args",
+            score=nondeterministic_score,
         ),
         EvaluationResult(
             key="Overall correctness",
@@ -239,7 +241,7 @@ def predict_for_model(model, instructions, few_shot_method, model_name):
         def predict(example: dict):
             example_selector = SemanticSimilarityExampleSelector.from_examples(
                 examples_for_semantic_search,
-                OpenAIEmbeddings(),
+                OpenAIEmbeddings(model="text-embedding-3-large"),
                 FAISS,
                 k=3,
                 input_keys=["question"],
@@ -320,9 +322,9 @@ for i in tqdm(range(3)):
         for few_shot_method in few_shot_methods:
             evaluate(
                 predict_for_model(
-                    model, EXTRACTION_TASK.instructions, few_shot_method, model_name
+                    model, QUERY_ANALYSIS_TASK.instructions, few_shot_method, model_name
                 ),
-                data=EXTRACTION_TASK.name,
+                data=QUERY_ANALYSIS_TASK.name,
                 evaluators=[evaluate_run],
                 experiment_prefix=f"{model_name}-TEST-{i+2}-{few_shot_method}",
                 metadata={"id": experiment_uuid},

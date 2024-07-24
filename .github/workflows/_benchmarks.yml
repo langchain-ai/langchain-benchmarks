@@ -26,8 +26,8 @@ jobs:
           echo "Running tests, installing dependencies with poetry..."
           poetry install --with test,lint,typing,docs
 
-      - name: Execute Multiverse Math Benchmarks
-        run: python scripts/multiverse_math_task.py
+      - name: Multiverse math benchmark
+        run: python scripts/multiverse_math_benchmark.py
       
-      - name: Run Extraction Task Benchmarks
-        run: python scripts/extract_task.py
+      - name: Query analysis benchmark
+        run: python scripts/query_analysis_benchmark.py
