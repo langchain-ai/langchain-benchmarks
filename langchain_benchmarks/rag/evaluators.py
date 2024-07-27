@@ -87,7 +87,7 @@ def get_eval_config() -> RunEvalConfig:
     eval_llm = ChatOpenAI(
         model="gpt-4",
         temperature=0.0,
-        model_kwargs={"seed": 42},
+        seed=42,
         max_retries=1,
         request_timeout=60,
     )
@@ -95,7 +95,7 @@ def get_eval_config() -> RunEvalConfig:
     faithfulness_eval_llm = ChatOpenAI(
         model="gpt-4-1106-preview",
         temperature=0.0,
-        model_kwargs={"seed": 42},
+        seed=42,
         max_retries=1,
         request_timeout=60,
     )
