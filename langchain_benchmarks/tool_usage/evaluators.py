@@ -175,7 +175,7 @@ class AgentTrajectoryEvaluator(RunEvaluator):
             eval_llm = eval_llm or ChatOpenAI(
                 model="gpt-4",
                 temperature=0,
-                model_kwargs={"seed": 42},
+                seed=42,
                 max_retries=1,
                 request_timeout=60,
             )
