@@ -7,6 +7,9 @@ on:
 
 env:
   POETRY_VERSION: "1.6.1"
+  LANGCHAIN_API_KEY: ${{ secrets.LANGCHAIN_API_KEY }}
+  OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+  ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
 
 jobs:
   run_tool_benchmarks:
