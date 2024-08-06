@@ -30,7 +30,12 @@ jobs:
           poetry install --with test,lint,typing,docs
 
       - name: Multiverse math benchmark
-        run: poetry run python scripts/multiverse_math_benchmark.py
+
+        run: |
+          cd scripts
+          poetry run python multiverse_math_benchmark.py
       
       - name: Query analysis benchmark
-        run: poetry run python scripts/query_analysis_benchmark.py
+        run: |
+          cd scripts
+          poetry run python query_analysis_benchmark.py
