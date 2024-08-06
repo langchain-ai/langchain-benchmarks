@@ -3,7 +3,7 @@ name: Weekly Tool Benchmarks
 on:
   workflow_dispatch:
   schedule:
-    - cron: '16 14 * * 2'  # Runs at midnight (00:00) every Sunday (UTC time)
+    - cron: '0 0 * * 0'  # Runs at midnight (00:00) every Sunday (UTC time)
 
 env:
   POETRY_VERSION: "1.6.1"
