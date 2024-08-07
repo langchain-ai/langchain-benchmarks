@@ -63,6 +63,7 @@ langchain-fireworks = "^0.1.4"
 langchain-mistralai = "^0.1.9"
 langchain-groq = "^0.1.6"
 langchain-core = "^0.2.0"
+faiss-cpu = ">=1.8.0"
 
 [tool.ruff]
 select = [
