@@ -10,6 +10,7 @@ readme = "README.md"
 python = "^3.8.1"
 langchain = "^0.2.7"
 langchain-community = "^0.2"
+langchain-core= ">=0.2.28"
 langsmith = ">=0.0.70"
 tqdm = "^4"
 ipywidgets = "^8"
@@ -61,6 +62,8 @@ langchain-anthropic = "^0.1.19"
 langchain-fireworks = "^0.1.4"
 langchain-mistralai = "^0.1.9"
 langchain-groq = "^0.1.6"
+langchain-core = "^0.2.0"
+faiss-cpu = ">=1.8.0"
 
 [tool.ruff]
 select = [

@@ -5,6 +5,12 @@ on:
   schedule:
     - cron: '0 0 * * 0'  # Runs at midnight (00:00) every Sunday (UTC time)
 
+env:
+  POETRY_VERSION: "1.6.1"
+  LANGCHAIN_API_KEY: ${{ secrets.LANGCHAIN_API_KEY }}
+  OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+  ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+
 jobs:
   run_tool_benchmarks:
     runs-on: ubuntu-latest
@@ -27,7 +33,12 @@ jobs:
           poetry install --with test,lint,typing,docs
 
       - name: Multiverse math benchmark
-        run: python scripts/multiverse_math_benchmark.py
+
+        run: |
+          cd scripts
+          poetry run python multiverse_math_benchmark.py
       
       - name: Query analysis benchmark
-        run: python scripts/query_analysis_benchmark.py
+        run: |
+          cd scripts
+          poetry run python query_analysis_benchmark.py
