@@ -31,12 +31,6 @@ jobs:
       working-directory: .
     secrets: inherit
 
-  pydantic-compatibility:
-    uses:
-      ./.github/workflows/_pydantic_compatibility.yml
-    with:
-      working-directory: .
-    secrets: inherit
   test:
     timeout-minutes: 5
     runs-on: ubuntu-latest
