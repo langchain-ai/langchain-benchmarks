@@ -1,7 +1,7 @@
 from enum import Enum
 from typing import List, Optional
 
-from langchain.pydantic_v1 import BaseModel, Field
+from pydantic import BaseModel, Field
 
 
 class QuestionCategory(str, Enum):

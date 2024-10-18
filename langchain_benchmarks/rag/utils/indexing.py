@@ -6,7 +6,6 @@ from typing import Callable, Iterable, List, Optional
 from langchain.indexes import SQLRecordManager, index
 from langchain.output_parsers.openai_functions import JsonKeyOutputFunctionsParser
 from langchain.prompts import ChatPromptTemplate
-from langchain.pydantic_v1 import BaseModel
 from langchain.retrievers.multi_vector import MultiVectorRetriever
 from langchain.retrievers.parent_document_retriever import ParentDocumentRetriever
 from langchain.schema.document import Document
@@ -18,6 +17,7 @@ from langchain.schema.vectorstore import VectorStore
 from langchain.storage import InMemoryStore
 from langchain.text_splitter import RecursiveCharacterTextSplitter, TextSplitter
 from langchain_openai import ChatOpenAI
+from pydantic import BaseModel
 from tqdm.auto import tqdm
 
 logger = logging.getLogger(__name__)

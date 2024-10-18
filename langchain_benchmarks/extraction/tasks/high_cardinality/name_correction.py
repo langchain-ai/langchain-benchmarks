@@ -1,7 +1,7 @@
 from langchain.smith import RunEvalConfig
-from langchain_core.pydantic_v1 import BaseModel, Field
 from langsmith.evaluation import EvaluationResult, run_evaluator
 from langsmith.schemas import Example, Run
+from pydantic import BaseModel, Field
 
 from langchain_benchmarks.schema import ExtractionTask
 
