@@ -1,10 +1,10 @@
 from datetime import datetime
 from typing import List, Literal, Union, cast
 
-from langchain.pydantic_v1 import BaseModel, Field
 from langchain.tools import BaseTool, tool
 from langchain_core.messages import HumanMessage
 from langsmith.client import Client
+from pydantic import BaseModel, Field
 
 from langchain_benchmarks.schema import ToolUsageEnvironment, ToolUsageTask
 

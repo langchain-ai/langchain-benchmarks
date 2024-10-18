@@ -1,8 +1,8 @@
 from langchain.chat_models import ChatAnthropic
 from langchain.prompts import ChatPromptTemplate
-from langchain.pydantic_v1 import BaseModel
 from langchain.schema.output_parser import StrOutputParser
 from langchain.schema.runnable import RunnableLambda
+from pydantic import BaseModel
 
 from .prompts import answer_prompt
 from .retriever_agent import executor
